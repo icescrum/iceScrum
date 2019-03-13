@@ -29,58 +29,55 @@
      flow-drag-enter="dropClass='card drop-enabled'"
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedTask('upload', task) && dropClass">
+    <div class="details-header">
+        <div>
+            <entry:point id="task-details-right-title"/>
+            <span ng-if="task.responsible"
+                  defer-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
+                <img ng-src="{{ task.responsible | userAvatar }}"
+                     class="{{ task.responsible | userColorRoles }}"
+                     alt="{{ task.responsible | userFullName }}"
+                     height="30px"/>
+            </span>
+            <div class="btn-group">
+                <a ng-if="previousTask"
+                   class="btn btn-secondary"
+                   role="button"
+                   tabindex="0"
+                   hotkey="{'left': hotkeyClick}"
+                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+                   href="{{:: currentStateUrl(previousTask.id) }}">
+                    <i class="fa fa-caret-left"></i>
+                </a>
+                <a ng-if="nextTask"
+                   class="btn btn-secondary"
+                   role="button"
+                   tabindex="0"
+                   hotkey="{'right': hotkeyClick}"
+                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+                   href="{{:: currentStateUrl(nextTask.id) }}">
+                    <i class="fa fa-caret-right"></i>
+                </a>
+            </div>
+            <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+        </div>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-file" ng-style="{color: task.color }"></i> <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
-                <div style="margin-top:10px">
+                <div>
                     <entry:point id="task-details-left-title"/>
                 </div>
             </div>
-            <div class="right-title">
-                <div style="margin-bottom:10px">
-                    <entry:point id="task-details-right-title"/>
-                    <span ng-if="task.responsible"
-                          defer-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
-                        <img ng-src="{{ task.responsible | userAvatar }}"
-                             class="{{ task.responsible | userColorRoles }}"
-                             alt="{{ task.responsible | userFullName }}"
-                             height="30px"/>
-                    </span>
-                    <div class="btn-group">
-                        <a ng-if="previousTask"
-                           class="btn btn-secondary"
-                           role="button"
-                           tabindex="0"
-                           hotkey="{'left': hotkeyClick}"
-                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-                           href="{{:: currentStateUrl(previousTask.id) }}">
-                            <i class="fa fa-caret-left"></i>
-                        </a>
-                        <a ng-if="nextTask"
-                           class="btn btn-secondary"
-                           role="button"
-                           tabindex="0"
-                           hotkey="{'right': hotkeyClick}"
-                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-                           href="{{:: currentStateUrl(nextTask.id) }}">
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    </div>
-                    <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
-                </div>
-                <div class="btn-group shortcut-menu" role="group">
-                    <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
-                    <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
-                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                        </button>
-                        <div uib-dropdown-menu class="float-right" ng-init="itemType = 'task'" template-url="item.menu.html"></div>
-                    </div>
-                </div>
+            <div class="btn-menu" uib-dropdown>
+                <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
+                <div uib-dropdown-toggle></div>
+                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'task'" template-url="item.menu.html"></div>
             </div>
-        </h3>
+        </div>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="task" model-states="taskStatesByName"/></a>
     </div>
     <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">

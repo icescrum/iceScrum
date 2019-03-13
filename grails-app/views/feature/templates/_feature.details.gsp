@@ -29,49 +29,46 @@
      flow-drag-enter="dropClass='card drop-enabled'"
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedFeature('upload', feature) && dropClass">
+    <div class="details-header">
+        <div>
+            <entry:point id="feature-details-right-title"/>
+            <div class="btn-group">
+                <a ng-if="previousFeature && !isModal"
+                   class="btn btn-secondary"
+                   role="button"
+                   tabindex="0"
+                   hotkey="{'left': hotkeyClick}"
+                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+                   ui-sref=".({featureId: previousFeature.id})">
+                    <i class="fa fa-caret-left"></i>
+                </a>
+                <a ng-if="nextFeature && !isModal"
+                   class="btn btn-secondary"
+                   role="button"
+                   tabindex="0"
+                   hotkey="{'right': hotkeyClick}"
+                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+                   ui-sref=".({featureId: nextFeature.id})">
+                    <i class="fa fa-caret-right"></i>
+                </a>
+            </div>
+            <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
+        </div>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
                 <entry:point id="feature-details-left-title"/>
             </div>
-            <div class="right-title">
-                <div style="margin-bottom:10px">
-                    <entry:point id="feature-details-right-title"/>
-                    <div class="btn-group">
-                        <a ng-if="previousFeature && !isModal"
-                           class="btn btn-secondary"
-                           role="button"
-                           tabindex="0"
-                           hotkey="{'left': hotkeyClick}"
-                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-                           ui-sref=".({featureId: previousFeature.id})">
-                            <i class="fa fa-caret-left"></i>
-                        </a>
-                        <a ng-if="nextFeature && !isModal"
-                           class="btn btn-secondary"
-                           role="button"
-                           tabindex="0"
-                           hotkey="{'right': hotkeyClick}"
-                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-                           ui-sref=".({featureId: nextFeature.id})">
-                            <i class="fa fa-caret-right"></i>
-                        </a>
-                    </div>
-                    <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
-                </div>
-                <div class="btn-group shortcut-menu" role="group">
-                    <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
-                    <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
-                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                        </button>
-                        <div uib-dropdown-menu class="float-right" ng-init="itemType = 'feature'" template-url="item.menu.html"></div>
-                    </div>
-                </div>
+            <div class="btn-menu" uib-dropdown>
+                <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
+                <div uib-dropdown-toggle></div>
+                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'feature'" template-url="item.menu.html"></div>
             </div>
-        </h3>
+        </div>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="feature" model-states="featureStatesByName"/></a>
     </div>
     <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">

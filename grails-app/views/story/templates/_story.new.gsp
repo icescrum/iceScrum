@@ -22,16 +22,16 @@
 --}%
 <script type="text/ng-template" id="story.new.html">
 <div class="card">
+    <div class="details-header">
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
                 <span class="item-name" title="${message(code: 'todo.is.ui.story.new')}">${message(code: 'todo.is.ui.story.new')}</span>
             </div>
-            <div class="right-title">
-                <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
-            </div>
-        </h3>
+        </div>
     </div>
     <div class="details-no-tab">
         <div class="card-body">
@@ -67,7 +67,7 @@
                             </span>
                             <span class="action" ng-class="{'active':storyPreview.tasks_count}">
                                 <a class="action-link"
-                                    defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                   defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
                                     <span class="action-icon action-icon-task"></span>
                                     <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                                 </a>

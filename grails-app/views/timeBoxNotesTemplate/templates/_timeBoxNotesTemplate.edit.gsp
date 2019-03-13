@@ -27,22 +27,22 @@
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.timeBoxNotesTemplate.edit')}">
+    <div class="details-header">
+        <button class="btn btn-danger"
+                tabindex="-1"
+                type="button"
+                name="delete"
+                ng-click="confirmDelete({callback: delete, args: [editableTimeBoxNotesTemplate]})">
+            ${message(code: 'default.button.delete.label')}
+        </button>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <strong>{{ editableTimeBoxNotesTemplate.id }}</strong>
                 <span class="item-name">{{ editableTimeBoxNotesTemplate.name }}</span>
             </div>
-            <div class="right-title">
-                <button class="btn btn-danger"
-                        tabindex="-1"
-                        type="button"
-                        name="delete"
-                        ng-click="confirmDelete({callback: delete, args: [editableTimeBoxNotesTemplate]})">
-                    ${message(code: 'default.button.delete.label')}
-                </button>
-            </div>
-        </h3>
+        </div>
     </div>
     <div class="card-body">
         <div class="form-group">

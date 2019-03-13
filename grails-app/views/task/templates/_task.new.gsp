@@ -22,16 +22,16 @@
 --}%
 <script type="text/ng-template" id="task.new.html">
 <div class="card">
+    <div class="details-header">
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-file" ng-style="{color: task.color ? task.color : '#f9f157' }"></i>
                 <span class="item-name" title="${message(code: 'todo.is.ui.task.new')}">${message(code: 'todo.is.ui.task.new')}</span>
             </div>
-            <div class="right-title">
-                <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
-            </div>
-        </h3>
+        </div>
     </div>
     <div class="details-no-tab">
         <div class="card-body">

@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:widget widgetDefinition="${widgetDefinition}">
-    <div class="btn-group buttons-margin-bottom" ng-repeat="project in projects">
+    <div class="btn-group" ng-repeat="project in projects">
         <a href="{{:: getProjectUrl(project) }}" class="btn btn-secondary" role="button">{{ ::project.name }}</a>
         <a href="{{:: getProjectUrl(project, 'backlog') }}" class="btn btn-secondary" defer-tooltip="${message(code: 'is.ui.backlogs')}" role="button"><i class="fa fa-inbox"></i></a>
         <a href="{{:: getProjectUrl(project, 'taskBoard') }}" class="btn btn-secondary" defer-tooltip="${message(code: 'todo.is.ui.taskBoard')}" role="button"><i class="fa fa-tasks"></i></a>
     </div>
-    <div ng-if="!projects.length && projectsLoaded && projectCreationEnabled" class="buttons-margin-bottom">
+    <div ng-if="!projects.length && projectsLoaded && projectCreationEnabled">
         <a class="btn btn-primary"
            ui-sref="new">
             ${message(code: 'todo.is.ui.project.createNew')}

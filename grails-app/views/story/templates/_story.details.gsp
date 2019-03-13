@@ -29,8 +29,52 @@
      flow-drag-enter="dropClass='card drop-enabled'"
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedStory('upload', story) && dropClass">
+    <div class="details-header">
+        <div>
+            <entry:point id="story-details-right-title"/>
+            <span defer-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
+                <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
+                     height="30px"/>
+            </span>
+            <a ng-if="previousStory()"
+               class="btn btn-secondary"
+               role="button"
+               tabindex="0"
+               hotkey="{'left': hotkeyClick}"
+               hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+               href="{{ currentStateUrl(previousStory().id) }}">
+                <i class="fa fa-caret-left" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"></i>
+            </a>
+            <a ng-if="nextStory()"
+               class="btn btn-secondary"
+               role="button"
+               tabindex="0"
+               hotkey="{'right': hotkeyClick}"
+               hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+               href="{{ currentStateUrl(nextStory().id) }}">
+                <i class="fa fa-caret-right" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"></i>
+            </a>
+            <a class="btn btn-secondary expandable"
+               ng-if="!isModal && !application.focusedDetailsView"
+               href="{{ toggleFocusUrl() }}"
+               tabindex="0"
+               hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
+               hotkey-description="${message(code: 'is.ui.window.focus')}">
+                <i class="fa fa-expand" defer-tooltip="${message(code: 'is.ui.window.focus')} (↑)"></i>
+            </a>
+            <a class="btn btn-secondary expandable"
+               ng-if="!isModal && application.focusedDetailsView"
+               href="{{ toggleFocusUrl() }}"
+               tabindex="0"
+               hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
+               hotkey-description="${message(code: 'is.ui.window.unfocus')}">
+                <i class="fa fa-compress" defer-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"></i>
+            </a>
+            <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+        </div>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-sticky-note" ng-style="{color: story.feature ? story.feature.color : '#f9f157'}"></i>
                 <strong>{{ ::story.uid }}</strong>
@@ -39,63 +83,16 @@
                     <i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i>
                 </span>
                 <span class="item-name" title="{{ story.name }}">{{ story.name }}</span>&nbsp;<small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
-                <div style="margin-top:10px">
+                <div>
                     <entry:point id="story-details-left-title"/>
                 </div>
             </div>
-            <div class="right-title">
-                <div style="margin-bottom:10px" class="buttons-margin-bottom">
-                    <entry:point id="story-details-right-title"/>
-                    <span defer-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
-                        <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
-                             height="30px"/>
-                    </span>
-                    <a ng-if="previousStory()"
-                       class="btn btn-secondary"
-                       role="button"
-                       tabindex="0"
-                       hotkey="{'left': hotkeyClick}"
-                       hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                       href="{{ currentStateUrl(previousStory().id) }}">
-                        <i class="fa fa-caret-left" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"></i>
-                    </a>
-                    <a ng-if="nextStory()"
-                       class="btn btn-secondary"
-                       role="button"
-                       tabindex="0"
-                       hotkey="{'right': hotkeyClick}"
-                       hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                       href="{{ currentStateUrl(nextStory().id) }}">
-                        <i class="fa fa-caret-right" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"></i>
-                    </a>
-                    <a class="btn btn-secondary expandable"
-                       ng-if="!isModal && !application.focusedDetailsView"
-                       href="{{ toggleFocusUrl() }}"
-                       tabindex="0"
-                       hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
-                       hotkey-description="${message(code: 'is.ui.window.focus')}">
-                        <i class="fa fa-expand" defer-tooltip="${message(code: 'is.ui.window.focus')} (↑)"></i>
-                    </a>
-                    <a class="btn btn-secondary expandable"
-                       ng-if="!isModal && application.focusedDetailsView"
-                       href="{{ toggleFocusUrl() }}"
-                       tabindex="0"
-                       hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
-                       hotkey-description="${message(code: 'is.ui.window.unfocus')}">
-                        <i class="fa fa-compress" defer-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"></i>
-                    </a>
-                    <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
-                </div>
-                <div class="btn-group shortcut-menu" role="group">
-                    <shortcut-menu ng-model="story" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
-                    <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
-                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                        </button>
-                        <div uib-dropdown-menu class="float-right" ng-init="itemType = 'story'" template-url="item.menu.html"></div>
-                    </div>
-                </div>
+            <div class="btn-menu" uib-dropdown>
+                <shortcut-menu ng-model="story" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
+                <div uib-dropdown-toggle></div>
+                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'story'" template-url="item.menu.html"></div>
             </div>
-        </h3>
+        </div>
         <a href="{{ tabUrl('activities') }}" class="story-states"><visual-states ng-model="story" model-states="storyStatesByName"/></a>
         <entry:point id="story-details-before-tabs"/>
     </div>

@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="btn-toolbar buttons-margin-bottom">
+                    <div class="btn-toolbar">
                         <div class="btn-group">
                             <button type="button"
                                     ng-if="authorizedStories('accept', stories)"

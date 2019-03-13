@@ -22,15 +22,15 @@
 --}%
 <script type="text/ng-template" id="feature.new.html">
 <div class="card">
+    <div class="details-header">
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span class="item-name" title="${message(code: 'todo.is.ui.feature.new')}">${message(code: 'todo.is.ui.feature.new')}</span>
             </div>
-            <div class="right-title">
-                <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
-            </div>
-        </h3>
+        </div>
     </div>
     <div class="details-no-tab">
         <div class="card-body">

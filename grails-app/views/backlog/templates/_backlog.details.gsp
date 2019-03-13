@@ -22,22 +22,22 @@
 --}%
 <script type="text/ng-template" id="backlog.details.html">
 <div class="card">
+    <div class="details-header">
+        <entry:point id="backlog-details-right-title"/>
+        <span ng-if="backlog.owner" defer-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
+            <img ng-src="{{ backlog.owner | userAvatar }}" alt="{{ backlog.owner | userFullName }}" class="{{ backlog.owner | userColorRoles }}" height="30px"/>
+        </span>
+        <details-layout-buttons ng-if="!isModal"/>
+    </div>
     <div class="card-header">
-        <h3 class="card-title row">
+        <div class="card-title">
             <div class="left-title">
                 <i class="fa fa-inbox"></i> <span class="item-name" title="{{ backlog | i18nName }}">{{ backlog | i18nName }}</span>
                 <i class="fa fa-share-alt"
                    ng-if="backlog.shared && !backlog.isDefault"
                    defer-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
             </div>
-            <div class="right-title">
-                <entry:point id="backlog-details-right-title"/>
-                <span ng-if="backlog.owner" defer-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
-                    <img ng-src="{{ backlog.owner | userAvatar }}" alt="{{ backlog.owner | userFullName }}" class="{{ backlog.owner | userColorRoles }}" height="30px"/>
-                </span>
-                <details-layout-buttons ng-if="!isModal"/>
-            </div>
-        </h3>
+        </div>
         <div class="col-md-6">
             <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
             <div ng-include="'story.table.multiple.sum.html'"></div>

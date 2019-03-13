@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="btn-toolbar buttons-margin-bottom">
+                    <div class="btn-toolbar">
                         <entry:point id="feature-multiple-toolbar"/>
                         <div ng-if="authorizedFeature('delete')"
                              class="btn-group">

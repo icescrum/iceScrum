@@ -190,6 +190,7 @@ nav.navbar {
 .card-view {
   border-top: solid 1px $is-border-color;
   background-color: transparent;
+  border-radius: 0;
 
   .card-header {
     display: flex;
@@ -291,6 +292,10 @@ nav.navbar {
   .nav-link {
     padding-bottom: 0.125rem;
   }
+}
+
+.details-header {
+  border-top: solid 1px $is-border-color;
 }
 
 ////////////////////
