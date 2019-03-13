@@ -87,6 +87,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         build 'com.lowagie:itext:2.1.7'
+        compile 'commons-fileupload:commons-fileupload:1.3.3'
         runtime 'mysql:mysql-connector-java:5.1.40'
     }
     plugins {
