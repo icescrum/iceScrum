@@ -43,6 +43,7 @@ body {
 
 .view.with-details {
   display: flex;
+
   > .content {
     width: 65%;
   }
@@ -207,6 +208,7 @@ nav.navbar {
 .btn-menu {
   display: inline-flex;
   align-items: center;
+
   .dropdown-toggle {
     padding-right: 0.625rem;
     padding-left: 0.625rem;
@@ -349,4 +351,17 @@ textarea:not(.fixedRow):not(.handsontableInput), .atwho-preview {
   .modal-split-left {
     background-color: $is-bg-color-alt;
   }
+}
+
+////////////////////
+// Charts
+////////////////////
+
+.nvd3 g.nv-groups path.nv-line {
+  stroke-width: 3px;
+}
+
+.nvd3 text {
+  font-family: averta-regular;
+  fill: $is_text-color-alt;
 }

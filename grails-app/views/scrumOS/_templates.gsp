@@ -22,7 +22,7 @@
 --}%
 <div id="templates">
     <script type="text/ng-template" id="loading.html">
-        <div class="logo-loading"></div>
+    <div class="logo-loading"></div>
     </script>
 
     <script type="text/ng-template" id="chart.modal.html">

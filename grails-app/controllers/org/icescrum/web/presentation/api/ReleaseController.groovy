@@ -178,10 +178,10 @@ class ReleaseController implements ControllerErrorHandler {
         def values = releaseService.releaseVelocityCapacityValues(release)
         def computedValues = [[key   : message(code: 'is.sprint.velocity'),
                                values: values.collect { return [it.velocity] },
-                               color : '#27d285'],
+                               color : '#50e3c2'],
                               [key   : message(code: 'is.sprint.plannedVelocity'),
                                values: values.collect { return [it.capacity] },
-                               color : '#054ca6']]
+                               color : '#00abfc']]
         def options = [chart: [yDomain: [0, values.collect { [it.velocity, it.capacity].max() }.max()],
                                yAxis  : [axisLabel: message(code: 'is.chart.releaseVelocityCapacity.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.releaseVelocityCapacity.xaxis.label')]],
