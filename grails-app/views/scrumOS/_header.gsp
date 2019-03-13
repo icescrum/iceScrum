@@ -35,7 +35,7 @@
        defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
     </a>
     <div class="nav-item nav-item-logo">
-        <div id="logo"></div>
+        <div id="menu-loader"></div>
     </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul ng-controller="mainMenuCtrl"

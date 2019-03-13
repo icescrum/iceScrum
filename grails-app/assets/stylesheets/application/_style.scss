@@ -24,11 +24,13 @@
 ////////////////////
 // Global layout
 ////////////////////
+body, html {
+  height: 100vh;
+}
 
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 
   nav.navbar {
     flex: 0 0 auto;
@@ -63,14 +65,13 @@ body {
   background-image: linear-gradient(to bottom, $is-bg-gradient-start, $is-bg-gradient-end);
 }
 
-#logo {
+#menu-loader {
   width: 33px;
   margin: 11px 30px 11px 14px;
 }
 
-// TODO re-enable with correct loading images
-#application-loading {
-  display: none;
+body.splash-screen > *:not(#application-loading), body:not(.splash-screen) #application-loading {
+  display: none !important;
 }
 
 .card-title {

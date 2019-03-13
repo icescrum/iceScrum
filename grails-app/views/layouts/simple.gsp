@@ -41,9 +41,11 @@
     <body ng-controller="applicationCtrl"
           ng-class="{ 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)  }"
           class="simple-template splash-screen loading">
-        <div id="application-loading">
-            <div class="logo-loading"></div>
-            <div class="loading-text text-center">{{ application.loadingPercent }} - {{ application.loadingText }}</div>
+        <div id="application-loading" class="container h-100 d-flex justify-content-center">
+            <div class="my-auto">
+                <div id="main-loader"></div>
+                <div class="loading-text text-center">{{ application.loadingPercent }} {{ application.loadingText }}</div>
+            </div>
         </div>
         <div class="container-fluid">
             <g:layoutBody/>

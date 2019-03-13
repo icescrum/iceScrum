@@ -557,14 +557,19 @@ var isApplication = angular.module('isApplication', [
     })
     .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', 'FormService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, FormService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize) {
         $rootScope.uiWorking = function(message) {
-            $rootScope.mainLoader.play();
-            $rootScope.mainLoader.loop = true;
+            $rootScope.loaders.menu.play();
+            $rootScope.loaders.menu.loop = true;
             $rootScope.application.loading = true;
             $rootScope.application.loadingText = $rootScope.message((message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
+            if ($rootScope.application.loadingText) {
+                $rootScope.loaders.main.play();
+                $rootScope.loaders.main.loop = true;
+            }
         };
         $rootScope.uiReadyTimeout = null;
         $rootScope.uiReady = function() {
-            $rootScope.mainLoader.loop = false;
+            $rootScope.loaders.menu.loop = false;
+            $rootScope.loaders.main.loop = false;
             $rootScope.application.loading = false;
             $rootScope.application.loadingText = null;
         };
@@ -923,16 +928,22 @@ var isApplication = angular.module('isApplication', [
             }
             PDFJS.workerSrc = isSettings.workerSrc;
             Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
-            var loaderContainer = document.getElementById('logo');
-            if (loaderContainer) {
-                $rootScope.mainLoader = lottie.loadAnimation({
-                    container: document.getElementById('logo'),
+            $rootScope.loaders = {
+                menu: lottie.loadAnimation({
+                    container: $('#menu-loader')[0],
                     renderer: 'svg',
                     loop: false,
                     autoplay: false,
                     path: $rootScope.serverUrl + '/assets/animations/loader.json'
-                });
-            }
+                }),
+                main: lottie.loadAnimation({
+                    container: $('#main-loader')[0],
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: false,
+                    path: $rootScope.serverUrl + '/assets/animations/loader.json'
+                })
+            };
         }
         $rootScope.authenticated = Session.authenticated;
         $rootScope.authorizedApp = AppService.authorizedApp;
