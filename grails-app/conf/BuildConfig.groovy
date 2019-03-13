@@ -88,6 +88,7 @@ grails.project.dependency.resolution = {
     dependencies {
         build 'com.lowagie:itext:2.1.7'
         runtime 'mysql:mysql-connector-java:5.1.40'
+        compile 'commons-fileupload:commons-fileupload:1.3.3' //fix CVE-2016-1000031
     }
     plugins {
         compile ':cache-headers:1.1.7'
