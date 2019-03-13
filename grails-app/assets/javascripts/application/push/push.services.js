@@ -110,7 +110,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             }
         };
         options.onMessage = function(response) {
-            $rootScope.uiWorking("");
+            $rootScope.uiWorking(null);
             _.each(response.responseBody.split('#-|-#'), function(text) {
                 try {
                     var jsonBody = atmosphere.util.parseJSON(text);

@@ -197,9 +197,11 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {
-            $scope.uiWorking();
             if ($scope.application.loadingPercent != 100) {
                 $scope.application.loadingPercent += 10;
+                $scope.uiWorking();
+            } else {
+                $scope.uiWorking(null); //no text
             }
         }
     });
@@ -214,7 +216,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     $scope.$watch(function() {
         return $http.pendingRequests.length;
     }, function(newVal) {
-        newVal > 0 || $scope.application.loadingPercent < 100 ? $scope.uiWorking() : $scope.uiReady();
+        newVal > 0 ? $scope.uiWorking($scope.application.loadingPercent < 100) : $scope.uiReady();
         if ($scope.application.loadingPercent < 100) {
             if (newVal == 0) {
                 $scope.application.loadingPercent = 100;
@@ -293,7 +295,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
                     var data = !angular.isObject($message) ? JSON.parse($message) : $message;
                     if (data && data.class == 'Project') {
                         $scope.$close(true);
-                        $rootScope.uiWorking(" ");
+                        $rootScope.uiWorking(null);
                         $timeout(function() {
                             document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                         }, 2000);
@@ -326,7 +328,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
                             var data = response.data;
                             if (data && data.class == 'Project') {
                                 $scope.$close(true);
-                                $rootScope.uiWorking(" ");
+                                $rootScope.uiWorking();
                                 $timeout(function() {
                                     document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                                 }, 2000);
