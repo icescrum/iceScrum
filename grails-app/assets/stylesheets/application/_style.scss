@@ -375,3 +375,15 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   font-family: averta-regular;
   fill: $is_text-color-alt;
 }
+
+////////////////////
+// highlights
+////////////////////
+
+.highlight {
+  background: url(../../images/application/highlight.png) no-repeat;
+  background-position-y: 12px;
+  background-size: 100% 65%;
+  padding-right: 5px;
+  padding-left: 5px;
+}
