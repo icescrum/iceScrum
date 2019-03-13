@@ -329,6 +329,11 @@ textarea:not(.fixedRow):not(.handsontableInput), .atwho-preview {
   overflow: auto;
 }
 
+form.form-editable:not(:hover):not(.form-editing) .form-control {
+  border-color: transparent;
+  background-color: $input-disabled-bg;
+}
+
 .markitup-preview:not(.no-fixed-height) {
   min-height: 150px;
   max-height: 250px;

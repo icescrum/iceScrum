@@ -43,7 +43,7 @@ $is-outline-color: #c8c8cc !default;
 $is-border-color: #d3d8de !default;
 $is-border-color-alt: #e9e9e9 !default;
 
-$is-font-size-sm: 0.875remt;
+$is-font-size-sm: 0.875rem;
 $is-sticky-note-text: #111111; // Should not change in dark mode
 $is-sticky-note-text-invert: white;
 $is-task-width: 129px;
@@ -109,6 +109,7 @@ $btn-padding-x-sm: 0.8rem;
 $btn-disabled-opacity: 0.3;
 
 $input-bg: $is-bg-color;
+$input-disabled-bg: $is-bg-color-alt;
 $input-color: $is-text-color;
 $input-height: 1.875rem;
 $input-border-color: $is-outline-color;
