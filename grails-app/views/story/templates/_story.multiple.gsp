@@ -22,15 +22,13 @@
 --}%
 <script type="text/ng-template" id="story.multiple.html">
 <div class="card">
+    <div class="details-header">
+        <a class="close-icon" ui-sref="^.^"></a>
+    </div>
     <div class="card-header">
-        <h3 class="card-title">
+        <div class="card-title">
             ${message(code: "todo.is.ui.stories")} ({{ stories.length }})
-            <a class="float-right btn btn-secondary"
-               ui-sref="^.^"
-               defer-tooltip="${message(code: 'is.ui.window.closeable')}">
-                <i class="fa fa-times"></i>
-            </a>
-        </h3>
+        </div>
     </div>
     <div class="details-no-tab">
         <div class="card-body">

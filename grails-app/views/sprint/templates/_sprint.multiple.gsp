@@ -23,17 +23,11 @@
 <script type="text/ng-template" id="sprint.multiple.html">
 <div class="card">
     <div class="details-header">
-        <a class="btn btn-secondary"
-           href="{{:: $state.href('^') }}"
-           defer-tooltip="${message(code: 'is.ui.window.closeable')}">
-            <i class="fa fa-times"></i>
-        </a>
+        <a class="close-icon" href="{{:: $state.href('^') }}"></a>
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
-                ${message(code: 'todo.is.ui.sprints')} ({{ sprints.length }})
-            </div>
+            ${message(code: 'todo.is.ui.sprints')} ({{ sprints.length }})
         </div>
     </div>
     <div class="details-no-tab">

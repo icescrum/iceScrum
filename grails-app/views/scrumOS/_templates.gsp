@@ -241,7 +241,7 @@
     </script>
 
     <script type="text/ng-template" id="details.layout.buttons.html">
-    <div class="btn-group">
+    <span>
         <button class="btn btn-secondary minimizable"
                 ng-click="toggleMinimizedDetailsView()"
                 defer-tooltip="${message(code: 'is.ui.window.minimize')}">
@@ -252,12 +252,8 @@
                 defer-tooltip="${message(code: 'is.ui.window.detach')}">
             <i ng-class="['fa', application.detachedDetailsView ? 'fa-window-maximize' : 'fa-window-restore']"></i>
         </button>
-        <a class="btn btn-secondary"
-           href="{{ closeDetailsViewUrl() }}"
-           defer-tooltip="${message(code: 'is.ui.window.closeable')}">
-            <i class="fa fa-times"></i>
-        </a>
-    </div>
+        <a class="close-icon" href="{{ closeDetailsViewUrl() }}"></a>
+    </span>
     </script>
 
     <script type="text/ng-template" id="icon.with.badge.html">

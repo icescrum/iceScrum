@@ -151,10 +151,8 @@
                         </a>
                         <entry:point id="backlog-list-toolbar-right"/>
                         <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
-                           class="btn btn-secondary btn-sm"
+                           class="close-icon"
                            ng-if="backlogContainers.length > 1">
-                            <i class="fa fa-times"
-                               defer-tooltip="${message(code: 'is.ui.window.closeable')}"></i>
                         </a>
                     </div>
                 </div>
