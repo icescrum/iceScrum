@@ -82,3 +82,15 @@
     @include is-img-retina('removetag-light', 0.625rem, 0.625rem);
   }
 }
+
+form.form-editable:not(:hover):not(.form-editing) {
+  .select2-container .select2-choice, .select2-container .select2-choices {
+    border-color: transparent;
+    background-color: $input-disabled-bg;
+  }
+}
+
+.select2-container.select2-container-disabled .select2-choice, .select2-container.select2-container-disabled .select2-choices {
+  border-color: transparent;
+  background-color: $input-disabled-bg;
+}
