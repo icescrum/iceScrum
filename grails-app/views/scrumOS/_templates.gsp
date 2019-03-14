@@ -98,10 +98,9 @@
     <script type="text/ng-template" id="button.shortcutMenu.html">
     <a ng-show="menuElement.name"
        class="btn"
-       title="{{ menuElement | menuElementName }}"
        ng-class="{'btn-sm': btnSm, 'btn-intermediate': !btnSm, 'btn-primary': !btnSecondary, 'btn-secondary': btnSecondary}"
-       ng-href="{{ menuElement.url(ngModel) }}"
-       ng-click="menuElement.action(ngModel)">
+       href="{{ menuElement.url(ngModel) | orElse: '' }}"
+       ng-click="menuClick(menuElement, ngModel, $event)">
         {{ menuElement | menuElementName }}
     </a>
     </script>
@@ -110,8 +109,8 @@
     <div ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
         <a class="dropdown-item"
            ng-repeat="menuElement in menus | visibleMenuElement: getItem()"
-           ng-href="{{ menuElement.url(getItem()) }}"
-           ng-click="menuElement.action(getItem())">
+           href="{{ menuElement.url(getItem()) | orElse: '' }}"
+           ng-click="menuClick(menuElement, getItem(), $event)">
             {{:: menuElement | menuElementName }}
         </a>
     </div>

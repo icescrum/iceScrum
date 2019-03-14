@@ -905,6 +905,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         link: function(scope) {
             scope.message = $rootScope.message;
             scope.btnSecondary = angular.isDefined(scope.btnSecondary) ? scope.btnSecondary : false;
+            scope.menuClick = $rootScope.menuClick;
             scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {

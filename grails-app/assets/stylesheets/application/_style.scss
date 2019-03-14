@@ -283,6 +283,15 @@ nav.navbar {
     background-color: $is-bg-color-alt;
   }
 
+  .card-title {
+    font-size: 1rem;
+    font-family: averta-regular;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .card-footer {
     background-color: $is-bg-color;
     border-top: solid 1px $is-border-color;

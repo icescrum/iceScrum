@@ -875,6 +875,12 @@ var isApplication = angular.module('isApplication', [
                 holder.opened = true;
             }
         };
+        $rootScope.menuClick = function(menuElement, item, $event) {
+            if (menuElement.action) {
+                $event.preventDefault();
+                menuElement.action(item);
+            }
+        };
         $rootScope.integerSuite = _.range(100);
         $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
