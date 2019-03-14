@@ -367,13 +367,19 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 // Charts
 ////////////////////
 
-.nvd3 g.nv-groups path.nv-line {
-  stroke-width: 3px;
-}
+.nvd3 {
+  g.nv-groups path.nv-line {
+    stroke-width: 3px;
+  }
 
-.nvd3 text {
-  font-family: averta-regular;
-  fill: $is_text-color-alt;
+  text {
+    font-family: averta-regular;
+    fill: $is_text-color-alt;
+    &.nv-axislabel, &.nv-legend-text {
+      fill: $is-text-color;
+      font-size: $is-font-size-sm;
+    }
+  }
 }
 
 ////////////////////
