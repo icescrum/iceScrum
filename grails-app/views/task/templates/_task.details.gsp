@@ -32,13 +32,6 @@
     <div class="details-header">
         <div>
             <entry:point id="task-details-right-title"/>
-            <span ng-if="task.responsible"
-                  defer-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
-                <img ng-src="{{ task.responsible | userAvatar }}"
-                     class="{{ task.responsible | userColorRoles }}"
-                     alt="{{ task.responsible | userFullName }}"
-                     height="30px"/>
-            </span>
             <div class="btn-group">
                 <a ng-if="previousTask"
                    class="btn btn-secondary"

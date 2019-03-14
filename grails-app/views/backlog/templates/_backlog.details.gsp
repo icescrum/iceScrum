@@ -24,9 +24,6 @@
 <div class="card">
     <div class="details-header">
         <entry:point id="backlog-details-right-title"/>
-        <span ng-if="backlog.owner" defer-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
-            <img ng-src="{{ backlog.owner | userAvatar }}" alt="{{ backlog.owner | userFullName }}" class="{{ backlog.owner | userColorRoles }}" height="30px"/>
-        </span>
         <details-layout-buttons ng-if="!isModal"/>
     </div>
     <div class="card-header">

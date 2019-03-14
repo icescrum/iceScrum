@@ -278,22 +278,25 @@
             </div>
             <div class="form-half">
                 <label for="creator">${message(code: 'is.story.creator')}</label>
-                <ui-select ng-click="editForm(true);searchCreator($select)"
-                           ng-change="editForm(true)"
-                           ng-disabled="!formEditable() || !authorizedStory('updateCreator', editableStory)"
-                           class="form-control"
-                           name="creator"
-                           search-enabled="true"
-                           ng-model="editableStory.creator">
-                    <ui-select-match title="{{ $select.selected | userFullName }}">
-                        {{ $select.selected | userFullName }}
-                    </ui-select-match>
-                    <ui-select-choices refresh="searchCreator($select)"
-                                       refresh-delay="100"
-                                       repeat="creator in creators | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
-                        <span ng-bind-html="(creator | userFullName) | highlight: $select.search"></span>
-                    </ui-select-choices>
-                </ui-select>
+                <div class="d-flex">
+                    <img ng-src="{{ editableStory.creator | userAvatar }}" class="mr-2 {{ editableStory.creator | userColorRoles }}" height="32px"/>
+                    <ui-select ng-click="editForm(true);searchCreator($select)"
+                               ng-change="editForm(true)"
+                               ng-disabled="!formEditable() || !authorizedStory('updateCreator', editableStory)"
+                               class="form-control"
+                               name="creator"
+                               search-enabled="true"
+                               ng-model="editableStory.creator">
+                        <ui-select-match title="{{ $select.selected | userFullName }}">
+                            {{ $select.selected | userFullName }}
+                        </ui-select-match>
+                        <ui-select-choices refresh="searchCreator($select)"
+                                           refresh-delay="100"
+                                           repeat="creator in creators | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
+                            <span ng-bind-html="(creator | userFullName) | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
             </div>
         </div>
         <div class="form-group">

@@ -32,10 +32,6 @@
     <div class="details-header">
         <div>
             <entry:point id="story-details-right-title"/>
-            <span defer-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
-                <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
-                     height="30px"/>
-            </span>
             <a ng-if="previousStory()"
                class="btn btn-secondary"
                role="button"
