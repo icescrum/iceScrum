@@ -80,7 +80,6 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-calendar"></i>
                 <span class="item-name" title="{{ release.name }}">{{ release.name }}</span>
                 <entry:point id="release-details-left-title"/>
             </div>

@@ -28,7 +28,6 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-file" ng-style="{color: task.color ? task.color : '#f9f157' }"></i>
                 <span class="item-name" title="${message(code: 'todo.is.ui.task.new')}">${message(code: 'todo.is.ui.task.new')}</span>
             </div>
         </div>

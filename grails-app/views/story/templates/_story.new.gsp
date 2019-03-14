@@ -28,7 +28,6 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
                 <span class="item-name" title="${message(code: 'todo.is.ui.story.new')}">${message(code: 'todo.is.ui.story.new')}</span>
             </div>
         </div>

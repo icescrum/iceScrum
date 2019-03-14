@@ -80,7 +80,6 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-tasks"></i>
                 <span class="item-name" title="{{ release.name + ' - ' + (sprint | sprintName) }}">{{ release.name + ' - ' + (sprint | sprintName) }}</span>
                 <entry:point id="sprint-details-left-title"/>
             </div>

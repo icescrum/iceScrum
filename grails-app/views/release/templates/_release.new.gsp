@@ -28,7 +28,7 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-calendar"></i> <span class="item-name" title="${message(code: "todo.is.ui.release.new")}">${message(code: "todo.is.ui.release.new")}</span>
+                <span class="item-name" title="${message(code: "todo.is.ui.release.new")}">${message(code: "todo.is.ui.release.new")}</span>
             </div>
         </div>
     </div>

@@ -60,7 +60,7 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
+                <strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
                 <entry:point id="feature-details-left-title"/>
             </div>
             <div class="btn-menu" uib-dropdown>

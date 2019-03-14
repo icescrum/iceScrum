@@ -76,7 +76,6 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-sticky-note" ng-style="{color: story.feature ? story.feature.color : '#f9f157'}"></i>
                 <strong>{{ ::story.uid }}</strong>
                 <span defer-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">

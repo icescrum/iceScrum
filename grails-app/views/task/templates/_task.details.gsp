@@ -67,7 +67,7 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-file" ng-style="{color: task.color }"></i> <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
+                <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
                 <div>
                     <entry:point id="task-details-left-title"/>
                 </div>

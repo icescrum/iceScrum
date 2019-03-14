@@ -28,7 +28,7 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-tasks"></i> <span class="item-name" title="${message(code: "todo.is.ui.sprint.new")}">${message(code: "todo.is.ui.sprint.new")}</span>
+                <span class="item-name" title="${message(code: "todo.is.ui.sprint.new")}">${message(code: "todo.is.ui.sprint.new")}</span>
             </div>
         </div>
     </div>

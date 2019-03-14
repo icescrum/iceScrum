@@ -28,7 +28,7 @@
     <div class="card-header">
         <div class="card-title">
             <div class="left-title">
-                <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span class="item-name" title="${message(code: 'todo.is.ui.feature.new')}">${message(code: 'todo.is.ui.feature.new')}</span>
+                <span class="item-name" title="${message(code: 'todo.is.ui.feature.new')}">${message(code: 'todo.is.ui.feature.new')}</span>
             </div>
         </div>
     </div>
