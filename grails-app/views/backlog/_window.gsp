@@ -151,7 +151,7 @@
                         </a>
                         <entry:point id="backlog-list-toolbar-right"/>
                         <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
-                           class="close-icon"
+                           class="btn btn-icon btn-icon-close"
                            ng-if="backlogContainers.length > 1">
                         </a>
                     </div>

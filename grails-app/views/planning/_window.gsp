@@ -32,15 +32,13 @@
             </div>
             <div class="btn-toolbar">
                 <div class="btn-group">
-                    <button class="btn btn-secondary btn-sm"
+                    <button class="btn btn-icon btn-caret-left"
                             ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
                             ng-click="visibleSprintsPrevious()">
-                        <i class="fa fa-caret-left"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm"
+                    <button class="btn btn-icon btn-caret-right"
                             ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
                             ng-click="visibleSprintsNext()">
-                        <i class="fa fa-caret-right"></i>
                     </button>
                 </div>
                 <div class="btn-group">

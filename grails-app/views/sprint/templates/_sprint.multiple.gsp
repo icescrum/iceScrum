@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="sprint.multiple.html">
 <div class="card">
     <div class="details-header">
-        <a class="close-icon" href="{{:: $state.href('^') }}"></a>
+        <a class="btn btn-icon btn-icon-close" href="{{:: $state.href('^') }}"></a>
     </div>
     <div class="card-header">
         <div class="card-title">

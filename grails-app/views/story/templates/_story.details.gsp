@@ -30,44 +30,42 @@
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedStory('upload', story) && dropClass">
     <div class="details-header">
-        <div>
-            <entry:point id="story-details-right-title"/>
-            <a ng-if="previousStory()"
-               class="btn btn-secondary"
-               role="button"
-               tabindex="0"
-               hotkey="{'left': hotkeyClick}"
-               hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-               href="{{ currentStateUrl(previousStory().id) }}">
-                <i class="fa fa-caret-left" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"></i>
-            </a>
-            <a ng-if="nextStory()"
-               class="btn btn-secondary"
-               role="button"
-               tabindex="0"
-               hotkey="{'right': hotkeyClick}"
-               hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-               href="{{ currentStateUrl(nextStory().id) }}">
-                <i class="fa fa-caret-right" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"></i>
-            </a>
-            <a class="btn btn-secondary expandable"
-               ng-if="!isModal && !application.focusedDetailsView"
-               href="{{ toggleFocusUrl() }}"
-               tabindex="0"
-               hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
-               hotkey-description="${message(code: 'is.ui.window.focus')}">
-                <i class="fa fa-expand" defer-tooltip="${message(code: 'is.ui.window.focus')} (↑)"></i>
-            </a>
-            <a class="btn btn-secondary expandable"
-               ng-if="!isModal && application.focusedDetailsView"
-               href="{{ toggleFocusUrl() }}"
-               tabindex="0"
-               hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
-               hotkey-description="${message(code: 'is.ui.window.unfocus')}">
-                <i class="fa fa-compress" defer-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"></i>
-            </a>
-            <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
-        </div>
+        <entry:point id="story-details-right-title"/>
+        <a ng-if="previousStory()"
+           class="btn btn-icon btn-caret-left"
+           role="button"
+           tabindex="0"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+           hotkey="{'left': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+           href="{{ currentStateUrl(previousStory().id) }}">
+        </a>
+        <a ng-if="nextStory()"
+           class="btn btn-icon btn-caret-right"
+           role="button"
+           tabindex="0"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+           hotkey="{'right': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+           href="{{ currentStateUrl(nextStory().id) }}">
+        </a>
+        <a class="btn btn-icon btn-expand expandable"
+           ng-if="!isModal && !application.focusedDetailsView"
+           href="{{ toggleFocusUrl() }}"
+           tabindex="0"
+           uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)"
+           hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.window.focus')}">
+        </a>
+        <a class="btn btn-icon btn-compress expandable"
+           ng-if="!isModal && application.focusedDetailsView"
+           href="{{ toggleFocusUrl() }}"
+           tabindex="0"
+           uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"
+           hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.window.unfocus')}">
+        </a>
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
     </div>
     <div class="card-header">
         <div class="card-title">

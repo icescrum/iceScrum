@@ -31,32 +31,26 @@
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedSprint('upload', sprint) && dropClass">
     <div class="details-header">
-        <div>
-            <entry:point id="sprint-details-right-title"/>
-            <div class="btn-group">
-                <a ng-if="previousSprint"
-                   class="btn btn-secondary"
-                   role="button"
-                   tabindex="0"
-                   hotkey="{'left': hotkeyClick}"
-                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-                   ui-sref=".({sprintId: previousSprint.id})">
-                    <i class="fa fa-caret-left"></i>
-                </a>
-                <a ng-if="nextSprint"
-                   class="btn btn-secondary"
-                   role="button"
-                   tabindex="0"
-                   hotkey="{'right': hotkeyClick}"
-                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-                   ui-sref=".({sprintId: nextSprint.id})">
-                    <i class="fa fa-caret-right"></i>
-                </a>
-            </div>
-            <details-layout-buttons ng-if="!isModal" remove-ancestor="removeSprintAncestorOnClose"/>
-        </div>
+        <entry:point id="sprint-details-right-title"/>
+        <a ng-if="previousSprint"
+           class="btn btn-icon btn-caret-left"
+           role="button"
+           tabindex="0"
+           hotkey="{'left': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+           ui-sref=".({sprintId: previousSprint.id})">
+        </a>
+        <a ng-if="nextSprint"
+           class="btn btn-icon btn-caret-right"
+           role="button"
+           tabindex="0"
+           hotkey="{'right': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+           ui-sref=".({sprintId: nextSprint.id})">
+        </a>
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="removeSprintAncestorOnClose"/>
         <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
         <g:if test="${formats}">
             <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">

@@ -241,17 +241,15 @@
 
     <script type="text/ng-template" id="details.layout.buttons.html">
     <span>
-        <button class="btn btn-secondary minimizable"
+        <button class="btn btn-icon btn-window minimizable"
                 ng-click="toggleMinimizedDetailsView()"
                 defer-tooltip="${message(code: 'is.ui.window.minimize')}">
-            <i ng-class="['fa fa-window-minimize', application.minimizedDetailsView ? 'fa-rotate-180' : '']"></i>
         </button>
-        <button class="btn btn-secondary detachable"
+        <button class="btn btn-icon btn-window detachable"
                 ng-click="toggleDetachedDetailsView()"
                 defer-tooltip="${message(code: 'is.ui.window.detach')}">
-            <i ng-class="['fa', application.detachedDetailsView ? 'fa-window-maximize' : 'fa-window-restore']"></i>
         </button>
-        <a class="close-icon" href="{{ closeDetailsViewUrl() }}"></a>
+        <a class="btn btn-icon btn-icon-close" href="{{ closeDetailsViewUrl() }}"></a>
     </span>
     </script>
 

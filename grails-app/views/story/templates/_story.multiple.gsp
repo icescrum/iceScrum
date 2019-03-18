@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="story.multiple.html">
 <div class="card">
     <div class="details-header">
-        <a class="close-icon" ui-sref="^.^"></a>
+        <a class="btn btn-icon btn-icon-close" ui-sref="^.^"></a>
     </div>
     <div class="card-header">
         <div class="card-title">

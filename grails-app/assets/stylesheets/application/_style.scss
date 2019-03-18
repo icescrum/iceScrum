@@ -154,24 +154,10 @@ nav.navbar {
     }
 
     // TODO make a loop that can be extended from plugin
-    .nav-link-icon-project {
-      background: url("menu-project.svg") no-repeat;
-    }
-
-    .nav-link-icon-backlog {
-      background: url("menu-backlog.svg") no-repeat;
-    }
-
-    .nav-link-icon-planning {
-      background: url("menu-planning.svg") no-repeat;
-    }
-
-    .nav-link-icon-taskBoard {
-      background: url("menu-taskBoard.svg") no-repeat;
-    }
-
-    .nav-link-icon-feature {
-      background: url("menu-feature.svg") no-repeat;
+    @each $menu in (project backlog planning taskBoard feature) {
+      .nav-link-icon-#{$menu} {
+        background: url("menu-#{$menu}.svg") no-repeat;
+      }
     }
   }
 
@@ -180,6 +166,23 @@ nav.navbar {
       height: 35px;
       box-shadow: 0 2px 9px 0 $is-shadow-color-3;
     }
+  }
+}
+
+.btn-icon {
+  padding: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: 1.25rem 1.25rem;
+  display: inline-block;
+  @each $icon in (caret-left, caret-right, compress, expand, window) {
+    &.btn-#{$icon} {
+      background: url("btn-#{$icon}.svg") no-repeat;
+    }
+  }
+
+  &.btn-icon-close {
+    @include is-img-retina('close', 1.25rem, 1.25rem); // Use png at low res screen for beter rendering
   }
 }
 
@@ -251,13 +254,6 @@ nav.navbar {
   background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
 }
 
-.close-icon {
-  display: inline-block;
-  width: 1.25rem;
-  height: 1.25rem;
-  @include is-img-retina('close', 1.25rem, 1.25rem);
-}
-
 ////////////////////
 // Details view
 ////////////////////
@@ -311,6 +307,7 @@ nav.navbar {
 }
 
 .details-header {
+  line-height: 1;
   border-top: solid 1px $is-border-color;
   display: flex;
   justify-content: flex-end;
@@ -318,6 +315,10 @@ nav.navbar {
   height: 58px;
   padding-left: 30px;
   padding-right: 30px;
+
+  .btn-icon {
+    margin-left: 22px;
+  }
 }
 
 ////////////////////
@@ -397,6 +398,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   text {
     font-family: averta-regular;
     fill: $is_text-color-alt;
+
     &.nv-axislabel, &.nv-legend-text {
       fill: $is-text-color;
       font-size: $is-font-size-sm;

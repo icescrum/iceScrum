@@ -30,32 +30,26 @@
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedFeature('upload', feature) && dropClass">
     <div class="details-header">
-        <div>
-            <entry:point id="feature-details-right-title"/>
-            <div class="btn-group">
-                <a ng-if="previousFeature && !isModal"
-                   class="btn btn-secondary"
-                   role="button"
-                   tabindex="0"
-                   hotkey="{'left': hotkeyClick}"
-                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-                   ui-sref=".({featureId: previousFeature.id})">
-                    <i class="fa fa-caret-left"></i>
-                </a>
-                <a ng-if="nextFeature && !isModal"
-                   class="btn btn-secondary"
-                   role="button"
-                   tabindex="0"
-                   hotkey="{'right': hotkeyClick}"
-                   hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                   defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-                   ui-sref=".({featureId: nextFeature.id})">
-                    <i class="fa fa-caret-right"></i>
-                </a>
-            </div>
-            <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
-        </div>
+        <entry:point id="feature-details-right-title"/>
+        <a ng-if="previousFeature && !isModal"
+           class="btn btn-icon btn-caret-left"
+           role="button"
+           tabindex="0"
+           hotkey="{'left': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+           ui-sref=".({featureId: previousFeature.id})">
+        </a>
+        <a ng-if="nextFeature && !isModal"
+           class="btn btn-icon btn-caret-right"
+           role="button"
+           tabindex="0"
+           hotkey="{'right': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+           ui-sref=".({featureId: nextFeature.id})">
+        </a>
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
     </div>
     <div class="card-header">
         <div class="card-title">
