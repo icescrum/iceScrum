@@ -26,7 +26,7 @@
     transition: opacity 0.15s linear;
 }
 
-.cfp-hotkeys-container.fade.in {
+.cfp-hotkeys-container.fade.show {
     z-index: 10002;
     visibility: visible;
     opacity: 1;

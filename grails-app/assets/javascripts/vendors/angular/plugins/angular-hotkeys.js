@@ -50,7 +50,7 @@
          * Cheat sheet template in the event you want to totally customize it.
          * @type {String}
          */
-        this.template = '<div class="cfp-hotkeys-container fade" ng-class="{in: helpVisible}" style="display: none;"><div class="cfp-hotkeys">' +
+        this.template = '<div class="cfp-hotkeys-container fade" ng-class="{show: helpVisible}" style="display: none;"><div class="cfp-hotkeys">' +
             '<h4 class="cfp-hotkeys-title" ng-if="!header">{{ title }}</h4>' +
             '<div ng-bind-html="header" ng-if="header"></div>' +
             '<table><tbody>' +

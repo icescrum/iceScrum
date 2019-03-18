@@ -4910,7 +4910,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
           'class="uib-position-measure ' + prefix + '" ' +
           'tooltip-animation-class="fade"' +
           'uib-tooltip-classes ' +
-          'ng-class="{ in: isOpen }" ' +
+          'ng-class="{ show: isOpen }" ' +
           '>' +
         '</div>';
 
