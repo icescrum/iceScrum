@@ -59,8 +59,7 @@
                     <div uib-dropdown-menu ng-init="itemType = 'release'" template-url="item.menu.html"></div>
                 </div>
                 <a class="btn btn-secondary btn-sm" ng-href="{{ openReleaseUrl(release) }}">
-                    <i class="fa fa-pencil"
-                       defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
+                    <i class="fa fa-pencil"></i>
                 </a>
             </div>
         </div>
@@ -93,8 +92,7 @@
                         </div>
                     </div>
                     <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
-                        <i class="fa fa-pencil"
-                           defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
+                        <i class="fa fa-pencil"></i>
                     </a>
                 </div>
                 <div class="sticky-notes {{ stickyNoteClass }}"

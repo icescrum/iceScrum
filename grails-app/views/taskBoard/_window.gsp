@@ -110,8 +110,7 @@
                         <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                     </div>
                     <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
-                        <i class="fa fa-pencil"
-                           defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
+                        <i class="fa fa-pencil"></i>
                     </a>
                 </div>
             </div>

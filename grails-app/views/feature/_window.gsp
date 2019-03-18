@@ -30,8 +30,7 @@
             <div class="btn-toolbar">
                 <div class="btn-group">
                     <div class="btn-group"
-                         uib-dropdown
-                         defer-tooltip="${message(code: 'todo.is.ui.sort')}">
+                         uib-dropdown>
                         <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle type="button">
                             <span>{{ orderBy.current.name }}</span>

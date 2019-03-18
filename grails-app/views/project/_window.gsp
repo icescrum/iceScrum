@@ -179,8 +179,9 @@
                              class="btn-group btn-group-sm">
                             <button class="btn btn-secondary btn-sm"
                                     type="button"
+                                    aria-label="${message(code: 'todo.is.ui.charts')}"
                                     uib-dropdown-toggle>
-                                <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i></span>
+                                <i class="fa fa-bar-chart"></i>
                             </button>
                             <div uib-dropdown-menu
                                  class="dropdown-menu-right">

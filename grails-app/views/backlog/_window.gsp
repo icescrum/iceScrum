@@ -97,8 +97,7 @@
                         <div class="btn-group">
                             <entry:point id="backlog-list-toolbar-group-left"/>
                             <div class="btn-group"
-                                 uib-dropdown
-                                 defer-tooltip="${message(code: 'todo.is.ui.sort')}">
+                                 uib-dropdown>
                                 <button class="btn btn-secondary btn-sm" uib-dropdown-toggle type="button">
                                     <span>{{ backlogContainer.orderBy.current.name }}</span>
                                 </button>
@@ -146,8 +145,7 @@
                         </div>
                         <a class="btn btn-secondary btn-sm"
                            ng-href="{{ openBacklogUrl(backlogContainer.backlog) }}">
-                            <i class="fa fa-pencil"
-                               defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
+                            <i class="fa fa-pencil"></i>
                         </a>
                         <entry:point id="backlog-list-toolbar-right"/>
                         <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
