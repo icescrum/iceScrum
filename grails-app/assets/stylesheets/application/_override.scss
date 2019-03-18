@@ -164,9 +164,8 @@ form label {
     padding: 0;
     margin: 0.3125rem 0 0 0;
     opacity: 1;
-    width: 1.25rem;
-    height: 1.25rem;
-    @include is-img-retina('close', 1.25rem, 1.25rem);
+    @include square-background(1.25rem);
+    @include background-image-retina('close');
 
     &:not(:disabled):not(.disabled):hover, &:not(:disabled):not(.disabled):focus {
       opacity: 1;

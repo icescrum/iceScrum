@@ -59,7 +59,7 @@ body {
 }
 
 ////////////////////
-// iceScrum style
+// Main layout
 ////////////////////
 
 .main {
@@ -101,21 +101,20 @@ nav.navbar {
       }
 
       .is-icon {
-        width: 1.125rem;
-        height: 1rem;
+        @include rectangle-background(1.125rem, 1rem);
 
         &.icon-private {
-          background: url("icon-private.svg") no-repeat;
+          background-image: url("icon-private.svg");
           margin-right: 0.6875rem;
         }
 
         &.icon-public {
-          background: url("icon-public.svg") no-repeat;
+          background-image: url("icon-public.svg");
           margin-right: 0.6875rem;
         }
 
         &.icon-project {
-          background: url("icon-project.svg") no-repeat;
+          background-image: url("icon-project.svg");
           margin-right: 1rem;
         }
       }
@@ -149,14 +148,13 @@ nav.navbar {
 
     .nav-link-icon {
       margin-right: 4px;
-      height: 20px;
-      width: 21px;
+      @include rectangle-background(21px, 20px);
     }
 
     // TODO make a loop that can be extended from plugin
     @each $menu in (project backlog planning taskBoard feature) {
       .nav-link-icon-#{$menu} {
-        background: url("menu-#{$menu}.svg") no-repeat;
+        background-image: url("menu-#{$menu}.svg");
       }
     }
   }
@@ -166,23 +164,6 @@ nav.navbar {
       height: 35px;
       box-shadow: 0 2px 9px 0 $is-shadow-color-3;
     }
-  }
-}
-
-.btn-icon {
-  padding: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  background-size: 1.25rem 1.25rem;
-  display: inline-block;
-  @each $icon in (caret-left, caret-right, compress, expand, window) {
-    &.btn-#{$icon} {
-      background: url("btn-#{$icon}.svg") no-repeat;
-    }
-  }
-
-  &.btn-icon-close {
-    @include is-img-retina('close', 1.25rem, 1.25rem); // Use png at low res screen for beter rendering
   }
 }
 
@@ -252,6 +233,21 @@ nav.navbar {
 
 .state-dot-3 {
   background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+}
+
+.btn-icon {
+  padding: 0;
+  display: inline-block;
+  @include square-background(1.25rem);
+  @each $icon in (caret-left, caret-right, compress, expand, window) {
+    &.btn-#{$icon} {
+      background-image: url("btn-#{$icon}.svg");
+    }
+  }
+
+  &.btn-icon-close {
+    @include background-image-retina('close'); // Use png at low res screen for beter rendering
+  }
 }
 
 ////////////////////
@@ -411,7 +407,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 ////////////////////
 
 .highlight {
-  background: url(../../images/application/highlight.png) no-repeat;
+  background: url("highlight.png") no-repeat;
   background-position-y: 12px;
   background-size: 100% 65%;
   padding-right: 5px;

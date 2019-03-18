@@ -75,10 +75,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .action-icon {
-      width: 0.75rem;
-      height: 0.75rem;
+      @include square-background(0.75rem);
       display: inline-block;
-      background-size: 0.75rem 0.75rem;
     }
   }
 
@@ -219,7 +217,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .action {
         @each $action in $action-list {
           .action-icon-#{$action} {
-            background: url("action-#{$action}-grey.svg") no-repeat;
+            background-image: url("action-#{$action}-grey.svg");
           }
         }
       }
@@ -321,6 +319,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       &.has-description .description {
         display: none;
       }
+
       .item-values {
         height: 15px;
       }
@@ -339,7 +338,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       @each $action in $action-list {
         .action-icon-#{$action} {
-          background: url("action-#{$action}-black.svg") no-repeat;
+          background-image: url("action-#{$action}-black.svg");
         }
       }
     }
@@ -354,7 +353,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .sticky-note-actions .action {
         @each $action in $action-list {
           .action-icon-#{$action} {
-            background: url("action-#{$action}-white.svg") no-repeat;
+            background-image: url("action-#{$action}-white.svg");
           }
         }
       }
@@ -480,9 +479,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         top: -13px;
         right: -12px;
         display: block;
-        width: 1.5rem;
-        height: 1.5rem;
-        @include is-img-retina('badge-task-blocked', 1.5rem, 1.5rem);
+        @include square-background(1.5rem);
+        @include background-image-retina('badge-task-blocked');
       }
     }
   }

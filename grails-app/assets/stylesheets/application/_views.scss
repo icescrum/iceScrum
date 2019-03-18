@@ -146,9 +146,8 @@
 
 .plus-icon {
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  @include is-img-retina('plus', 1rem, 1rem);
+  @include square-background(1rem);
+  @include background-image-retina('plus');
 }
 
 .sprint-dates {

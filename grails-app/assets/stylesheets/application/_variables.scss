@@ -76,15 +76,25 @@ $is-state-colors: (
   text-overflow: ellipsis;
 }
 
-@mixin is-img-retina($file-1x, $width-1x, $height-1x) {
+@mixin background-image-retina($file-1x) {
   background-image: url("#{$file-1x}.png");
-  background-size: $width-1x $height-1x;
-  background-repeat: no-repeat;
   @media only screen and (min-resolution: 97dpi), // IE11 & just above my screen density (96dpi) so it is triggered as soon as the view is zoomed in
   only screen and (-webkit-min-device-pixel-ratio: 1.5), // Safari (see https://caniuse.com/#feat=css-media-resolution)
   only screen and (min-resolution: 2dppx) { // Standard
     background-image: url("#{$file-1x}.svg");
   }
+}
+
+@mixin rectangle-background($width, $height) {
+  background-position: center;
+  background-size: $width $height;
+  background-repeat: no-repeat;
+  width: $width;
+  height: $height;
+}
+
+@mixin square-background($side) {
+  @include rectangle-background($side, $side);
 }
 
 ////////////////////
