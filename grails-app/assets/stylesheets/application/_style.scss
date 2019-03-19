@@ -272,6 +272,7 @@ nav.navbar {
 
 [ui-view="details"] .card {
 
+  border-radius: 0;
   box-shadow: 0 2px 12px 0 rgba(62, 57, 107, 0.1);
 
   .card-header {
