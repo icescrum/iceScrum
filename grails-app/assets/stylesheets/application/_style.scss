@@ -63,7 +63,7 @@ body {
 ////////////////////
 
 .main {
-  background-image: linear-gradient(to bottom, $is-bg-gradient-start, $is-bg-gradient-end);
+  background-color: $is-bg-color-ter;
 }
 
 #menu-loader {
@@ -250,6 +250,10 @@ nav.navbar {
   }
 }
 
+*[ng-click] {
+  cursor: pointer;
+}
+
 ////////////////////
 // Details view
 ////////////////////
@@ -407,7 +411,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 }
 
 ////////////////////
-// highlights
+// Highlights
 ////////////////////
 
 .highlight {

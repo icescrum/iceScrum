@@ -39,6 +39,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     overflow: hidden;
   }
 
+  .title {
+    font-family: averta-bold;
+  }
+
   .sticky-note-state-progress {
     height: 15px;
 
@@ -55,7 +59,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       position: absolute;
       font-size: 0.625rem;
       text-align: right;
-      font-weight: bold;
     }
 
     .status {
@@ -101,7 +104,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       font-size: 0.625rem;
       background: white;
       border-radius: 0.125rem;
-      padding: 0.125rem 0.1875rem;
+      padding: 0.0625rem 0.1875rem;
       box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
       color: $is-sticky-note-text;
 
@@ -178,7 +181,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .title {
         color: $is_text-color-alt;
         font-size: 1.125rem;
-        font-weight: 600;
       }
 
       .item-values {
@@ -452,16 +454,15 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         padding-left: 1px;
         padding-right: 1px;
         height: 49px;
-        margin-bottom: 0.5625rem;
 
         .title {
           line-height: 1.17;
           height: 28px;
           font-size: 0.75rem;
-          font-weight: 600;
         }
 
         .description {
+          padding-top: 0.1875rem;
           line-height: 1.1;
           font-size: 0.625rem;
           height: 44px;
@@ -471,6 +472,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .sticky-note-tags {
         padding-left: 1px;
         padding-right: 1px;
+        margin-bottom: 0.4375rem;
       }
 
       &.task-blocked:after {
@@ -492,7 +494,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       .title {
         font-size: 1rem;
-        font-family: averta-bold;
       }
 
       .id {
@@ -508,7 +509,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   }
 
   .sticky-note-feature, .sticky-note-task {
-    &:hover .sticky-note-content.has-description .title {
+    .sticky-note:hover .sticky-note-content.has-description .title {
       display: none;
     }
   }

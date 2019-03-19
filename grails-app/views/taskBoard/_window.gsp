@@ -177,9 +177,9 @@
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task">
-                                <div class="kanban-add-task">
-                                    <a ng-click="openNewTaskByType(taskTypesByName.URGENT)" href class="plus-icon"></a>
-                                </div>
+                                <a class="kanban-add-task" ng-click="openNewTaskByType(taskTypesByName.URGENT)" href>
+                                    <span class="plus-icon"></span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -188,7 +188,10 @@
                      ng-if="authorizedTask('showRecurrent')">
                     <div class="kanban-row">
                         <div class="kanban-column-header col">
-                            <span class="swimlane-title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})</span>
+                            <span class="swimlane-title">
+                                ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})
+                                <a ng-if="authorizedTask('create', {sprint: sprint})" ng-click="copyRecurrentTasks(sprint)" href>${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}</a>
+                            </span>
                         </div>
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
@@ -226,10 +229,9 @@
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task">
-                                <div class="kanban-add-task">
-                                    <a ng-click="openNewTaskByType(taskTypesByName.RECURRENT)" href class="plus-icon"></a>
-                                    <a ng-click="copyRecurrentTasks(sprint)" href>${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}</a>
-                                </div>
+                                <a class="kanban-add-task" ng-click="openNewTaskByType(taskTypesByName.RECURRENT)" href>
+                                    <span class="plus-icon"></span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -278,9 +280,9 @@
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="sticky-note-container sticky-note-task">
-                                <div class="kanban-add-task">
-                                    <a ng-click="openNewTaskByStory(story)" href class="plus-icon"></a>
-                                </div>
+                                <a class="kanban-add-task" ng-click="openNewTaskByStory(story)" href>
+                                    <span class="plus-icon"></span>
+                                </a>
                             </div>
                         </div>
                     </div>
