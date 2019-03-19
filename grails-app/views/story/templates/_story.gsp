@@ -27,14 +27,6 @@
      ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="sticky-note-head">
-            <a href
-               class="follow {{:: story | followedByUser:'active' }}"
-               defer-tooltip="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
-               ng-click="follow(story)">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </a>
-            <entry:point id="story-head"/>
             <span class="id">{{:: story.uid }}</span>
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!story.description}">
