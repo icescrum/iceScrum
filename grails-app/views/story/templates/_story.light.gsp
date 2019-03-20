@@ -27,7 +27,7 @@
     <div>
         <div class="sticky-note-head">
             <span class="id">{{ ::story.uid }}</span>
-            <div class="sticky-note-type"></div>
+            <div class="sticky-note-type-icon"></div>
         </div>
         <div class="sticky-note-content" ng-class="{'has-description':!!story.description}">
             <div class="head-right">
