@@ -38,15 +38,16 @@
                 ${message(code: 'is.ui.feature.help')}
                 <documentation doc-url="features-stories-tasks#features"/>
             </div>
-            <div class="sticky-notes standalone">
-                <div class="sticky-note-container sticky-note-feature solo">
+            <div class="sticky-notes grid-group">
+                <div class="sticky-note-container sticky-note-feature">
                     <div ng-style="feature.color | createGradientBackground"
                          class="sticky-note {{ feature.color | contrastColor }}">
                         <div class="sticky-note-head">
                             <span class="id">42</span>
                         </div>
                         <div class="sticky-note-content">
-                            <h3 class="title">{{ feature.name }}</h3>
+                            <div class="item-values"></div>
+                            <div class="title">{{ feature.name }}</div>
                         </div>
                         <div class="sticky-note-tags"></div>
                         <div class="sticky-note-actions">

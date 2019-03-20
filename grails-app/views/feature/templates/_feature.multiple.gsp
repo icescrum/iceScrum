@@ -34,7 +34,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="sticky-notes standalone">
+                    <div class="sticky-notes grid-group">
                         <div class="sticky-note-container sticky-note-feature stack twisted">
                             <div ng-style="topFeature.color | createGradientBackground"
                                  class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
@@ -47,7 +47,7 @@
                                             ${message(code: 'is.feature.value')} <strong>{{  topFeature.value }}</strong>
                                         </span>
                                     </div>
-                                    <h3 class="title">{{ topFeature.name }}</h3>
+                                    <div class="title">{{ topFeature.name }}</div>
                                     <div class="description"
                                          ng-bind-html="topFeature.description | lineReturns"></div>
                                 </div>

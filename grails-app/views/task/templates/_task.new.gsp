@@ -38,14 +38,15 @@
                 ${message(code: 'is.ui.task.help')}
                 <documentation doc-url="features-stories-tasks#tasks"/>
             </div>
-            <div class="sticky-notes standalone">
-                <div class="sticky-note-container sticky-note-task solo">
+            <div class="sticky-notes grid-group">
+                <div class="sticky-note-container sticky-note-task">
                     <div ng-style="'#f9f157' | createGradientBackground"
                          class="sticky-note {{ ('#f9f157' | contrastColor) }}">
                         <div class="sticky-note-head">
                             <span class="id">42</span>
                         </div>
                         <div class="sticky-note-content">
+                            <div class="item-values"></div>
                             <div class="title">{{ task.name }}</div>
                         </div>
                         <div class="sticky-note-tags"></div>

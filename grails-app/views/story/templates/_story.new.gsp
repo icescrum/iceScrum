@@ -38,14 +38,16 @@
                 ${message(code: 'is.ui.sandbox.help')}
                 <documentation doc-url="features-stories-tasks#stories"/>
             </div>
-            <div class="sticky-notes standalone">
-                <div class="sticky-note-container sticky-note-story solo">
+            <div class="sticky-notes grid-group">
+                <div class="sticky-note-container sticky-note-story">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                          class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                         <div class="sticky-note-head">
                             <span class="id">42</span>
+                            <div class="sticky-note-type"></div>
                         </div>
                         <div class="sticky-note-content">
+                            <div class="item-values"></div>
                             <div class="title">{{ story.name }}</div>
                             <div class="description-template"
                                  ng-bind-html="storyPreview.description"></div>

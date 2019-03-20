@@ -34,16 +34,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="sticky-notes standalone">
+                    <div class="sticky-notes grid-group">
                         <div class="sticky-note-container sticky-note-story stack twisted">
                             <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                                  class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                                 <div class="sticky-note-head">
-                                    <a class="follow active"
-                                       defer-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
-                                        <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
-                                    </a>
                                     <span class="id">{{ topStory.uid }}</span>
+                                    <div class="sticky-note-type"></div>
                                 </div>
                                 <div class="sticky-note-content">
                                     <div class="item-values">
@@ -67,30 +64,32 @@
                                     </a>
                                 </div>
                                 <div class="sticky-note-actions">
-                                    <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
                                     <span class="action" ng-class="{'active':topStory.attachments_count}">
-                                        <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                            <i class="fa fa-paperclip"></i>
+                                        <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <span class="action-icon action-icon-attach"></span>
                                         </a>
                                     </span>
                                     <span class="action" ng-class="{'active':topStory.comments_count}">
-                                        <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
-                                            <i class="fa"
-                                               ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                                        <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                            <span class="action-icon action-icon-comment"></span>
                                             <span class="badge">{{ topStory.comments_count || '' }}</span>
                                         </a>
                                     </span>
                                     <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                        <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                            <i class="fa fa-tasks"></i>
+                                        <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                            <span class="action-icon action-icon-task"></span>
                                             <span class="badge">{{ topStory.tasks_count || '' }}</span>
                                         </a>
                                     </span>
                                     <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                                        <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
-                                            <i class="fa"
-                                               ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                        <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                            <span class="action-icon action-icon-test"></span>
                                             <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                    <span class="action">
+                                        <a class="action-link">
+                                            <span class="action-icon action-icon-menu"></span>
                                         </a>
                                     </span>
                                 </div>
