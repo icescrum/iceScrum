@@ -286,7 +286,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     align-content: flex-start;
 
     .sticky-note-container {
-      margin: 0.625rem;
+      margin: 0.53125rem;
     }
   }
 
@@ -555,4 +555,54 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
 .backlog .grid-group .sticky-note-story .sticky-note:after {
   border-color: $is-bg-color-ter $is-bg-color-ter white white;
+}
+
+////////////////////
+// Grid  SM
+////////////////////
+
+
+.grid-group.size-sm {
+  .sticky-note-story {
+    width: $is-story-width-sm;
+    height: $is-story-heigth-sm;
+
+    .sticky-note {
+      width: $is-story-width-sm;
+      height: $is-story-heigth-sm;
+
+      .sticky-note-head .id {
+        left: 131px;
+      }
+
+      .sticky-note-content {
+        height: 53px;
+
+        .description {
+          display: none;
+        }
+      }
+    }
+
+    .sticky-note-tags {
+      line-height: 1.17;
+      margin-bottom: 2px;
+    }
+
+    .sticky-note-state-progress {
+      height: 12px;
+
+      .progress {
+        height: 12px;
+      }
+
+      .status {
+        opacity: 0;
+      }
+
+      .state, .status {
+        top: -2px;
+      }
+    }
+  }
 }
