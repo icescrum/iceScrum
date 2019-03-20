@@ -263,6 +263,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   &.sticky-notes {
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
 
     .sticky-note-container {
       margin: 0.625rem;
