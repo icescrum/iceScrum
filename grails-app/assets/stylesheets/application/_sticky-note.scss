@@ -123,6 +123,18 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
     }
   }
+
+  &.sticky-note-type {
+    .sticky-note-type-icon {
+      @include rectangle-background(0.8125rem, 0.875rem);
+    }
+
+    @each $type in (defect, technical) {
+      &.#{$type} .sticky-note-type-icon {
+        background-image: url("type-#{$type}-grey.svg");
+      }
+    }
+  }
 }
 
 ////////////////////
@@ -161,6 +173,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           border-right: solid 1px $is-border-color-alt;
         }
       }
+    }
+
+    .sticky-note-head {
+      display: flex;
+      width: 48px;
+      padding-left: 0;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .sticky-note-content {
@@ -394,13 +414,20 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       width: $is-story-width;
       height: $is-story-heigth;
 
+      &.sticky-note-type .sticky-note-type-icon {
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        z-index: 2;
+      }
+
       &:after {
         content: "";
         position: absolute;
         top: 0;
         right: 0;
         border: 15px solid;
-        border-color: white white rgba(255, 255, 255, 0.98) rgba(255, 255, 255, 0.98);
+        border-color: white white rgba(255, 255, 255, 0.97) rgba(255, 255, 255, 0.97);
         z-index: 1;
       }
 
