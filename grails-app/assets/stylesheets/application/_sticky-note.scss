@@ -125,18 +125,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   }
 }
 
-.sticky-note-story {
-  .follow {
-    .fa-star-o, &.active .fa-star {
-      display: inline-block;
-    }
-
-    .fa-star, &.active .fa-star-o {
-      display: none;
-    }
-  }
-}
-
 ////////////////////
 // List style
 ////////////////////
@@ -308,6 +296,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     &:hover {
       .sticky-note-actions {
         > .action * {
+          opacity: 1;
           visibility: visible;
         }
       }
@@ -329,6 +318,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
     .sticky-note-actions .action {
       > * {
+        opacity: 0.6;
         visibility: hidden;
       }
 
@@ -397,27 +387,47 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   .sticky-note-story {
     width: $is-story-width;
     height: $is-story-heigth;
+    box-shadow: -1px 1px 2px -1px rgba(156, 164, 171, 0.5); // TODO put the real thing
 
     .sticky-note {
       width: $is-story-width;
       height: $is-story-heigth;
 
-      .sticky-note-head {
-        display: flex;
-        justify-content: space-between;
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        border: 15px solid;
+        border-color: white white rgba(255, 255, 255, 0.98) rgba(255, 255, 255, 0.98);
+        z-index: 1;
+      }
+
+      .sticky-note-head .id {
+        position: absolute;
+        left: 151px;
+        top: 13px;
+        z-index: 2;
+        color: #687583;
       }
 
       .sticky-note-content {
-        height: 73px;
-        margin-bottom: 9px;
+        height: 97px;
+        margin-top: 6px;
 
         .title {
-          height: 1.5rem;
+          line-height: 1.17;
+          height: 2.4rem;
         }
 
         .description {
-          height: 42px;
+          padding-top: 2px;
+          height: 46px;
         }
+      }
+
+      .sticky-note-tags {
+        margin-bottom: 6px;
       }
 
     }
@@ -513,4 +523,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       display: none;
     }
   }
+}
+
+.backlog .grid-group .sticky-note-story .sticky-note:after {
+  border-color: $is-bg-color-ter $is-bg-color-ter white white;
 }
