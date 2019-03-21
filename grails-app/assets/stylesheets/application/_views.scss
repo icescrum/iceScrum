@@ -83,7 +83,12 @@
     border-radius: 6px;
     border: solid 1px $is-outline-color;
     margin: 0 12px;
-    padding: 15px
+    padding: 15px;
+    .sprint-title {
+      font-size: 1rem;
+      font-family: averta-bold;
+      color: $is_text-color-alt;
+    }
   }
 }
 

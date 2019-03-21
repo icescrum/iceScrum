@@ -28,7 +28,10 @@
                 <a class="card-title" ng-href="{{ openReleaseUrl(release) }}">
                     {{ release.name }}
                 </a>
-                <span class="state-dot" ng-class="'state-dot-' + release.state"></span>{{ (release.state | i18n: 'ReleaseStates') }}
+                <span class="state-title">
+                    <span class="state-dot" ng-class="'state-dot-' + release.state"></span>
+                    <span>{{ (release.state | i18n: 'ReleaseStates') }}</span>
+                </span>
             </div>
             <div class="btn-toolbar">
                 <div class="btn-group">
@@ -69,7 +72,13 @@
                  ng-repeat="sprint in visibleSprints"
                  ng-controller="sprintBacklogCtrl">
                 <div>
-                    <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
+                    <a href="{{ openSprintUrl(sprint) }}" class="sprint-title">
+                        {{ (sprint | sprintName) }}
+                    </a>
+                    <span class="state-title state-title-small">
+                        <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
+                        <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                    </span>
                     <br/>
                     <span>
                         <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span>

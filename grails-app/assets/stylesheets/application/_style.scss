@@ -31,6 +31,7 @@ body, html {
 body {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 
   nav.navbar {
     flex: 0 0 auto;
@@ -213,26 +214,47 @@ nav.navbar {
   }
 }
 
-.state-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
-  border-radius: 7px;
-  margin-left: 5px;
-  margin-right: 5px;
-}
+$state-dot-size: 0.75rem;
+$state-dot-size-sm: 0.5rem;
+.state-title {
+  color: $is-text-color-alt;
+  font-size: $is-font-size-sm;
+  font-weight: 600;
 
-.state-dot-1 {
-  background-image: linear-gradient(47deg, #d7d7d7, #f4f4f4);
-}
+  .state-dot {
+    margin-left: 11px;
+    margin-right: 7px;
+    box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
+    display: inline-block;
+    width: $state-dot-size;
+    height: $state-dot-size;
+    border-radius: $state-dot-size/2;
+  }
 
-.state-dot-2 {
-  background-image: linear-gradient(47deg, #63abeb, #d1e6f0);
-}
+  &.state-title-small {
+    font-size: 0.75rem;
+    font-weight: $font-weight-normal;
 
-.state-dot-3 {
-  background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+    .state-dot {
+      margin-left: 7px;
+      margin-right: 4px;
+      width: $state-dot-size-sm;
+      height: $state-dot-size-sm;
+      border-radius: $state-dot-size-sm/2;
+    }
+  }
+
+  .state-dot-1 {
+    background-image: linear-gradient(47deg, #d7d7d7, #f4f4f4);
+  }
+
+  .state-dot-2 {
+    background-image: linear-gradient(47deg, #63abeb, #d1e6f0);
+  }
+
+  .state-dot-3 {
+    background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+  }
 }
 
 .btn-icon {
