@@ -276,6 +276,37 @@ $state-dot-size-sm: 0.5rem;
   cursor: pointer;
 }
 
+.timebox-dates {
+  $timebox-dates-padding: 0.625rem;
+  $timebox-dates-padding-sm: 0.5rem;
+  background: #f4f4f4; // Todo dark mode
+  font-size: $is-font-size-sm;
+  padding: 10px $timebox-dates-padding;
+
+  .start-date {
+    border-right: 1px solid $is-border-color;
+    padding-right: $timebox-dates-padding;
+  }
+
+  .end-date {
+    padding-left: $timebox-dates-padding;
+  }
+
+  &.timebox-dates-small {
+    font-size: 12px;
+    padding: 6px $timebox-dates-padding-sm;
+
+    .start-date {
+      border-right: 1px solid $is-border-color;
+      padding-right: $timebox-dates-padding-sm;
+    }
+
+    .end-date {
+      padding-left: $timebox-dates-padding-sm;
+    }
+  }
+}
+
 ////////////////////
 // Details view
 ////////////////////

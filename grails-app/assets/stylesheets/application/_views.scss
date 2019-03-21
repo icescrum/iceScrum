@@ -84,6 +84,7 @@
     border: solid 1px $is-outline-color;
     margin: 0 12px;
     padding: 15px;
+
     .sprint-title {
       font-size: 1rem;
       font-family: averta-bold;
@@ -158,18 +159,12 @@
   &:hover {
     border-color: transparent;
     box-shadow: 0 2px 9px 0 rgba(156, 164, 171, 0.5);
+
     .plus-icon {
       @include square-background(1.875rem);
       background-image: url("plus-highlight.svg");
     }
   }
-}
-
-.sprint-dates {
-  margin-left: 20px;
-  background: #f4f4f4;
-  font-size: $is-font-size-sm;
-  padding: 10px 0.875rem;
 }
 
 .sprint-values {

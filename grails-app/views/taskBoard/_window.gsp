@@ -37,7 +37,7 @@
                                href="{{ openSprintUrl(sprintEntry.item, true) }}">
                                 {{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}
                                 <span>
-                                    {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-angle-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
+                                    {{ sprintEntry.item.startDate | dayShorter }} | {{ sprintEntry.item.endDate | dayShorter }}
                                 </span>
                             </a>
                             <span ng-switch-when="release">
@@ -46,11 +46,17 @@
                         </div>
                     </div>
                 </span>
-                <span class="sprint-dates">{{ (sprint.startDate | dayShorter) +  ' | ' + (sprint.endDate | dayShorter) }}</span>
+                <span class="timebox-dates">
+                    <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                </span>
                 <span class="sprint-values">
-                    <span ng-if="sprint.state > sprintStatesByName.TODO">${message(code: 'is.sprint.velocity')} {{ sprint.velocity | roundNumber:2 }}</span>
-                    <span>${message(code: 'is.sprint.plannedVelocity')} {{ sprint.capacity | roundNumber:2 }}</span>
-                    <span>${message(code: 'is.task.estimation')} {{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }}</span>
+                    <span>
+                        ${message(code: 'is.sprint.velocity')}
+                        <strong ng-if="sprint.state > sprintStatesByName.TODO"
+                                defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</strong>
+                        <strong defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</strong>
+                    </span>
+                    <span>${message(code: 'is.task.estimation')} <strong>{{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }}</strong></span>
                 </span>
                 <span class="state-title">
                     <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>

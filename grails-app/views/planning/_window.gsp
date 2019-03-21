@@ -71,39 +71,38 @@
             <div class="sprint col"
                  ng-repeat="sprint in visibleSprints"
                  ng-controller="sprintBacklogCtrl">
-                <div>
-                    <a href="{{ openSprintUrl(sprint) }}" class="sprint-title">
-                        {{ (sprint | sprintName) }}
-                    </a>
-                    <span class="state-title state-title-small">
-                        <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
-                        <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="{{ openSprintUrl(sprint) }}" class="sprint-title">
+                            {{ (sprint | sprintName) }}
+                        </a>
+                        <span class="state-title state-title-small">
+                            <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
+                            <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                        </span>
+                    </div>
+                    <div class="btn-menu" uib-dropdown>
+                        <shortcut-menu ng-model="sprint" model-menus="menus" btn-sm="true"></shortcut-menu>
+                        <div uib-dropdown-toggle></div>
+                        <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                    </div>
+                </div>
+                <span>
+                    <span class="timebox-dates timebox-dates-small">
+                        <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                     </span>
-                    <br/>
-                    <span>
-                        <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span>
-                        <i class="fa fa-angle-right"></i>
-                        <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
-                        <span class="sprint-numbers">
-                            <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                  defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                            <span defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }} <i class="small-icon fa fa-dollar"></i></span>
+                    <span class="sprint-values">
+                        <span>
+                            ${message(code: 'is.sprint.velocity')}
+                            <strong ng-if="sprint.state > sprintStatesByName.TODO"
+                                    defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</strong>
+                            <strong defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</strong>
                         </span>
                     </span>
-                </div>
-                <div>
-                    <div class="btn-group" role="group">
-                        <shortcut-menu ng-model="sprint" model-menus="menus" btn-secondary="true"></shortcut-menu>
-                        <div class="btn-group" uib-dropdown>
-                            <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
-                            </button>
-                            <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
-                        </div>
-                    </div>
-                    <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                </div>
+                </span>
+                <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
+                    <i class="fa fa-pencil"></i>
+                </a>
                 <div class="sticky-notes {{ stickyNoteClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
