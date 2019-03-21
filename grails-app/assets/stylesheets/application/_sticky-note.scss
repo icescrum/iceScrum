@@ -322,8 +322,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         }
       }
 
-      .sticky-note-content.has-description .description {
-        display: inline-block;
+      .sticky-note-content.has-description {
+        .description {
+          display: inline-block;
+        }
+
+        .title {
+          display: none;
+        }
       }
     }
 
@@ -378,6 +384,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     height: $is-feature-height;
 
     .sticky-note {
+      padding: 0.5625rem;
       width: $is-feature-width;
       height: $is-feature-height;
       border-radius: 0.375rem;
@@ -391,12 +398,26 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         display: flex;
         justify-content: space-between;
         line-height: 1;
+
+        .id {
+          font-size: 0.75rem;
+          font-weight: 600;
+        }
       }
 
       .sticky-note-content {
         margin-top: 0.625rem;
         height: 49px;
         margin-bottom: 14px;
+
+        .title {
+          font-size: 1rem;
+        }
+
+        .description {
+          font-size: 0.75rem;
+          line-height: 1.17;
+        }
       }
 
       .sticky-note-actions {
@@ -411,6 +432,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     box-shadow: -1px 1px 2px -1px rgba(156, 164, 171, 0.5); // TODO put the real thing
 
     .sticky-note {
+      padding: 0.5625rem;
       width: $is-story-width;
       height: $is-story-heigth;
 
@@ -437,27 +459,35 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         top: 13px;
         z-index: 2;
         color: #687583;
+        font-size: 0.75rem;
+        font-weight: 600;
       }
 
       .sticky-note-content {
-        height: 97px;
+        height: 102px;
         margin-top: 6px;
 
+        .item-values {
+          margin-bottom: 1px;
+        }
+
         .title {
+          font-size: 0.9375rem;
           line-height: 1.17;
-          height: 2.4rem;
+          height: 5.85em; // 5 lines (= 1.17 * 5)
         }
 
         .description {
-          padding-top: 2px;
-          height: 46px;
+          font-size: 0.75rem;
+          padding-top: 0.3em;
+          line-height: 1.17;
+          height: 7.32em; // 6 lines (= 1.17 * 6 + 0.3)
         }
       }
 
       .sticky-note-tags {
-        margin-bottom: 6px;
+        margin-bottom: 2px;
       }
-
     }
   }
 
@@ -524,33 +554,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
     }
   }
-
-  .sticky-note-feature, .sticky-note-story {
-
-    .sticky-note {
-      padding: 0.5625rem;
-
-      .title {
-        font-size: 1rem;
-      }
-
-      .id {
-        font-size: 0.75rem;
-        font-weight: 600;
-      }
-
-      .description {
-        font-size: 0.75rem;
-        line-height: 1.17;
-      }
-    }
-  }
-
-  .sticky-note-feature, .sticky-note-task {
-    .sticky-note:hover .sticky-note-content.has-description .title {
-      display: none;
-    }
-  }
 }
 
 .backlog .grid-group .sticky-note-story .sticky-note:after {
@@ -576,17 +579,30 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       .sticky-note-content {
-        height: 53px;
+        height: 60px;
+
+        .title {
+          font-size: 0.875rem;
+          line-height: 1.1;
+          height: 3.3em;
+        }
 
         .description {
           display: none;
         }
       }
+
+      &:hover .sticky-note-content.has-description {
+        .title {
+          display: inline-block;
+        }
+      }
     }
 
     .sticky-note-tags {
+      height: 1.5rem;
       line-height: 1.17;
-      margin-bottom: 2px;
+      margin-bottom: 0;
     }
 
     .sticky-note-state-progress {
