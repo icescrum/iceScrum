@@ -86,7 +86,7 @@
                 <div uib-dropdown-menu class="float-right" ng-init="itemType = 'story'" template-url="item.menu.html"></div>
             </div>
         </div>
-        <a href="{{ tabUrl('activities') }}" class="story-states"><visual-states ng-model="story" model-states="storyStatesByName"/></a>
+        <a href="{{ tabUrl('activities') }}"><visual-states ng-model="story" model-states="storyStatesByName"/></a>
         <entry:point id="story-details-before-tabs"/>
     </div>
     <div class="details-content-container">

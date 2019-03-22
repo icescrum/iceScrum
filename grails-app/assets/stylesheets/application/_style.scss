@@ -366,11 +366,15 @@ $state-dot-size-sm: 0.5rem;
 // Details view
 ////////////////////
 
-.states {
+.states.progress {
+  overflow: visible;
+  background: white;
+
   .state {
     opacity: 0.2;
 
     .state-name {
+      line-height: 2; // Some random values here allow vertical alignment
       opacity: 1.0;
       font-size: 0.5625rem;
       font-weight: 600;
@@ -378,6 +382,12 @@ $state-dot-size-sm: 0.5rem;
 
     &.state-completed, &.state-current {
       opacity: 1.0;
+    }
+
+    @each $state, $color in $is-state-colors {
+      &.state-current.color-state-#{$state} {
+        box-shadow: 0 2px 12px 0 rgba($color, 0.57);
+      }
     }
   }
 }
