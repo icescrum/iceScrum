@@ -179,6 +179,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
     .sticky-note-content {
       flex: 1 0 auto;
+      display: flex;
+      flex-direction: column-reverse;
+      padding-top: 0;
+      padding-bottom: 0;
 
       .title {
         color: $is_text-color-alt;
@@ -186,6 +190,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       .item-values {
+        height: 1.3125rem;
         font-size: $is-font-size-sm;
         color: $is-text-color;
       }
@@ -255,16 +260,17 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-content {
-      display: flex;
+      flex-direction: row;
       align-items: center;
 
       .item-values {
+        height: auto;
         padding-right: 0.625rem;
       }
 
       .title {
         color: $is-text-color;
-        font-size: 1rem;
+        font-size: 0.9375rem;
         border-left: solid 1px $is-border-color-alt;
         padding-left: 0.625rem;
       }
