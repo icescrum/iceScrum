@@ -26,37 +26,92 @@
 ////////////////////
 body, html {
   height: 100vh;
+  overflow: hidden;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 
   nav.navbar {
     flex: 0 0 auto;
   }
 
+  .is-container-fluid {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
   .main {
+    height: 100%;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.view {
+  &.flex {
+    overflow: hidden;
     flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    > .content {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+
+      .card-view {
+        flex: 1 0 auto;
+
+        .card-header {
+          z-index: 1; // To ensure that drop-shadow
+        }
+
+        .card-body {
+          padding-left: 0px;
+          padding-right: 0px;
+          overflow-y: auto;
+          height: 1px;
+        }
+      }
+    }
+
+    &.with-details {
+      flex-direction: row;
+
+      > .content {
+        width: 65%;
+      }
+
+      [ui-view='details'] {
+        width: 35%;
+        z-index: 2;
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+
+        .card {
+          flex: 1 0 auto;
+
+          .details-content-container, .details-content-container > .details-content, [ui-view], [ui-view] > form, .details-no-tab, .details-no-tab > form {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .card-body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            height: 1px;
+          }
+        }
+      }
+    }
   }
-}
-
-.view.with-details {
-  display: flex;
-
-  > .content {
-    width: 65%;
-  }
-
-  [ui-view='details'] {
-    width: 35%;
-  }
-}
-
-.view.flex { // TODO check that it is the right way
-  margin-left: -($grid-gutter-width/2);
-  margin-right: -($grid-gutter-width/2);
 }
 
 ////////////////////
@@ -328,7 +383,6 @@ $state-dot-size-sm: 0.5rem;
 }
 
 [ui-view="details"] .card {
-
   border-radius: 0;
   box-shadow: 0 2px 12px 0 rgba(62, 57, 107, 0.1);
 

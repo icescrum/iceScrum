@@ -47,7 +47,7 @@
                 <div class="loading-text text-center">{{ application.loadingPercent }} {{ application.loadingText }}</div>
             </div>
         </div>
-        <div class="container-fluid">
+        <div class="is-container-fluid">
             <g:layoutBody/>
         </div>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>

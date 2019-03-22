@@ -66,7 +66,7 @@
                 </a>
             </div>
         </div>
-        <div class="card-body release-plan row"
+        <div class="card-body release-plan"
              selectable="selectableOptions">
             <div class="sprint col"
                  ng-repeat="sprint in visibleSprints"

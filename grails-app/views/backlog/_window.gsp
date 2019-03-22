@@ -82,7 +82,7 @@
                    class="btn btn-primary btn-intermediate"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             </div>
         </div>
-        <div class="card-body backlog-list row" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
+        <div class="card-body backlog-list" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
             <div class="window-alert bg-warning" ng-if="selectableOptions.selectingMultiple">
                 ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>

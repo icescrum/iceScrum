@@ -53,6 +53,8 @@
 ////////////////////
 
 .backlog-list {
+  display: flex;
+
   .backlog .backlog-title {
     display: none;
   }
@@ -78,6 +80,8 @@
 ////////////////////
 
 .release-plan {
+  display: flex;
+
   .sprint {
     background: $is-bg-color;
     border-radius: 6px;

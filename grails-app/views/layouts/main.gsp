@@ -56,7 +56,7 @@
             </div>
         </div>
         <is:header/>
-        <div class="container-fluid main" ui-view>
+        <div class="is-container-fluid main" ui-view>
             <g:layoutBody/>
         </div>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>
