@@ -44,6 +44,7 @@
                          class="sticky-note {{ feature.color | contrastColor }}">
                         <div class="sticky-note-head">
                             <span class="id">42</span>
+                            <div class="sticky-note-type-icon"></div>
                         </div>
                         <div class="sticky-note-content">
                             <div class="item-values"></div>

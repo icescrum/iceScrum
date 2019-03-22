@@ -28,7 +28,7 @@
      ng-controller="taskCtrl">
     <div>
         <div class="sticky-note-head">
-            <span class="id">{{:: task.uid }}</span>
+            <span class="id"><a href="{{ link }}">{{:: task.uid }}</a></span>
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">
@@ -37,8 +37,10 @@
                     ${message(code: 'is.task.estimation')} <strong>{{:: task.estimation != undefined ? task.estimation : '?' }}</strong>
                 </span>
             </div>
-            <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></div>
-            <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
+            <a href="{{ link }}">
+                <div class="title">{{:: task.name }}</div>
+                <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
+            </a>
         </div>
         <div class="sticky-note-tags">
             <a ng-repeat="tag in ::task.tags" href>
@@ -48,20 +50,26 @@
         </div>
         <div class="sticky-note-actions">
             <span class="action" ng-class=":: {'active':task.attachments_count}">
-                <span defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                    <a href="{{:: link }}">
-                        <i class="fa fa-paperclip"></i>
-                        <span class="badge">{{ task.attachments_count || '' }}</span>
-                    </a>
-                </span>
+                <a class="action-link" href="{{:: link }}" defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                    <span class="action-icon action-icon-attach"></span>
+                    <span class="badge">{{ task.attachments_count || '' }}</span>
+                </a>
             </span>
             <span class="action" ng-class=":: {'active':task.comments_count}">
-                <span defer-tooltip="${message(code: 'todo.is.ui.comments')}">
-                    <a href="{{:: link }}">
-                        <i class="fa" ng-class=":: task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                        <span class="badge">{{ task.comments_count || '' }}</span>
-                    </a>
-                </span>
+                <a class="action-link" href="{{:: link }}" defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                    <span class="action-icon action-icon-comment"></span>
+                    <span class="badge">{{ task.comments_count || '' }}</span>
+                </a>
+            </span>
+            <span class="action">
+                <a class="action-link" href="{{:: link }}">
+                    <span class="action-icon action-icon-unassign"></span>
+                </a>
+            </span>
+            <span class="action">
+                <a class="action-link" href="{{:: link }}">
+                    <span class="action-icon action-icon-menu"></span>
+                </a>
             </span>
         </div>
     </div>

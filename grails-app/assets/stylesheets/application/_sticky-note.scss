@@ -128,12 +128,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     .sticky-note-type-icon {
       @include rectangle-background(0.8125rem, 0.875rem);
     }
-
-    @each $type in (defect, technical) {
-      &.#{$type} .sticky-note-type-icon {
-        background-image: url("type-#{$type}-grey.svg");
-      }
-    }
   }
 }
 
@@ -229,6 +223,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           .action-icon-#{$action} {
             background-image: url("action-#{$action}-grey.svg");
           }
+        }
+      }
+    }
+
+    &.sticky-note-type {
+      @each $type in (defect, technical, architectural) {
+        &.#{$type} .sticky-note-type-icon {
+          background-image: url("type-#{$type}-grey.svg");
         }
       }
     }
@@ -397,6 +399,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .sticky-note-head {
         display: flex;
         justify-content: space-between;
+        flex-direction: row-reverse;
         line-height: 1;
 
         .id {
@@ -406,22 +409,37 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       .sticky-note-content {
-        margin-top: 0.625rem;
-        height: 49px;
-        margin-bottom: 14px;
+        margin-top: 4px;
+        margin-bottom: 2px;
+        height: 70px;
+
+        .item-values {
+          margin-bottom: 2px;
+        }
 
         .title {
-          font-size: 1rem;
+          font-size: 0.9375rem;
+          line-height: 1.17;
+          height: 3.51em;
         }
 
         .description {
           font-size: 0.75rem;
           line-height: 1.17;
+          height: 5.85em;
         }
       }
 
       .sticky-note-actions {
         justify-content: space-evenly;
+      }
+
+      &.sticky-note-type.architectural .sticky-note-type-icon {
+        background-image: url("type-architectural-black.svg");
+      }
+
+      &.invert.sticky-note-type.architectural .sticky-note-type-icon {
+          background-image: url("type-architectural-white.svg");
       }
     }
   }
@@ -487,6 +505,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       .sticky-note-tags {
         margin-bottom: 2px;
+      }
+
+      &.sticky-note-type {
+        @each $type in (defect, technical) {
+          &.#{$type} .sticky-note-type-icon {
+            background-image: url("type-#{$type}-grey.svg");
+          }
+        }
       }
     }
   }

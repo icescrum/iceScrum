@@ -40,6 +40,7 @@
                                  class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                                 <div class="sticky-note-head">
                                     <span class="id">{{ topFeature.uid }}</span>
+                                    <div class="sticky-note-type-icon"></div>
                                 </div>
                                 <div class="sticky-note-content" ng-class="::{'has-description':!!feature.description}">
                                     <div class="item-values">
