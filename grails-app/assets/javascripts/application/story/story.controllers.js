@@ -512,6 +512,7 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
     $scope.loadAtWhoActors();
     $scope.stories = [];
     $scope.stories.push(angular.copy($scope.storyReference));
+    $scope.stories[0].origin = $scope.storyReference.name;
     $scope.splitCount = 2;
     $scope.onChangeSplitNumber();
 }]);

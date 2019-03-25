@@ -96,7 +96,7 @@ class StoryController implements ControllerErrorHandler {
         Story story = new Story()
         Story.withTransaction {
             cleanBeforeBindData(storyParams, ['feature', 'dependsOn'])
-            def propertiesToBind = ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']
+            def propertiesToBind = ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'origin']
             Project _project = Project.withProject(project)
             entry.hook(id: 'story-before-save', model: [story: story, propertiesToBind: propertiesToBind, project: _project])
             def tasks = storyParams.remove('tasks')
@@ -178,7 +178,7 @@ class StoryController implements ControllerErrorHandler {
                         }
                     }
                     cleanBeforeBindData(storyParams, ['feature', 'dependsOn', 'creator'])
-                    bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'creator']])
+                    bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'creator', 'origin']])
                 }
                 storyService.update(story, props)
                 // Independently manage the sprint change, manage the "null" value manually
