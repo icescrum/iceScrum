@@ -293,6 +293,10 @@ angular.module('colorpicker.module', [])
         return {
             require: '?ngModel',
             restrict: 'A',
+            scope: {
+                colors: '=',
+                parentModel: '='
+            },
             link: function($scope, elem, attrs, ngModel) {
                 var
                     thisFormat = attrs.colorpicker ? attrs.colorpicker : 'hex',
@@ -312,6 +316,7 @@ angular.module('colorpicker.module', [])
                         '<colorpicker-hue><i></i></colorpicker-hue>' +
                         '<colorpicker-alpha><i></i></colorpicker-alpha>' +
                         '<colorpicker-preview></colorpicker-preview>' +
+                        '<div class="colorpicker-colors"></div>' +
                         inputTemplate +
                         closeButton +
                         '</div>' +
@@ -328,9 +333,20 @@ angular.module('colorpicker.module', [])
                     sliderHue = colorpickerTemplate.find('colorpicker-hue'),
                     sliderSaturation = colorpickerTemplate.find('colorpicker-saturation'),
                     colorpickerPreview = colorpickerTemplate.find('colorpicker-preview'),
+                    colorpickerLastColors = colorpickerTemplate.find('.colorpicker-colors'),
                     pickerColorPointers = colorpickerTemplate.find('i'),
                     componentWidthWithToolbars = parseInt(componentSize) + 29 + (thisFormat === 'rgba' ? 15 : 0),
-                    componentHeightWithToolbars = parseInt(componentSize) + 55;
+                    componentHeightWithToolbars = parseInt(componentSize) + 55,
+                    hexc = function(colorval) {
+                        var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                        delete (parts[0]);
+                        for (var i = 1; i <= 3; ++i) {
+                            parts[i] = parseInt(parts[i]).toString(16);
+                            if (parts[i].length == 1) parts[i] = '0' + parts[i];
+                        }
+                        var color = '#' + parts.join('');
+                        return color;
+                    };
 
                 $compile(colorpickerTemplate)($scope);
                 colorpickerTemplate.css('min-width', componentWidthWithToolbars + 'px');
@@ -339,6 +355,29 @@ angular.module('colorpicker.module', [])
                     'height': componentSizePx
                 });
                 sliderHue.css('height', componentSizePx);
+
+                $scope.$watch('colors', function() {
+                    colorpickerLastColors.find('.color').remove();
+                    angular.forEach($scope.colors, function(value) {
+                        colorpickerLastColors.append('<div class="color" style="background:' + value + '"></div>')
+                    });
+                    colorpickerLastColors.find('.color').on('click', function() {
+                        var newColor = angular.element(this).css('backgroundColor');
+                        newColor = hexc(newColor);
+                        // Update input
+                        if (withInput) {
+                            pickerColorInput.val(newColor);
+                        }
+                        // Update picker
+                        elem.val(newColor);
+                        if (ngModel && ngModel.$modelValue !== newColor) {
+                            $scope.$apply(ngModel.$setViewValue(newColor));
+                            update(true);
+                        }
+                        event.stopPropagation();
+                        event.preventDefault();
+                    });
+                });
 
                 if (withInput) {
                     var pickerColorInput = colorpickerTemplate.find('input');
@@ -576,7 +615,8 @@ angular.module('colorpicker.module', [])
                     if (ngModel) {
                         $scope.$emit(name, {
                             name: attrs.ngModel,
-                            value: ngModel.$modelValue
+                            value: ngModel.$modelValue,
+                            parentModel: $scope.parentModel
                         });
                     }
                 }
