@@ -66,9 +66,9 @@ class FeatureController implements ControllerErrorHandler {
         def feature = new Feature()
         Feature.withTransaction {
             bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
-            feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
             def _project = Project.load(project)
             featureService.save(feature, _project)
+            feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
             render(status: 201, contentType: 'application/json', text: feature as JSON)
         }
     }
