@@ -187,7 +187,7 @@
         <entry:point id="story-properties-after-tag"/>
         <div class="row">
             <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory) || editableStory.state == storyStatesByName.DONE">
-                <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>
+                <label for="effort">${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
@@ -237,7 +237,7 @@
         </div>
         <div class="row">
             <div class="form-1-quarter">
-                <label for="value"><i class="fa fa-line-chart"></i> ${message(code: 'is.story.value')}</label>
+                <label for="value">${message(code: 'is.story.value')}</label>
                 <div class="input-group">
                     <ui-select class="form-control"
                                ng-click="editForm(true)"

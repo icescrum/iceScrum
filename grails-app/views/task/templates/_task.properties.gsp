@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div ng-if="task.parentStory" class="form-1-tier">
-                <label for="parentStory"><i class="fa fa-sticky-note"></i> ${message(code: 'is.story')}</label>
+                <label for="parentStory"> ${message(code: 'is.story')}</label>
                 <input class="form-control" disabled="disabled" type="text" value="{{ task.parentStory.name }}"/>
             </div>
             <div ng-if="task.type" class="form-1-tier">
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div ng-if="task.sprint" class="form-group">
-            <label for="backlog"><i class="fa fa-tasks"></i> ${message(code: 'is.sprint')}</label>
+            <label for="backlog">${message(code: 'is.sprint')}</label>
             <input class="form-control" disabled="disabled" type="text" value="{{ task.sprint.parentRelease.name + ' - ' + (task.sprint | sprintName) }}"/>
         </div>
         <div class="form-group">

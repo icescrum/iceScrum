@@ -30,16 +30,15 @@
             <div class="sticky-note-type-icon"></div>
         </div>
         <div class="sticky-note-content" ng-class="{'has-description':!!story.description}">
-            <div class="head-right">
-                <span class="value editable"
-                      ng-click="showEditValueModal(story, $event)"
-                      ng-if="story.value">
-                    {{ story.value }} <i class="fa fa-line-chart" defer-tooltip="${message(code: 'is.story.value')}"></i>
-                </span>
-                <span class="estimation editable"
-                      ng-if="story.state > 1"
+            <div class="item-values">
+                <span ng-if="story.state > 1"
                       ng-click="showEditEffortModal(story, $event)">
-                    {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" defer-tooltip="${message(code: 'is.story.effort')}"></i>
+                    ${message(code: 'is.story.effort')} {{ story.effort != undefined ? story.effort : '?' }}
+                </span>
+                <span ng-if=":: story.state > 1 && story.value">|</span>
+                <span ng-click="showEditValueModal(story, $event)"
+                      ng-if="story.value">
+                    ${message(code: 'is.story.value')} <strong>{{ story.value }}</strong>
                 </span>
             </div>
             <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;" ng-if="link">{{ story.name }}</a></div>

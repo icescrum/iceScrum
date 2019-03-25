@@ -876,7 +876,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
                 label += ' (' + stories.length;
                 var totalEffort = _.sumBy(stories, 'effort');
                 if (totalEffort) {
-                    label += ' - ' + totalEffort + '<i class="fa fa-dollar fa-small"></i></small>'
+                    label += ' - ' + totalEffort;
                 }
                 label += ')';
                 return {
