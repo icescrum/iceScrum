@@ -185,9 +185,9 @@
             </ui-select>
         </div>
         <entry:point id="story-properties-after-tag"/>
-        <div class="clearfix no-padding">
+        <div class="row">
             <div class="form-1-quarter" ng-show="editableStory.state > storyStatesByName.SUGGESTED">
-                <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>
+                <label for="effort">${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
@@ -209,8 +209,8 @@
                            name="effort"
                            min="0"
                            ng-model="editableStory.effort"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm"
                                 ng-if="authorizedStory('updateEstimate', editableStory)"
                                 type="button"
                                 name="edit-effort"

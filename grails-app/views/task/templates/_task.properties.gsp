@@ -102,8 +102,8 @@
                 <entry:point id="task-estimation-after-label"/>
                 </label>
                 <div class="input-group">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-prepend">
+                        <button class="btn btn-secondary btn-sm"
                                 ng-if="authorizedTask('updateEstimate', editableTask)"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = minus(editableTask.estimation);">
@@ -117,8 +117,8 @@
                            ng-disabled="!formEditable() || !authorizedTask('updateEstimate', editableTask)"
                            name="estimation"
                            ng-model="editableTask.estimation"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm"
                                 ng-if="authorizedTask('updateEstimate', editableTask)"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = plus(editableTask.estimation);">
