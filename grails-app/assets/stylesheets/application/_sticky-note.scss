@@ -654,3 +654,11 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
   }
 }
+
+////////////////////
+// Grid  SM
+////////////////////
+
+.grid-group.has-selected > .sticky-note-container:not(.is-selected), .list-group.has-selected > .sticky-note-container:not(.is-selected) {
+  opacity: 0.37;
+}

@@ -155,9 +155,9 @@
                     </div>
                     <div class="kanban-row">
                         <div class="kanban-column col"
-                             ng-repeat="taskState in sprintTaskStates"
-                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}">
+                             ng-repeat="taskState in sprintTaskStates">
                             <div class="sticky-notes grid-group"
+                                 ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                                  ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-init="taskType = taskTypesByName.URGENT"
                                  as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"
@@ -209,9 +209,9 @@
                     </div>
                     <div class="kanban-row">
                         <div class="kanban-column col"
-                             ng-repeat="taskState in sprintTaskStates"
-                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}">
+                             ng-repeat="taskState in sprintTaskStates">
                             <div class="sticky-notes grid-group"
+                                 ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                                  ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                                  ng-init="taskType = taskTypesByName.RECURRENT"
                                  as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"
@@ -264,9 +264,9 @@
                     <div class="kanban-row"
                          ng-class="{'is-selected': isSelected(story)}">
                         <div class="kanban-column col"
-                             ng-repeat="taskState in sprintTaskStates"
-                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}">
+                             ng-repeat="taskState in sprintTaskStates">
                             <div class="sticky-notes grid-group"
+                                 ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                                  ng-model="tasksByStoryByState[story.id][taskState]"
                                  as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"
                                  is-disabled="!isSortableTaskBoard(sprint) || !isSortableStory(story)">
@@ -311,9 +311,9 @@
                     </div>
                     <div class="kanban-row">
                         <div class="kanban-column col"
-                             ng-repeat="taskState in sprintTaskStates"
-                             ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}">
+                             ng-repeat="taskState in sprintTaskStates">
                             <div class="sticky-notes grid-group"
+                                 ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                                  ng-model="tasksByStoryByState[story.id][taskState]"
                                  as-sortable
                                  is-disabled="true">
