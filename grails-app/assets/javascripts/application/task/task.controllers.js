@@ -175,7 +175,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
         }
     ];
     $scope.showEditEstimationModal = function(task, $event) {
-        if (TaskService.authorizedTask('update', task)) {
+        if (TaskService.authorizedTask('updateEstimate', task)) {
             $uibModal.open({
                 size: 'sm',
                 templateUrl: 'task.estimation.html',
