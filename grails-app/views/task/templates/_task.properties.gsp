@@ -104,6 +104,7 @@
                 <div class="input-group">
                     <span class="input-group-btn">
                         <button class="btn btn-default"
+                                ng-if="authorizedTask('updateEstimate', editableTask)"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = minus(editableTask.estimation);">
                             <i class="fa fa-minus"></i>
@@ -113,11 +114,12 @@
                            min="0"
                            class="form-control"
                            ng-focus="editForm(true)"
-                           ng-disabled="!formEditable()"
+                           ng-disabled="!formEditable() || !authorizedTask('updateEstimate', editableTask)"
                            name="estimation"
                            ng-model="editableTask.estimation"/>
                     <span class="input-group-btn">
                         <button class="btn btn-default"
+                                ng-if="authorizedTask('updateEstimate', editableTask)"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = plus(editableTask.estimation);">
                             <i class="fa fa-plus"></i>
