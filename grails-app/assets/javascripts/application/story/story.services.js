@@ -240,14 +240,15 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 return Session.po();
             case 'upload':
             case 'update':
-                return (Session.po() && story.state < StoryStatesByName.DONE) ||
-                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+                return Session.po() || (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'updateCreator':
-                return Session.po() && story.state < StoryStatesByName.DONE;
+                return Session.po();
             case 'updateEstimate':
                 return Session.tmOrSm() && story.state > StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
             case 'updateParentSprint':
                 return Session.poOrSm() && story.state > StoryStatesByName.ACCEPTED && story.state < StoryStatesByName.DONE && _.includes([StoryTypesByName.USER_STORY, StoryTypesByName.DEFECT, StoryTypesByName.TECHNICAL_STORY], story.type);
+            case 'updateType':
+                return self.authorizedStory('update', story) && (!story.parentSprint || story.parentSprint.state < SprintStatesByName.DONE);
             case 'accept':
                 return Session.po() && story.state <= StoryStatesByName.SUGGESTED;
             case 'split':

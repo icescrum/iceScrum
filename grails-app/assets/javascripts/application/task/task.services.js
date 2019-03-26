@@ -139,9 +139,10 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                        !task.responsible && Session.inProject() && $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.assignOnBeginTask && task.state == TaskStatesByName.TODO; // No check on sprint & story state because rank cannot be called from there
             case 'upload':
             case 'update':
-                return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
             case 'delete':
-                return (Session.sm() || Session.responsible(task) || Session.creator(task)) && (!task.sprint || task.sprint.state != SprintStatesByName.DONE);
+                return (Session.sm() || Session.responsible(task) || Session.creator(task)) && (!task.sprint || task.sprint.state != SprintStatesByName.DONE );
+            case 'updateEstimate':
+                return self.authorizedTask('update', task) && task.state != TaskStatesByName.DONE;
             case 'block':
                 return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.sprint && task.sprint.state == SprintStatesByName.IN_PROGRESS;
             case 'unBlock':

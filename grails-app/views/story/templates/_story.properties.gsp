@@ -43,7 +43,7 @@
                 <label for="type">${message(code: 'is.story.type')}</label>
                 <ui-select class="form-control"
                            ng-click="editForm(true)"
-                           ng-disabled="!formEditable()"
+                           ng-disabled="!formEditable() || !authorizedStory('updateType', editableStory)"
                            name="type"
                            ng-model="editableStory.type">
                     <ui-select-match><i class="fa fa-{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
@@ -185,14 +185,14 @@
             </ui-select>
         </div>
         <entry:point id="story-properties-after-tag"/>
-        <div class="row">
-            <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory) || editableStory.state == storyStatesByName.DONE">
-                <label for="effort">${message(code: 'is.story.effort')}</label>
+        <div class="clearfix no-padding">
+            <div class="form-1-quarter" ng-show="editableStory.state > storyStatesByName.SUGGESTED">
+                <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
                                ng-click="editForm(true)"
-                               ng-disabled="!formEditable()"
+                               ng-disabled="!formEditable() || !authorizedStory('updateEstimate', editableStory)"
                                name="effort"
                                search-enabled="true"
                                ng-model="editableStory.effort">
@@ -205,23 +205,24 @@
                            ng-if="isEffortCustom()"
                            class="form-control"
                            ng-focus="editForm(true)"
-                           ng-disabled="!formEditable()"
+                           ng-disabled="!formEditable() || !authorizedStory('updateEstimate', editableStory)"
                            name="effort"
                            min="0"
                            ng-model="editableStory.effort"/>
-                    <span class="input-group-append">
-                        <button class="btn btn-secondary btn-sm"
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"
+                                ng-if="authorizedStory('updateEstimate', editableStory)"
                                 type="button"
                                 name="edit-effort"
                                 ng-click="showEditEffortModal(story)"><i class="fa fa-pencil"></i></button>
                     </span>
                 </div>
             </div>
-            <div class="form-3-quarters" ng-show="authorizedStory('updateParentSprint', editableStory) || editableStory.state == storyStatesByName.DONE">
+            <div class="form-3-quarters" ng-show="editableStory.state > storyStatesByName.ACCEPTED">
                 <label for="parentSprint"><i class="fa fa-tasks"></i> ${message(code: 'is.sprint')}</label>
                 <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
                            ng-change="editForm(true)"
-                           ng-disabled="!formEditable()"
+                           ng-disabled="!formEditable() || !authorizedStory('updateParentSprint', editableStory)"
                            class="form-control"
                            name="parentSprint"
                            search-enabled="true"
