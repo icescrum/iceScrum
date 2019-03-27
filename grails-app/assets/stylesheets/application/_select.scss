@@ -73,12 +73,12 @@
     top: 0.5625rem;
     margin-top: 0;
     @include square-background(0.625rem);
-    @include background-image-retina('removetag-dark');
+    @include background-image-retina('remove-dark');
     background-position: right top !important;
   }
 
   .select2-search-choice.invert .select2-search-choice-close {
-    @include background-image-retina('removetag-light');
+    @include background-image-retina('remove-light');
   }
 }
 
