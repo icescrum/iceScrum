@@ -42,7 +42,7 @@ var isApplication = angular.module('isApplication', [
         'ngPDFViewer',
         'remoteValidation',
         'FBAngular',
-        'angular-extended-notifications',
+        'angular-notifications',
         'as.sortable',
         'angular.atmosphere',
         'nvd3',
@@ -480,13 +480,6 @@ var isApplication = angular.module('isApplication', [
             target: 'attachment/save',
             simultaneousUploads: 1 // Only one at the time => prevent staleObjectException
         };
-    }])
-    .config(['notificationsProvider', function(notificationsProvider) {
-        notificationsProvider.setDefaults({
-            faIcons: true,
-            closeOnRouteChange: 'state',
-            duration: 4500
-        });
     }])
     .config(['$uibTooltipProvider', function($uibTooltipProvider) {
         $uibTooltipProvider.options({appendToBody: true});

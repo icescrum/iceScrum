@@ -288,7 +288,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
                 };
                 $scope.handleImportError = function($file, $message) {
                     var data = JSON.parse($message);
-                    $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {duration: 8000});
+                    $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {delay: 8000});
                     $scope.$close(true);
                 };
                 $scope.checkValidation = function($message) {
