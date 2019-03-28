@@ -241,7 +241,18 @@ class TaskController implements ControllerErrorHandler {
             if (task.backlog) {
                 uri += "taskBoard/$task.backlog.id/task/$task.id"
             } else {
-                uri += "backlog/$task.parentStory.id/tasks/task/$task.id"
+                def story = task.parentStory
+                switch (story.state) {
+                    case Story.STATE_SUGGESTED:
+                        uri += "backlog/sandbox/story/$story.id"
+                        break
+                    case [Story.STATE_ACCEPTED, Story.STATE_ESTIMATED]:
+                        uri += "backlog/backlog/story/$story.id"
+                        break
+                    default:
+                        uri += "backlog/all/story/$story.id"
+                }
+                uri += "/tasks/task/$task.id"
             }
             redirect(uri: uri)
         } else {
