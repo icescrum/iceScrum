@@ -69,13 +69,14 @@
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
-                <strong>{{ ::story.uid }}</strong>
+            <div class="details-title">
+                <span class="item-id">{{:: story.uid }}</span>
+                <span class="item-name" title="{{ story.name }}">{{ story.name }}</span>
                 <span defer-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i>
                 </span>
-                <span class="item-name" title="{{ story.name }}">{{ story.name }}</span>&nbsp;<small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
+                <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
                 <div>
                     <entry:point id="story-details-left-title"/>
                 </div>

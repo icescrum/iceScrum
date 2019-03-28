@@ -38,7 +38,7 @@
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
+            <div class="details-title">
                 <strong>{{ editableTimeBoxNotesTemplate.id }}</strong>
                 <span class="item-name">{{ editableTimeBoxNotesTemplate.name }}</span>
             </div>

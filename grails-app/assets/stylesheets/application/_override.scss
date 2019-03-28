@@ -52,7 +52,7 @@ strong {
 .btn-primary {
   text-shadow: 0 0.125rem 0.25rem #054ca6;
 
-  &:hover {
+  &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
     background-color: $primary;
     box-shadow: 0 0.5rem 1.75rem 0 rgba(0, 103, 232, 0.44);
   }
@@ -67,7 +67,7 @@ strong {
     background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
     box-shadow: 0 1px 0.1875rem 0 $is-shadow-color-2;
 
-    &:hover {
+    &:hover, &:focus {
       background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
     }
 
@@ -82,7 +82,7 @@ strong {
   box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-1;
   background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
 
-  &:hover {
+  &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
     background-color: $is-bg-color;
     box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
   }
@@ -103,7 +103,7 @@ strong {
   font-size: $is-font-size-sm;
   line-height: 1.6;
 
-  &:hover {
+  &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
     box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
   }
 }
@@ -192,6 +192,7 @@ form label {
   &:not(:last-child) {
     margin-bottom: 0;
   }
+
   &:not(:first-child) {
     margin-top: -0.5rem;
   }
@@ -216,15 +217,18 @@ form label {
   display: flex;
   align-items: center;
   line-height: 1.17;
+
   .toast-icon {
     flex: 0 0 auto;
     @include rectangle-background(2.3125rem, 2.125rem);
     margin-left: -0.375rem;
     margin-right: 0.375rem;
   }
+
   .toast-error {
     background-image: url("alert-error.svg");
   }
+
   .toast-warning {
     background-image: url("alert-warning.svg");
   }

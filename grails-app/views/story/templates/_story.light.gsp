@@ -26,7 +26,7 @@
      class="sticky-note story {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="sticky-note-head">
-            <span class="id">{{ ::story.uid }}</span>
+            <span class="id">{{:: story.uid }}</span>
             <div class="sticky-note-type-icon"></div>
         </div>
         <div class="sticky-note-content" ng-class="{'has-description':!!story.description}">

@@ -28,7 +28,7 @@
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
+            <div class="details-title">
                 <span class="item-name" title="{{ backlog | i18nName }}">{{ backlog | i18nName }}</span>
                 <i class="fa fa-share-alt"
                    ng-if="backlog.shared && !backlog.isDefault"

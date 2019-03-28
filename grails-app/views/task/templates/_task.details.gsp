@@ -53,8 +53,9 @@
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
-                <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
+            <div class="details-title">
+                <span class="item-id">{{ ::task.uid }}</span>
+                <span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
                 <div>
                     <entry:point id="task-details-left-title"/>
                 </div>

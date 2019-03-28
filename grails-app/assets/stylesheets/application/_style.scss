@@ -407,6 +407,11 @@ $state-dot-size-sm: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .item-id {
+      color: $is-text-color;
+      margin-right: 2px;
+    }
   }
 
   .card-footer {

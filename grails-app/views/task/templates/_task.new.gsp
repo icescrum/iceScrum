@@ -27,7 +27,7 @@
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
+            <div class="details-title">
                 <span class="item-name" title="${message(code: 'todo.is.ui.task.new')}">${message(code: 'todo.is.ui.task.new')}</span>
             </div>
         </div>

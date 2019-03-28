@@ -53,8 +53,9 @@
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
-                <strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
+            <div class="details-title">
+                <span class="item-id">{{ ::feature.uid }}</span>
+                <span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
                 <entry:point id="feature-details-left-title"/>
             </div>
             <div class="btn-menu" uib-dropdown>

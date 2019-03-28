@@ -32,25 +32,6 @@
      ng-class="authorizedRelease('upload', release) && dropClass">
     <div class="details-header">
         <entry:point id="release-details-right-title"/>
-        <a ng-if="previousRelease"
-           class="btn btn-icon btn-caret-left"
-           role="button"
-           tabindex="0"
-           hotkey="{'left': hotkeyClick}"
-           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-           ui-sref=".({releaseId: previousRelease.id})">
-        </a>
-        <a ng-if="nextRelease"
-           class="btn btn-icon btn-caret-right"
-           role="button"
-           tabindex="0"
-           hotkey="{'right': hotkeyClick}"
-           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-           ui-sref=".({releaseId: nextRelease.id})">
-        </a>
-        <details-layout-buttons ng-if="!isModal" remove-ancestor="removeReleaseAncestorOnClose"/>
         <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
         <g:if test="${formats}">
             <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
@@ -70,12 +51,30 @@
                 </ul>
             </div>
         </g:if>
+        <a ng-if="previousRelease"
+           class="btn btn-icon btn-caret-left"
+           role="button"
+           tabindex="0"
+           hotkey="{'left': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+           ui-sref=".({releaseId: previousRelease.id})">
+        </a>
+        <a ng-if="nextRelease"
+           class="btn btn-icon btn-caret-right"
+           role="button"
+           tabindex="0"
+           hotkey="{'right': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+           ui-sref=".({releaseId: nextRelease.id})">
+        </a>
+        <details-layout-buttons ng-if="!isModal" remove-ancestor="removeReleaseAncestorOnClose"/>
     </div>
     <div class="card-header">
         <div class="card-title">
-            <div class="left-title">
+            <div class="details-title">
                 <span class="item-name" title="{{ release.name }}">{{ release.name }}</span>
-                <entry:point id="release-details-left-title"/>
             </div>
             <div class="btn-menu" uib-dropdown>
                 <shortcut-menu ng-model="release" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
