@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2017 Kagilum.
+- Copyright (c) 2019 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -23,9 +23,10 @@
 
 <script type="text/ng-template" id="apps.modal.html">
 <is:modal title="${message(code: 'is.ui.apps')}"
-          class="apps-modal split-modal">
-    <div class="row" ng-class="{'hide-left-card': !appDefinition}">
-        <div class="left-card">
+          footer="${false}"
+          class="modal-split">
+    <div class="row" ng-if="appDefinition">
+        <div class="col-xs-12 col-sm-3 modal-split-left">
             <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
@@ -53,21 +54,19 @@
                         {{:: currentAppDefinition.name }}
                         <i ng-if="isEnabledApp(currentAppDefinition)" class="fa fa-check text-success"></i>
                     </a>
-                    <div class="ribbon">
+                    <div class="app-state">
                         <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
                         <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
                     </div>
                 </li>
             </ul>
         </div>
-        <div class="right-card">
-            <div ng-if="appDefinition" class="app-details">
-                <div ng-include="'app.details.html'"></div>
-            </div>
-            <div ng-if="!appDefinition">
-                <div ng-include="'app.list.html'"></div>
-            </div>
+        <div class="col-xs-12 col-sm-9 modal-split-right">
+            <div ng-include="'app.details.html'"></div>
         </div>
+    </div>
+    <div class="row" ng-if="!appDefinition">
+        <div ng-include="'app.list.html'"></div>
     </div>
 </is:modal>
 </script>

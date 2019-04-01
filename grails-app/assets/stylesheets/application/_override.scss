@@ -134,7 +134,7 @@ form label {
 
 .form-control:not(:disabled):focus, .form-control:not(:disabled):hover {
   box-shadow: 0 8px 28px 0 rgba(8, 12, 29, 0.15);
-  background: $is-bg-color;
+  background-color: $is-bg-color;
 }
 
 .form-control {

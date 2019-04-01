@@ -179,3 +179,36 @@
     padding-right: 10px;
   }
 }
+
+////////////////////
+// Task board
+////////////////////
+
+.app-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 15px;
+  .app-logo {
+    position: relative;
+    margin: 11px;
+    width: 154px;
+    height: 154px;
+    border-radius: 3px;
+    border: solid 1px $is-outline-color;
+    &:hover {
+      box-shadow: 0 29px 34px 0 rgba(8, 12, 29, 0.21);
+    }
+    img {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      width: 123px;
+      height: 93px;
+    }
+    .app-name {
+      font-size: 12px;
+    }
+    .app-state {
+      position: absolute;
+    }
+  }
+}
