@@ -32,8 +32,7 @@
 <div class="app-list text-center">
     <div ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
         <div ng-click="openAppDefinition(currentAppDefinition)"
-             class="app-logo"
-             defer-tooltip="{{:: currentAppDefinition.baseline }}">
+             class="app-logo">
             <div class="app-state">
                 <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
                 <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
