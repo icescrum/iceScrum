@@ -25,7 +25,7 @@
 <script type="text/ng-template" id="app.details.html">
 <h3>
     <button ng-click="openAppDefinition()"
-            class="btn btn-secondary">
+            class="btn btn-secondary btn-sm">
         <i class="fa fa-arrow-left"></i>
     </button>
     {{ appDefinition.name }}
@@ -51,7 +51,9 @@
              ng-repeat="screenshot in appDefinition.screenshots">
             <a href
                ng-click="showScreenshot(appDefinition, screenshot)">
-                <img ng-src="{{ screenshot }}">
+                <img ng-src="{{ screenshot }}"
+                     width="406"
+                     height="255"/>
             </a>
         </div>
         <div>
@@ -69,11 +71,11 @@
             <p ng-switch="isEnabledForProject(appDefinition)">
                 <button ng-switch-when="false"
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-primary btn-sm"
                         ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
                 <button ng-switch-default
                         type="button"
-                        class="btn btn-danger"
+                        class="btn btn-danger btn-sm"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
             </p>
         </div>
@@ -83,10 +85,10 @@
                 <a href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?"
                    ng-switch-when="false"
                    type="button"
-                   class="btn btn-primary">${message(code: 'is.ui.apps.enable')}</a>
+                   class="btn btn-primary btn-sm">${message(code: 'is.ui.apps.enable')}</a>
                 <button ng-switch-default
                         type="button"
-                        class="btn btn-success"
+                        class="btn btn-success btn-sm"
                         disabled="disabled"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.enabled')}</button>
             </p>
@@ -96,7 +98,7 @@
             <p>
                 <button type="button"
                         ng-click="openAppProjectSettings(appDefinition)"
-                        class="btn btn-primary">
+                        class="btn btn-primary btn-sm">
                     ${message(code: 'is.ui.apps.configure')}
                 </button>
             </p>
@@ -105,7 +107,7 @@
             <p>
                 <a href="{{ appDefinition.docUrl }}"
                    target="_blank"
-                   class="btn btn-secondary">
+                   class="btn btn-secondary btn-sm">
                     ${message(code: 'is.app.documentation')}
                 </a>
             </p>

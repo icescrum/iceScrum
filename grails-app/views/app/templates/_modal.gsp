@@ -44,20 +44,23 @@
                     </span>
                 </div>
             </div>
-            <ul class="left-card-body nav nav-list">
+            <ul class="nav nav-pills nav-fill flex-column">
                 <div class="text-center more-results" ng-hide="filteredApps.length">
                     <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
                 </div>
-                <li ng-class="{'current': currentAppDefinition == appDefinition}"
+                <li class="nav-item"
                     ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
-                    <a ng-click="openAppDefinition(currentAppDefinition)" href class="text-ellipsis">
+                    <a ng-click="openAppDefinition(currentAppDefinition)"
+                       ng-class="{'active': currentAppDefinition == appDefinition}"
+                       href
+                       class="nav-link text-ellipsis">
                         {{:: currentAppDefinition.name }}
                         <i ng-if="isEnabledApp(currentAppDefinition)" class="fa fa-check text-success"></i>
+                        <div class="app-state">
+                            <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
+                            <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
+                        </div>
                     </a>
-                    <div class="app-state">
-                        <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
-                        <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
-                    </div>
                 </li>
             </ul>
         </div>
