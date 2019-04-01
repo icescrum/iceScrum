@@ -396,7 +396,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       width: $is-feature-width;
       height: $is-feature-height;
       border-radius: 0.375rem;
-      overflow: hidden;
 
       &:hover .sticky-note-content.has-description .item-values {
         display: none;
@@ -446,6 +445,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       &.invert.sticky-note-type.architectural .sticky-note-type-icon {
         background-image: url("type-architectural-white.svg");
+      }
+
+      .progress {
+        border-radius: 0 0 0.25rem 0.25rem; // TODO this is a big hack with a different radius to hide color bleeding, see https://bugs.chromium.org/p/chromium/issues/detail?id=491574
       }
     }
   }

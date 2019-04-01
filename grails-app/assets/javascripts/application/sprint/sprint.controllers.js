@@ -23,7 +23,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$uibModal', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', 'StoryTypesByName', function($rootScope, $scope, $state, $q, $uibModal, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName, StoryTypesByName) {
+controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$uibModal', '$window', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', 'StoryTypesByName', function($rootScope, $scope, $state, $q, $uibModal, $window, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName, StoryTypesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -217,6 +217,11 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             name: 'is.ui.releasePlan.menu.sprint.delete',
             visible: function(sprint) { return $scope.authorizedSprint('delete', sprint); },
             action: function(sprint) { $scope.confirmDelete({callback: $scope.delete, args: [sprint]}); }
+        },
+        {
+            name: 'todo.is.ui.details',
+            visible: function(sprint, viewType) { return viewType !== 'details'; },
+            action: function(sprint) { $window.location.hash = $scope.openSprintUrl(sprint); } // Inherited
         }
     ];
     $scope.validateStartDate = function(startDate) {

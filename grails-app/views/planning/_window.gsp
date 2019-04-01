@@ -92,17 +92,14 @@
                         <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                     </span>
                     <span class="sprint-values">
-                        <span>
-                            ${message(code: 'is.sprint.velocity')}
+                        <span ng-if="sprint.velocity || sprint.capacity">
+                            <span>{{ message('is.sprint.' + (sprint.state > sprintStatesByName.TODO ? 'velocity' : 'plannedVelocity')) }}</span>
                             <strong ng-if="sprint.state > sprintStatesByName.TODO"
                                     defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</strong>
                             <strong defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</strong>
                         </span>
                     </span>
                 </span>
-                <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
-                    <i class="fa fa-pencil"></i>
-                </a>
                 <div class="sticky-notes {{ stickyNoteClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
