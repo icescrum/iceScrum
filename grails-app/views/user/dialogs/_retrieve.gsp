@@ -25,8 +25,7 @@
           validate="true"
           submitButton="${message(code: 'is.dialog.retrieve')}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'is.dialog.retrieve')}"
-          size="sm">
+          title="${message(code: 'is.dialog.retrieve')}">
     <p>
         <g:message code="is.dialog.retrieve.description"/>
     </p>

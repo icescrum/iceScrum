@@ -20,8 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal size="sm"
-          title="${message(code: 'is.dialog.login')}"
+<is:modal title="${message(code: 'is.dialog.login')}"
           submitButton="${message(code: 'is.button.connect')}"
           closeButton="${message(code: 'is.button.cancel')}"
           autoFillFix="true"

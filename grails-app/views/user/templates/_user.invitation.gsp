@@ -22,8 +22,7 @@
 --}%
 <script type="text/ng-template" id="user.invitation.html">
 <is:modal title="${message(code: 'is.ui.user.invitation.title')}"
-          footer="${false}"
-          size="md">
+          footer="${false}">
     <div ng-if="invitationEntries">
         <p ng-bind-html="message('is.ui.user.invitation.congrats', [invitedEmailAddress])">
         </p>
