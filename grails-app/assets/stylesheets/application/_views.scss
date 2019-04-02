@@ -25,26 +25,30 @@
 // Dashboard
 ////////////////////
 
-.widgets .card {
-  margin-top: 1.25rem;
-  background: none;
+.widgets {
+  margin-bottom: ($grid-gutter-width / 2);
 
-  .card-header {
-    padding-left: 0;
-    padding-right: 0;
+  .card {
+    margin-top: 1.25rem;
     background: none;
 
-    .workspace-title {
-      color: #111111; // Should not change in dark mode
-      font-size: 2.8125rem;
-      line-height: 0.49;
-    }
-  }
+    .card-header {
+      padding-left: 0;
+      padding-right: 0;
+      background: none;
 
-  .card-body {
-    border-radius: 0.375rem;
-    box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
-    background-color: $is-bg-color;
+      .workspace-title {
+        color: #111111; // Should not change in dark mode
+        font-size: 2.8125rem;
+        line-height: 0.49;
+      }
+    }
+
+    .card-body {
+      border-radius: 0.375rem;
+      box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
+      background-color: $is-bg-color;
+    }
   }
 }
 
@@ -188,6 +192,7 @@
   display: flex;
   flex-wrap: wrap;
   margin: 15px;
+
   .app-logo {
     position: relative;
     margin: 11px;
@@ -195,18 +200,22 @@
     height: 154px;
     border-radius: 3px;
     border: solid 1px $is-outline-color;
+
     &:hover {
       box-shadow: 0 29px 34px 0 rgba(8, 12, 29, 0.21);
     }
+
     img {
       margin-top: 30px;
       margin-bottom: 20px;
       width: 82px;
       height: 62px;
     }
+
     .app-name {
       font-size: 12px;
     }
+
     .app-state {
       position: absolute;
     }
