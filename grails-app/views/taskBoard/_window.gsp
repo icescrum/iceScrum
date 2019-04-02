@@ -95,9 +95,7 @@
                         <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle
                                 type="button">
-                            <span defer-tooltip="${message(code: 'todo.is.ui.filters')}">
-                                <span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
-                            </span>
+                            {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
                         </button>
                         <div uib-dropdown-menu role="menu">
                             <div role="menuitem"

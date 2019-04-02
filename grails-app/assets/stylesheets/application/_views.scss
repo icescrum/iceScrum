@@ -26,7 +26,10 @@
 ////////////////////
 
 .widgets {
-  margin-bottom: ($grid-gutter-width / 2);
+
+  .widget-column {
+    margin-bottom: ($grid-gutter-width / 2);
+  }
 
   .card {
     margin-top: 1.25rem;
