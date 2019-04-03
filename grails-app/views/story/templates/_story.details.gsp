@@ -92,7 +92,7 @@
     </div>
     <div class="details-content-container">
         <div class="details-content details-content-left">
-            <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
+            <ul class="nav nav-tabs nav-justified disable-active-link">
                 <li role="presentation"
                     class="nav-item">
                     <a href="{{ tabUrl() }}"
@@ -161,7 +161,7 @@
             </div>
         </div>
         <div ng-if="application.focusedDetailsView" class="details-content details-content-center">
-            <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
+            <ul class="nav nav-tabs nav-justified disable-active-link">
                 <li role="presentation"
                     class="nav-item">
                     <a href
@@ -174,7 +174,7 @@
             <div ui-view="details-tab-center"></div>
         </div>
         <div ng-if="application.focusedDetailsView" class="details-content details-content-right">
-            <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
+            <ul class="nav nav-tabs nav-justified disable-active-link">
                 <li role="presentation"
                     class="nav-item">
                     <a href

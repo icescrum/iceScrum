@@ -84,7 +84,7 @@
         </div>
         <visual-states ng-model="release" model-states="releaseStatesByName"/>
     </div>
-    <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">
+    <ul class="nav nav-tabs nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">
         <li role="presentation"
             class="nav-item">
             <a href="{{ tabUrl() }}"

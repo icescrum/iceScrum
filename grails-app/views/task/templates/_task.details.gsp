@@ -68,7 +68,7 @@
         </div>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="task" model-states="taskStatesByName"/></a>
     </div>
-    <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
+    <ul class="nav nav-tabs nav-justified disable-active-link">
         <li role="presentation"
             class="nav-item">
             <a href="{{ tabUrl() }}"
