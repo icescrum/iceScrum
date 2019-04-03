@@ -156,17 +156,17 @@ filters
     .filter('createGradientBackground', function() {
         return function(color) {
             if (!gradientBackgroundCache[color]) {
-                var ratio = 18;
-                var num = parseInt(color.substring(1), 16),
-                    ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
-                    amt = Math.round(2.55 * ratio),
-                    R = ((num >> 16) & 255) + amt,
-                    G = ((num >> 8) & 255) + amt,
-                    B = (num & 255) + amt;
-                gradientBackgroundCache[color] = "linear-gradient(to top, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%)";
+                var num = parseInt(color.substring(1), 16);
+                var ra = (num >> 16) & 255;
+                var ga = (num >> 8) & 255;
+                var ba = num & 255;
+                var R = ra;
+                var G = ga - 28;
+                var B = ba + 2;
+                gradientBackgroundCache[color] = "linear-gradient(to bottom, rgba(" + ra + "," + ga + "," + ba + ",1) 0%, rgba(" + R + "," + G + "," + B + ",1) 100%)";
             }
             // The background image gets overriden by css if table, border is overriden if sticky note
-            return {'background-image': gradientBackgroundCache[color], 'border-left': "10px solid " + color};
+            return {'background-image': gradientBackgroundCache[color]};
         };
     })
     .filter('actorTag', ['$state', 'ContextService', function($state, ContextService) {
