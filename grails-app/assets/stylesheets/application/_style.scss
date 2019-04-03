@@ -67,11 +67,11 @@ body {
       .card-view {
         flex: 1 0 auto;
 
-        .card-header {
+        > .card-header {
           z-index: 1; // To ensure that drop-shadow
         }
 
-        .card-body {
+        > .card-body {
           padding-left: 0;
           padding-right: 0;
           overflow-y: auto;
@@ -232,7 +232,7 @@ nav.navbar {
   background-color: transparent;
   border-radius: 0;
 
-  .card-header {
+  > .card-header {
     display: flex;
     justify-content: space-between;
     background-color: $is-bg-color;
