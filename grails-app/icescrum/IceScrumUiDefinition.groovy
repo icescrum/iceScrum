@@ -39,7 +39,6 @@ import org.icescrum.core.utils.ServicesUtils
         flex =                      default: true                 | true/false
         details =                   default: false                | true/false
         printable =                 default: true                 | true/false
-        fullScreen =                default: true                 | true/false
         exportFormats =             default: {[]}                 | Closure return Array of Maps: [name:'i18n.code',params:[]]
         before        =             default:null                  | Closure
     }
