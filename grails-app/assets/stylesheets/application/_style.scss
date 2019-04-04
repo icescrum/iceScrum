@@ -407,7 +407,7 @@ $state-dot-size-sm: 0.5rem;
 
   .card-title {
     font-size: 1rem;
-    font-family: averta-regular;
+    font-family: $font-family-base;
     font-weight: 600;
     display: flex;
     justify-content: space-between;
@@ -531,6 +531,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   height: 77px;
   background-color: $is-bg-color-alt;
   display: flex;
+
   .search-input {
     width: 460px;
     height: 50px;
@@ -548,7 +549,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   }
 
   text {
-    font-family: averta-regular;
+    font-family: $font-family-base;
     fill: $is_text-color-alt;
 
     &.nv-axislabel, &.nv-legend-text {

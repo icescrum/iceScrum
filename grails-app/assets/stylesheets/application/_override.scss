@@ -32,7 +32,7 @@
 }
 
 html, body {
-  font-family: averta-regular;
+  font-family: $font-family-base;
 }
 
 strong {
@@ -89,7 +89,7 @@ strong {
 
   &.btn-sm {
     box-shadow: 0 0 0 1px $is-outline-color inset; // Simulate border
-    font-family: averta-regular;
+    font-family: $font-family-base;
     text-shadow: none;
     background: none;
 
@@ -282,8 +282,11 @@ form label {
   box-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15);
 }
 
-// It seems that with the new bootstrap the arrow position is computed by JS and applied on the element directly, we do it here the old way with CSS
 .tooltip {
+
+  font-family: "FontAwesome", $font-family-base; // For arrows
+
+  // It seems that with the new bootstrap the arrow position is computed by JS and applied on the element directly, we do it here the old way with CSS
   &.top .arrow {
     bottom: 0;
     left: 50%;

@@ -38,7 +38,7 @@
 .select2-container .select2-choices,
 .select2-search input {
   background-color: $is-bg-color;
-  font-family: averta-regular;
+  font-family: $font-family-base;
 }
 
 .select2-container-multi {

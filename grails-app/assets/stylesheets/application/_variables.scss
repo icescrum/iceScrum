@@ -104,7 +104,7 @@ $is-state-colors: (
 
 $enable-caret: false; // Overriden by our own caret style
 
-$font-family-base: averta-regular;
+$font-family-base: "averta-regular", "Arial", "Helvetica", "sans-serif";
 $body-bg: $is-bg-color;
 $primary: $is-primary-color;
 $secondary: $is-bg-color;
