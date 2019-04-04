@@ -31,26 +31,6 @@
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedSprint('upload', sprint) && dropClass">
     <div class="details-header">
-        <entry:point id="sprint-details-right-title"/>
-        <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
-        <g:if test="${formats}">
-            <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                <button class="btn btn-secondary"
-                        uib-dropdown-toggle type="button">
-                    <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
-                </button>
-                <ul uib-dropdown-menu
-                    class="float-right"
-                    role="menu">
-                    <g:each in="${formats}" var="format">
-                        <li role="menuitem">
-                            <a href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                        </li>
-                    </g:each>
-                </ul>
-            </div>
-        </g:if>
         <a ng-if="previousSprint"
            class="btn btn-icon btn-caret-left"
            role="button"
@@ -76,10 +56,31 @@
             <div class="details-title">
                 <span class="item-name" title="{{ release.name + ' - ' + (sprint | sprintName) }}">{{ release.name + ' - ' + (sprint | sprintName) }}</span>
             </div>
-            <div class="btn-menu" uib-dropdown>
-                <shortcut-menu ng-model="sprint" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
-                <div uib-dropdown-toggle></div>
-                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+            <div class="btn-toolbar">
+                <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
+                <g:if test="${formats}">
+                    <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
+                        <button class="btn btn-secondary btn-sm"
+                                uib-dropdown-toggle type="button">
+                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
+                        </button>
+                        <div uib-dropdown-menu
+                             class="dropdown-menu-right"
+                             role="menu">
+                            <g:each in="${formats}" var="format">
+                                <a role="menuitem"
+                                   class="dropdown-item"
+                                   href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                   ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                            </g:each>
+                        </div>
+                    </div>
+                </g:if>
+                <div class="btn-menu" uib-dropdown>
+                    <shortcut-menu ng-model="sprint" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
+                    <div uib-dropdown-toggle></div>
+                    <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                </div>
             </div>
         </div>
         <visual-states ng-model="sprint" model-states="sprintStatesByName"/>

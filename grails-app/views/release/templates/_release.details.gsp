@@ -31,26 +31,6 @@
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedRelease('upload', release) && dropClass">
     <div class="details-header">
-        <entry:point id="release-details-right-title"/>
-        <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
-        <g:if test="${formats}">
-            <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                <button class="btn btn-secondary"
-                        uib-dropdown-toggle type="button">
-                    <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
-                </button>
-                <ul uib-dropdown-menu
-                    class="float-right"
-                    role="menu">
-                    <g:each in="${formats}" var="format">
-                        <li role="menuitem">
-                            <a href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/release/{{ ::release.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                        </li>
-                    </g:each>
-                </ul>
-            </div>
-        </g:if>
         <a ng-if="previousRelease"
            class="btn btn-icon btn-caret-left"
            role="button"
@@ -76,10 +56,31 @@
             <div class="details-title">
                 <span class="item-name" title="{{ release.name }}">{{ release.name }}</span>
             </div>
-            <div class="btn-menu" uib-dropdown>
-                <shortcut-menu ng-model="release" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
-                <div uib-dropdown-toggle></div>
-                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></div>
+            <div class="btn-toolbar">
+                <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
+                <g:if test="${formats}">
+                    <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
+                        <button class="btn btn-secondary btn-sm"
+                                uib-dropdown-toggle type="button">
+                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
+                        </button>
+                        <div uib-dropdown-menu
+                             class="dropdown-menu-right"
+                             role="menu">
+                            <g:each in="${formats}" var="format">
+                                <a role="menuitem"
+                                   class="dropdown-item"
+                                   href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/release/{{ ::release.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                   ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                            </g:each>
+                        </div>
+                    </div>
+                </g:if>
+                <div class="btn-menu" uib-dropdown>
+                    <shortcut-menu ng-model="release" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
+                    <div uib-dropdown-toggle></div>
+                    <div uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></div>
+                </div>
             </div>
         </div>
         <visual-states ng-model="release" model-states="releaseStatesByName"/>
