@@ -351,6 +351,8 @@ grails.assets.includes = ["styles.scss"]
 grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
 grails.assets.enableGzip = true
+grails.assets.minifyJs = false //test build ok
+
 
 /*
  Attachmentable section
