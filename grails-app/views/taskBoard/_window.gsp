@@ -65,6 +65,7 @@
             </div>
             <div>
                 <div class="btn-toolbar">
+                    <entry:point id="taskBoard-window-toolbar-right"/>
                     <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                     <g:if test="${formats}">
                         <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
@@ -110,7 +111,6 @@
                             </div>
                         </div>
                     </div>
-                    <entry:point id="taskBoard-window-toolbar-right"/>
                     <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
                         <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                         <div uib-dropdown-toggle></div>
@@ -199,7 +199,10 @@
                         <div class="kanban-column-header col">
                             <span class="swimlane-title">
                                 ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})
-                                <a ng-if="authorizedTask('create', {sprint: sprint})" ng-click="copyRecurrentTasks(sprint)" href>${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}</a>
+                                <a ng-if="authorizedTask('create', {sprint: sprint})"
+                                   class="swimlane-subtitle"
+                                   ng-click="copyRecurrentTasks(sprint)"
+                                   href>${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}</a>
                             </span>
                         </div>
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>

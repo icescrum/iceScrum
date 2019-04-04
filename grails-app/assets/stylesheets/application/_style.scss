@@ -24,6 +24,7 @@
 ////////////////////
 // Global layout
 ////////////////////
+
 body, html {
   height: 100vh;
   overflow: hidden;
@@ -115,7 +116,7 @@ body {
 }
 
 ////////////////////
-// Main layout
+// General style
 ////////////////////
 
 .main {
@@ -222,10 +223,6 @@ nav.navbar {
     }
   }
 }
-
-////////////////////
-// General view
-////////////////////
 
 .card-view {
   border-top: solid 1px $is-border-color;
@@ -360,6 +357,14 @@ $state-dot-size-sm: 0.5rem;
       padding-left: $timebox-dates-padding-sm;
     }
   }
+}
+
+.sharpie-highlight {
+  background: url("highlight.png") no-repeat;
+  background-position-y: 12px;
+  background-size: 100% 65%;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 ////////////////////
@@ -551,16 +556,4 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
       font-size: $is-font-size-sm;
     }
   }
-}
-
-////////////////////
-// Highlights
-////////////////////
-
-.highlight {
-  background: url("highlight.png") no-repeat;
-  background-position-y: 12px;
-  background-size: 100% 65%;
-  padding-right: 5px;
-  padding-left: 5px;
 }

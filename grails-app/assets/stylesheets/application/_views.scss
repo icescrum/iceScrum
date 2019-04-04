@@ -127,6 +127,11 @@
     padding-left: 0.5rem;
     font-size: $is-font-size-sm;
     font-weight: 600;
+    .swimlane-subtitle {
+      font-size: 0.75rem;
+      padding-left: 0.5rem;
+      font-weight: 400;
+    }
   }
 }
 
