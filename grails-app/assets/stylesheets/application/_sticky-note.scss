@@ -294,7 +294,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     align-content: flex-start;
 
     .sticky-note-container {
-      margin: 0.53125rem;
+      margin: $is-sticky-note-spacer-x;
     }
   }
 

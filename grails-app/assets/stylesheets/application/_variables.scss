@@ -42,6 +42,9 @@ $is-outline-color: #c8c8cc !default;
 $is-border-color: #d3d8de !default;
 $is-border-color-alt: #e9e9e9 !default;
 
+$is-spacer-x: 1.25rem;
+$is-sticky-note-spacer-x: 0.5rem;
+
 $is-font-size-sm: 0.875rem;
 $is-sticky-note-text: #111111; // Should not change in dark mode
 $is-sticky-note-text-invert: white;
@@ -141,6 +144,7 @@ $nav-tabs-link-active-color: $primary;
 $nav-tabs-border-radius: 0;
 $nav-tabs-link-active-bg: $is-bg-color;
 
+$card-spacer-x: $is-spacer-x;
 $card-border-width: 0;
 $card-bg: $is-bg-color;
 

@@ -73,8 +73,7 @@ body {
         }
 
         > .card-body {
-          padding-left: 0;
-          padding-right: 0;
+          padding: ($is-spacer-x - $is-sticky-note-spacer-x);
           overflow-y: auto;
           height: 1px;
         }
@@ -444,8 +443,8 @@ $state-dot-size-sm: 0.5rem;
   justify-content: flex-end;
   align-items: center;
   height: 58px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: $is-spacer-x;
+  padding-right: $is-spacer-x;
 
   .btn-icon {
     margin-left: 22px;
