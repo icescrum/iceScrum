@@ -79,18 +79,11 @@
                         </g:each>
                     </div>
                 </div>
-                <div class="btn-group">
-                    <button type="button"
-                            class="btn btn-secondary btn-sm hidden-xs hidden-sm"
-                            defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                            ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary btn-sm hidden-xs"
-                            ng-click="fullScreen()"
-                            defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
-                    </button>
-                </div>
+                <button type="button"
+                        class="btn btn-secondary btn-sm hidden-xs hidden-sm"
+                        defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
+                        ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
+                </button>
                 <a ng-if="authorizedFeature('create')"
                    href="#/{{ ::viewName }}/new"
                    class="btn btn-primary btn-intermediate">${message(code: "todo.is.ui.feature.new")}</a>

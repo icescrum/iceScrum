@@ -24,7 +24,7 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
         <div class="card-header">
-            <ul class="nav nav-pills card-header-pills"
+            <ul class="nav nav-pills"
                 ng-class="{ 'hasElements': visibleElementsList.length > 0 }"
                 as-sortable="elementsListSortableOptions"
                 ng-model="visibleElementsList">
@@ -66,18 +66,11 @@
             </ul>
             <div class="btn-toolbar">
                 <entry:point id="backlog-window-toolbar-right"/>
-                <div class="btn-group">
-                    <button type="button"
-                            class="btn btn-secondary btn-sm hidden-xs hidden-sm"
-                            defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                            ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
-                    </button>
-                    <button type="button"
-                            class="btn btn-secondary btn-sm hidden-xs"
-                            defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
-                            ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                    </button>
-                </div>
+                <button type="button"
+                        class="btn btn-secondary btn-sm hidden-xs hidden-sm"
+                        defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
+                        ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
+                </button>
                 <a ui-sref="backlog.backlog.story.new"
                    class="btn btn-primary btn-intermediate"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             </div>

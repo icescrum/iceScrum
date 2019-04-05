@@ -66,32 +66,6 @@
             <div>
                 <div class="btn-toolbar">
                     <entry:point id="taskBoard-window-toolbar-right"/>
-                    <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
-                    <g:if test="${formats}">
-                        <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                            <button class="btn btn-secondary btn-sm"
-                                    uib-dropdown-toggle type="button">
-                                <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
-                            </button>
-                            <div uib-dropdown-menu
-                                 class="float-right"
-                                 role="menu">
-                                <g:each in="${formats}" var="format">
-                                    <a role="menuitem"
-                                       class="dropdown-item"
-                                       href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                                </g:each>
-                            </div>
-                        </div>
-                    </g:if>
-                    <div class="btn-group">
-                        <button type="button"
-                                class="btn btn-secondary btn-sm hidden-xs"
-                                defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
-                                ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                        </button>
-                    </div>
                     <div class="btn-group" uib-dropdown>
                         <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle
@@ -111,6 +85,25 @@
                             </div>
                         </div>
                     </div>
+                    <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
+                    <g:if test="${formats}">
+                        <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
+                            <button class="btn btn-secondary btn-sm"
+                                    uib-dropdown-toggle type="button">
+                                <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
+                            </button>
+                            <div uib-dropdown-menu
+                                 class="float-right"
+                                 role="menu">
+                                <g:each in="${formats}" var="format">
+                                    <a role="menuitem"
+                                       class="dropdown-item"
+                                       href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                                </g:each>
+                            </div>
+                        </div>
+                    </g:if>
                     <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
                         <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                         <div uib-dropdown-toggle></div>
