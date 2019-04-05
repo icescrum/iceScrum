@@ -28,7 +28,7 @@
                 ng-class="{ 'hasElements': visibleElementsList.length > 0 }"
                 as-sortable="elementsListSortableOptions"
                 ng-model="visibleElementsList">
-                <li class="nav-item"
+                <li class="nav-item mr-2"
                     as-sortable-item
                     ng-repeat="elem in visibleElementsList">
                     <a href="{{ toggleElementUrl(elem) }}"
@@ -66,6 +66,57 @@
             </ul>
             <div class="btn-toolbar">
                 <entry:point id="backlog-window-toolbar-right"/>
+                <div class="btn-group" ng-if="backlogContainers.length == 1">
+                    <div class="btn-group"
+                         uib-dropdown>
+                        <button class="btn btn-secondary btn-sm" uib-dropdown-toggle type="button">
+                            <span>{{ backlogContainers[0].orderBy.current.name }}</span>
+                        </button>
+                        <div uib-dropdown-menu role="menu">
+                            <a role="menuitem"
+                               class="dropdown-item"
+                               ng-repeat="order in backlogContainers[0].orderBy.values"
+                               ng-click="changeBacklogOrder(backlogContainers[0], order)"
+                               href>
+                                {{ order.name }}</a>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm"
+                            ng-click="reverseBacklogOrder(backlogContainers[0])"
+                            defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
+                        <i class="fa fa-sort-amount{{ backlogContainers[0].orderBy.reverse ? '-desc' : '-asc'}}"></i>
+                    </button>
+                    <button type="button"
+                            ng-if="backlogContainers[0].sortable && !isSortingBacklog(backlogContainers[0])"
+                            class="btn btn-secondary btn-sm hidden-sm hidden-xs"
+                            ng-click="enableSortable(backlogContainers[0])"
+                            uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
+                        <i class="fa fa-hand-stop-o text-danger"></i>
+                    </button>
+                </div>
+                <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated() && backlogContainers.length == 1">
+                    <button class="btn btn-secondary btn-sm"
+                            ng-disabled="!backlogContainers[0].backlog.stories.length"
+                            uib-dropdown-toggle type="button">
+                        <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
+                    </button>
+                    <div uib-dropdown-menu
+                         role="menu">
+                        <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
+                            <a role="menuitem"
+                               class="dropdown-item"
+                               href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainers[0].backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">
+                                ${format.name}
+                            </a>
+                        </g:each>
+                    </div>
+                </div>
+                <a class="btn btn-secondary btn-sm"
+                   ng-if="backlogContainers.length == 1"
+                   ng-href="{{ openBacklogUrl(backlogContainers[0].backlog) }}">
+                    <i class="fa fa-pencil"></i>
+                </a>
                 <button type="button"
                         class="btn btn-secondary btn-sm hidden-xs hidden-sm"
                         defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
@@ -81,71 +132,13 @@
             </div>
             <div ng-repeat="backlogContainer in backlogContainers"
                  class="backlog col">
-                <div>
+                <div ng-if="backlogContainers.length > 1" class="backlog-multiple-toolbar d-flex justify-content-between">
                     <span class="backlog-title">
                         {{ (backlogContainer.backlog | i18nName) + ' (' + backlogContainer.backlog.count + ')' }}
                     </span>
-                    <div class="btn-toolbar">
-                        <entry:point id="backlog-list-toolbar-left"/>
-                        <div class="btn-group">
-                            <entry:point id="backlog-list-toolbar-group-left"/>
-                            <div class="btn-group"
-                                 uib-dropdown>
-                                <button class="btn btn-secondary btn-sm" uib-dropdown-toggle type="button">
-                                    <span>{{ backlogContainer.orderBy.current.name }}</span>
-                                </button>
-                                <div uib-dropdown-menu role="menu">
-                                    <a role="menuitem"
-                                       class="dropdown-item"
-                                       ng-repeat="order in backlogContainer.orderBy.values"
-                                       ng-click="changeBacklogOrder(backlogContainer, order)"
-                                       href>
-                                        {{ order.name }}</a>
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-secondary btn-sm"
-                                    ng-click="reverseBacklogOrder(backlogContainer)"
-                                    defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
-                                <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
-                            </button>
-                            <button type="button"
-                                    ng-if="backlogContainer.sortable && !isSortingBacklog(backlogContainer)"
-                                    class="btn btn-secondary btn-sm hidden-sm hidden-xs"
-                                    ng-click="enableSortable(backlogContainer)"
-                                    uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
-                                <i class="fa fa-hand-stop-o text-danger"></i>
-                            </button>
-                            <entry:point id="backlog-list-toolbar-group-right"/>
-                        </div>
-                        <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                            <button class="btn btn-secondary btn-sm"
-                                    ng-disabled="!backlogContainer.backlog.stories.length"
-                                    uib-dropdown-toggle type="button">
-                                <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
-                            </button>
-                            <div uib-dropdown-menu
-                                 role="menu">
-                                <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
-                                    <a role="menuitem"
-                                       class="dropdown-item"
-                                       href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainer.backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">
-                                        ${format.name}
-                                    </a>
-                                </g:each>
-                            </div>
-                            <entry:point id="backlog-list-toolbar-right-hidden-xs"/>
-                        </div>
-                        <a class="btn btn-secondary btn-sm"
-                           ng-href="{{ openBacklogUrl(backlogContainer.backlog) }}">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                        <entry:point id="backlog-list-toolbar-right"/>
-                        <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
-                           class="btn btn-icon btn-icon-close"
-                           ng-if="backlogContainers.length > 1">
-                        </a>
-                    </div>
+                    <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
+                       class="btn btn-icon btn-icon-close">
+                    </a>
                 </div>
                 <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
                     <div class="loading-logo" ng-include="'loading.html'"></div>

@@ -65,10 +65,6 @@
 
   .backlog {
     padding: 0;
-
-    .backlog-title {
-      display: none;
-    }
   }
 
   &.multiple-backlog {
@@ -77,11 +73,17 @@
         border-left: solid 1px $is-border-color;
       }
 
-      .backlog-title {
-        display: inline-block;
-        font-size: $is-font-size-sm;
-        font-weight: 600;
-        color: $is_text-color-alt;
+      .backlog-multiple-toolbar {
+        padding: 1rem $is-spacer-x;
+        padding-bottom: 0;
+        margin-bottom: -($is-spacer-x / 2);
+
+        .backlog-title {
+          display: inline-block;
+          font-size: $is-font-size-sm;
+          font-weight: 600;
+          color: $is_text-color-alt;
+        }
       }
     }
   }
@@ -121,7 +123,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   justify-content: space-around;
   font-family: averta-bold;
   color: $is_text-color-alt;
-  padding: 0.5rem $is-spacer-x;
+  padding: ($is-spacer-x - 0.25rem) $is-spacer-x 0.5rem $is-spacer-x;
 }
 
 .kanban-swimlane {
