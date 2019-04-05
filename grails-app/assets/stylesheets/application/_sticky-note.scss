@@ -292,9 +292,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
+    padding: ($is-spacer-x - $is-sticky-note-spacer);
 
     .sticky-note-container {
-      margin: $is-sticky-note-spacer-x;
+      margin: $is-sticky-note-spacer;
     }
   }
 

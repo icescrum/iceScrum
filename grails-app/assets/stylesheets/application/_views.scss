@@ -26,6 +26,7 @@
 ////////////////////
 
 .widgets {
+  padding: 0 ($is-spacer-x - 0.9375rem);
 
   .widget-column {
     margin-bottom: ($grid-gutter-width / 2);
@@ -61,10 +62,13 @@
 
 .backlog-list {
   display: flex;
-  padding: 0 !important;
 
-  .backlog .backlog-title {
-    display: none;
+  .backlog {
+    padding: 0;
+
+    .backlog-title {
+      display: none;
+    }
   }
 
   &.multiple-backlog {
@@ -109,25 +113,28 @@
 // Task board
 ////////////////////
 
+$is-kanban-spacer-x: 0.75rem;
+$is-kanban-spacer-y: $is-kanban-spacer-x;
+
 .kanban-states {
   display: flex;
   justify-content: space-around;
   font-family: averta-bold;
   color: $is_text-color-alt;
-  padding-bottom: 5px;
+  padding: 0.5rem $is-spacer-x;
 }
 
 .kanban-swimlane {
   border-radius: 0.375rem;
   border: solid 1px $is-outline-color;
-  margin: 15px;
-  margin-top: 0;
+  margin: 0 $is-spacer-x 0.9375rem $is-spacer-x;
   background-color: $is-bg-color;
 
   .swimlane-title {
-    padding-left: 0.5rem;
+    padding-left: $is-kanban-spacer-x;
     font-size: $is-font-size-sm;
     font-weight: 600;
+
     .swimlane-subtitle {
       font-size: 0.75rem;
       padding-left: 0.5rem;
@@ -142,7 +149,10 @@
 
 .kanban-column {
   padding: 0;
-  padding-bottom: 0.5rem;
+
+  .sticky-notes {
+    padding: ($is-kanban-spacer-y - $is-sticky-note-spacer - 0.125rem) ($is-kanban-spacer-x - $is-sticky-note-spacer) ($is-kanban-spacer-y - $is-sticky-note-spacer) ($is-kanban-spacer-x - $is-sticky-note-spacer) !important;
+  }
 
   &:nth-of-type(even) {
     background-color: $is-bg-color-alt;

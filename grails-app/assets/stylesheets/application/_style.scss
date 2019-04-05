@@ -73,7 +73,7 @@ body {
         }
 
         > .card-body {
-          padding: ($is-spacer-x - $is-sticky-note-spacer-x);
+          padding: 0;
           overflow-y: auto;
           height: 1px;
         }
