@@ -28,15 +28,16 @@
 <nav class="navbar navbar-light navbar-expand-lg {{ application.context.color | contrastColor:true }}"
      ng-style="application.context | contextStyle"
      role="navigation">
+    <div class="nav-item nav-item-logo">
+        <div id="menu-loader"></div>
+    </div>
     <a ng-if="warning"
+       class="nav-warning"
        ng-click="showAbout()"
        href
        tooltip-placement="right"
        defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
     </a>
-    <div class="nav-item nav-item-logo">
-        <div id="menu-loader"></div>
-    </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul ng-controller="mainMenuCtrl"
             class="nav navbar-nav"

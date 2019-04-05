@@ -122,11 +122,6 @@ body {
   background-color: $is-bg-color-ter;
 }
 
-#menu-loader {
-  width: 33px;
-  margin: 11px 30px 11px 14px;
-}
-
 body.splash-screen > *:not(#application-loading), body:not(.splash-screen) #application-loading {
   display: none !important;
 }
@@ -136,6 +131,21 @@ body.splash-screen > *:not(#application-loading), body:not(.splash-screen) #appl
 }
 
 nav.navbar {
+  position: relative;
+
+  #menu-loader {
+    width: 33px;
+    margin: 11px $is-spacer-x 11px 0;
+  }
+
+  .nav-warning {
+    display: inline-block;
+    position: absolute;
+    left: 53px;
+    top: 26px;
+    opacity: 0.8;
+    font-size: $is-font-size-sm;
+  }
 
   .nav-item-logo {
     border-right: 1px solid rgba(200, 200, 204, 0.42);
