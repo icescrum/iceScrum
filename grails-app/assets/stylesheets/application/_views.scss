@@ -197,11 +197,11 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 .sprint-values {
+  line-height: 1.17;
   font-size: $is-font-size-sm;
-  padding: 10px 0.875rem;
 
-  > span {
-    padding-right: 10px;
+  > span:not(:last-child) {
+    margin-right: 10px;
   }
 }
 

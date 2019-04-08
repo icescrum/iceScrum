@@ -24,7 +24,7 @@
     <div ng-if="releases.length > 0"
          class="card card-view">
         <div class="card-header">
-            <div>
+            <div class="card-header-left">
                 <a class="card-title" ng-href="{{ openReleaseUrl(release) }}">
                     {{ release.name }}
                 </a>

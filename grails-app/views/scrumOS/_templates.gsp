@@ -98,7 +98,7 @@
     <script type="text/ng-template" id="button.shortcutMenu.html">
     <a ng-show="menuElement.name"
        class="btn"
-       ng-class="{'btn-sm': btnSm, 'btn-intermediate': !btnSm, 'btn-primary': !btnSecondary, 'btn-secondary': btnSecondary}"
+       ng-class="{'btn-sm': btnSm, 'btn-primary': !btnSecondary, 'btn-secondary': btnSecondary}"
        href="{{ menuElement.url(ngModel) | orElse: '' }}"
        ng-click="menuClick(menuElement, ngModel, $event)">
         {{ menuElement | menuElementName }}

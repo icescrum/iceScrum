@@ -202,7 +202,7 @@ nav.navbar {
   .nav-link {
     margin-left: 0.1875rem;
     margin-right: 0.1875rem;
-    padding-top: 1.0625rem;
+    padding-top: 1.125rem;
     padding-bottom: 1.0625rem;
     padding-left: 0.625rem !important;
     display: flex;
@@ -241,15 +241,27 @@ nav.navbar {
   > .card-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     background-color: $is-bg-color;
     box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
-  }
-}
 
-.btn-intermediate {
-  padding: 0.5rem 1rem;
-  font-size: $is-font-size-sm;
-  line-height: 1.29;
+    .card-header-left {
+      display: flex;
+      align-items: center;
+
+      > span:not(:first-child) {
+        margin-left: 22px;
+      }
+    }
+
+    .btn, .nav-link {
+      padding: 0.5625rem 1rem;
+      font-size: $is-font-size-sm;
+      line-height: 1.29;
+    }
+  }
 }
 
 .btn-menu {
@@ -278,12 +290,13 @@ nav.navbar {
 $state-dot-size: 0.75rem;
 $state-dot-size-sm: 0.5rem;
 .state-title {
+  display: inline-flex;
+  align-items: center;
   color: $is-text-color-alt;
   font-size: $is-font-size-sm;
   font-weight: 600;
 
   .state-dot {
-    margin-left: 11px;
     margin-right: 7px;
     box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
     display: inline-block;
@@ -340,6 +353,7 @@ $state-dot-size-sm: 0.5rem;
 .timebox-dates {
   $timebox-dates-padding: 0.625rem;
   $timebox-dates-padding-sm: 0.5rem;
+  line-height: 1.17;
   background: #f4f4f4; // Todo dark mode
   font-size: $is-font-size-sm;
   padding: 10px $timebox-dates-padding;
@@ -374,6 +388,16 @@ $state-dot-size-sm: 0.5rem;
   background-size: 100% 65%;
   padding-right: 5px;
   padding-left: 5px;
+}
+
+.small-plus {
+  @include square-background(0.6875rem);
+  background-image: url("small-plus.svg");
+  margin-top: 8px;
+}
+
+.as-sortable-disabled .as-sortable-item-handle, .as-sortable-item-handle-disabled {
+  cursor: default;
 }
 
 ////////////////////
@@ -452,7 +476,7 @@ $state-dot-size-sm: 0.5rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 58px;
+  height: 53px;
   padding-left: $is-spacer-x;
   padding-right: $is-spacer-x;
 

@@ -25,7 +25,7 @@
     <div class="card card-view sprint-state-{{ sprint.state }}"
          ng-if="sprint">
         <div class="card-header">
-            <div>
+            <div class="card-header-left">
                 <span uib-dropdown on-toggle="scrollToActiveSprint(open)">
                     <span uib-dropdown-toggle class="card-title">{{ (sprint | sprintName) }}</span>
                     <div uib-dropdown-menu role="menu">

@@ -24,7 +24,7 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view">
         <div class="card-header">
-            <div>
+            <div class="card-header-left">
                 <span class="card-title">${message(code: 'is.ui.feature')} ({{ features.length}})</span>
             </div>
             <div class="btn-toolbar">
@@ -86,7 +86,7 @@
                 </button>
                 <a ng-if="authorizedFeature('create')"
                    href="#/{{ ::viewName }}/new"
-                   class="btn btn-primary btn-intermediate">${message(code: "todo.is.ui.feature.new")}</a>
+                   class="btn btn-primary">${message(code: "todo.is.ui.feature.new")}</a>
             </div>
         </div>
         <div class="window-alert window-alert-margin-top bg-warning"

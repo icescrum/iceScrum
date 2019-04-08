@@ -123,7 +123,7 @@
                         ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                 </button>
                 <a ui-sref="backlog.backlog.story.new"
-                   class="btn btn-primary btn-intermediate"><span>${message(code: "todo.is.ui.story.new")}</span></a>
+                   class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             </div>
         </div>
         <div class="card-body backlog-list" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
