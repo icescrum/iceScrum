@@ -41,7 +41,7 @@
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <a href="/my-account/lost-password/">${message(code: 'is.dialog.retrieve')}</a>
+                            <a href="/login/retrieve/">${message(code: 'is.login.retrieve')}</a>
                         </div>
                         <div>
                             <input type="submit" class="btn btn-primary" name="login" value="Login">
@@ -52,7 +52,7 @@
                     </p>
                     <div class="text-center">
                             <span class="form-text grey">Don't have an account</span>
-                            <a class="btn btn-secondary" href="/my-account/?signup=yes">Get started</a>
+                            <a class="btn btn-secondary" href="/login/register">${message(code: 'is.login.register')}</a>
                     </div>
                 </form>
             </div>

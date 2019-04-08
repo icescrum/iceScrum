@@ -300,7 +300,7 @@ class UserController implements ControllerErrorHandler {
                 try {
                     User.withTransaction {
                         userService.resetPassword(user)
-                        render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.dialog.retrieve.success', args: [user.email])] as JSON)
+                        render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.login.retrieve.success', args: [user.email])] as JSON)
                     }
                 } catch (MailException e) {
                     returnError(code: 'is.mail.error', exception: e)

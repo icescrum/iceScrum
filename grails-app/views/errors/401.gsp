@@ -34,7 +34,7 @@
             setTimeout(function() {
                 //replace # => _HASH_ to preserve it in the redirect
                 var redirectTo = document.location.href.replace('#', '_HASH_');
-                document.location = '${homeUrl}/#/?redirectTo=' + encodeURI(redirectTo);
+                document.location = '${homeUrl}/login/auth/?redirectTo=' + encodeURI(redirectTo);
             }, 3000);
         }
     </script>

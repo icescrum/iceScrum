@@ -782,8 +782,7 @@ var isApplication = angular.module('isApplication', [
             });
         };
         $rootScope.logIn = function() {
-            $state.params.redirectTo = "";
-            $scope.$close(true);
+            document.location = $rootScope.serverUrl + '/login/auth?redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'));
         };
         $rootScope.showNotEnabledFeature = function() {
             $rootScope.alert({

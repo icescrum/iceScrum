@@ -48,6 +48,7 @@ windows = {
     // No workspace
     'home' {
         workspace null // Master window : no menu, no workspace
+        secured 'isAuthenticated()'
     }
     // Project workspace
     'backlog' {
@@ -192,6 +193,7 @@ widgets = {
         height 2
         width 3
         icon 'folder'
+        secured 'isAuthenticated()'
         allowDuplicate false
     }
     'tasks' {

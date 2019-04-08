@@ -24,11 +24,11 @@
 <is:modal name="formHolder.registerForm"
           form="register()"
           validate="true"
-          submitButton="${message(code: 'is.button.register')}"
+          submitButton="${message(code: 'is.login.register')}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'is.dialog.register')}">
+          title="${message(code: 'is.login.register')}">
     <p>
-        <g:message code="is.dialog.register.description"/>
+        <g:message code="is.login.register.description"/>
     </p>
     <div ng-include="'user.form.html'"></div>
 </is:modal>

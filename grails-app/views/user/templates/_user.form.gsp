@@ -86,7 +86,7 @@
                ng-password-strength>
     </div>
     <div class="form-half">
-        <label for="confirmPassword">${message(code: 'is.dialog.register.confirmPassword')}</label>
+        <label for="confirmPassword">${message(code: 'is.login.register.confirmPassword')}</label>
         <input name="confirmPassword"
                type="password"
                class="form-control"

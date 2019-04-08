@@ -23,14 +23,14 @@
 <is:modal name="formHolder.retrieveForm"
           form="retrieve()"
           validate="true"
-          submitButton="${message(code: 'is.dialog.retrieve')}"
+          submitButton="${message(code: 'is.login.retrieve')}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'is.dialog.retrieve')}">
+          title="${message(code: 'is.login.retrieve')}">
     <p>
-        <g:message code="is.dialog.retrieve.description"/>
+        <g:message code="is.login.retrieve.description"/>
     </p>
     <div class="form-group">
-        <label for="user.username">${message(code: 'is.dialog.retrieve.input')}</label>
+        <label for="user.username">${message(code: 'is.login.retrieve.input')}</label>
         <input required
                autofocus
                type="text"
