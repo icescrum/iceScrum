@@ -227,7 +227,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     });
     // Init error managmeent
     $scope.$on(SERVER_ERRORS.notAuthenticated, function() {
-        $scope.showAuthModal();
+        $scope.logIn();
     });
     $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
         var data = error.data;
@@ -549,7 +549,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         description: $scope.message('is.button.connect'),
         callback: function() {
             if (!Session.authenticated()) {
-                $scope.showAuthModal();
+                $scope.logIn();
             }
         }
     });
@@ -656,41 +656,6 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
             $scope.application.ignoreUrlContextChange = false;
         }
     });
-}]);
-
-extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
-    $scope.credentials = {
-        j_username: $scope.username ? $scope.username : '',
-        j_password: ''
-    };
-    $rootScope.showRetrieveModal = function() {
-        if (isSettings.retrieveEnabled) {
-            $state.go('userretrieve');
-        } else {
-            $rootScope.showNotEnabledFeature();
-        }
-    };
-    $scope.login = function(credentials) {
-        AuthService.login(credentials).then(function(data) {
-            $scope.application.submitting = true; // Avoid duplicated login, the page reloading will set that back to false
-            var lastOpenedUrl = data.url;
-            var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
-            if ($state.params.redirectTo) {
-                var oldLocation = document.location.href;
-                document.location = $state.params.redirectTo;
-                // Force location change even in the case only query param changed
-                if ($state.params.redirectTo.split('?')[0] === oldLocation.split('?')[0]) {
-                    document.location.reload(true);
-                }
-            } else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) !== -1 && lastOpenedUrl) {
-                document.location = lastOpenedUrl;
-            } else {
-                document.location.reload(true);
-            }
-        }, function() {
-            $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
-        });
-    };
 }]);
 
 extensibleController('registerCtrl', ['$scope', 'User', 'UserService', 'Session', function($scope, User, UserService, Session) {

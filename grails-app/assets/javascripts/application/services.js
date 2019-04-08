@@ -25,14 +25,6 @@
 
 var services = angular.module('services', ['restResource']);
 
-services.factory('AuthService', ['$http', '$rootScope', 'FormService', function($http, $rootScope, FormService) {
-    return {
-        login: function(credentials) {
-            return FormService.httpPost('j_spring_security_check', credentials, true);
-        }
-    };
-}]);
-
 services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'FormService', 'CacheService', function($timeout, $http, $rootScope, $injector, UserService, User, PushService, IceScrumEventType, FormService, CacheService) {
     var self = this;
     self.defaultView = '';

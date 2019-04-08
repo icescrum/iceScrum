@@ -81,11 +81,6 @@ controllers.controller('userInvitationCtrl', ['$scope', '$state', '$timeout', '$
             document.location = $scope.serverUrl;
         })
     };
-    $scope.logIn = function() {
-        $state.params.redirectTo = window.location.href + '?accept=true';
-        $scope.$close(true);
-        $scope.showAuthModal();
-    };
     $scope.register = function() {
         var user = $filter('userNamesFromEmail')($scope.invitedEmailAddress);
         user.token = $scope.token;

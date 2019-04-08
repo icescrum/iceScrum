@@ -278,12 +278,12 @@
         </div>
         <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'profile.panel.html'"></div>
     </div>
-    <button id="login"
-            ng-show="!(currentUser.username)"
-            class="btn btn-secondary"
-            ng-click="showAuthModal()"
-            defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
-            tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
+    <a id="login"
+       href="${g.createLink(url: [action: 'auth', controller: 'login'])}/"
+       ng-show="!(currentUser.username)"
+       class="btn btn-secondary"
+       defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
+       tooltip-placement="bottom"><g:message code="is.button.connect"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

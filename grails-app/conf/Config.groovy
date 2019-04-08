@@ -585,11 +585,9 @@ grails {
                     '/**'             : 'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' // Only form auth with session
             ]
 
-            auth.loginFormUrl = '/'
-
             rememberMe {
                 cookieName = 'iceScrum'
-                key = 'VincNicoJuShazam'
+                key = 'VincNicoJuShazam$'
             }
 
             useRunAs = true

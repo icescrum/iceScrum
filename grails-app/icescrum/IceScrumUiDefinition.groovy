@@ -178,12 +178,6 @@ widgets = {
             settings.feeds = settings.feeds?.findAll { it.title }.unique { it.url }
         }
     }
-    'login' {
-        height 1
-        width 2
-        icon 'user'
-        secured '!isAuthenticated()'
-    }
     'notes' {
         height 1
         width 2

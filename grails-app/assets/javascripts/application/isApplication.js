@@ -781,24 +781,9 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
         };
-        $rootScope.showAuthModal = function(username) {
-            if (!$rootScope.application.visibleAuthModal) {
-                var childScope = $rootScope.$new();
-                if (username) {
-                    childScope.username = username;
-                }
-                $rootScope.application.visibleAuthModal = true;
-                var callback = function() {
-                    $rootScope.application.visibleAuthModal = false;
-                };
-                $uibModal.open({
-                    keyboard: false,
-                    templateUrl: $rootScope.serverUrl + '/login/auth',
-                    controller: 'loginCtrl',
-                    scope: childScope,
-                    size: 'sm'
-                }).result.then(callback, callback);
-            }
+        $rootScope.logIn = function() {
+            $state.params.redirectTo = "";
+            $scope.$close(true);
         };
         $rootScope.showNotEnabledFeature = function() {
             $rootScope.alert({
@@ -819,7 +804,7 @@ var isApplication = angular.module('isApplication', [
                     scope: childScope
                 }).result.then(function(username) {
                     $state.transitionTo('root');
-                    $rootScope.showAuthModal(username);
+                    $rootScope.logIn();
                 }, function() {
                     $state.transitionTo('root');
                 });
@@ -1028,7 +1013,7 @@ var isApplication = angular.module('isApplication', [
                     if (!authorized) {
                         event.preventDefault();
                         if (!Session.authenticated()) {
-                            $rootScope.showAuthModal();
+                            $rootScope.logIn();
                         } else {
                             $state.go(angular.isDefined(fromState) && fromState.name ? fromState.name : "404");
                         }
