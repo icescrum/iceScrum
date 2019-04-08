@@ -22,6 +22,29 @@
  * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
-controllers.controller('homeCtrl', ['$scope', '$controller', function($scope, $controller) {
+controllers.controller('homeCtrl', ['$scope', '$controller', 'PushService', 'Session', 'ProjectService', 'IceScrumEventType', function($scope, $controller, PushService, Session, ProjectService, IceScrumEventType) {
     $controller('widgetViewCtrl', {$scope: $scope});
+    // Functions
+    $scope.getProjectUrl = function(project, viewName) {
+        return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
+    };
+    // Init
+    $scope.projectCreationEnabled = isSettings.projectCreationEnabled || Session.admin();
+    $scope.projectsLoaded = false;
+    $scope.projects = [];
+    ProjectService.listByUser({count: 9, light: true}).then(function(projectsAndCount) {
+        $scope.projectsLoaded = true;
+        $scope.projects = projectsAndCount.projects;
+    });
+    PushService.registerScopedListener('user', IceScrumEventType.UPDATE, function(user) {
+        if (user.updatedRole) {
+            var updatedRole = user.updatedRole;
+            var project = updatedRole.project;
+            if (updatedRole.role == undefined) {
+                _.remove($scope.projects, {id: project.id});
+            } else if (updatedRole.oldRole == undefined && !_.includes($scope.projects, {id: project.id})) {
+                $scope.projects.push(project);
+            }
+        }
+    }, $scope);
 }]);

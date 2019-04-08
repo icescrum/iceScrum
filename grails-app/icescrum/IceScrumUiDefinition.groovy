@@ -207,14 +207,6 @@ widgets = {
                 stickyNoteSize: 'list-group'
         ]
     }
-    'quickProjects' {
-        height 2
-        width 1
-        icon 'folder'
-        allowDuplicate false
-        secured 'isAuthenticated()'
-        ngController 'quickProjectsListCtrl'
-    }
     'chart' {
         height 2
         width 2
