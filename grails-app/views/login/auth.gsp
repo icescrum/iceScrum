@@ -23,45 +23,36 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>${message(code: 'is.dialog.login')}</title>
+        <title>${message(code: 'is.login')}</title>
         <meta name='layout' content='login'/>
     </head>
-    <body class="not-logged-in login container-left-top-yellow-rect container-left-bottom-blue-rect">
-        <div class="d-flex justify-content-center content row">
-            <div class="rect_1"></div>
-            <div class="rect_2"></div>
-            <div class="rect_3"></div>
-            <div class="text-center">
-                <a href="/">
-                    <img id="logo" alt="iceScrum" src="/wp-content/themes/new_icescrum/assets/logo.png">
-                    <img id="logo-name" src="https://www.icescrum.com/wp-content/themes/new_icescrum/assets/icescrum.png" alt="iceScrum" class="img-responsive">
-                </a>
-                <h1>Great to see you again!</h1>
+    <body class="container-left-top-yellow-rect container-left-bottom-blue-rect">
+        <div class="d-flex justify-content-center row">
+            <div>
+                <h1 class="text-center">Great to see you again!</h1>
                 <form action='${postUrl}' name="loginform" id="loginform" action="?" method="post" autocomplete='off'>
-                    <p class="form-group text-left">
-                        <label for="username">Email or Username<span class="required">*</span></label>
+                    <p class="form-group">
+                        <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
                         <input type="text" class="input-text form-control" name="j_username" id="username" value="">
                     </p>
-                    <p class="form-group text-left">
-                        <label for="password">Password<span class="required">*</span></label>
+                    <p class="form-group">
+                        <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
                         <input class="input-text form-control" type="password" name="j_password" id="password">
                     </p>
-                    <div class="row">
-                        <div class="col-6 back-link">
-                            <a href="/my-account/lost-password/">Lost your password?</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="/my-account/lost-password/">${message(code: 'is.dialog.retrieve')}</a>
                         </div>
-                        <div class="col-6 text-right">
-                            <input type="submit" class="icescrum-btn pull-right" name="login" value="Login">
+                        <div>
+                            <input type="submit" class="btn btn-primary" name="login" value="Login">
                         </div>
                     </div>
                     <p id="remember_me_holder" style="display: none;">
                         <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
                     </p>
-                    <div class="text-center" style="margin-top: 70px;">
-                        <div>
-                            <span class="help-block grey">Don't have an account</span>
-                            <a class="icescrum-btn invert" href="/my-account/?signup=yes">Get started</a>
-                        </div>
+                    <div class="text-center">
+                            <span class="form-text grey">Don't have an account</span>
+                            <a class="btn btn-secondary" href="/my-account/?signup=yes">Get started</a>
                     </div>
                 </form>
             </div>

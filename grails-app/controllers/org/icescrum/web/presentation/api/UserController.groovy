@@ -294,7 +294,7 @@ class UserController implements ControllerErrorHandler {
         } else {
             def user = User.findWhere(username: params.user.username)
             if (!user || !user.enabled || user.accountExternal) {
-                def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.dialog.login.error.disabled' : 'is.user.error.externalAccount')
+                def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.login.error.disabled' : 'is.user.error.externalAccount')
                 returnError(code: code)
             } else {
                 try {
