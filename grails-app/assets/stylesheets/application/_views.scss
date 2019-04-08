@@ -21,14 +21,15 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
 
+
 ////////////////////
-// Dashboard
+// Dashboards (settings + project dashboard)
 ////////////////////
 
-.widgets {
+.panels {
   padding: 0 ($is-spacer-x - 0.9375rem);
 
-  .widget-column {
+  .panel-column {
     margin-bottom: ($grid-gutter-width / 2);
   }
 
@@ -206,7 +207,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
-// Task board
+// Apps
 ////////////////////
 
 .app-list {

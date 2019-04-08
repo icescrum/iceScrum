@@ -21,8 +21,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}" classes="widget-dashboard">
-    <div class="d-flex flex-wrap widgets">
-        <div class="widget-column col-md-6">
+    <div class="d-flex flex-wrap panels">
+        <div class="panel-column col-md-6">
             <div class="card">
                 <div class="card-header">
                     <span class="card-title workspace-title">
@@ -156,7 +156,7 @@
                 </div>
             </div>
         </div>
-        <div class="widget-column col-md-6">
+        <div class="panel-column col-md-6">
             <div class="card" ng-controller="chartCtrl">
                 <div class="card-header" ng-controller="projectChartCtrl">
                     <span class="card-title">
