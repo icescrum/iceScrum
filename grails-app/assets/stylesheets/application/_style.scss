@@ -251,6 +251,10 @@ nav.navbar {
       display: flex;
       align-items: center;
 
+      .card-title {
+        margin: 0;
+      }
+
       > span:not(:first-child) {
         margin-left: 22px;
       }
