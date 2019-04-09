@@ -96,7 +96,7 @@ controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'Cac
             return "<div style='height:" + height + "px;width:" + width + "px;'/>";
         },
         sortableId: 'widgets',
-        containment: '.widget-dashboard > .row',
+        containment: '.widget-view > .row',
         containerPositioning: 'relative'
     };
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set

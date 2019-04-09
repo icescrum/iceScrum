@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:window windowDefinition="${windowDefinition}" classes="widget-dashboard">
+<is:window windowDefinition="${windowDefinition}" classes="widget-view">
     <div class="d-flex flex-wrap panels">
         <div class="panel-column col-md-6">
             <div class="card">

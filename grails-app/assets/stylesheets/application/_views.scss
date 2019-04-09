@@ -21,6 +21,48 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
 
+////////////////////
+// Home
+////////////////////
+
+.home-header {
+  height: 300px;
+  background: $is_bg-color;
+
+  .home-projects-title {
+    padding: 0 $is-spacer-x;
+    color: #111111;
+    font-size: 2.8125rem;
+    font-family: averta-bold;
+  }
+
+  .home-projects {
+    display: flex;
+
+    .home-project, .home-project-add {
+      border-radius: 6px;
+      padding: 1.25rem;
+      width: 196px;
+      height: 188px;
+      margin: $is-spacer-x;
+    }
+
+    .home-project {
+      box-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15);
+
+      .home-project-title {
+        line-height: 1.1;
+        @extend %is-title;
+      }
+    }
+
+    .home-project-add {
+      cursor: pointer;
+      font-size: 20px;
+      border: solid 1px $is-outline-color;
+    }
+  }
+}
 
 ////////////////////
 // Dashboards (settings + project dashboard)
@@ -103,6 +145,12 @@
     border: solid 1px $is-outline-color;
     margin: 0 12px;
     padding: 15px;
+
+    .grid-group.sticky-notes {
+      padding-left: 0;
+      padding-right: 0;
+      margin: 0 (-$is-sticky-note-spacer);
+    }
 
     .sprint-title {
       font-size: 1rem;

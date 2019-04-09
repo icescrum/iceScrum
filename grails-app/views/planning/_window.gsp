@@ -84,7 +84,7 @@
                     <span class="timebox-dates timebox-dates-small">
                         <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                     </span>
-                    <span class="sprint-values">
+                    <span class="sprint-values ml-3">
                         <span ng-if="sprint.velocity || sprint.capacity">
                             <span>{{ message('is.sprint.' + (sprint.state > sprintStatesByName.TODO ? 'velocity' : 'plannedVelocity')) }}</span>
                             <strong ng-if="sprint.state > sprintStatesByName.TODO"

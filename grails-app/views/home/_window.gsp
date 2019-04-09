@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2015 Kagilum.
+- Copyright (c) 2019 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -15,12 +15,34 @@
 - You should have received a copy of the GNU Affero General Public License
 - along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
 -
-- Authors:Marwah Soltani (msoltani@kagilum.com)
+- Authors:
 -
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div id="view-home" class="view widget-dashboard">
+<div id="view-home" class="view widget-view">
     <div class="content">
-        <div class="row widgets"
+        <div class="home-header">
+            <div class="home-projects-title">Your <span class="sharpie-highlight">projects</span></div>
+            <div class="home-projects">
+                <div class="home-project"
+                     ng-repeat="project in projects">
+                    <div class="home-project-title">{{ ::project.name }}</div>
+                    <a href="{{:: getProjectUrl(project, 'backlog') }}"
+                       class="btn btn-secondary btn-sm"
+                       role="button">${message(code: 'is.ui.backlogs')}</a>
+                    <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
+                       class="btn btn-secondary btn-sm"
+                       role="button">${message(code: 'todo.is.ui.taskBoard')}</a>
+                </div>
+                <div class="home-project-add"
+                     ui-sref="new"
+                     ng-if="projectCreationEnabled">
+                    ${message(code: 'todo.is.ui.project.createNew')}
+                </div>
+            </div>
+        </div>
+        <div class="widgets"
              as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
              is-disabled="!authorizedWidget('move')"
              ng-model="widgets">
@@ -33,7 +55,7 @@
         </div>
         <div class="add-widget" ng-if="authorizedWidget('create')">
             <button class="btn btn-primary" ng-click="showAddWidgetModal()">
-                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                ${message(code: 'is.button.add')}
             </button>
         </div>
     </div>

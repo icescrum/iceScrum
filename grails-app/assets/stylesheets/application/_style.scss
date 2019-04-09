@@ -595,3 +595,63 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
     }
   }
 }
+
+////////////////////
+// Widgets
+////////////////////
+
+.widget-view {
+  overflow-x: hidden;
+
+  .add-widget {
+    position: fixed;
+    bottom: 0.825rem;
+    right: $is-spacer-x;
+  }
+}
+
+.widgets {
+
+  display: flex;
+
+  .widget {
+    .card {
+      margin: $is-spacer-x;
+      border-radius: 0.375rem;
+      background-color: $is-bg-color;
+
+      .card-header {
+        background: none;
+      }
+
+      .card-body {
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+
+    &.widget-height-1 .card {
+      height: 250px;
+    }
+
+    &.widget-height-2 .card {
+      height: 500px;
+    }
+
+    &.widget-height-3 .card {
+      height: 750px;
+    }
+
+    &.widget-width-1 .card {
+      width: 250px;
+    }
+
+    &.widget-width-2 .card {
+      width: 500px;
+    }
+
+    &.widget-width-3 .card {
+      width: 750px;
+    }
+  }
+}
