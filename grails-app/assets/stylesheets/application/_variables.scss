@@ -111,6 +111,7 @@ $font-family-base: "averta-regular", "Arial", "Helvetica", "sans-serif";
 $body-bg: $is-bg-color;
 $primary: $is-primary-color;
 $secondary: $is-bg-color;
+$red: #ff3e33;
 $body-color: $is-text-color;
 $border-radius-sm: .25rem;
 $progress-border-radius: 0;
@@ -159,10 +160,16 @@ $modal-header-border-color: $is-border-color-alt;
 $modal-content-bg: $is-bg-color;
 
 $dropdown-bg: $is-bg-color;
+$dropdown-link-hover-bg: $is-bg-color;
+$dropdown-link-active-bg: $is-bg-color;
 $dropdown-header-color: $is_text-color-alt;
 $dropdown-link-color: $is_text-color-alt;
+$dropdown-link-hover-color: $is_text-color-alt;
+$dropdown-link-active-color: $is_text-color-alt;
 $dropdown-font-size: $is-font-size-sm;
 $dropdown-divider-bg: $is-border-color-alt;
+$dropdown-border-radius: 0;
+$dropdown-border-width: 0;
 
 $tooltip-color: $is_text-color-alt;
 $tooltip-bg: $is-bg-color;

@@ -69,7 +69,7 @@ body {
         flex: 1 0 auto;
 
         > .card-header {
-          z-index: 1; // To ensure that drop-shadow
+          z-index: 1; // To ensure that box-shadow
         }
 
         > .card-body {
@@ -119,7 +119,6 @@ body {
 ////////////////////
 
 h1 {
-  padding: 0 $is-spacer-x;
   color: $is_text-color-alt;
   font-size: 2.8125rem;
   font-family: averta-bold;
@@ -287,6 +286,16 @@ nav.navbar {
 
 .dropdown-toggle {
   cursor: pointer;
+}
+
+.dropdown-button {
+  width: 100%;
+  text-align: center;
+  padding-top: 0.1875rem;
+  padding-bottom: 0.1875rem;
+  font-family: $font-family-base;
+  font-size: 0.875rem;
+  box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
 }
 
 @each $state, $color in $is-state-colors {

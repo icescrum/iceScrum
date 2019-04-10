@@ -150,41 +150,6 @@
     </a>
     </script>
 
-    <script type="text/ng-template" id="profile.panel.html">
-    <div class="media">
-        <img ng-src="{{ currentUser | userAvatar }}"
-             alt="{{currentUser | userFullName}}"
-             height="50px"
-             width="50px"/>
-        <div class="media-body">
-            <div>
-                {{ (currentUser | userFullName) + ' (' + currentUser.username + ')' }}
-            </div>
-            <div class="text-muted">
-                <div>{{currentUser.email}}</div>
-                <div>{{currentUser.preferences.activity}}</div>
-                <div>
-                    <strong>{{:: getCurrentUserRoles() }}</strong>
-                </div>
-                <entry:point id="user-profile-panel"/>
-            </div>
-        </div>
-    </div>
-    <div class="btn-toolbar float-right">
-        <a href
-           class="btn btn-secondary"
-           hotkey="{'shift+u':showProfile}"
-           hotkey-description="${message(code: 'todo.is.ui.profile')}"
-           defer-tooltip="${message(code: 'is.dialog.profile')} (shift+u)"
-           ng-click="showProfile()">${message(code: 'is.dialog.profile')}
-        </a>
-        <a class="btn btn-danger"
-           href="${createLink(controller: 'logout')}">
-            ${message(code: 'is.logout')}
-        </a>
-    </div>
-    </script>
-
     <script type="text/ng-template" id="notifications.panel.html">
     <div class="empty-content" ng-show="groupedUserActivities === undefined">
         <i class="fa fa-refresh fa-spin"></i>

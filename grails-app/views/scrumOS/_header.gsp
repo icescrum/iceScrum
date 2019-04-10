@@ -258,25 +258,22 @@
     </g:if>
     <div ng-if=":: currentUser.username" uib-dropdown on-toggle="notificationToggle(open)">
         <div uib-dropdown-toggle class="no-caret">
-            <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
+            <i class="fa fa-bell" ng-class="{'empty':getUnreadActivities() == 0}"></i>
             <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
         </div>
         <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'notifications.panel.html'"></div>
     </div>
-    <div>
+    <div ng-if=":: currentUser.username" uib-dropdown>
         <a hotkey="{ 'shift+h': goToHome}"
            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
-           defer-tooltip="${message(code: 'is.ui.home')} (shift+h)"
-           tooltip-placement="bottom"
            ng-href="{{:: serverUrl }}">
-            <i class="fa fa-home"></i>
+            <img ng-src="{{ currentUser | userAvatar }}"
+                 class="{{ currentUser | userColorRoles }}"
+                 tooltip-placement="left"
+                 defer-tooltip="{{ currentUser.email }} {{:: getCurrentUserRoles() }}"
+                 height="37px"
+                 width="37px"/>
         </a>
-    </div>
-    <div ng-if=":: currentUser.username" uib-dropdown>
-        <div class="no-caret" uib-dropdown-toggle>
-            <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="37px" width="37px"/>
-        </div>
-        <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'profile.panel.html'"></div>
     </div>
     <button id="login"
             ng-show="!(currentUser.username)"

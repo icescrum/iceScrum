@@ -23,7 +23,45 @@
 <div id="view-home" class="view widget-view">
     <div class="content">
         <div class="home-header">
-            <h1 class="home-projects-title">Your <span class="sharpie-highlight">projects</span></h1>
+            <div class="home-header-title">
+                <h1 class="home-projects-title">${message(code: 'is.ui.your')} <span class="sharpie-highlight">${message(code: 'is.ui.projects').toLowerCase()}</span></h1>
+                <div uib-dropdown>
+                    <button class="btn btn-secondary btn-sm"
+                            uib-dropdown-toggle
+                            type="button">
+                        Mon compte
+                    </button>
+                    <div uib-dropdown-menu class="dropdown-menu-right profile-dropdown">
+                        <div class="dropdown-item">
+                            <div class="media">
+                                <img class="rounded-circle mr-2"
+                                     ng-src="{{ currentUser | userAvatar }}"
+                                     height="37px"
+                                     width="37px"/>
+                                <div class="media-body">
+                                    <div>{{ (currentUser | userFullName) }}</div>
+                                    <div class="text-muted profile-subtitle">
+                                        <div>{{currentUser.email}}</div>
+                                        <entry:point id="user-profile-panel"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href
+                               class="btn btn-secondary dropdown-button"
+                               hotkey="{'shift+u':showProfile}"
+                               hotkey-description="${message(code: 'todo.is.ui.profile')}"
+                               ng-click="showProfile()">${message(code: 'is.dialog.profile')}
+                            </a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-center text-danger" href="${createLink(controller: 'logout')}" class="delete-link">
+                            <strong>${message(code: 'is.logout')}</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
             <div class="home-projects">
                 <div class="home-project"
                      ng-repeat="project in projects">

@@ -238,6 +238,20 @@ form label {
 // Other
 ////////////////////
 
+.dropdown-menu {
+  box-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15);
+
+  .dropdown-item {
+    &.active {
+      font-family: averta-bold;
+    }
+  }
+}
+
+////////////////////
+// Other
+////////////////////
+
 .nav-link.active, .navbar-nav .active .nav-link {
   font-family: averta-bold;
 }

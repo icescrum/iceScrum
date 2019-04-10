@@ -25,15 +25,34 @@
 // Home
 ////////////////////
 
+.profile-dropdown {
+  width: 244px;
+
+  .dropdown-item {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+}
+
+.profile-subtitle {
+  font-size: 0.75rem;
+}
+
 .home-header {
   height: 300px;
   background: $is_bg-color;
 
-  .home-projects-title {
-    line-height: 1.2;
-    margin-bottom: 0;
-  }
+  .home-header-title {
+    padding: 0.875rem $is-spacer-x 0 $is-spacer-x;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
+    .home-projects-title {
+      line-height: 1.2;
+      margin-bottom: 0;
+    }
+  }
 
   .home-projects {
     display: flex;
