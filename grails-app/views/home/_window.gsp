@@ -23,7 +23,7 @@
 <div id="view-home" class="view widget-view">
     <div class="content">
         <div class="home-header">
-            <div class="home-projects-title">Your <span class="sharpie-highlight">projects</span></div>
+            <h1 class="home-projects-title">Your <span class="sharpie-highlight">projects</span></h1>
             <div class="home-projects">
                 <div class="home-project"
                      ng-repeat="project in projects">

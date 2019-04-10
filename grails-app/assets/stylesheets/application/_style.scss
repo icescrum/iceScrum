@@ -118,6 +118,13 @@ body {
 // General style
 ////////////////////
 
+h1 {
+  padding: 0 $is-spacer-x;
+  color: #111111;
+  font-size: 2.8125rem;
+  font-family: averta-bold;
+}
+
 .main {
   background-color: $is-bg-color-ter;
 }
@@ -150,6 +157,8 @@ nav.navbar {
   .nav-item-logo {
     border-right: 1px solid rgba(200, 200, 204, 0.42);
     display: flex;
+    margin-left: 8px;
+    padding-right: 7px;
   }
 
   .nav-item-main {
@@ -654,4 +663,14 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
       width: 750px;
     }
   }
+}
+
+////////////////////
+// Large inputs
+////////////////////
+
+.large-input.form-control {
+  line-height: 2.3;
+  border-radius: 2px;
+  font-size: 0.875rem;
 }

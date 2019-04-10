@@ -33,11 +33,11 @@
                 <form action='${postUrl}' name="loginform" id="loginform" action="?" method="post" autocomplete='off'>
                     <p class="form-group">
                         <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                        <input type="text" class="input-text form-control" name="j_username" id="username" value="">
+                        <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="">
                     </p>
                     <p class="form-group">
                         <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
-                        <input class="input-text form-control" type="password" name="j_password" id="password">
+                        <input class="input-large input-text form-control" type="password" name="j_password" id="password">
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
