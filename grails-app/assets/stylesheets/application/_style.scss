@@ -120,7 +120,7 @@ body {
 
 h1 {
   padding: 0 $is-spacer-x;
-  color: #111111;
+  color: $is_text-color-alt;
   font-size: 2.8125rem;
   font-family: averta-bold;
 }
@@ -157,8 +157,6 @@ nav.navbar {
   .nav-item-logo {
     border-right: 1px solid rgba(200, 200, 204, 0.42);
     display: flex;
-    margin-left: 8px;
-    padding-right: 7px;
   }
 
   .nav-item-main {
