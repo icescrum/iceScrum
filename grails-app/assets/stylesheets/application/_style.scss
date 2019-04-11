@@ -420,6 +420,18 @@ $state-dot-size-sm: 0.5rem;
   cursor: default;
 }
 
+.hover-container {
+  .hover-visible {
+    opacity: 0;
+  }
+
+  &:hover {
+    .hover-visible {
+      opacity: 1;
+    }
+  }
+}
+
 ////////////////////
 // Details view
 ////////////////////

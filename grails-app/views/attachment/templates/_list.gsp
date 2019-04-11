@@ -27,7 +27,7 @@
     <tbody>
         <tr ng-repeat="attachment in attachmentable.attachments">
             <td>
-                <div class="col-sm-8 col-xs-8 hover-container">
+                <div class="col-xs-8">
                     <div class="filename" title="{{ attachment.filename }}">
                         <i ng-if=":: attachment.ext | fileicon" class="fa fa-{{:: attachment.ext | fileicon }}"></i>
                         <a target="{{:: attachment.provider ? '_blank' : '' }}"
@@ -40,11 +40,11 @@
                     <a href
                        ng-if=":: authorizedAttachment('update', attachment)"
                        style="margin-top: 2px; vertical-align: top;"
-                       class="hover-visible-inline small"
+                       class="small"
                        ng-click="showEditAttachmentName(attachment, attachmentable)">(${message(code: 'todo.is.ui.attachment.edit')})</a>
                     <div><small ng-if=":: attachment.length > 0">{{:: attachment.length | filesize }}</small> <small>{{ getAttachmentProviderName(attachment) }}</small></div>
                 </div>
-                <div class="col-sm-4 col-xs-4 text-right">
+                <div class="col-xs-4 text-right">
                     <div class="btn-group">
                         <a ng-if=":: isAttachmentEditable(attachment)"
                            ng-click=":: editAttachment(attachment, attachmentable, clazz)"

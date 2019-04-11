@@ -23,14 +23,14 @@
 <is:window windowDefinition="${windowDefinition}" classes="widget-view">
     <div class="d-flex flex-wrap panels">
         <div class="panel-column col-md-6">
-            <div class="card">
+            <div class="card hover-container">
                 <div class="card-header">
                     <span class="card-title workspace-title">
                         <span class="sharpie-highlight">{{ project.name }}</span>
                         <entry:point id="window-project-name-right"/>
                     </span>
-                    <div class="btn-toolbar float-right visible-on-hover">
-                        <button class="btn btn-secondary btn-sm"
+                    <div class="btn-toolbar float-right">
+                        <button class="btn btn-secondary btn-sm hover-visible"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
                                 type="button">
@@ -80,12 +80,12 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card hover-container">
                 <div class="card-header">
                     <span class="card-title">
                         ${message(code: 'is.ui.project.vision.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm float-right visible-on-hover"
+                    <a class="btn btn-secondary btn-sm float-right hover-visible"
                        href="#/planning/{{ release.id }}/details"
                        ng-if="release.id && authorizedRelease('update', release)">
                         <i class="fa fa-pencil"></i>
@@ -95,12 +95,12 @@
                      ng-bind-html="release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'">
                 </div>
             </div>
-            <div class="card">
+            <div class="card hover-container">
                 <div class="card-header">
                     <span class="card-title">
                         ${message(code: 'is.ui.project.doneDefinition.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm float-right visible-on-hover"
+                    <a class="btn btn-secondary btn-sm float-right hover-visible"
                        href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                        ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
                         <i class="fa fa-pencil"></i>
@@ -110,12 +110,12 @@
                      ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'">
                 </div>
             </div>
-            <div class="card">
+            <div class="card hover-container">
                 <div class="card-header">
                     <span class="card-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm float-right visible-on-hover"
+                    <a class="btn btn-secondary btn-sm float-right hover-visible"
                        href="#/taskBoard/{{ lastSprint.id }}/details"
                        ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
                         <i class="fa fa-pencil"></i>
@@ -224,7 +224,7 @@
                 </div>
             </div>
             <entry:point id="project-dashboard-top-right"/>
-            <div class="card">
+            <div class="card hover-container">
                 <div class="card-header">
                     <span class="card-title">
                         ${message(code: 'todo.is.ui.history')}
@@ -233,7 +233,7 @@
                         <a class="rss"
                            defer-tooltip="${message(code: 'todo.is.ui.feed')}"
                            href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
-                            <i class="fa fa-rss fa-lg visible-on-hover"></i>
+                            <i class="fa fa-rss fa-lg hover-visible"></i>
                         </a>
                     </small>
                 </div>
