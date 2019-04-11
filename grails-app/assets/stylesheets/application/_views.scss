@@ -62,11 +62,6 @@
 
     .home-project {
       box-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15);
-
-      .home-project-title {
-        line-height: 1.1;
-        @extend %is-title;
-      }
     }
 
     .home-project-add {

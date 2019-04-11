@@ -65,7 +65,7 @@
             <div class="home-projects">
                 <div class="home-project"
                      ng-repeat="project in projects">
-                    <div class="home-project-title">{{ ::project.name }}</div>
+                    <h3>{{ ::project.name }}</h3>
                     <a href="{{:: getProjectUrl(project, 'backlog') }}"
                        class="btn btn-secondary btn-sm"
                        role="button">${message(code: 'is.ui.backlogs')}</a>
@@ -76,7 +76,7 @@
                 <div class="home-project-add"
                      ui-sref="new"
                      ng-if="projectCreationEnabled">
-                    ${message(code: 'todo.is.ui.project.createNew')}
+                    <strong>${message(code: 'todo.is.ui.project.createNew')}</strong>
                 </div>
             </div>
         </div>
