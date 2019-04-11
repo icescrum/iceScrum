@@ -83,7 +83,6 @@
             <div ng-if="showStoryProgress(story)" class="progress">
                 <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
                 <div class="progress-bar"
-                     ng-class="'bg-'+(story.testState | acceptanceTestColor)"
                      ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                 </div>
             </div>

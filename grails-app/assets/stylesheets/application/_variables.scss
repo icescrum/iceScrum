@@ -158,6 +158,7 @@ $modal-content-border-radius: 0;
 $modal-header-border-width: 1px;
 $modal-header-border-color: $is-border-color-alt;
 $modal-content-bg: $is-bg-color;
+$modal-inner-padding: 15px; // So that row negative padding work properly
 
 $dropdown-bg: $is-bg-color;
 $dropdown-link-hover-bg: $is-bg-color;
@@ -187,3 +188,13 @@ $toast-padding-x: 0.9375rem;
 $toast-padding-y: 0.4375rem;
 
 $table-accent-bg: $is-bg-color-alt;
+
+$headings-margin-bottom: 0;
+$h1-font-size: 2.8125rem;
+$h2-font-size: 2rem;
+$h3-font-size: 1.25rem;
+$h4-font-size: 1rem;
+$h5-font-size: 0.875rem;
+$h6-font-size: 0.75rem;
+$headings-color: $is_text-color-alt;
+$headings-font-family: averta-bold;

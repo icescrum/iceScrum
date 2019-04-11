@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="92" height="91" viewBox="0 0 92 91">
+    <defs>
+        <filter id="a" width="218.5%" height="217.7%" x="-58.4%" y="-58.7%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="7"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 1 0 0 0 0 0.798648059 0 0 0 0 0.00500126649 0 0 0 0.324983016 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        <linearGradient id="b" x1="0%" y1="91.632%" y2="4.901%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+        <linearGradient id="c" x1="6.258%" y1="96.062%" y2="31.304%">
+            <stop offset="0%" stop-color="#FFE802"/>
+            <stop offset="100%" stop-color="#FDCC01"/>
+        </linearGradient>
+        <linearGradient id="d" x1="108.934%" x2="10.141%" y1="14.707%" y2="98.656%">
+            <stop offset="0%" stop-color="#FAD961"/>
+            <stop offset="35.922%" stop-color="#F9B64B"/>
+            <stop offset="100%" stop-color="#F76B1C"/>
+        </linearGradient>
+        <linearGradient id="e" x1="0%" x2="92.123%" y1="99.485%" y2="5.248%">
+            <stop offset="0%" stop-color="#1180E7"/>
+            <stop offset="100%" stop-color="#D1E6F0"/>
+        </linearGradient>
+        <linearGradient id="f" x1="0%" x2="92.123%" y1="99.485%" y2="5.248%">
+            <stop offset="0%" stop-color="#1180E7"/>
+            <stop offset="100%" stop-color="#D1E6F0"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g filter="url(#a)" transform="translate(23 16.058)">
+            <path fill="url(#b)" fill-rule="nonzero" d="M0 0h6.3v6.267H0z"/>
+            <path fill="url(#c)" fill-rule="nonzero" d="M53.1 17.687L37.42 2.686H2.7v49.728h50.4z"/>
+            <path fill="url(#d)" d="M37.35 2.686v15.537H53.1z"/>
+        </g>
+        <path fill="url(#e)" fill-rule="nonzero" d="M0 37.605h6.3v6.267H0zM74.7 43.872H81v6.267h-6.3z" transform="translate(5 8)"/>
+        <path fill="url(#f)" fill-rule="nonzero" d="M33.3 73.419h3.6V77h-3.6z" transform="translate(5 8)"/>
+        <path fill="url(#b)" fill-rule="nonzero" d="M62.1 0h6.3v6.267h-6.3z" transform="translate(5 8)"/>
+        <path stroke="#FFF" stroke-opacity=".01" stroke-width=".01" d="M.005.005h91.99v90.99H.005z"/>
+    </g>
+</svg>

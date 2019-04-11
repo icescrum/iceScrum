@@ -91,7 +91,7 @@
                            hotkey="{'shift+a': showAppsModal}"
                            hotkey-description="${message(code: 'is.ui.apps')}"
                            ng-click="showAppsModal()">
-                            <b class="text-important">${message(code: 'is.ui.apps')}</b> <small class="text-muted">Shift A</small>
+                            <b class="text-primary">${message(code: 'is.ui.apps')}</b> <small class="text-muted">Shift A</small>
                         </a>
                         <entry:point id="header-menu-current-workspace"/>
                         <div ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-divider"></div>

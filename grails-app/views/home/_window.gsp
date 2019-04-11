@@ -24,7 +24,7 @@
     <div class="content">
         <div class="home-header">
             <div class="home-header-title">
-                <h1 class="home-projects-title">${message(code: 'is.ui.your')} <span class="sharpie-highlight">${message(code: 'is.ui.projects').toLowerCase()}</span></h1>
+                <h1>${message(code: 'is.ui.your')} <span class="sharpie-highlight">${message(code: 'is.ui.projects').toLowerCase()}</span></h1>
                 <div uib-dropdown>
                     <button class="btn btn-secondary btn-sm"
                             uib-dropdown-toggle
