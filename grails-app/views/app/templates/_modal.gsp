@@ -26,7 +26,7 @@
           footer="${false}"
           class="modal-split">
     <div class="row" ng-if="appDefinition">
-        <div class="col-xs-12 col-sm-3 modal-split-left">
+        <div class="col-sm-3 modal-split-left">
             <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
@@ -64,7 +64,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-xs-12 col-sm-9 modal-split-right">
+        <div class="col-sm-9 modal-split-right">
             <div ng-include="'app.details.html'"></div>
         </div>
     </div>

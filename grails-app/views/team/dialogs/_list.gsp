@@ -22,10 +22,10 @@
 --}%
 
 <is:modal title="${message(code: 'is.ui.team.menu')}"
-          class="split-modal"
+          class="modal-split"
           footer="${false}">
     <div class="row">
-        <div class="left-card col-sm-3">
+        <div class="col-sm-3 modal-split-left">
             <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
@@ -43,9 +43,12 @@
                     </span>
                 </div>
             </div>
-            <ul class="left-card-body nav nav-list">
-                <li ng-class="{ 'current': team.id == currentTeam.id }" ng-repeat="currentTeam in teams">
-                    <a ng-click="selectTeam(currentTeam)" href>{{ currentTeam.name }}</a>
+            <ul class="nav nav-pills nav-fill flex-column">
+                <li class="nav-item"
+                    ng-repeat="currentTeam in teams">
+                    <a class="nav-link"
+                       ng-class="{ 'active': team.id == currentTeam.id }"
+                       ng-click="selectTeam(currentTeam)" href>{{ currentTeam.name }}</a>
                 </li>
             </ul>
             <div class="left-card-bottom">
@@ -61,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="right-card col-sm-9" ng-switch="teamSelected()">
+        <div class="col-sm-9 modal-split-right" ng-switch="teamSelected()">
             <div ng-switch-default>
                 <div class="form-text">
                     ${message(code: 'is.ui.team.help')}

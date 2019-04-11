@@ -235,9 +235,9 @@
               name="addWidgetForm"
               form="addWidget(widgetDefinition)"
               submitButton="${message(code: 'is.ui.widget.add')}"
-              class="split-modal">
+              class="modal-split">
         <div class="row">
-            <div class="left-card col-sm-3">
+            <div class="col-sm-3 modal-split-left">
                 <div class="left-card-header">
                     <div class="input-group">
                         <input type="text"
@@ -254,16 +254,19 @@
                         </span>
                     </div>
                 </div>
-                <ul class="left-card-body nav nav-list">
-                    <li ng-class="{ 'current': currentWidgetDefinition.id == widgetDefinition.id }"
+                <ul class="nav nav-pills nav-fill flex-column">
+                    <li class="nav-item"
                         ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
-                        <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>
+                        <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)"
+                           class="nav-link"
+                           ng-class="{ 'active': currentWidgetDefinition.id == widgetDefinition.id }"
+                           href>
                             <i class="fa fa-{{ currentWidgetDefinition.icon }}"></i> {{ currentWidgetDefinition.name }}
                         </a>
                     </li>
                 </ul>
             </div>
-            <div class="right-card col-sm-9" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
+            <div class="col-sm-9 modal-split-right" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
                 <div ng-switch-when="true">
                     ${message(code: 'is.ui.widget.noAvailableWidgetDefinitions')}
                 </div>

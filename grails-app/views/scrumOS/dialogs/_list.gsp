@@ -24,9 +24,9 @@
 <is:modal title="${message(code: 'is.ui.workspaces')}"
           form="openWorkspace(workspace)"
           submitButton="${message(code: 'todo.is.ui.open')}"
-          class="split-modal">
+          class="modal-split">
     <div class="row">
-        <div class="left-card col-sm-3">
+        <div class="col-sm-3 modal-split-left">
             <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
@@ -44,9 +44,12 @@
                     </span>
                 </div>
             </div>
-            <ul class="left-card-body nav nav-list">
-                <li ng-class="{'current': currentWorkspace.id == workspace.id && currentWorkspace.class == workspace.class}" ng-repeat="currentWorkspace in workspaces">
-                    <a ng-click="selectWorkspace(currentWorkspace)" href>
+            <ul class="nav nav-pills nav-fill flex-column">
+                <li class="nav-item"
+                    ng-repeat="currentWorkspace in workspaces">
+                    <a class="nav-link"
+                       ng-class="{'active': currentWorkspace.id == workspace.id && currentWorkspace.class == workspace.class}"
+                       ng-click="selectWorkspace(currentWorkspace)" href>
                         <i ng-if="currentWorkspace.pkey && !currentWorkspace.preferences.hidden" class="fa fa-eye"></i>
                         <i class="fa" ng-class="['fa', {'fa-folder': currentWorkspace.pkey, 'fa-briefcase': currentWorkspace.fkey}]"></i>
                         {{ currentWorkspace.name }}
@@ -66,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div class="right-card col-sm-9" ng-switch="workspaces != undefined && workspaces.length == 0 && summary">
+        <div class="col-sm-9 modal-split-right" ng-switch="workspaces != undefined && workspaces.length == 0 && summary">
             <div ng-switch-when="true">
                 ${message(code: 'todo.is.ui.project.noproject')}
             </div>

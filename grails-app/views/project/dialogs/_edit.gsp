@@ -23,7 +23,7 @@
 
 <is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="modal-split" footer="${false}">
     <div class="row">
-        <div class="col-xs-12 col-sm-3 modal-split-left">
+        <div class="col-sm-3 modal-split-left">
             <ul class="nav nav-pills nav-fill flex-column">
                 <li class="nav-item"
                     ng-if="authorizedProject('update', currentProject)">
@@ -89,7 +89,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-xs-12 col-sm-9 modal-split-right" ng-switch="getCurrentPanel()">
+        <div class="col-sm-9 modal-split-right" ng-switch="getCurrentPanel()">
             <section ng-switch-when="general"
                      title="${message(code: 'is.dialog.wizard.section.project')}">
                 <div ng-include="'edit.general.project.html'"></div>

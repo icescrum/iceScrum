@@ -641,6 +641,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
       }
 
       .card-body {
+        overflow: auto;
         border-radius: 0;
         box-shadow: none;
       }
