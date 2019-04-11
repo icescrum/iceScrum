@@ -54,7 +54,7 @@ class WidgetController implements ControllerErrorHandler {
         } else {
             User user = springSecurityService.currentUser
             if (user) {
-                widgets = user.preferences.widgets.findAll { it.widgetDefinitionId != 'quickProjects'} // Legacy widget replaced by dedicated line
+                widgets = user.preferences.widgets.findAll { it.widgetDefinitionId != 'quickProjects' } // Legacy widget replaced by dedicated line
             } else {
                 widgets = uiDefinitionService.widgetDefinitions.findResults { id, WidgetDefinition widgetDefinition ->
                     ApplicationSupport.isAllowed(widgetDefinition, params) ? ['widgetDefinitionId': id, 'height': widgetDefinition.height, 'width': widgetDefinition.width] : null
@@ -164,7 +164,6 @@ class WidgetController implements ControllerErrorHandler {
         def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults { id, WidgetDefinition widgetDefinition ->
             ApplicationSupport.isAllowed(widgetDefinition, params) ? [
                     id         : id,
-                    icon       : widgetDefinition.icon,
                     name       : message(code: widgetDefinition.name),
                     description: message(code: widgetDefinition.description),
                     available  : widgetDefinition.allowDuplicate || !existingWidgets*.widgetDefinitionId.contains(id)

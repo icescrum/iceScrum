@@ -25,7 +25,6 @@
 <div class="modal-search text-center">
     <input type="text"
            ng-model="holder.appSearch"
-           name="app-search-input"
            class="form-control search-input"
            placeholder="${message(code: 'todo.is.ui.search.action')}">
 </div>

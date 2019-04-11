@@ -27,22 +27,13 @@
           class="modal-split">
     <div class="row">
         <div class="col-sm-3 modal-split-left">
-            <div class="left-card-header">
-                <div class="input-group">
-                    <input type="text"
-                           ng-model="workspaceSearch"
-                           ng-change="searchWorkspaces()"
-                           ng-model-options="{debounce: 300}"
-                           class="form-control"
-                           placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-append">
-                        <button class="btn btn-secondary btn-sm"
-                                type="button"
-                                ng-click="workspaceSearch = null; searchWorkspaces()">
-                            <i class="fa" ng-class="workspaceSearch ? 'fa-times' : 'fa-search'"></i>
-                        </button>
-                    </span>
-                </div>
+            <div class="modal-split-search">
+                <input type="text"
+                       ng-model="workspaceSearch"
+                       ng-change="searchWorkspaces()"
+                       ng-model-options="{debounce: 300}"
+                       class="form-control search-input"
+                       placeholder="${message(code: 'todo.is.ui.search.action')}">
             </div>
             <ul class="nav nav-pills nav-fill flex-column">
                 <li class="nav-item"
@@ -56,7 +47,7 @@
                     </a>
                 </li>
             </ul>
-            <div class="left-card-bottom">
+            <div class="modal-split-pagination">
                 <div uib-pagination
                      boundary-links="true"
                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"

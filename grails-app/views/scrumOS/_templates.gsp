@@ -231,28 +231,16 @@
 
     <script type="text/ng-template" id="addWidget.modal.html">
     <is:modal title="${message(code: 'is.ui.widget.new')}"
-              validate="true"
-              name="addWidgetForm"
               form="addWidget(widgetDefinition)"
               submitButton="${message(code: 'is.ui.widget.add')}"
               class="modal-split">
         <div class="row">
             <div class="col-sm-3 modal-split-left">
-                <div class="left-card-header">
-                    <div class="input-group">
-                        <input type="text"
-                               ng-model="widgetDefinitionSearch"
-                               name="widget-definition-search-input"
-                               class="form-control"
-                               placeholder="${message(code: 'todo.is.ui.search.action')}">
-                        <span class="input-group-append">
-                            <button class="btn btn-secondary btn-sm"
-                                    type="button"
-                                    ng-click="widgetDefinitionSearch = ''">
-                                <i class="fa" ng-class="widgetDefinitionSearch ? 'fa-times' : 'fa-search'"></i>
-                            </button>
-                        </span>
-                    </div>
+                <div class="modal-split-search">
+                    <input type="text"
+                           ng-model="widgetDefinitionSearch"
+                           class="form-control search-input"
+                           placeholder="${message(code: 'todo.is.ui.search.action')}">
                 </div>
                 <ul class="nav nav-pills nav-fill flex-column">
                     <li class="nav-item"
@@ -261,7 +249,7 @@
                            class="nav-link"
                            ng-class="{ 'active': currentWidgetDefinition.id == widgetDefinition.id }"
                            href>
-                            <i class="fa fa-{{ currentWidgetDefinition.icon }}"></i> {{ currentWidgetDefinition.name }}
+                            {{ currentWidgetDefinition.name }}
                         </a>
                     </li>
                 </ul>
@@ -271,7 +259,8 @@
                     ${message(code: 'is.ui.widget.noAvailableWidgetDefinitions')}
                 </div>
                 <div class="col-md-12" ng-switch-default>
-                    <div ng-include="'widgetDefinition.details.html'"></div>
+                    <h4>{{ widgetDefinition.name }}</h4>
+                    <p>{{ widgetDefinition.description }}</p>
                 </div>
             </div>
         </div>
@@ -338,11 +327,6 @@
              defer-tooltip="{{:: user | userFullName }}"/>
         <span class="team-count" ng-if=":: project.allUsers.length > 2">+ {{ project.allUsers.length - 2 }}</span>
     </div>
-    </script>
-
-    <script type="text/ng-template" id="widgetDefinition.details.html">
-    <h4><i class="fa fa-{{ widgetDefinition.icon }}"></i> {{ widgetDefinition.name }}</h4>
-    <p>{{ widgetDefinition.description }}</p>
     </script>
 
     <script type="text/ng-template" id="documentation.html">

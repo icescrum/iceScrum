@@ -580,6 +580,17 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   }
 }
 
+.modal-split-search {
+  margin-top: -3px;
+  margin-bottom: 13px;
+
+  .search-input {
+    height: 35px;
+    background-size: 16px;
+    padding-left: 44px;
+  }
+}
+
 .modal-search {
   height: 77px;
   background-color: $is-bg-color-alt;

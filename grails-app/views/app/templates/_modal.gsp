@@ -27,22 +27,12 @@
           class="modal-split">
     <div class="row" ng-if="appDefinition">
         <div class="col-sm-3 modal-split-left">
-            <div class="left-card-header">
-                <div class="input-group">
-                    <input type="text"
-                           ng-model="holder.appSearch"
-                           name="app-search-input"
-                           value="{{ holder.appSearch }}"
-                           class="form-control"
-                           placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-append">
-                        <button class="btn btn-secondary btn-sm"
-                                type="button"
-                                ng-click="searchApp('')">
-                            <i class="fa" ng-class="holder.appSearch ? 'fa-times' : 'fa-search'"></i>
-                        </button>
-                    </span>
-                </div>
+            <div class="modal-split-search">
+                <input type="text"
+                       ng-model="holder.appSearch"
+                       value="{{ holder.appSearch }}"
+                       class="form-control search-input"
+                       placeholder="${message(code: 'todo.is.ui.search.action')}">
             </div>
             <ul class="nav nav-pills nav-fill flex-column">
                 <div class="text-center more-results" ng-hide="filteredApps.length">

@@ -77,7 +77,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 if (form == undefined) {
                     return;
                 }
-                var inputs = element.find('input[ng-model]:not([validation-watched]):not(.ui-select-search), textarea[ng-model]:not([validation-watched])');
+                var inputs = element.find('input[ng-model]:not([validation-watched]):not(.ui-select-search):not(.search-input), textarea[ng-model]:not([validation-watched])');
                 angular.forEach(inputs, function(it) {
                     var input = angular.element(it);
                     input.attr('validation-watched', '');

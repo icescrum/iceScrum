@@ -26,7 +26,6 @@ import org.icescrum.core.utils.ServicesUtils
 
 /*
     'windowName' {
-        icon                        default: ''                   | String (fontawesome)
         help                        default: ''                   | String (i18n key)
         secured                     default: "permitAll()"        | String (spEl expression)
         workspace                   default: "project"            | String (project or portfolio or ...)
@@ -133,7 +132,6 @@ windows = {
 
 /*
     'widgetName' {
-        icon                        default: ''                   | String (fontawesome)
         title                       default: name                 | String (i18n key or ...)
         secured                     default: "permitAll()"        | String (spEl expression)
         workspace                   default: null                 | String (project or portfolio or ...)
@@ -161,7 +159,6 @@ widgets = {
     'feed' {
         height 1
         width 2
-        icon 'rss'
         title '{{ holder.feed.title }}'
         secured 'isAuthenticated()'
         ngController 'feedWidgetCtrl'
@@ -182,7 +179,6 @@ widgets = {
     'notes' {
         height 1
         width 2
-        icon 'pencil-square-o'
         secured 'isAuthenticated()'
         defaultSettings = [text: '']
         onUpdate { widget, settings ->
@@ -192,14 +188,12 @@ widgets = {
     'publicProjects' {
         height 2
         width 3
-        icon 'folder'
         secured 'isAuthenticated()'
         allowDuplicate false
     }
     'tasks' {
         height 2
         width 2
-        icon 'tasks'
         allowDuplicate false
         secured 'isAuthenticated()'
         ngController 'taskWidgetCtrl'
@@ -210,7 +204,6 @@ widgets = {
     'chart' {
         height 2
         width 2
-        icon 'bar-chart'
         title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
         secured 'isAuthenticated()'
         ngController 'projectChartWidgetCtrl'
@@ -219,7 +212,6 @@ widgets = {
     'backlogChart' {
         height 1
         width 1
-        icon 'pie-chart'
         title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
         secured 'isAuthenticated()'
         ngController = "backlogChartWidgetCtrl"
