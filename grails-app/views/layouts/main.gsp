@@ -52,7 +52,7 @@
         <div id="application-loading" class="container h-100 d-flex justify-content-center">
             <div class="my-auto">
                 <div id="main-loader"></div>
-                <div class="loading-text text-center">{{ application.loadingPercent }} {{ application.loadingText }}</div>
+                %{--<div class="loading-text text-center">{{ application.loadingPercent }} {{ application.loadingText }}</div>--}%
             </div>
         </div>
         <is:header/>

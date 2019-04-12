@@ -65,9 +65,9 @@
             <div class="home-projects">
                 <div class="home-project"
                      ng-repeat="project in projects">
-                    <h3>{{ ::project.name }}</h3>
+                    <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
                     <a href="{{:: getProjectUrl(project, 'backlog') }}"
-                       class="btn btn-secondary btn-sm"
+                       class="btn btn-secondary btn-sm mt-2 mb-2"
                        role="button">${message(code: 'is.ui.backlogs')}</a>
                     <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
                        class="btn btn-secondary btn-sm"
