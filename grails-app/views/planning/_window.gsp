@@ -33,17 +33,15 @@
                     <span>{{ (release.state | i18n: 'ReleaseStates') }}</span>
                 </span>
             </div>
-            <div class="btn-toolbar">
-                <div class="btn-group">
-                    <button class="btn btn-icon btn-caret-left"
-                            ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
-                            ng-click="visibleSprintsPrevious()">
-                    </button>
-                    <button class="btn btn-icon btn-caret-right"
-                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
-                            ng-click="visibleSprintsNext()">
-                    </button>
-                </div>
+            <div class="btn-toolbar align-items-center">
+                <button class="btn btn-icon btn-caret-left"
+                        ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
+                        ng-click="visibleSprintsPrevious()">
+                </button>
+                <button class="btn btn-icon btn-caret-right"
+                        ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
+                        ng-click="visibleSprintsNext()">
+                </button>
                 <button type="button"
                         class="btn btn-secondary btn-sm hidden-xs hidden-sm"
                         defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"

@@ -144,7 +144,7 @@
         </div>
     </div>
     <div class="col-sm-12 form-group">
-        <uib-progress class="form-control-plaintext form-bar" max="totalDuration">
+        <uib-progress class="timeline-bar" max="totalDuration">
             <uib-bar ng-repeat="sprint in sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
                      uib-tooltip-template="'sprint.tooltip.html'"

@@ -165,7 +165,7 @@
             <div ng-if="authorizedTask('upload', task)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
-                        class="btn btn-secondary"
+                        class="btn btn-secondary btn-sm"
                         flow-btn>
                     <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                 </button>

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="release.timeline.html">
-<uib-progress class="form-control-plaintext form-bar"
+<uib-progress class="timeline-bar"
               uib-tooltip="{{ release.name }}"
               max="release.duration">
     <uib-bar ng-repeat="sprint in releaseParts"
@@ -33,25 +33,6 @@
              value="sprint.duration">
         {{ sprint.id ? sprint.index : '' }}
     </uib-bar>
-    <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
-</uib-progress>
-</script>
-<script type="text/ng-template" id="release.timeline.href.html">
-<uib-progress class="form-control-plaintext form-bar"
-              uib-tooltip="{{ release.name }}"
-              max="release.duration">
-    <a href="{{ sprint.id ? openSprintUrl(sprint) : '' }}"
-       ng-class="{'disabled-link':!sprint.id}"
-       ng-repeat="sprint in releaseParts">
-        <uib-bar class="{{ $last ? 'last-bar' : '' }}"
-                 uib-tooltip-template="'sprint.tooltip.html'"
-                 tooltip-enable="sprint.id"
-                 tooltip-placement="bottom"
-                 type="{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
-                 value="sprint.duration">
-            {{ sprint.id ? sprint.index : '' }}
-        </uib-bar>
-    </a>
     <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
 </uib-progress>
 </script>

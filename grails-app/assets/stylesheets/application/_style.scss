@@ -426,6 +426,10 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
+.drop-zone {
+  display: none;
+}
+
 ////////////////////
 // Details view
 ////////////////////
@@ -508,6 +512,26 @@ $state-dot-size-sm: 0.5rem;
 
   .btn-icon {
     margin-left: 22px;
+  }
+}
+
+.timeline-bar {
+  height: 30px;
+  border: 1px solid #fff;
+  background-color: #4d90fe;
+  border-right: 3px solid #4d90fe;
+  color: #555555;
+
+  &.progress-bar-done {
+    background-color: #E1F5CC;
+  }
+
+  &.progress-bar-inProgress {
+    background-color: #DAF4FF;
+  }
+
+  &.progress-bar-todo {
+    background-color: #EEE;
   }
 }
 
