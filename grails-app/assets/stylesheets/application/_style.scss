@@ -516,22 +516,30 @@ $state-dot-size-sm: 0.5rem;
 }
 
 .timeline-bar {
-  height: 30px;
-  border: 1px solid #fff;
-  background-color: #4d90fe;
-  border-right: 3px solid #4d90fe;
-  color: #555555;
+  height: 49px;
+  background-color: #054ca6;
+  padding: 8px 5px;
+  font-size: 14px;
 
-  &.progress-bar-done {
-    background-color: #E1F5CC;
-  }
+  .progress-bar {
+    border-radius: 2px;
+    border-right: 4px solid #054ca6;
+    color: #ffffff;
 
-  &.progress-bar-inProgress {
-    background-color: #DAF4FF;
-  }
+    &.bg-todo {
+      color: #acb5c0;
+      background-color: #f4f4f4;
+    }
 
-  &.progress-bar-todo {
-    background-color: #EEE;
+    &.bg-inProgress {
+      background-image: linear-gradient(75deg, #63abeb, #d1e6f0);
+      box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
+    }
+
+    &.bg-done {
+      background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+      box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
+    }
   }
 }
 
