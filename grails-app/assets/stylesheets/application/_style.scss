@@ -601,6 +601,16 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   padding: 2px 5px;
 }
 
+.validation-error {
+  margin-top: 8px;
+  padding: 1px;
+  font-size: 11px;
+}
+
+.has-error .form-control {
+  border-color: $red;
+}
+
 ////////////////////
 // Wizard & Split modal
 ////////////////////

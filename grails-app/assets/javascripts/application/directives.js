@@ -130,7 +130,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                             };
                             childScope.input = input;
                             container.addClass('has-error');
-                            var template = '<div class="form-text bg-danger spaced-form-text"><span ng-repeat="errorMessage in errorMessages(inputModel.$error)">{{ errorMessage }}</span></div>';
+                            var template = '<div class="validation-error text-danger"><span ng-repeat="errorMessage in errorMessages(inputModel.$error)">{{ errorMessage }}</span></div>';
                             var compiledTemplate = angular.element($compile(template)(childScope));
                             container.append(compiledTemplate);
                         } else if (!newIsInvalid && oldIsInvalid) {
