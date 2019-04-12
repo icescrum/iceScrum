@@ -78,10 +78,10 @@ grails.project.dependency.resolution = {
         mavenRepo("http://repo.spring.io/libs-release") {
             updatePolicy "interval:1"
         }
-        mavenRepo("http://repo.icescrum.org/artifactory/plugins-release/") {
+        mavenRepo("https://repo.icescrum.org/artifactory/plugins-release/") {
             updatePolicy "interval:1"
         }
-        mavenRepo("http://repo.icescrum.org/artifactory/plugins-snapshot/") {
+        mavenRepo("https://repo.icescrum.org/artifactory/plugins-snapshot/") {
             updatePolicy "interval:1"
         }
     }
