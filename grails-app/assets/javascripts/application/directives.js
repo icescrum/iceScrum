@@ -135,7 +135,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                             container.append(compiledTemplate);
                         } else if (!newIsInvalid && oldIsInvalid) {
                             container.removeClass('has-error');
-                            container.find('.form-text').remove();
+                            container.find('.validation-error').remove();
                         }
                     });
                 });

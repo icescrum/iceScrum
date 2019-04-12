@@ -92,6 +92,7 @@
                         <i class="fa fa-pencil"></i>
                     </a>
                     <a class="btn btn-danger btn-sm float-right"
+                       href
                        ng-if="authorizedActor('delete', actor)"
                        ng-click="confirmDelete({ callback: delete, args: [actor] })">
                         <i class="fa fa-close"></i>

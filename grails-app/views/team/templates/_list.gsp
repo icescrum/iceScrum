@@ -24,6 +24,7 @@
 <tr>
     <td>
         <a class="btn btn-danger btn-sm btn-model"
+           href
            ng-model="foo" %{-- Hack to make form dirty --}%
            ng-click="removeTeamMember(member)"
            ng-show="teamMembersEditable(team)">

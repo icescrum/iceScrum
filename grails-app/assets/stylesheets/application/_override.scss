@@ -137,6 +137,10 @@ form label {
   background-color: $is-bg-color;
 }
 
+.form-text {
+  font-size: 0.875rem;
+}
+
 .form-control {
   &:disabled,
   &[readonly] {
