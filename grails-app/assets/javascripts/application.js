@@ -26,6 +26,8 @@
 
 //= require           vendors/jquery/jquery-3.1.1.min
 //= require           vendors/jquery/jquery-migrate-1.4.1.min
+//= require           vendors/vanilla/lottie.min.js
+//= require           application/loaders.js
 //= require_full_tree vendors/jquery
 
 //= require_full_tree vendors/vanilla

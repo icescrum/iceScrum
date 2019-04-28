@@ -912,20 +912,8 @@ var isApplication = angular.module('isApplication', [
             PDFJS.workerSrc = isSettings.workerSrc;
             Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
             $rootScope.loaders = {
-                menu: lottie.loadAnimation({
-                    container: $('#menu-loader')[0],
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: false,
-                    path: $rootScope.serverUrl + '/assets/animations/loader.json'
-                }),
-                main: lottie.loadAnimation({
-                    container: $('#main-loader')[0],
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: false,
-                    path: $rootScope.serverUrl + '/assets/animations/loader.json'
-                })
+                menu: menuLoaderAnimation,
+                main: mainLoaderAnimation
             };
         }
         $rootScope.authenticated = Session.authenticated;

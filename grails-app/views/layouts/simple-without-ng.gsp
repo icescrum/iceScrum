@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <!DOCTYPE html>
-<html lang="en" ng-app="isApplication" ng-strict-di>
+<html lang="en">
     <head>
         <title>iceScrum - <g:layoutTitle/></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -38,16 +38,8 @@
         <asset:stylesheet href="application.css"/>
         <g:layoutHead/>
     </head>
-    <body ng-controller="applicationCtrl"
-          ng-class="{ 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)  }"
-          class="simple-template splash-screen loading">
-        <g:include view="layouts/_splashScreen.gsp"/>
-        <div class="is-container-fluid">
-            <g:layoutBody/>
-        </div>
-        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
-        <asset:javascript src="application.js"/>
-        <g:render template="/scrumOS/templates"/>
-        <entry:point id="icescrum-footer-simple" model="[workspace: workspace, user: user]"/>
+    <body>
+        <g:layoutBody/>
+        <entry:point id="icescrum-footer-simple-without-ng"/>
     </body>
 </html>

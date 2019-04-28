@@ -118,6 +118,10 @@ body {
 // General style
 ////////////////////
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
 .main {
   background-color: $is-bg-color-ter;
 }
@@ -687,7 +691,6 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 }
 
 .widgets {
-
   display: flex;
 
   .widget {
