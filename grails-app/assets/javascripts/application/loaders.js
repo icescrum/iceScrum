@@ -2,7 +2,6 @@
 // to trigger a redirect and lose as little time as possible
 (function() {
     var fullPath = window.location.href;
-    debugger;
     if (fullPath.indexOf('#') != -1 && !window.location.pathname.match(/\/$/)) {
         fullPath = window.location.origin + window.location.pathname + '/' + window.location.hash;
         window.location.replace(fullPath);
