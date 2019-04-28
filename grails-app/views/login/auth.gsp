@@ -24,37 +24,48 @@
 <html lang="en">
     <head>
         <title>${message(code: 'is.login')}</title>
-        <meta name='layout' content='login'/>
+        <meta name='layout' content='simple-without-ng'/>
     </head>
-    <body class="container-left-top-yellow-rect container-left-bottom-blue-rect">
-        <div class="d-flex justify-content-center row">
-            <div>
-                <h1 class="text-center">Great to see you again!</h1>
-                <form action='${postUrl}' name="loginform" id="loginform" action="?" method="post" autocomplete='off'>
-                    <p class="form-group">
-                        <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                        <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="">
-                    </p>
-                    <p class="form-group">
-                        <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
-                        <input class="input-large input-text form-control" type="password" name="j_password" id="password">
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <a href="/login/retrieve/">${message(code: 'is.login.retrieve')}</a>
-                        </div>
-                        <div>
-                            <input type="submit" class="btn btn-primary" name="login" value="Login">
-                        </div>
-                    </div>
-                    <p id="remember_me_holder" style="display: none;">
-                        <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
-                    </p>
+    <body>
+        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect" style="height: 100vh">
+            <div class="d-flex justify-content-center content row">
+                <div class="rect_1"></div>
+                <div class="rect_2"></div>
+                <div class="rect_3"></div>
+                <div class="login">
                     <div class="text-center">
-                            <span class="form-text grey">Don't have an account</span>
-                            <a class="btn btn-secondary" href="/login/register">${message(code: 'is.login.register')}</a>
+                        <a href="/">
+                            <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
+                            <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-responsive">
+                        </a>
                     </div>
-                </form>
+                    <h1 class="text-center">Great to see you again!</h1>
+                    <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
+                        <p class="form-group">
+                            <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
+                            <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="">
+                        </p>
+                        <p class="form-group">
+                            <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
+                            <input class="input-large input-text form-control" type="password" name="j_password" id="password">
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="back-link">
+                                <a href="/login/retrieve/">${message(code: 'is.login.retrieve')}</a>
+                            </div>
+                            <div>
+                                <input type="submit" class="btn btn-primary" name="login" value="Login">
+                            </div>
+                        </div>
+                        <p id="remember_me_holder" style="display: none;">
+                            <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
+                        </p>
+                        <div class="text-center login-footer">
+                            <span class="form-text grey help-block">Don't have an account</span>
+                            <a class="btn btn-secondary" href="/login/register">${message(code: 'is.login.register')}</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </body>

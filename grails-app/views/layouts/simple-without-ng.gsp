@@ -38,8 +38,10 @@
         <asset:stylesheet href="application.css"/>
         <g:layoutHead/>
     </head>
-    <body>
-        <g:layoutBody/>
-        <entry:point id="icescrum-footer-simple-without-ng"/>
+    <body class="simple-without-ng-layout">
+        <div class="is-container-fluid">
+            <g:layoutBody/>
+        </div>
+        <entry:point id="simple-without-ng-layout"/>
     </body>
 </html>

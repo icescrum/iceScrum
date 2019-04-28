@@ -140,6 +140,40 @@
 }
 
 ////////////////////
+// login
+////////////////////
+.login {
+  padding-top: 3.75rem;
+  margin-top: 1em;
+}
+
+.login h1 {
+  margin-top: 1.25rem;
+  margin-bottom: 6.5rem;
+}
+
+#loginform {
+  padding-left: 15%;
+  padding-right: 15%;
+  max-width: 490px;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+}
+
+.back-link a {
+  color: rgba(17, 17, 17, 0.4);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.login-footer {
+  margin-top: 8.75rem;
+}
+
+////////////////////
 // Planning
 ////////////////////
 
