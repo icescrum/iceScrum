@@ -266,7 +266,7 @@
     <div ng-if=":: currentUser.username" uib-dropdown>
         <a hotkey="{ 'shift+h': goToHome}"
            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
-           ng-href="{{:: serverUrl }}">
+           ng-href="{{:: serverUrl }}/#/">
             <img ng-src="{{ currentUser | userAvatar }}"
                  class="{{ currentUser | userColorRoles }}"
                  tooltip-placement="left"
