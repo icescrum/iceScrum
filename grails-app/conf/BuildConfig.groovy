@@ -66,7 +66,7 @@ grails.war.resources = { stagingDir ->
 
 grails.project.dependency.resolution = {
     inherits("global") {
-        excludes "xml-apis", "maven-publisher", "itext", "org.bouncycastle", "bouncycastle", "bcprov-jdk14"
+        excludes "xml-apis", "maven-publisher", "itext"
     }
     log "warn"
     repositories {
@@ -86,9 +86,9 @@ grails.project.dependency.resolution = {
         }
     }
     dependencies {
-        build("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" }
-        runtime("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" }
-        compile("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" }
+        build("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
+        runtime("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
+        compile("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
         runtime 'mysql:mysql-connector-java:5.1.40'
         compile 'commons-fileupload:commons-fileupload:1.3.3' //fix CVE-2016-1000031
     }
