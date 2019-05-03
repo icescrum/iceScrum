@@ -23,6 +23,7 @@
  */
 
 
+import grails.plugin.springsecurity.SecurityFilterPosition
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.util.Holders
 import grails.util.Metadata
@@ -352,7 +353,6 @@ grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
 grails.assets.enableGzip = true
 
-
 /*
  Attachmentable section
  */
@@ -560,16 +560,18 @@ grails {
             fii.rejectPublicInvocations = true
             controllerAnnotations.staticRules = [
                     //app controllers rules
-                    '/grails-errorhandler': ['permitAll'],
-                    '/stream/app/**'      : ['permitAll'],
-                    '/scrumOS/**'         : ['permitAll'],
-                    '/user/**'            : ['permitAll'],
-                    '/errors/**'          : ['permitAll'],
-                    '/assets/**'          : ['permitAll'],
-                    '/**/js/**'           : ['permitAll'],
-                    '/**/css/**'          : ['permitAll'],
-                    '/**/images/**'       : ['permitAll'],
-                    '/**/favicon.ico'     : ['permitAll']
+                    '/grails-errorhandler'     : ['permitAll'],
+                    '/stream/app/**'           : ['permitAll'],
+                    '/scrumOS/**'              : ['permitAll'],
+                    '/user/**'                 : ['permitAll'],
+                    '/errors/**'               : ['permitAll'],
+                    '/assets/**'               : ['permitAll'],
+                    '/**/js/**'                : ['permitAll'],
+                    '/**/css/**'               : ['permitAll'],
+                    '/**/images/**'            : ['permitAll'],
+                    '/**/favicon.ico'          : ['permitAll'],
+                    '/oauth/authorize.dispatch': ["isFullyAuthenticated() and (request.getMethod().equals('GET') or request.getMethod().equals('POST'))"],
+                    '/oauth/token.dispatch'    : ["isFullyAuthenticated() and request.getMethod().equals('POST')"]
             ]
 
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
@@ -580,9 +582,10 @@ grails {
             useBasicAuth = true
             basic.realmName = "Basic authentication for iceScrum"
             filterChain.chainMap = [
-                    '/ws/**'          : 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter', // Only token auth
-                    '/**/project/feed': 'JOINED_FILTERS,-exceptionTranslationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter', // Session & basic auth
-                    '/**'             : 'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' // Only form auth with session
+                    '/ws/**'                    : 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter', // Only token auth & oauth
+                    '/**/project/feed'          : 'JOINED_FILTERS,-exceptionTranslationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-statelessSecurityContextPersistenceFilter,-oauth2ProviderFilter,-clientCredentialsTokenEndpointFilter,-oauth2BasicAuthenticationFilter,-oauth2ExceptionTranslationFilter', // Session & basic auth
+                    '/oauth/token'              : 'JOINED_FILTERS,-oauth2ProviderFilter,-securityContextPersistenceFilter,-logoutFilter,-authenticationProcessingFilter,-rememberMeAuthenticationFilter,-exceptionTranslationFilter',
+                    '/**'                       : 'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter,-statelessSecurityContextPersistenceFilter,-oauth2ProviderFilter,-clientCredentialsTokenEndpointFilter,-oauth2BasicAuthenticationFilter,-oauth2ExceptionTranslationFilter'// Only form auth with session
             ]
 
             rememberMe {
@@ -601,6 +604,14 @@ grails {
                     user.lastLogin = new Date()
                     user.save(flush: true)
                 }
+            }
+
+            oauthProvider {
+                exceptionTranslationFilterStartPosition = SecurityFilterPosition.EXCEPTION_TRANSLATION_FILTER.order + 2
+                oauthProvider.clientLookup.className = 'org.icescrum.core.domain.security.Client'
+                authorizationCodeLookup.className = 'org.icescrum.core.domain.security.AuthorizationCode'
+                accessTokenLookup.className = 'org.icescrum.core.domain.security.AccessToken'
+                refreshTokenLookup.className = 'org.icescrum.core.domain.security.RefreshToken'
             }
         }
     }
