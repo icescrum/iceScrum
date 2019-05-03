@@ -77,6 +77,9 @@ class ScrumOSController implements ControllerErrorHandler {
             }
             model."$workspace.name" = workspace.object
             model.workspace = workspace
+        } else if (!user) {
+            redirect(controller: 'login', action: 'auth')
+            return
         }
         render(status: 200, view: 'index', model: model)
     }
