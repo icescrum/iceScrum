@@ -57,6 +57,9 @@ $is-story-heigth-sm: 127px;
 $is-feature-width: 178px;
 $is-feature-height: 157px;
 
+$is-font-family: averta-regular, Helvetica, Arial, sans-serif;
+$is-font-family-bold: averta-bold, Helvetica, Arial, sans-serif;
+
 $is-state-colors: (
         "todo": #AAAAAA,
         "frozen": #AAAAAA,
@@ -71,7 +74,7 @@ $is-state-colors: (
 
 %is-title {
   font-size: 1.25rem;
-  font-family: averta-bold;
+  font-family: $is-font-family-bold;
   color: $is_text-color-alt;
 }
 
@@ -107,7 +110,7 @@ $is-state-colors: (
 
 $enable-caret: false; // Overriden by our own caret style
 
-$font-family-base: "averta-regular", "Arial", "Helvetica", "sans-serif";
+$font-family-base: $is-font-family;
 $body-bg: $is-bg-color;
 $primary: $is-primary-color;
 $secondary: $is-bg-color;
@@ -198,4 +201,4 @@ $h4-font-size: 1rem;
 $h5-font-size: 0.875rem;
 $h6-font-size: 0.75rem;
 $headings-color: $is_text-color-alt;
-$headings-font-family: averta-bold;
+$headings-font-family: $is-font-family-bold;

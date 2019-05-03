@@ -183,7 +183,7 @@ nav.navbar {
       align-items: center;
 
       .workspace-title {
-        font-family: averta-bold;
+        font-family: $is-font-family-bold;
         padding-top: 0.125rem;
       }
 
@@ -641,19 +641,21 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 // Form special
 ////////////////////
 
-.form-special .form-control {
-  line-height: 2.3;
-  border-radius: 0.125rem;
-  font-size: 0.875rem;
-  height: auto;
-}
+.form-special {
+  .form-control {
+    line-height: 2.3;
+    border-radius: 0.125rem;
+    font-size: 0.875rem;
+    height: auto;
+  }
 
-.form-special .form-group label {
-  font-family: averta-bold, Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  color: rgba(17, 17, 17, 0.6);
-  font-size: 0.875rem;
-  margin-bottom: 0.8125rem;
+  .form-group label {
+    font-family: $is-font-family-bold;
+    font-weight: normal;
+    color: rgba(17, 17, 17, 0.6);
+    font-size: 0.875rem;
+    margin-bottom: 0.8125rem;
+  }
 }
 
 ////////////////////

@@ -161,12 +161,12 @@
 .back-link {
   display: flex;
   align-items: center;
-}
 
-.back-link a {
-  color: rgba(17, 17, 17, 0.4);
-  font-size: 0.875rem;
-  text-decoration: none;
+  a {
+    color: rgba(17, 17, 17, 0.4);
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
 }
 
 .login-footer {
@@ -195,7 +195,7 @@
 
     .sprint-title {
       font-size: 1rem;
-      font-family: averta-bold;
+      font-family: $is-font-family-bold;
       color: $is_text-color-alt;
     }
   }
@@ -211,7 +211,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 .kanban-states {
   display: flex;
   justify-content: space-around;
-  font-family: averta-bold;
+  font-family: $is-font-family-bold;
   color: $is_text-color-alt;
   padding: ($is-spacer-x - 0.25rem) $is-spacer-x 0.5rem $is-spacer-x;
 }

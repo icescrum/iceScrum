@@ -40,7 +40,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   }
 
   .title {
-    font-family: averta-bold;
+    font-family: $is-font-family-bold;
   }
 
   .sticky-note-state-progress {

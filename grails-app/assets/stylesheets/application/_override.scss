@@ -36,7 +36,7 @@ html, body {
 }
 
 strong {
-  font-family: averta-bold;
+  font-family: $is-font-family-bold;
 }
 
 ////////////////////
@@ -45,7 +45,7 @@ strong {
 
 .btn {
   font-size: 0.9375rem;
-  font-family: averta-bold;
+  font-family: $is-font-family-bold;
   border: none;
 }
 
@@ -247,7 +247,7 @@ form label {
 
   .dropdown-item {
     &.active {
-      font-family: averta-bold;
+      font-family: $is-font-family-bold;
     }
   }
 }
@@ -257,7 +257,7 @@ form label {
 ////////////////////
 
 .nav-link.active, .navbar-nav .active .nav-link {
-  font-family: averta-bold;
+  font-family: $is-font-family-bold;
 }
 
 
@@ -293,7 +293,7 @@ form label {
 }
 
 .dropdown-header {
-  font-family: averta-bold;
+  font-family: $is-font-family-bold;
 }
 
 .tooltip-inner {
