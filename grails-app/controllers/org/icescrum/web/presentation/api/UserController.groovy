@@ -80,9 +80,13 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(["hasRole('ROLE_ADMIN')"])
+    @Secured("isAuthenticatedWeb() || hasAnyScopeOauth2('user', 'user:read')")
     def show(long id) {
         User user = User.withUser(id)
+        if (user.id != springSecurityService.principal.id && !request.admin) {
+            render(status: 403)
+            return
+        }
         request.marshaller = [user: [include: ['preferences']]]
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
@@ -113,7 +117,7 @@ class UserController implements ControllerErrorHandler {
         render(status: 201, contentType: 'application/json', text: user as JSON)
     }
 
-    @Secured('isAuthenticated()')
+    @Secured("isAuthenticatedWeb() || hasAnyScopeOauth2('user', 'user:write')")
     def update(long id) {
         User user = User.withUser(id)
         if (user.id != springSecurityService.principal.id && !request.admin) {
@@ -280,7 +284,7 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, template: 'dialogs/profile', model: [user: user, projects: grailsApplication.config.icescrum.alerts.enable ? Project.findAllByRole(user, [BasePermission.WRITE, BasePermission.READ], [cache: true, max: 11], true, false) : null])
     }
 
-    @Secured(['permitAll()'])
+    @Secured("permitAllWeb() || hasAnyScopeOauth2('user', 'user:read')")
     def current() {
         def user = [user : springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles: securityService.getRolesRequest(true)]
@@ -345,7 +349,7 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured("isAuthenticatedWeb() || hasAnyScopeOauth2('user', 'user:history')")
     def activities(long id) {
         User user = springSecurityService.currentUser
         if (id != user.id) {

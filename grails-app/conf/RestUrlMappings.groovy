@@ -35,9 +35,16 @@ class RestUrlMappings {
             controller = 'user'
             action = [GET: 'index', POST: 'save']
         }
-        "/ws/user/$id" { // Admin
+        "/ws/user/$id" {
             controller = 'user'
             action = [GET: 'show', PUT: 'update', POST: 'update']
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+        "/ws/user/$id/activities" {
+            controller = 'user'
+            action = [GET: 'activities']
             constraints {
                 id(matches: /\d*/)
             }
