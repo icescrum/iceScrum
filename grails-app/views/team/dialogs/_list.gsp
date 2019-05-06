@@ -84,7 +84,7 @@
                 </form>
             </div>
             <div ng-switch-when="true">
-                <div class="help-block">
+                <div class="form-text">
                     ${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}
                 </div>
                 <form ng-submit="update(team)"

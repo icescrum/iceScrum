@@ -57,7 +57,7 @@
                         </span>
                     </div>
                     <div ng-if="releaseEndDateWarning"
-                         class="help-block bg-danger spaced-help-block"
+                         class="form-text bg-danger spaced-form-text"
                          ng-bind-html="releaseEndDateWarning"></div>
                 </div>
                 <div class="row is-form-row">
