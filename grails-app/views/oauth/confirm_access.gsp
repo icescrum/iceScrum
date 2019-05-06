@@ -13,7 +13,7 @@
     <g:else>
         <g:set var="client" value="${applicationContext.getBean('clientDetailsService')?.loadClientByClientId(params.client_id)}"/>
         <g:set var="user" value="${applicationContext.getBean('springSecurityService')?.principal}"/>
-        <div id="oauth-confirm" class="d-flex align-items-center justify-content-center content row">
+        <div id="oauth-confirm" class="d-flex align-items-center justify-content-center">
             <div class="card">
                 <div class="card-body">
                     <a href="/">
