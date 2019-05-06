@@ -13,6 +13,7 @@
     <g:else>
         <g:set var="client" value="${applicationContext.getBean('clientDetailsService')?.loadClientByClientId(params.client_id)}"/>
         <g:set var="user" value="${applicationContext.getBean('springSecurityService')?.principal}"/>
+        <g:set var="requestedScopesByType" value="${params.scope?.split(' ')?.groupBy { (it =~ /(.*)\:/) ? (it =~ /(.*)\:/)[0][1] : it }}"/>
         <div id="oauth-confirm" class="d-flex align-items-center justify-content-center">
             <div class="card">
                 <div class="card-body">
@@ -40,11 +41,21 @@
                         </div>
                     </div>
                     <ul class="list-group list-group-flush mt-4 mb-4">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Morbi leo risus</li>
-                        <li class="list-group-item">Porta ac consectetur ac</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <g:each var="typeOfScope" in="${requestedScopesByType}">
+                            <li class="list-group-item">
+                                ${message(code: 'is.ui.oauth.scope.type.' + typeOfScope.key)}<br/>
+                                <small>
+                                    <g:if test="${!(typeOfScope.key in typeOfScope.value)}">
+                                        <g:each status="i" in="${typeOfScope.value}" var="scope">
+                                            ${message(code: 'is.ui.oauth.scope.type.' + typeOfScope.key + '.' + scope.split(':')[1])}<g:if test="${scope != typeOfScope.value.last()}">,&nbsp;</g:if>
+                                        </g:each>
+                                    </g:if>
+                                    <g:else>
+                                        ${message(code: 'is.ui.oauth.scope.type.' + typeOfScope.key + '.full')}
+                                    </g:else>
+                                </small>
+                            </li>
+                        </g:each>
                     </ul>
                     <div class="pb-4 pt-2"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
                     <div class="d-flex justify-content-end">
