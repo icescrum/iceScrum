@@ -25,11 +25,6 @@
 // Global layout
 ////////////////////
 
-body, html {
-  height: 100vh;
-  overflow: hidden;
-}
-
 body {
   display: flex;
   flex-direction: column;
@@ -776,5 +771,12 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
     &.widget-width-3 .card {
       width: 750px;
     }
+  }
+}
+
+@include media-breakpoint-up(md) { //maybe media-breakpoint-up(sm)
+  body {
+    height: 100vh;
+    overflow: hidden;
   }
 }

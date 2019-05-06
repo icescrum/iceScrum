@@ -386,3 +386,25 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     margin-bottom: 21px;
   }
 }
+
+////////////////////
+// Oauth confirm
+////////////////////
+
+#oauth-confirm {
+  > .card {
+    max-width: 500px;
+  }
+  .user-avatar {
+    height: 44px;
+  }
+}
+
+@include media-breakpoint-up(md) { //maybe media-breakpoint-up(sm)
+  #oauth-confirm {
+    height: 100vh;
+    > .card {
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
+  }
+}
