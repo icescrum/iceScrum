@@ -5274,6 +5274,8 @@ var loaderJSON = {
 };
 
 var $mainLoader = $('#main-loader');
+$mainLoader.html("");
+console.log('we should see img');
 var mainLoaderAnimation = $mainLoader.length > 0 ? lottie.loadAnimation({
     container: $mainLoader[0],
     renderer: 'svg',
@@ -5281,6 +5283,7 @@ var mainLoaderAnimation = $mainLoader.length > 0 ? lottie.loadAnimation({
     autoplay: true,
     animationData: loaderJSON
 }) : {play: function() {}};
+console.log('we should see the loader');
 
 var $menuLoader = $('#menu-loader');
 var menuLoaderAnimation = $menuLoader.length > 0 ? lottie.loadAnimation({

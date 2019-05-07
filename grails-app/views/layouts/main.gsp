@@ -37,6 +37,7 @@
         <asset:link rel="mask-icon" href="browser/safari-pinned-tab.svg" color="#FFCC04"/>
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <meta name="theme-color" content="#ffffff">
+        <asset:javascript src="preload-header.js"/>
         <g:if test="${darkMode}">
             <asset:stylesheet href="application-dark.css"/>
         </g:if><g:else>
@@ -54,6 +55,7 @@
         <div class="is-container-fluid main" ui-view>
             <g:layoutBody/>
         </div>
+        <asset:javascript src="preload-footer.js"/>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <asset:javascript src="application.js"/>
         <g:render template="/scrumOS/templates"/>

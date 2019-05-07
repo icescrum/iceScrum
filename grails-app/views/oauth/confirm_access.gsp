@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <a href="/">
-                        <img alt="iceScrum" src="${assetPath(src: 'application/logo.png')}" class="rounded-circle" height="34px" width="34px">
+                        <img alt="iceScrum" src="${assetPath(src: 'application/logo.png')}" height="34px" width="34px">
                         <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum">
                     </a>
                     <g:if test='${flash.message}'>

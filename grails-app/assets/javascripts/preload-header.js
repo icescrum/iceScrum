@@ -21,30 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-
 //= encoding          UTF-8
 
-//= require_full_tree vendors/jquery
-
-//= require_full_tree vendors/vanilla
-
-//= require           vendors/bootstrap/bootstrap.bundle.min
-
-//= require           vendors/angular/angular.min
-//= require           vendors/angular/angular-route.min
-//= require           vendors/angular/angular-resource.min
-
-//= require           vendors/angular/plugins/ng-pdfviewer.min
-//= require_full_tree vendors/i18n
-
-//= require_full_tree vendors
-
-//= require_full_tree application/plugins
-//= require           application/isCore
-//= require           application/isApplication
-//= require           application/controllers
-//= require           application/directives
-//= require           application/filters
-//= require           application/services
-//= require_full_tree application
-
+//= require           preload/jquery-3.1.1.min
+//= require           preload/jquery-migrate-1.4.1.min
+//= require           preload/lottie.min.js

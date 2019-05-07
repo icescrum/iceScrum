@@ -35,6 +35,7 @@
         <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
         <!-- end iOS web app-->
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+        <asset:javascript src="preload-header.js"/>
         <asset:stylesheet href="application.css"/>
         <g:layoutHead/>
     </head>
@@ -42,6 +43,7 @@
         <div class="is-container-fluid">
             <g:layoutBody/>
         </div>
+        <asset:javascript src="preload-footer.js"/>
         <entry:point id="simple-without-ng-layout"/>
     </body>
 </html>
