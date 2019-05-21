@@ -156,11 +156,13 @@ icescrum {
             ]
     ]
 
-    hooks = [
-            events: [
-                    "user.create", "user.update", "user.delete", "project.create", "project.update", "project.delete"
-            ]
-    ]
+    hooks {
+        events = ["user.create", "user.update", "user.delete", "project.create", "project.update", "project.delete"]
+        enable = false
+        disableAfterErrors = 5
+        httpTimeout = new Integer(3 * 1000)
+        socketTimeout = new Integer(10 * 1000)
+    }
 
     atmosphere {
         maxUsers = []
