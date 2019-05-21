@@ -203,6 +203,8 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
             }
             $scope.selectTeam(returnedTeam);
             $scope.notifySuccess('todo.is.ui.team.updated');
+        }).catch(function() {
+            $scope.selectTeam(_.find($scope.teams, {id: team.id}));
         });
     };
     $scope.delete = function(team) {

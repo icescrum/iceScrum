@@ -193,7 +193,7 @@ class ProjectController implements ControllerErrorHandler {
         // Update project & team
         Project _project = Project.withProject(project)
         _project.withTransaction {
-            entry.hook(id: "projectTeam-update-before", model: [project: _project])
+            entry.hook(id: "project-team-update-before", model: [project: _project])
             Long teamId = teamParams.long('id')
             if (teamId != null && teamId != _project.team.id) { // Workaround but TODO fix UI => teamID can't be null
                 if (securityService.owner(null, springSecurityService.authentication)) {
@@ -204,7 +204,7 @@ class ProjectController implements ControllerErrorHandler {
             }
             projectService.updateProjectMembers(_project, newMembers)
             projectService.manageProjectInvitations(_project, invitedProductOwners, invitedStakeHolders)
-            entry.hook(id: "projectTeam-update", model: [project: _project])
+            entry.hook(id: "project-team-update", model: [project: _project])
         }
         render(status: 200, contentType: 'application/json', text: _project as JSON)
     }
