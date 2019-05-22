@@ -140,16 +140,17 @@
 }
 
 ////////////////////
-// login
+// Login
 ////////////////////
+
 .login {
   padding-top: 3.75rem;
   margin-top: 1em;
-}
 
-.login h1 {
-  margin-top: 1.25rem;
-  margin-bottom: 6.5rem;
+  h1 {
+    margin-top: 1.25rem;
+    margin-bottom: 6.5rem;
+  }
 }
 
 #loginform {
@@ -158,14 +159,16 @@
   max-width: 490px;
 }
 
+.login-cta-text {
+  font-size: 1.125rem;
+  margin-bottom: 20px;
+}
+
 .back-link {
   display: flex;
-  align-items: center;
 
   a {
-    color: rgba(17, 17, 17, 0.4);
     font-size: 0.875rem;
-    text-decoration: none;
   }
 }
 
@@ -395,6 +398,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   > .card {
     max-width: 500px;
   }
+
   .user-avatar {
     height: 44px;
   }
@@ -403,6 +407,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 @include media-breakpoint-up(md) { //maybe media-breakpoint-up(sm)
   #oauth-confirm {
     height: 100vh;
+
     > .card {
       border: 1px solid rgba(0, 0, 0, .125);
     }

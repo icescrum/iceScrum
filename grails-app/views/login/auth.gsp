@@ -61,7 +61,7 @@
                             <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
                         </p>
                         <div class="text-center login-footer">
-                            <span class="form-text grey help-block">Don't have an account</span>
+                            <div class="login-cta-text">Don't have an account</div>
                             <a class="btn btn-secondary" href="/login/register">${message(code: 'is.login.register')}</a>
                         </div>
                     </form>

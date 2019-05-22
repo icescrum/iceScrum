@@ -123,13 +123,6 @@ body {
   margin-left: 8px;
 }
 
-.help-block.grey {
-  font-size: 1.125rem;
-  color: rgba(17, 17, 17, 0.6);
-  display: block;
-  margin-bottom: 20px;
-}
-
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
@@ -540,6 +533,7 @@ $state-dot-size-sm: 0.5rem;
   .progress-bar {
     border-radius: 2px;
     border-right: 4px solid #054ca6;
+    background-color: #054ca6;
     color: #ffffff;
 
     &.bg-todo {
@@ -562,11 +556,6 @@ $state-dot-size-sm: 0.5rem;
 ////////////////////
 // Form
 ////////////////////
-
-input.form-control:active, input.form-control:focus {
-  box-shadow: 0 42px 48px 0 rgba(8, 12, 29, 0.15);
-  border-color: #80bdff !important;
-}
 
 .form-half {
   @extend .form-group;
@@ -633,13 +622,16 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 }
 
 ////////////////////
-// Form special
+// Login / register etc.
 ////////////////////
+
+body.simple-without-ng-layout {
+  overflow-y: auto;
+}
 
 .form-special {
   .form-control {
     line-height: 2.3;
-    border-radius: 0.125rem;
     font-size: 0.875rem;
     height: auto;
   }
@@ -647,7 +639,6 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   .form-group label {
     font-family: $is-font-family-bold;
     font-weight: normal;
-    color: rgba(17, 17, 17, 0.6);
     font-size: 0.875rem;
     margin-bottom: 0.8125rem;
   }
