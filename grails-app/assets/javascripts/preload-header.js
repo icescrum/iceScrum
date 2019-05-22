@@ -26,3 +26,4 @@
 //= require           preload/jquery-3.1.1.min
 //= require           preload/jquery-migrate-1.4.1.min
 //= require           preload/lottie.min.js
+//= require           preload/utils.js
