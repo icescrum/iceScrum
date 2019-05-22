@@ -1049,3 +1049,61 @@ services.service('StoryTypesIcons', ['StoryTypesByName', function(StoryTypesByNa
     this[StoryTypesByName.DEFECT] = 'bug';
     this[StoryTypesByName.TECHNICAL_STORY] = 'cogs';
 }]);
+
+services.service("ColorService", [function() {
+    this.hexToRgb = function(hex) {
+        var num = parseInt(hex.substring(1), 16);
+        var r = (num >> 16) & 255;
+        var g = (num >> 8) & 255;
+        var b = num & 255;
+        return [r, g, b];
+    };
+    this.rgbToHsl = function(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        var max = Math.max(r, g, b);
+        var min = Math.min(r, g, b);
+        var delta = max - min;
+        var h;
+        if (delta === 0) {
+            h = 0;
+        } else if (max === r) {
+            h = (g - b) / delta % 6;
+        } else if (max === g) {
+            h = (b - r) / delta + 2;
+        } else if (max === b) {
+            h = (r - g) / delta + 4;
+        }
+        var l = (min + max) / 2;
+        var s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+        h = h * 60;
+        if (h < 0) {
+            h += 360;
+        }
+        return [h, s, l];
+    };
+    this.hslToRgb = function(h, s, l) {
+        var c = (1 - Math.abs(2 * l - 1)) * s;
+        var hp = h / 60.0;
+        var x = c * (1 - Math.abs((hp % 2) - 1));
+        var rgb1;
+        if (isNaN(h)) {
+            rgb1 = [0, 0, 0];
+        } else if (hp <= 1) {
+            rgb1 = [c, x, 0];
+        } else if (hp <= 2) {
+            rgb1 = [x, c, 0];
+        } else if (hp <= 3) {
+            rgb1 = [0, c, x];
+        } else if (hp <= 4) {
+            rgb1 = [0, x, c];
+        } else if (hp <= 5) {
+            rgb1 = [x, 0, c];
+        } else if (hp <= 6) {
+            rgb1 = [c, 0, x];
+        }
+        var m = l - c * 0.5;
+        return [Math.round(255 * (rgb1[0] + m)), Math.round(255 * (rgb1[1] + m)), Math.round(255 * (rgb1[2] + m))];
+    };
+}]);
