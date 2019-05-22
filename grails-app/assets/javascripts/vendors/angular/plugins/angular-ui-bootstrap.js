@@ -4919,6 +4919,11 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
           var tooltipLinker = $compile(template);
 
           return function link(scope, element, attrs, tooltipCtrl) {
+
+            if(isTouchOnlyDevice()){
+                return;
+            }
+
             var tooltip;
             var tooltipLinkedScope;
             var transitionTimeout;
