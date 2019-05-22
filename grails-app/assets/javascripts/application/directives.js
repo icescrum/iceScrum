@@ -610,7 +610,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         compile: function(cElement, attr) {
             var cElementContent = cElement.html();
             return function link(scope, element) {
-                if(isTouchOnlyDevice()){
+                if (isTouchOnlyDevice()) {
                     return;
                 }
                 element.on('mouseover', function() {
