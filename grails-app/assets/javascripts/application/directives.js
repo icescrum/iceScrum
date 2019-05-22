@@ -610,6 +610,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         compile: function(cElement, attr) {
             var cElementContent = cElement.html();
             return function link(scope, element) {
+                if(isTouchOnlyDevice()){
+                    return;
+                }
                 element.on('mouseover', function() {
                     if (!$rootScope.application.dragging) {
                         var tooltipElement = element.clone();
@@ -623,6 +626,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         var tooltipCompiled = $compile(tooltipElement)(newScope);
                         element.replaceWith(tooltipCompiled);
                         scope.$digest(); //necessary in case there is ng-* on or inside
+                        tooltipElement.mouseover();
                     }
                 });
             }
