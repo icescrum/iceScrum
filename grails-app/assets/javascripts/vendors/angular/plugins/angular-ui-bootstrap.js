@@ -4920,8 +4920,9 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
 
           return function link(scope, element, attrs, tooltipCtrl) {
 
-            if(isTouchOnlyDevice()){
-                return;
+            // Custom
+            if (isTouchOnlyDevice()) {
+              return;
             }
 
             var tooltip;
