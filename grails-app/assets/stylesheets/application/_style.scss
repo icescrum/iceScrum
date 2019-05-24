@@ -64,7 +64,7 @@ body {
         flex: 1 0 auto;
 
         > .card-header {
-          z-index: 1; // To ensure that box-shadow
+           position: relative // Ensure that box-shadow is applied to next sibling in DOM (card-body). Don't use z-index as it overrides the z-index of dropdowns.
         }
 
         > .card-body {
