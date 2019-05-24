@@ -910,6 +910,9 @@ services.service("DomainConfigService", [function() {
         },
         emailsSettings: {
             array: ['autoFollow', 'onUrgentTask', 'onStory']
+        },
+        hook: {
+            array: ['events']
         }
     };
     this.config.projectd = this.config.project;

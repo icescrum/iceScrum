@@ -38,8 +38,7 @@ class HookController implements ControllerErrorHandler {
                 render(status: 403)
                 return false
             }
-        }
-        else if (params.workspaceType || params.workspaceId) { // Both or nothing
+        } else if (params.workspaceType || params.workspaceId) { // Both or nothing
             render(status: 503)
             return false
         } else if (!request.admin) { // Global hooks request to be admin
@@ -59,7 +58,7 @@ class HookController implements ControllerErrorHandler {
     def save(long workspaceId, String workspaceType) {
         Hook hook = new Hook()
         Hook.withTransaction {
-            bindData(hook, params.hook, [include: ['url', 'events', 'enabled']])
+            bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl']])
             hook.workspaceId = workspaceId
             hook.workspaceType = workspaceType
             hookService.save(hook)
