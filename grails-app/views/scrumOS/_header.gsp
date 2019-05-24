@@ -55,7 +55,7 @@
                              ng-class="'icon-' + (workspace.preferences.hidden ? 'private' : 'public')"
                              ng-if="workspace.preferences"
                              tooltip-placement="bottom"
-                             defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
+                             uib-tooltip="{{ message('is.ui.${workspace.name}.' + (workspace.preferences.hidden ? 'private' : 'public')) }}"
                              ng-click="authorized${workspace.name.capitalize()}('edit') && show${workspace.name.capitalize()}EditModal();">
                         </div>
                         <g:if test="${workspace.name}">

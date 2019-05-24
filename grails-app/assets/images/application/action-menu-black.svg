@@ -1,13 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
-    <g fill="none" fill-rule="evenodd">
-        <path stroke="#FFF" stroke-width=".01" d="M.005.005h11.99v11.99H.005z"/>
-        <g fill="#111">
-            <path fill-rule="nonzero" d="M1.673 2C1.301 2 1 2.339 1 2.757v6.486c0 .418.301.757.673.757h8.654c.372 0 .673-.339.673-.757V2.757c0-.418-.301-.757-.673-.757H1.673zM1.5 1h9c.828 0 1.5.746 1.5 1.667v6.666c0 .92-.672 1.667-1.5 1.667h-9C.672 11 0 10.254 0 9.333V2.667C0 1.747.672 1 1.5 1z"/>
-            <g transform="translate(2 5)">
-                <circle cx="1" cy="1" r="1"/>
-                <circle cx="4" cy="1" r="1"/>
-                <circle cx="7" cy="1" r="1"/>
-            </g>
-        </g>
+    <g fill="none" fill-rule="evenodd" stroke="#111">
+        <path fill-rule="nonzero" stroke-width=".01" d="M.005.005h11.99v11.99H.005z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 3l5.002 5 4.948-5"/>
     </g>
 </svg>
