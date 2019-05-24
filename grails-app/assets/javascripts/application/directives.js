@@ -626,7 +626,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         var tooltipCompiled = $compile(tooltipElement)(newScope);
                         element.replaceWith(tooltipCompiled);
                         scope.$digest(); //necessary in case there is ng-* on or inside
-                        tooltipElement.mouseover();
+                        // Todo trigger tooltip for hybride touch devices (mousover creates a bug so need to find another way)
                     }
                 });
             }
