@@ -264,6 +264,10 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     this.httpGet = function(path, params, isAbsolute) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {};
+        if(!paramObj.headers){
+            paramObj.headers = {};
+        }
+        paramObj.headers['x-icescrum-client'] = 'webclient';
         return $http.get(fullPath, paramObj).then(function(response) {
             return response.data;
         });
@@ -271,6 +275,10 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     this.httpDelete = function(path, params, isAbsolute) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {};
+        if(!paramObj.headers){
+            paramObj.headers = {};
+        }
+        paramObj.headers['x-icescrum-client'] = 'webclient';
         return $http.delete(fullPath, paramObj).then(function(response) {
             return response.data;
         });
@@ -278,11 +286,15 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     this.httpPost = function(path, data, isAbsolute, params) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-icescrum-client': 'webclient'},
             transformRequest: function(data) {
                 return self.formObjectData(data, '');
             }
         };
+        if(!paramObj.headers){
+            paramObj.headers = {};
+        }
+        paramObj.headers['x-icescrum-client'] = 'webclient';
         return $http.post(fullPath, data, paramObj).then(function(response) {
             return response.data;
         });
@@ -752,30 +764,33 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
             save: {
                 method: 'post',
                 isArray: false,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-icescrum-client': 'webclient'},
                 transformRequest: transformRequest,
                 interceptor: getInterceptor(false)
             },
             saveArray: {
                 method: 'post',
                 isArray: true,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-icescrum-client': 'webclient'},
                 transformRequest: transformRequest,
                 interceptor: getInterceptor(true)
             },
             get: {
                 method: 'get',
                 interceptor: getInterceptor(false),
+                headers: {'x-icescrum-client': 'webclient'},
                 then: transformQueryParams
             },
             query: {
                 method: 'get',
                 isArray: true,
+                headers: {'x-icescrum-client': 'webclient'},
                 interceptor: getInterceptor(true),
                 then: transformQueryParams
             },
             deleteArray: {
                 method: 'delete',
+                headers: {'x-icescrum-client': 'webclient'},
                 isArray: true
             }
         };
@@ -971,7 +986,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
 
 services.service('TagService', ['FormService', function(FormService) {
     this.getTags = function() {
-        return FormService.httpGet('tag'); // Workspace sensitive
+        return FormService.Get('tag'); // Workspace sensitive
     }
 }]);
 

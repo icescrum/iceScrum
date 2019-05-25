@@ -62,6 +62,8 @@ class HookController implements ControllerErrorHandler {
             bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl', 'secret']])
             hook.workspaceId = workspace?.object?.id
             hook.workspaceType = workspace?.name
+            hook.source = request.getHeader("x-icescrum-client") ? "webhook" : "resthook"
+            println request.getHeader("x-icescrum-client")
             hookService.save(hook)
         }
         render(status: 201, contentType: 'application/json', text: hook as JSON)
@@ -81,7 +83,7 @@ class HookController implements ControllerErrorHandler {
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspace?.object?.id, workspace?.name)
         if (hook) {
-            bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl', 'secret']])
+            bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl', 'secret']]) //source can't be updated
             hookService.update(hook)
             render(status: 200, contentType: 'application/json', text: hook as JSON)
         } else {
