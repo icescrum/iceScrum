@@ -69,6 +69,22 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
+        // Hook
+        "/p/$project/hook" {
+            controller = 'hook'
+            action = [POST: "save"]
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$project/hook/$id" {
+            controller = 'hook'
+            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
         // Tags
         "/p/$project/tag" {
             controller = 'tag'

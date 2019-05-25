@@ -123,14 +123,14 @@ class RestUrlMappings {
             action = [GET: 'index', POST: 'save']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint', 'timeBoxNotesTemplate'])
+                controller(inList: ['hook', 'story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint', 'timeBoxNotesTemplate'])
             }
         }
         "/ws/project/$project/$controller/$id" {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint', 'timeBoxNotesTemplate'])
+                controller(inList: ['hook', 'story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint', 'timeBoxNotesTemplate'])
                 id(matches: /\d*/)
             }
         }
@@ -354,14 +354,29 @@ class RestUrlMappings {
         }
         // Portfolio
         "/ws/portfolio" {
-            controller = 'portfolio'
             action = [GET: 'index', POST: 'save']
+            constraints {
+                controller(inList: ['hook', 'portfolio'])
+            }
         }
-        "/ws/portfolio/$portfolio" {
-            controller = 'portfolio'
+        "/ws/portfolio/$portfolio/$controller/$id?" {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 portfolio(matches: /[0-9A-Z]*/)
+                controller(inList: ['hook', 'portfolio'])
+                id(matches: /\d*/)
+            }
+        }
+        // Hook
+        "/ws/hook" {
+            controller = 'hook'
+            action = [GET: "index", POST: "save"]
+        }
+        "/ws/hook/$id" {
+            controller = 'hook'
+            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
+            constraints {
+                id(matches: /\d+(,\d+)*/)
             }
         }
     }

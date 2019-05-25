@@ -431,6 +431,17 @@ class UrlMappings {
                 property(inList: ['name', 'fkey'])
             }
         }
+        "/hook" {
+            controller = 'hook'
+            action = [GET: "index", POST: "save"]
+        }
+        "/hook/$id" {
+            controller = 'hook'
+            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
+            constraints {
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
         // Errors mapping
         "401"(controller: "errors", action: "error401")
         "403"(controller: "errors", action: "error403")

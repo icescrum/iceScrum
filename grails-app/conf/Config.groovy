@@ -143,7 +143,7 @@ icescrum {
                     },
                     enabled     : { application -> true },
                     hooks       : [
-                            events: [
+                            events       : [
                                     "feature.create", "feature.update", "feature.delete",
                                     "story.create", "story.update", "story.delete", "story.state", "story.addedComment", "story.updatedComment", "story.removedComment",
                                     "task.create", "task.update", "task.delete", "task.state", "task.addedComment", "task.updatedComment", "task.removedComment",
@@ -151,7 +151,9 @@ icescrum {
                                     "sprint.create", "sprint.update", "sprint.delete", "sprint.state",
                                     "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete", "acceptanceTest.state",
                                     "actor.create", "actor.update", "actor.delete"
-                            ]
+                            ],
+                            defaultEvents: ["story.create", "story.update", "story.delete", "story.state", "story.addedComment", "story.updatedComment", "story.removedComment",
+                                            "task.create", "task.update", "task.delete", "task.state", "task.addedComment", "task.updatedComment", "task.removedComment"],
                     ]
             ]
     ]
@@ -231,7 +233,8 @@ icescrum {
                                    exclude: ['parentProject']],
             timeboxnotestemplate: [include: ['configs'],
                                    exclude: ['configsData']],
-            invitation          : [include: ['project', 'team', 'portfolio']]
+            invitation          : [include: ['project', 'team', 'portfolio']],
+            hook                : [:]
     ]
 
     resourceBundles = [

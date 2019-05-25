@@ -25,6 +25,7 @@ import org.icescrum.core.domain.Hook
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ApplicationSupport
 
 @Secured('isAuthenticated()')
 class HookController implements ControllerErrorHandler {
@@ -33,14 +34,12 @@ class HookController implements ControllerErrorHandler {
     def beforeInterceptor = [action: this.&checkBeforeAction]
 
     private checkBeforeAction() {
-        if (params.workspaceType && params.workspaceId) { // Case workspace
-            if (!request."in${params.workspaceType.capitalize()}") { // Must be inWorkspace
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
+        if (workspace) { // Case workspace
+            if (!request."in${workspace.name.capitalize()}") { // Must be inWorkspace
                 render(status: 403)
                 return false
             }
-        } else if (params.workspaceType || params.workspaceId) { // Both or nothing
-            render(status: 503)
-            return false
         } else if (!request.admin) { // Global hooks request to be admin
             render(status: 403)
             return false
@@ -50,24 +49,27 @@ class HookController implements ControllerErrorHandler {
         }
     }
 
-    def index(long workspaceId, String workspaceType) {
-        def hooks = Hook.findAllByWorkspaceIdAndWorkspaceType(workspaceId, workspaceType)
+    def index() {
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
+        def hooks = Hook.findAllByWorkspaceIdAndWorkspaceType(workspace?.object?.id, workspace?.name)
         render(status: 200, contentType: 'application/json', text: hooks as JSON)
     }
 
-    def save(long workspaceId, String workspaceType) {
+    def save() {
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
         Hook hook = new Hook()
         Hook.withTransaction {
-            bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl']])
-            hook.workspaceId = workspaceId
-            hook.workspaceType = workspaceType
+            bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl', 'secret']])
+            hook.workspaceId = workspace?.object?.id
+            hook.workspaceType = workspace?.name
             hookService.save(hook)
         }
         render(status: 201, contentType: 'application/json', text: hook as JSON)
     }
 
-    def show(long id, long workspaceId, String workspaceType) {
-        def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspaceId, workspaceType)
+    def show(long id) {
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
+        def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspace?.object?.id, workspace?.name)
         if (hook) {
             render(status: 200, contentType: 'application/json', text: hook as JSON)
         } else {
@@ -75,10 +77,11 @@ class HookController implements ControllerErrorHandler {
         }
     }
 
-    def update(long id, long workspaceId, String workspaceType) {
-        def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspaceId, workspaceType)
+    def update(long id) {
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
+        def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspace?.object?.id, workspace?.name)
         if (hook) {
-            bindData(hook, params.hook, [include: ['url', 'events', 'enabled']])
+            bindData(hook, params.hook, [include: ['url', 'events', 'enabled', 'ignoreSsl', 'secret']])
             hookService.update(hook)
             render(status: 200, contentType: 'application/json', text: hook as JSON)
         } else {
@@ -86,11 +89,19 @@ class HookController implements ControllerErrorHandler {
         }
     }
 
-    def delete(long id, long workspaceId, String workspaceType) {
-        def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspaceId, workspaceType)
+    def delete(long id) {
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
+        def hook = Hook.findByIdAndWorkspaceIdAndWorkspaceType(id, workspace?.object?.id, workspace?.name)
         if (hook) {
             hookService.delete(hook, true)
-            render(status: 204)
+            withFormat {
+                html {
+                    render(status: 200, contentType: 'application/json', text: [id: id, workspaceId: workspace?.object?.id] as JSON)
+                }
+                json {
+                    render(status: 204)
+                }
+            }
         } else {
             render(status: 404)
         }
