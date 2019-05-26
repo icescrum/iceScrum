@@ -37,6 +37,7 @@
                 <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
             </div>
             <img ng-src="{{:: currentAppDefinition.logo }}"
+                 class="img-fluid"
                  alt="{{:: currentAppDefinition.name }}">
             <div ng-click="openAppDefinition(currentAppDefinition)"
                  class="text-ellipsis app-name">

@@ -64,6 +64,7 @@
     <div class="col-md-4">
         <div class="text-center actions">
             <img ng-src="{{ appDefinition.logo }}"
+                 class="img-fluid"
                  alt="{{ appDefinition.name }}">
         </div>
         <div class="text-center actions"
