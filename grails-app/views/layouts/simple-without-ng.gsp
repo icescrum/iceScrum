@@ -39,7 +39,7 @@
         <asset:stylesheet href="application.css"/>
         <g:layoutHead/>
     </head>
-    <body class="simple-without-ng-layout">
+    <body class="simple-without-ng-layout ${bodyClasses}">
         <div class="is-container-fluid">
             <g:layoutBody/>
         </div>

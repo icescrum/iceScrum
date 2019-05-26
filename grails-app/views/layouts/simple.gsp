@@ -41,7 +41,7 @@
     </head>
     <body ng-controller="applicationCtrl"
           ng-class="{ 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)  }"
-          class="simple-template splash-screen loading">
+          class="simple-template splash-screen loading ${bodyClasses}">
         <g:include view="layouts/_splashScreen.gsp"/>
         <div class="is-container-fluid">
             <g:layoutBody/>
