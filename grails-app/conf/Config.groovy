@@ -152,8 +152,7 @@ icescrum {
                                     "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete", "acceptanceTest.state",
                                     "actor.create", "actor.update", "actor.delete"
                             ],
-                            defaultEvents: ["story.create", "story.update", "story.delete", "story.state", "story.addedComment", "story.updatedComment", "story.removedComment",
-                                            "task.create", "task.update", "task.delete", "task.state", "task.addedComment", "task.updatedComment", "task.removedComment"],
+                            defaultEvents: ["story.create", "story.update", "story.delete", "story.state"],
                     ]
             ]
     ]

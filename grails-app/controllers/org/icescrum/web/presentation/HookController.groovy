@@ -63,7 +63,6 @@ class HookController implements ControllerErrorHandler {
             hook.workspaceId = workspace?.object?.id
             hook.workspaceType = workspace?.name
             hook.source = request.getHeader("x-icescrum-client") ? "webhook" : "resthook"
-            println request.getHeader("x-icescrum-client")
             hookService.save(hook)
         }
         render(status: 201, contentType: 'application/json', text: hook as JSON)
