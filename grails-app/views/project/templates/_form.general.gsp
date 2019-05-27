@@ -26,31 +26,31 @@
 <p class="form-text">${message(code: 'is.dialog.wizard.section.project.description')}</p>
 <entry:point id="project-form-general-before"/>
 <div class="row">
-    <div class="col-sm-8 col-xs-8 form-group">
+    <div class="col-sm-6 col-xs-6 form-group">
         <label for="name">${message(code: 'is.project.name')}</label>
-        <div class="input-group">
-            <input autofocus
-                   name="name"
-                   type="text"
-                   class="form-control"
-                   placeholder="${message(code: 'todo.is.ui.project.noname')}"
-                   ng-model="project.name"
-                   ng-change="nameChanged()"
-                   ng-required="isCurrentStep(1, 'project')">
-            <span class="input-group-append">
-                <button class="btn btn-model btn-sm"
-                        type="button"
-                        ng-disabled="!enableVisibilityChange()"
-                        ng-model="project.preferences.hidden"
-                        ng-click="project.preferences.hidden = !project.preferences.hidden;"
-                        ng-class="project.preferences.hidden ? 'btn-success' : 'btn-danger'">
-                    <i class="fa" ng-class="project.preferences.hidden ? 'fa-eye-slash' : 'fa-eye'"></i>
-                    {{ message(project.preferences.hidden  ? 'is.ui.workspace.hidden' : 'is.ui.workspace.public') }}
-                </button>
-            </span>
+        <input autofocus
+               name="name"
+               type="text"
+               class="form-control"
+               placeholder="${message(code: 'todo.is.ui.project.noname')}"
+               ng-model="project.name"
+               ng-change="nameChanged()"
+               ng-required="isCurrentStep(1, 'project')">
+    </div>
+    <div class="col-sm-3 col-xs-3 form-group">
+        <label for="hidden">${message(code: 'is.ui.project.visibility')}</label>
+        <div>
+            <button class="btn btn-model btn-sm"
+                    type="button"
+                    ng-disabled="!enableVisibilityChange()"
+                    ng-model="project.preferences.hidden"
+                    ng-click="project.preferences.hidden = !project.preferences.hidden;"
+                    ng-class="project.preferences.hidden ? 'btn-success' : 'btn-danger'">
+                {{ message(project.preferences.hidden  ? 'is.ui.workspace.hidden' : 'is.ui.workspace.public') }}
+            </button>
         </div>
     </div>
-    <div class="col-sm-4 col-xs-4 form-group">
+    <div class="col-sm-3 col-xs-3 form-group">
         <label for="pkey">${message(code: 'is.project.pkey')}</label>
         <input name="pkey"
                type="text"

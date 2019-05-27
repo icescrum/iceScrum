@@ -37,6 +37,12 @@ $is-shadow-color-1: rgba(156, 164, 171, 0.5) !default;
 $is-shadow-color-2: rgba(156, 164, 171, 0.62) !default;
 $is-shadow-color-3: rgba(62, 57, 107, 0.07) !default;
 
+$is-red: #ff3e33;
+$is-orange: #ff6b1c;
+$is-yellow: #ffcc01;
+$is-green: #27d285;
+$is-blue: #0067e8;
+
 $is-primary-color: #0067e8 !default;
 $is-outline-color: #c8c8cc !default;
 $is-border-color: #d3d8de !default;
@@ -63,13 +69,13 @@ $is-font-family-bold: averta-bold, Helvetica, Arial, sans-serif;
 $is-state-colors: (
         "todo": #AAAAAA,
         "frozen": #AAAAAA,
-        "suggested": #ffcc01,
-        "accepted": #ff6b1c,
-        "estimated": #ff3333,
+        "suggested": $is-yellow,
+        "accepted": $is-orange,
+        "estimated": $is-red,
         "planned": #c88cff,
         "inProgress": #00abfc,
         "inReview": #002ee8,
-        "done": #27d285
+        "done": $is-green
 );
 
 %is-title {
@@ -112,9 +118,12 @@ $enable-caret: false; // Overriden by our own caret style
 
 $font-family-base: $is-font-family;
 $body-bg: $is-bg-color;
-$primary: $is-primary-color;
 $secondary: $is-bg-color;
-$red: #ff3e33;
+$red: $is-red;
+$orange: $is-orange;
+$yellow: $is-yellow;
+$green: $is-green;
+$blue: $is-blue;
 $body-color: $is-text-color;
 $border-radius-sm: .25rem;
 $progress-border-radius: 0;
@@ -131,7 +140,8 @@ $btn-disabled-opacity: 0.3;
 
 $input-bg: $is-bg-color;
 $input-disabled-bg: $is-bg-color-alt;
-$input-color: $is-text-color;
+$input-color: $is_text-color-alt;
+$input-placeholder-color: $is_text-color;
 $input-height: 1.875rem;
 $input-border-color: $is-outline-color;
 $input-focus-border-color: $is-outline-color;
@@ -146,7 +156,7 @@ $navbar-light-hover-color: $is-text-color-alt;
 $navbar-light-active-color: $is-primary-color;
 
 $nav-tabs-border-width: 0;
-$nav-tabs-link-active-color: $primary;
+$nav-tabs-link-active-color: $is-primary-color;
 $nav-tabs-border-radius: 0;
 $nav-tabs-link-active-bg: $is-bg-color;
 

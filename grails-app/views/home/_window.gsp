@@ -63,15 +63,23 @@
                 </div>
             </div>
             <div class="home-projects">
-                <div class="home-project"
+                <div class="home-project d-flex justify-content-between"
                      ng-repeat="project in projects">
-                    <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
-                    <a href="{{:: getProjectUrl(project, 'backlog') }}"
-                       class="btn btn-secondary btn-sm mt-2 mb-2"
-                       role="button">${message(code: 'is.ui.backlogs')}</a>
-                    <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
-                       class="btn btn-secondary btn-sm"
-                       role="button">${message(code: 'todo.is.ui.taskBoard')}</a>
+                    <div>
+                        <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
+                    </div>
+                    <div>
+                        <div>
+                            <a href="{{:: getProjectUrl(project, 'backlog') }}"
+                               class="btn btn-secondary btn-sm mt-2 mb-2"
+                               role="button">${message(code: 'is.ui.backlogs')}</a>
+                        </div>
+                        <div>
+                            <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
+                               class="btn btn-secondary btn-sm"
+                               role="button">${message(code: 'todo.is.ui.taskBoard')}</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="home-project-add"
                      ui-sref="new"

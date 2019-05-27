@@ -39,7 +39,6 @@
 }
 
 .home-header {
-  height: 300px;
   background: $is_bg-color;
 
   .home-header-title {
@@ -55,8 +54,8 @@
     .home-project, .home-project-add {
       border-radius: 6px;
       padding: 1.25rem;
-      width: 196px;
-      height: 188px;
+      width: 350px;
+      height: 121px;
       margin: $is-spacer-x;
     }
 
@@ -410,6 +409,24 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
     > .card {
       border: 1px solid rgba(0, 0, 0, .125);
+    }
+  }
+}
+
+////////////////////
+// Other
+////////////////////
+
+#slider-effort {
+  div.slider-track-high {
+    + div {
+      background: $is-green;
+    }
+    + div + div {
+      background: $is-yellow;
+    }
+    + div + div + div {
+      background: $is-red;
     }
   }
 }
