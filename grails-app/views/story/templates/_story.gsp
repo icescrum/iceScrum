@@ -32,11 +32,17 @@
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!story.description}">
             <div class="item-values">
+                <span ng-if=":: story.state > storyStatesByName.PLANNED && story.acceptanceTests_count > 0">
+                    <a ng-class=":: (story.testState | acceptanceTestIcon)"
+                       uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')} - {{:: story.testState | i18n: 'AcceptanceTestStates' }}"
+                       href="{{:: openStoryUrl(story.id) }}/tests"></a>
+                    |
+                </span>
                 <span ng-if=":: story.state > 1"
                       ng-click="showEditEffortModal(story, $event)">
                     ${message(code: 'is.story.effort')} <strong>{{:: story.effort != undefined ? story.effort : '?' }}</strong>
                 </span>
-                <span ng-if=":: story.state > 1 && story.value">|</span>
+                <span ng-if=":: story.state > storyStatesByName.SUGGESTED && story.value">|</span>
                 <span ng-click="showEditValueModal(story, $event)"
                       ng-if=":: story.value">
                     ${message(code: 'is.story.value')} <strong>{{:: story.value }}</strong>

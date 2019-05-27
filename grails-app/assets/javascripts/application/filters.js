@@ -496,21 +496,21 @@ filters
     return function(object, defaultObject) {
         return _.merge(object, defaultObject);
     }
-}]).filter('taskStateIcon', ['TaskStatesByName', function(TaskStatesByName) {
+}]).filter('acceptanceTestIcon', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {
     return function(state) {
-        var iconByState = 'fa-hourglass-';
+        var icon = 'acceptance-test-icon acceptance-test-icon-';
         switch (state) {
-            case TaskStatesByName.TODO:
-                iconByState += 'start';
+            case AcceptanceTestStatesByName.TOCHECK:
+                icon += 'tocheck';
                 break;
-            case TaskStatesByName.IN_PROGRESS:
-                iconByState += 'half';
+            case AcceptanceTestStatesByName.FAILED:
+                icon += 'failed';
                 break;
-            case TaskStatesByName.DONE:
-                iconByState += 'end';
+            case AcceptanceTestStatesByName.SUCCESS:
+                icon += 'success';
                 break;
         }
-        return iconByState;
+        return icon;
     }
 }]).filter('sprintStateColor', ['SprintStatesByName', function(SprintStatesByName) {
     return function(state, prefix) {

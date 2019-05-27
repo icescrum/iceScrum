@@ -26,6 +26,7 @@
 ////////////////////
 
 $action-list: attach, comment, menu, story, take, task, test, unassign;
+$acceptance-test-states: tocheck, success, failed;
 
 .sticky-note {
   color: $is-sticky-note-text;
@@ -193,6 +194,17 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         height: 1.3125rem;
         font-size: $is-font-size-sm;
         color: $is-text-color;
+
+        .acceptance-test-icon {
+          display: inline-block;
+          @include rectangle-background(0.8125rem, 0.875rem);
+        }
+
+        @each $acceptance-test-state in $acceptance-test-states {
+          .acceptance-test-icon-#{$acceptance-test-state} {
+            background-image: url("acceptanceTest-#{$acceptance-test-state}-grey.svg");
+          }
+        }
       }
 
       .description {
@@ -497,6 +509,17 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
         .item-values {
           margin-bottom: 1px;
+
+          .acceptance-test-icon {
+            display: inline-block;
+            @include square-background(0.75rem);
+          }
+
+          @each $acceptance-test-state in $acceptance-test-states {
+            .acceptance-test-icon-#{$acceptance-test-state} {
+              background-image: url("acceptanceTest-#{$acceptance-test-state}-black.svg");
+            }
+          }
         }
 
         .title {
@@ -521,6 +544,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         @each $type in (defect, technical) {
           &.#{$type} .sticky-note-type-icon {
             background-image: url("type-#{$type}-grey.svg");
+          }
+        }
+      }
+
+      &.invert .sticky-note-content .item-values {
+        @each $acceptance-test-state in $acceptance-test-states {
+          .acceptance-test-icon-#{$acceptance-test-state} {
+            background-image: url("acceptanceTest-#{$acceptance-test-state}-white.svg");
           }
         }
       }
@@ -658,10 +689,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
   }
 }
-
-////////////////////
-// Grid  SM
-////////////////////
 
 .grid-group.has-selected > .sticky-note-container:not(.is-selected), .list-group.has-selected > .sticky-note-container:not(.is-selected) {
   opacity: 0.37;
