@@ -195,11 +195,16 @@
 .slider input {
   display: none;
 }
-.slider .tooltip {
+.slider .tooltip-inner {
+  font-family: averta-bold;
+  font-size: 1.25rem;
+  background: none;
+  box-shadow: none;
   pointer-events: none;
 }
 .slider .tooltip.top {
-  margin-top: -36px;
+  margin-left: 4px;
+  margin-top: -35px;
 }
 .slider .tooltip-inner {
   white-space: nowrap;
