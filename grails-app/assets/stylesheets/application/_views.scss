@@ -131,7 +131,7 @@
           display: inline-block;
           font-size: $is-font-size-sm;
           font-weight: 600;
-          color: $is_text-color-alt;
+          color: $is-text-color-alt;
         }
       }
     }
@@ -198,7 +198,7 @@
     .sprint-title {
       font-size: 1rem;
       font-family: $is-font-family-bold;
-      color: $is_text-color-alt;
+      color: $is-text-color-alt;
     }
   }
 }
@@ -214,7 +214,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   display: flex;
   justify-content: space-around;
   font-family: $is-font-family-bold;
-  color: $is_text-color-alt;
+  color: $is-text-color-alt;
   padding: ($is-spacer-x - 0.25rem) $is-spacer-x 0.5rem $is-spacer-x;
 }
 

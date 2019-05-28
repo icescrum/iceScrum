@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2015 Kagilum.
+- Copyright (c) 2019 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -28,28 +28,33 @@
           title="${message(code: 'todo.is.ui.story.estimate.value.by.comparison')}">
     <div class="slider-header row">
         <h5 class="col-md-1 text-right">${message(code: 'is.story.value')}</h5>
-        <slider class="col-md-11" ng-model="editableStory.value" min="0" step="1" max="99" value="editableStory.value" on-stop-slide="updateTable()"></slider>
+        <slider class="col-md-11"
+                ng-model="editableStory.value"
+                min="0" step="1" max="99" value="editableStory.value"
+                on-stop-slide="updateTable()"></slider>
     </div>
-    <h5><strong><g:message code="todo.is.ui.story.by.comparison"/></strong></h5>
+    <p class="mt-3">${message(code: 'todo.is.ui.story.by.comparison')}</p>
     <div class="table-scrollable">
         <table class="table">
             <tr>
-                <th ng-repeat="value in values" ng-click="setValue(value)" class="clickable">
-                    <span class="badge">{{ count[$index] }} <g:message code="is.ui.backlog.title.details.stories"/></span>
-                    {{ value }}
+                <th ng-repeat="value in values"
+                    ng-click="setValue(value)"
+                    class="text-center">
+                    <strong class="text-accent">{{ value }}</strong>
+                    <span class="story-count">{{ count[$index] }} ${message(code: 'is.ui.backlog.title.details.stories')}</span>
                 </th>
             </tr>
             <tr>
                 <td ng-repeat="stories in storiesByValue">
                     <table class="table table-striped">
-                        <tr ng-repeat="story in stories" title="{{ story.description | actorTag }}" ng-class="{ 'text-primary' : story.id == editableStory.id }">
+                        <tr ng-repeat="story in stories" title="{{ story.description | actorTag }}" ng-class="{ 'story-active' : story.id == editableStory.id }">
                             <td>
-                                <strong>{{ story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
-                                <div class="text-right"><span class="badge">{{ story.state | i18n:'StoryStates' }}</span></div>
+                                <strong class="text-accent">{{ story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                                <div class="text-right"><strong class="story-state">{{ story.state | i18n:'StoryStates' }}</strong></div>
                             </td>
                         </tr>
                         <tr ng-if="count[$index] > 3">
-                            <td class="text-center"><span class="small">{{ message('todo.is.ui.story.by.comparison.count', [(count[$index] - 3)]) }}</span></td>
+                            <td class="text-center story-more">{{ message('todo.is.ui.story.by.comparison.count', [(count[$index] - 3)]) }}</td>
                         </tr>
                     </table>
                 </td>

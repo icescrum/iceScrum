@@ -64,7 +64,7 @@ body {
         flex: 1 0 auto;
 
         > .card-header {
-           position: relative // Ensure that box-shadow is applied to next sibling in DOM (card-body). Don't use z-index as it overrides the z-index of dropdowns.
+          position: relative // Ensure that box-shadow is applied to next sibling in DOM (card-body). Don't use z-index as it overrides the z-index of dropdowns.
         }
 
         > .card-body {
@@ -112,6 +112,10 @@ body {
 ////////////////////
 // General style
 ////////////////////
+
+.text-accent {
+  color: $is-text-color-alt;
+}
 
 #logo {
   height: 34px;
@@ -709,11 +713,80 @@ body.simple-without-ng-layout {
 
   text {
     font-family: $font-family-base;
-    fill: $is_text-color-alt;
+    fill: $is-text-color-alt;
 
     &.nv-axislabel, &.nv-legend-text {
       fill: $is-text-color;
       font-size: $is-font-size-sm;
+    }
+  }
+}
+
+////////////////////
+// Table
+////////////////////
+
+.table-scrollable {
+  margin-top: 10px;
+  overflow: auto;
+  font-size: $is-font-size-sm;
+  margin-bottom: -$modal-inner-padding;
+
+  table {
+    margin-bottom: 0;
+
+    th, td {
+      border: none;
+    }
+  }
+
+  > table {
+
+    > tbody {
+      > tr {
+        > td, th {
+          min-width: 190px;
+        }
+
+        > th {
+          padding: 9px;
+          border-bottom: 1px solid $is-border-color-alt;
+          position: relative;
+
+          .story-count {
+            font-size: 0.75rem;
+            display: inline-block;
+            position: absolute;
+            right: 12px;
+            top: 10px;
+          }
+
+          &:not(:first-child) {
+            border-left: 1px solid $is-border-color-alt;
+          }
+        }
+
+        > td {
+          padding: 0;
+
+          &:not(:first-child) {
+            border-left: 1px solid $is-border-color-alt;
+          }
+
+          .story-active {
+            color: $is-text-color-alt;
+            font-family: $is-font-family-bold;
+          }
+
+          .story-state {
+            font-size: 0.625rem;
+          }
+
+          .story-more {
+            font-size: 0.75rem;
+          }
+        }
+      }
     }
   }
 }

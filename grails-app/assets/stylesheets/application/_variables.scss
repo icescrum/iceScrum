@@ -30,7 +30,7 @@ $is-bg-color: #ffffff !default;
 $is-bg-color-alt: #f4f4f9 !default;
 $is-bg-color-ter: #f7f7fb !default;
 $is-text-color: #687583 !default;
-$is_text-color-alt: #111111 !default;
+$is-text-color-alt: #111111 !default;
 $is-btn-secondary-start: #f5f5fa !default;
 $is-btn-secondary-end: $is-bg-color !default;
 $is-shadow-color-1: rgba(156, 164, 171, 0.5) !default;
@@ -81,7 +81,7 @@ $is-state-colors: (
 %is-title {
   font-size: 1.25rem;
   font-family: $is-font-family-bold;
-  color: $is_text-color-alt;
+  color: $is-text-color-alt;
 }
 
 %ellipsis {
@@ -140,7 +140,7 @@ $btn-disabled-opacity: 0.3;
 
 $input-bg: $is-bg-color;
 $input-disabled-bg: $is-bg-color-alt;
-$input-color: $is_text-color-alt;
+$input-color: $is-text-color-alt;
 $input-placeholder-color: $is_text-color;
 $input-height: 1.875rem;
 $input-border-color: $is-outline-color;
@@ -177,16 +177,16 @@ $modal-inner-padding: 15px; // So that row negative padding work properly
 $dropdown-bg: $is-bg-color;
 $dropdown-link-hover-bg: $is-bg-color;
 $dropdown-link-active-bg: $is-bg-color;
-$dropdown-header-color: $is_text-color-alt;
-$dropdown-link-color: $is_text-color-alt;
-$dropdown-link-hover-color: $is_text-color-alt;
-$dropdown-link-active-color: $is_text-color-alt;
+$dropdown-header-color: $is-text-color-alt;
+$dropdown-link-color: $is-text-color-alt;
+$dropdown-link-hover-color: $is-text-color-alt;
+$dropdown-link-active-color: $is-text-color-alt;
 $dropdown-font-size: $is-font-size-sm;
 $dropdown-divider-bg: $is-border-color-alt;
 $dropdown-border-radius: 0;
 $dropdown-border-width: 0;
 
-$tooltip-color: $is_text-color-alt;
+$tooltip-color: $is-text-color-alt;
 $tooltip-bg: $is-bg-color;
 $tooltip-border-radius: 0;
 $tooltip-opacity: 1;
@@ -210,5 +210,5 @@ $h3-font-size: 1.25rem;
 $h4-font-size: 1rem;
 $h5-font-size: 0.875rem;
 $h6-font-size: 0.75rem;
-$headings-color: $is_text-color-alt;
+$headings-color: $is-text-color-alt;
 $headings-font-family: $is-font-family-bold;

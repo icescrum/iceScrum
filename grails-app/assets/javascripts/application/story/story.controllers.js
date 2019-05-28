@@ -245,6 +245,8 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             var parentScope = $scope;
             $uibModal.open({
                 size: 'lg',
+                keyboard: false,
+                backdrop: 'static',
                 templateUrl: 'story.effort.html',
                 controller: ['$scope', '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(story);
@@ -301,8 +303,11 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
                         var effortIndex = _.findIndex($scope.efforts, function(effort2) {
                             return effort2 == effort;
                         });
-                        if (effortIndex == -1) {
+                        if (effortIndex === -1) {
                             effortIndex = _.sortedIndex($scope.efforts, effort);
+                            if (effort === 0 && $scope.efforts[0] === '?') { // Hack to ensure that 0 comes before '?'
+                                effortIndex = 1;
+                            }
                             $scope.efforts.splice(effortIndex, 0, effort);
                             storiesByEffort.splice(effortIndex, 0, []);
                             $scope.count.splice(effortIndex, 0, 0);
@@ -337,6 +342,8 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
         if (StoryService.authorizedStory('update', story)) {
             $uibModal.open({
                 size: 'lg',
+                keyboard: false,
+                backdrop: 'static',
                 templateUrl: 'story.value.html',
                 controller: ["$scope", '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(story);
