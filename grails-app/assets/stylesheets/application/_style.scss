@@ -444,6 +444,14 @@ $state-dot-size-sm: 0.5rem;
   display: none;
 }
 
+.slider-header {
+  background: $is-bg-color-alt;
+  margin-top: -$modal-inner-padding;
+  padding-top: 34px;
+  padding-bottom: 20px;
+  align-items: baseline;
+}
+
 ////////////////////
 // Details view
 ////////////////////

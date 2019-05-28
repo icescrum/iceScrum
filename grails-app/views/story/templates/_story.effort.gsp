@@ -26,9 +26,10 @@
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.story.estimate.effort.by.comparison')}">
-    <div>
-        <label for="effort">${message(code: 'is.story.effort')}</label>
+    <div class="slider-header row">
+        <h5 class="col-md-1 text-right">${message(code: 'is.story.effort')}</h5>
         <slider ng-if="!isEffortCustom()"
+                class="col-md-11"
                 ng-model="sliderEffort.labelValue"
                 min="sliderEffort.min"
                 step="sliderEffort.step"
@@ -39,8 +40,8 @@
                 range-highlights="sliderEffort.rangeHighlights"
                 on-stop-slide="updateTable()"></slider>
         <input type="number"
+               class="form-control col-md-11"
                ng-if="isEffortCustom()"
-               class="form-control"
                ng-change="updateTable()"
                name="effort"
                min="0"

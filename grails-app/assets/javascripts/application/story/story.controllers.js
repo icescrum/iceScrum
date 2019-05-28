@@ -273,9 +273,9 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
                         };
                         if ($scope.effortSuiteValues.length < 30) {
                             $scope.sliderEffort.rangeHighlights = [
-                                {start: 0, end: $scope.effortSuiteValues.indexOf(5)},
-                                {start: $scope.effortSuiteValues.indexOf(5), end: $scope.effortSuiteValues.indexOf(13)},
-                                {start: $scope.effortSuiteValues.indexOf(13), end: $scope.effortSuiteValues.length - 1}
+                                {start: 0, end: $scope.effortSuiteValues.indexOf(5), class: 'low-effort'},
+                                {start: $scope.effortSuiteValues.indexOf(5), end: $scope.effortSuiteValues.indexOf(13), class: 'medium-effort'},
+                                {start: $scope.effortSuiteValues.indexOf(13), end: $scope.effortSuiteValues.length - 1, class: 'high-effort'}
                             ]
                         }
                         $scope.$watch('sliderEffort.labelValue', function(newVal) {

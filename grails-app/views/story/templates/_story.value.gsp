@@ -26,9 +26,9 @@
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.story.estimate.value.by.comparison')}">
-    <div>
-        <label for="value">${message(code: 'is.story.value')}</label>
-        <slider ng-model="editableStory.value" min="0" step="1" max="99" value="editableStory.value" on-stop-slide="updateTable()"></slider>
+    <div class="slider-header row">
+        <h5 class="col-md-1 text-right">${message(code: 'is.story.value')}</h5>
+        <slider class="col-md-11" ng-model="editableStory.value" min="0" step="1" max="99" value="editableStory.value" on-stop-slide="updateTable()"></slider>
     </div>
     <h5><strong><g:message code="todo.is.ui.story.by.comparison"/></strong></h5>
     <div class="table-scrollable">

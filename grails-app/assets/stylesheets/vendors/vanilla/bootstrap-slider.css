@@ -1,5 +1,5 @@
 /*! =======================================================
-                      VERSION  10.6.1              
+                      VERSION  10.6.1  CUSTOMIZED
 ========================================================= */
 /*! =========================================================
  * bootstrap-slider.js
@@ -46,7 +46,7 @@
 }
 .slider.slider-horizontal {
   width: 210px;
-  height: 20px;
+  height: 28px;
 }
 .slider.slider-horizontal .slider-track {
   height: 10px;
@@ -211,28 +211,16 @@
 .slider-track {
   position: absolute;
   cursor: pointer;
-  background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #f9f9f9 100%);
-  background-image: -o-linear-gradient(top, #f5f5f5 0%, #f9f9f9 100%);
-  background-image: linear-gradient(to bottom, #f5f5f5 0%, #f9f9f9 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#fff9f9f9', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  background: white;
+  box-shadow: inset 0 2px 1px 0 rgba(62, 57, 107, 0.13);
 }
 .slider-selection {
   position: absolute;
-  background-image: -webkit-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
-  background-image: -o-linear-gradient(top, #f9f9f9 0%, #f5f5f5 100%);
-  background-image: linear-gradient(to bottom, #f9f9f9 0%, #f5f5f5 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9', endColorstr='#fff5f5f5', GradientType=0);
-  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background: white;
+  box-shadow: inset 0 2px 1px 0 rgba(62, 57, 107, 0.13);
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border-radius: 4px;
 }
 .slider-selection.tick-slider-selection {
   background-image: -webkit-linear-gradient(top, #8ac1ef 0%, #82b3de 100%);
@@ -248,23 +236,19 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border-radius: 4px;
 }
 .slider-handle {
   position: absolute;
   top: 0;
-  width: 20px;
-  height: 20px;
-  background-color: #337ab7;
-  background-image: -webkit-linear-gradient(top, #337ab7 0%, #2e6da4 100%);
-  background-image: -o-linear-gradient(top, #337ab7 0%, #2e6da4 100%);
-  background-image: linear-gradient(to bottom, #337ab7 0%, #2e6da4 100%);
+  width: 28px;
+  height: 28px;
+  background-color: #ffffff;
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2e6da4', GradientType=0);
-  filter: none;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: 0 2px 9px 0 rgba(62, 57, 107, 0.33);
   border: 0px solid transparent;
+}
+.slider-handle:focus {
+  outline: 0;
 }
 .slider-handle:hover {
   cursor: pointer;

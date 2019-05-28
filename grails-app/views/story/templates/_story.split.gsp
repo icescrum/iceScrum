@@ -27,16 +27,17 @@
           submitButton="${message(code: 'is.ui.backlog.menu.split')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'is.dialog.split.title')}">
-    <p class="form-text">${message(code: 'is.dialog.split.description')}</p>
-    <div class="form-group col-sm-12">
+    <div class="slider-header row">
         <slider ng-model="splitCount"
+                class="col-md-12"
                 min="2"
                 step="1"
                 max="10"
                 value="splitCount"
                 on-stop-slide="onChangeSplitNumber()"></slider>
+        <div class="col-md-12 form-text">${message(code: 'is.dialog.split.description')}</div>
     </div>
-    <table class="table table-striped">
+    <table class="table">
         <tr ng-repeat="story in stories track by $index">
             <td>
                 <div class="clearfix">

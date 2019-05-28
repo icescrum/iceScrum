@@ -418,15 +418,20 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 ////////////////////
 
 #slider-effort {
-  div.slider-track-high {
-    + div {
-      background: $is-green;
-    }
-    + div + div {
-      background: $is-yellow;
-    }
-    + div + div + div {
-      background: $is-red;
-    }
+
+  .slider-selection, .slider-track {
+    box-shadow: none;
+  }
+
+  .low-effort {
+    background: $is-green;
+  }
+
+  .medium-effort {
+    background: $is-yellow;
+  }
+
+  .high-effort {
+    background: $is-red;
   }
 }
