@@ -395,46 +395,46 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             selected: '='
         },
         link: function(scope, element) {
-            var margin = {top: 0, right: 15, bottom: 15, left: 15},
+            var margin = {top: 0, right: 0, bottom: 15, left: 0},
                 elementHeight = element.height(),
                 height = elementHeight - margin.top - margin.bottom,
-                sprintYMargin = 11, releaseYMargin = 15,
+                sprintYMargin = 8, releaseYMargin = 15,
                 releaseHeight = height - releaseYMargin * 2,
+                sprintRadius = 2,
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
                 y = d3.scale.linear().domain([elementHeight - releaseYMargin, 0 - releaseYMargin]).range([elementHeight, 0]),
                 selectedItems = [];
-            var rootSvg = d3.select(element[0]).append("svg").attr("height", elementHeight);
-            var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            var timelineBackground = svg.append("rect").attr("class", "timeline-background").attr("height", elementHeight);
-            var xAxisSelector = svg.append("g").attr("class", "x axis").attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')');
-            var releases = svg.append("g").attr("class", "releases");
-            var sprints = svg.append("g").attr("class", "sprints");
-            var sprintTexts = svg.append("g").attr("class", "sprint-texts");
-            var brush = d3.svg.brush().x(x).y(y).on("brush", onBrush).on("brushend", onBrushEnd);
-            var brushSelector = svg.append("g").attr("class", "brush").call(brush);
-            var versions = svg.append("g").attr("class", "versions");
-            var today = svg.append("rect").attr("class", "today").attr("height", releaseHeight).attr("width", 1.5);
+            var rootSvg = d3.select(element[0]).append('svg').attr('height', elementHeight);
+            var svg = rootSvg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+            var timelineBackground = svg.append('rect').attr('class', 'timeline-background').attr('height', elementHeight);
+            var xAxisSelector = svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + (height - margin.top - margin.bottom + 3) + ')');
+            var releases = svg.append('g').attr('class', 'releases');
+            var sprints = svg.append('g').attr('class', 'sprints');
+            var sprintTexts = svg.append('g').attr('class', 'sprint-texts');
+            var brush = d3.svg.brush().x(x).y(y).on('brush', onBrush).on('brushend', onBrushEnd);
+            var brushSelector = svg.append('g').attr('class', 'brush').call(brush);
+            var versions = svg.append('g').attr('class', 'versions');
+            var today = svg.append('rect').attr('class', 'today').attr('height', releaseHeight).attr('width', 1.5);
             var getEffectiveEndDate = function(sprint) { return sprint.state == SprintStatesByName.DONE ? sprint.doneDate : sprint.endDate; };
 
             // Main rendering
             function render() {
                 var _releases = scope.timeline;
                 if (!scope.timeline || !scope.timeline.length) return;
-                rootSvg.attr("width", element.width());
-                var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .card-body padding)
+                rootSvg.attr('width', element.width());
+                var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr('width', ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .card-body padding)
                 var width = elementWidth - margin.left - margin.right;
                 x.domain([_.head(_releases).startDate, _.last(_releases).endDate]).range([0, width]);
                 xAxis.scale(x);
                 xAxisSelector.call(xAxis);
-                timelineBackground.attr("width", width);
+                timelineBackground.attr('width', width);
 
                 var _sprints = ReleaseService.findAllSprints(_releases);
                 var releaseSelector = releases.selectAll('rect').data(_releases);
                 var sprintSelector = sprints.selectAll('rect').data(_sprints);
                 var sprintTextsSelector = sprintTexts.selectAll('text').data(_sprints);
                 var versionSelector = versions.selectAll('.version').data(_.filter(_sprints, 'deliveredVersion'));
-                var versionTriangleSelector = versionSelector.select('path');
                 var versionTextSelector = versionSelector.select('text');
                 var todaySelector = svg.select('.today').data([new Date()]);
                 // Remove
@@ -447,24 +447,24 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 classByState[SprintStatesByName.TODO] = 'todo';
                 classByState[SprintStatesByName.IN_PROGRESS] = 'inProgress';
                 classByState[SprintStatesByName.DONE] = 'done';
-                releaseSelector.enter().append("rect")
-                    .attr("y", releaseYMargin)
-                    .attr("height", releaseHeight);
-                sprintSelector.enter().append("rect")
-                    .attr("y", sprintYMargin + releaseYMargin)
-                    .attr("height", releaseHeight - sprintYMargin * 2);
-                sprintTextsSelector.enter().append("text")
-                    .attr("y", 6 + height / 2)
-                    .style("text-anchor", "middle")
-                    .attr("font-size", "18px");
-                var versionEnter = versionSelector.enter().append("g")
-                    .attr("class", "version");
-                versionEnter.append("path")
-                    .attr("d", d3.svg.symbol().type("triangle-down"));
-                versionEnter.append("text")
-                    .attr("y", 12)
-                    .style("text-anchor", "middle")
-                    .attr("font-size", "11px");
+                releaseSelector.enter().append('rect')
+                    .attr('y', releaseYMargin)
+                    .attr('height', releaseHeight);
+                sprintSelector.enter().append('rect')
+                    .attr('y', sprintYMargin + releaseYMargin)
+                    .attr('height', releaseHeight - sprintYMargin * 2)
+                    .attr('rx', sprintRadius)
+                    .attr('ry', sprintRadius);
+                sprintTextsSelector.enter().append('text')
+                    .attr('y', 6 + height / 2)
+                    .style('text-anchor', 'middle')
+                    .attr('font-size', '18px');
+                var versionEnter = versionSelector.enter().append('g')
+                    .attr('class', 'version');
+                versionEnter.append('text')
+                    .attr('y', 12)
+                    .style('text-anchor', 'middle')
+                    .attr('font-size', '11px');
                 // Update
                 var getX = function(item) {
                     return x(item.startDate);
@@ -482,25 +482,23 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 };
                 releaseSelector
                     .attr('x', getX)
-                    .attr("width", getWidth)
-                    .attr("class", function(release) { return "release release-" + classByState[release.state] + selectedClass(release); });
+                    .attr('width', getWidth)
+                    .attr('class', function(release) { return 'release release-' + classByState[release.state] + selectedClass(release); });
                 sprintSelector
                     .attr('x', getX)
-                    .attr("width", getWidth)
-                    .attr("class", function(sprint) { return "sprint sprint-" + classByState[sprint.state] + selectedClass(sprint); });
+                    .attr('width', getWidth)
+                    .attr('class', function(sprint) { return 'sprint sprint-' + classByState[sprint.state] + selectedClass(sprint); });
                 sprintTextsSelector
                     .text(function(sprint) { return sprint.index; })
                     .attr('x', function(sprint) { return x(new Date(sprint.startDate.getTime() + (sprint.endDate.getTime() - sprint.startDate.getTime()) / 2)); })
-                    .attr("class", function(sprint) { return "sprint-text" + selectedClass(sprint); });
+                    .attr('class', function(sprint) { return 'sprint-text' + selectedClass(sprint); });
                 versionSelector
-                    .attr("class", function(sprint) { return 'version' + dateSelectedClass(getEffectiveEndDate(sprint)); });
-                versionTriangleSelector
-                    .attr("transform", function(sprint) { return "translate(" + x(getEffectiveEndDate(sprint)) + "," + (releaseYMargin + sprintYMargin - 5) + ")"; }); // Offset to align border rather than center
+                    .attr('class', function(sprint) { return 'version' + dateSelectedClass(getEffectiveEndDate(sprint)); });
                 versionTextSelector
                     .text(function(sprint) { return sprint.deliveredVersion; })
                     .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
                 todaySelector
-                    .attr("transform", function(date) { return 'translate(' + x(date) + ',' + releaseYMargin + ')'; }); // Offset to align border rather than center
+                    .attr('transform', function(date) { return 'translate(' + x(date) + ',' + releaseYMargin + ')'; }); // Offset to align border rather than center
             }
 
             // Brush management
@@ -517,12 +515,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var onSprint = (y[0] > sprintYMargin || y[1] > sprintYMargin) && (y[0] < (releaseHeight - sprintYMargin) || y[1] < (releaseHeight - sprintYMargin));
                 var res;
                 if (onSprint) {
-                    res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
+                    res = _.filter(sprints.selectAll('rect').data(), function(sprint) {
                         return sprint.startDate <= dates[1] && sprint.endDate >= dates[0];
                     });
                 }
                 if (!res || !res.length) {
-                    res = [_.find(releases.selectAll("rect").data(), function(release) {
+                    res = [_.find(releases.selectAll('rect').data(), function(release) {
                         return release.startDate <= dates[1] && release.endDate >= dates[0];
                     })];
                 }
