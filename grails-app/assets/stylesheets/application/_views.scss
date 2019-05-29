@@ -203,6 +203,80 @@
   }
 }
 
+$state-todo: $gray-300;
+$state-inProgress: $blue;
+$state-done: $green;
+
+#view-planning {
+  .timeline {
+    height: 108px;
+
+    .timeline-background {
+      fill: $is-bg-color-ter;
+    }
+
+    .axis {
+      text {
+        fill: $is-text-color;
+        font-size: 12px;
+      }
+
+      path {
+        display: none;
+      }
+
+      line {
+        stroke: $is-text-color;
+        shape-rendering: crispEdges;
+      }
+    }
+
+    .brush .extent {
+      stroke: $is-border-color;
+      stroke-width: 2;
+      fill-opacity: .075;
+      shape-rendering: crispEdges;
+    }
+
+    .version text, path {
+        font-size: 12px;
+        fill: $is-text-color;
+      }
+
+    .today {
+      fill: $yellow;
+    }
+
+    .sprint-text {
+      fill: $is-text-color;
+    }
+
+    .release-todo {
+      fill: $state-todo;
+    }
+
+    .release-inProgress {
+      fill: $state-inProgress;
+    }
+
+    .release-done {
+      fill: $state-done;
+    }
+
+    .sprint-todo {
+      fill: darken($state-todo, 5%);
+    }
+
+    .sprint-inProgress {
+      fill: darken($state-inProgress, 5%);
+    }
+
+    .sprint-done {
+      fill: darken($state-done, 5%);
+    }
+  }
+}
+
 ////////////////////
 // Task board
 ////////////////////
