@@ -408,6 +408,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 y = d3.scale.linear().domain([elementHeight - releaseYMargin, 0 - releaseYMargin]).range([elementHeight, 0]),
                 selectedItems = [];
             var rootSvg = d3.select(element[0]).append('svg').attr('height', elementHeight);
+            var defs = rootSvg.append('defs');
+            _.each(['inProgressReleaseGradient', 'doneReleaseGradient', 'inProgressSprintGradient', 'doneSprintGradient'], function(gradientId) {
+                var gradient = defs.append('linearGradient').attr('id', gradientId);
+                gradient.append('stop').attr('class', gradientId + '-left').attr('offset', '0');
+                gradient.append('stop').attr('class', gradientId + '-right').attr('offset', '1');
+            });
             var svg = rootSvg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             var timelineBackground = svg.append('rect').attr('class', 'timeline-background').attr('height', elementHeight);
             var xAxisSelector = svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + (height - margin.bottom + 3) + ')');
@@ -445,10 +451,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 sprintTextsSelector.exit().remove();
                 versionSelector.exit().remove();
                 // Insert
-                var classByState = {};
-                classByState[SprintStatesByName.TODO] = 'todo';
-                classByState[SprintStatesByName.IN_PROGRESS] = 'inProgress';
-                classByState[SprintStatesByName.DONE] = 'done';
+                var stateClass = {};
+                stateClass[SprintStatesByName.TODO] = 'todo';
+                stateClass[SprintStatesByName.IN_PROGRESS] = 'inProgress';
+                stateClass[SprintStatesByName.DONE] = 'done';
                 releaseSelector.enter().append('rect')
                     .attr('y', releaseYMargin)
                     .attr('height', releaseHeight);
@@ -488,16 +494,18 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 releaseSelector
                     .attr('x', getX)
                     .attr('width', getWidth)
-                    .attr('class', function(release) { return 'release release-' + classByState[release.state] + selectedClass(release); });
+                    .attr('class', function(release) { return 'release release-' + stateClass[release.state] + selectedClass(release); })
+                    .attr('fill', function(sprint) { return 'url(#' + stateClass[sprint.state] + 'ReleaseGradient)' });
                 sprintSelector
                     .attr('x', getX)
                     .attr('width', getWidth)
-                    .attr('class', function(sprint) { return 'sprint sprint-' + classByState[sprint.state] + selectedClass(sprint); })
-                    .attr('transform', function(sprint) { return isSelected(sprint) ? 'translate(0,' + selectedSprintOffset + ')' : ''; });
+                    .attr('class', function(sprint) { return 'sprint sprint-' + stateClass[sprint.state] + selectedClass(sprint); })
+                    .attr('transform', function(sprint) { return isSelected(sprint) ? 'translate(0,' + selectedSprintOffset + ')' : ''; })
+                    .attr('fill', function(sprint) { return 'url(#' + stateClass[sprint.state] + 'SprintGradient)' });
                 sprintTextsSelector
                     .text(function(sprint) { return sprint.index; })
                     .attr('x', function(sprint) { return x(new Date(sprint.startDate.getTime() + (sprint.endDate.getTime() - sprint.startDate.getTime()) / 2)); })
-                    .attr('class', function(sprint) { return 'sprint-text' + selectedClass(sprint); })
+                    .attr('class', function(sprint) { return 'sprint-text ' + stateClass[sprint.state] + selectedClass(sprint); })
                     .attr('transform', function(sprint) { return isSelected(sprint) ? 'translate(0,' + selectedSprintOffset + ')' : ''; });
                 versionSelector
                     .attr('class', function(sprint) { return 'version' + dateSelectedClass(getEffectiveEndDate(sprint)); });

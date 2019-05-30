@@ -203,10 +203,6 @@
   }
 }
 
-$state-todo: $gray-300;
-$state-inProgress: $blue;
-$state-done: $green;
-
 #view-planning .timeline {
   margin-top: 8px;
   margin-left: $is-spacer-x;
@@ -252,31 +248,53 @@ $state-done: $green;
   .sprint-text {
     font-size: 14px;
     font-family: $is-font-family-bold;
-    fill: $is-text-color;
+    fill: white;
+
+    &.todo {
+      fill: #acb5c0;
+    }
   }
 
   .release-todo {
-    fill: $state-todo;
-  }
-
-  .release-inProgress {
-    fill: $state-inProgress;
-  }
-
-  .release-done {
-    fill: $state-done;
+    fill: #c8c8cc;
   }
 
   .sprint-todo {
-    fill: darken($state-todo, 5%);
+    fill: #f4f4f4;
   }
 
-  .sprint-inProgress {
-    fill: darken($state-inProgress, 5%);
-  }
+  stop {
+    &.inProgressReleaseGradient-left {
+      stop-color: #1180e7;
+    }
 
-  .sprint-done {
-    fill: darken($state-done, 5%);
+    &.inProgressReleaseGradient-right {
+      stop-color: #d1e6f0;
+    }
+
+    &.doneReleaseGradient-left {
+      stop-color: #50e3c2;
+    }
+
+    &.doneReleaseGradient-right {
+      stop-color: #88f3e2;
+    }
+
+    &.inProgressSprintGradient-left {
+      stop-color: #63abeb;
+    }
+
+    &.inProgressSprintGradient-right {
+      stop-color: #d1e6f0;
+    }
+
+    &.doneSprintGradient-left {
+      stop-color: #50e3c2;
+    }
+
+    &.doneSprintGradient-right {
+      stop-color: #88f3e2;
+    }
   }
 }
 
