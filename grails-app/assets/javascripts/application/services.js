@@ -986,7 +986,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
 
 services.service('TagService', ['FormService', function(FormService) {
     this.getTags = function() {
-        return FormService.Get('tag'); // Workspace sensitive
+        return FormService.httpGet('tag'); // Workspace sensitive
     }
 }]);
 

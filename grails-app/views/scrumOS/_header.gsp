@@ -25,10 +25,9 @@
     <div class="bg-danger text-center text-danger archived-message"><i class="fa fa-archive"></i> <g:message code="is.ui.${workspace.name}.archived"/></div>
 </g:if>
 <entry:point id="header-before-menu"/>
-<nav class="navbar navbar-light navbar-expand-lg {{ application.context.color | contrastColor:true }}"
-     ng-style="application.context | contextStyle"
+<nav class="navbar navbar-light navbar-expand-lg"
      role="navigation">
-    <div class="nav-item nav-item-logo">
+    <div class="nav-item">
         <div id="menu-loader"></div>
     </div>
     <a ng-if="warning"
@@ -45,7 +44,7 @@
             as-sortable="menuSortableOptions"
             ng-model="application.menus.visible">
             <li class="nav-item nav-item-main"
-                ng-class="workspaceType ? workspaceType : ''"
+                ng-class="workspaceType ? ('workspace-menu ' + workspaceType) : ''"
                 uib-dropdown>
                 <a uib-dropdown-toggle
                    href
@@ -201,87 +200,78 @@
             </li>
         </ul>
     </div>
-    <g:if test="${project}">
-        <form class="form-inline is-search" role="search">
-            <div class="input-group search">
-                <span class="input-group-prepend" ng-if="application.context">
-                    <button class="btn btn-secondary btn-sm"
-                            type="button"
-                            ng-click="setContext(null)">
-                        <i class="fa" ng-class="application.context.type | contextIcon"></i>
-                        <span class="context">{{ application.context.term }}</span>
-                        <i class="fa fa-times"></i>
-                    </button>
-                </span>
+    <div class="navbar-right {{ application.context.color | contrastColor:true }}"
+         ng-style="application.context | contextStyle">
+        <g:if test="${project}">
+            <form class="form-inline" role="search">
+                <div ng-class="application.context ? 'input-group' : ''">
+                    <span class="input-group-prepend" ng-if="application.context">
+                        <button class="btn btn-secondary btn-sm"
+                                type="button"
+                                ng-click="setContext(null)">
+                            <i class="fa" ng-class="application.context.type | contextIcon"></i>
+                            <span class="context">{{ application.context.term }}</span>
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </span>
+                    <input autocomplete="off"
+                           type="text"
+                           name="application.search"
+                           class="form-control search-input"
+                           ng-model="application.search"
+                           placeholder="${message(code: 'todo.is.ui.search.action')}"
+                           ng-model-options="{ debounce: 300 }"
+                           uib-typeahead="context.term for context in searchContext($viewValue)"
+                           typeahead-on-select="setContext($item)"
+                           typeahead-template-url="search.context.html">
+                </div>
+            </form>
+        </g:if>
+        <g:else>
+            <form class="form-inline" role="search">
                 <input autocomplete="off"
                        type="text"
                        name="application.search"
-                       class="form-control"
-                       ng-model="application.search"
-                       placeholder="${message(code: 'todo.is.ui.search.action')}"
-                       ng-model-options="{ debounce: 300 }"
-                       uib-typeahead="context.term for context in searchContext($viewValue)"
-                       typeahead-on-select="setContext($item)"
-                       typeahead-template-url="search.context.html">
-                <span class="input-group-append">
-                    <button class="btn btn-secondary btn-sm" type="button" ng-click="application.search = null">
-                        <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
-                    </button>
-                </span>
-            </div>
-        </form>
-    </g:if>
-    <g:else>
-        <form class="form-inline is-search" role="search">
-            <div class="input-group search">
-                <input autocomplete="off"
-                       type="text"
-                       name="application.search"
-                       class="form-control"
+                       class="form-control search-input"
                        ng-model="application.search"
                        placeholder="${message(code: 'todo.is.ui.search.action')}"
                        ng-model-options="{ debounce: 300 }">
-                <span class="input-group-append">
-                    <button class="btn btn-secondary btn-sm" type="button" ng-click="application.search = null">
-                        <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
-                    </button>
-                </span>
+            </form>
+        </g:else>
+        <g:if test="${g.meta(name: 'app.displayReleaseNotes')}">
+            <div ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true">
+                <a href ng-click="showReleaseNotesModal()">
+                    <i class="fa fa-gift fa-2x" id="ga-show-whats-new-event"></i>
+                </a>
             </div>
-        </form>
-    </g:else>
-    <g:if test="${g.meta(name: 'app.displayReleaseNotes')}">
-        <div ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true">
-            <a href ng-click="showReleaseNotesModal()">
-                <i class="fa fa-gift fa-2x" id="ga-show-whats-new-event"></i>
+        </g:if>
+        <div ng-if=":: currentUser.username" uib-dropdown on-toggle="notificationToggle(open)">
+            <div uib-dropdown-toggle class="no-caret">
+                <i class="fa fa-bell" ng-class="{'empty':getUnreadActivities() == 0}"></i>
+                <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
+            </div>
+            <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'notifications.panel.html'"></div>
+        </div>
+        <div ng-if=":: currentUser.username" uib-dropdown>
+            <a hotkey="{ 'shift+h': goToHome}"
+               hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
+               ng-href="{{:: serverUrl }}/#/">
+                <img ng-src="{{ currentUser | userAvatar }}"
+                     class="{{ currentUser | userColorRoles }}"
+                     tooltip-placement="left"
+                     defer-tooltip="{{ currentUser.email }} {{:: getCurrentUserRoles() }}"
+                     height="37px"
+                     width="37px"/>
             </a>
         </div>
-    </g:if>
-    <div ng-if=":: currentUser.username" uib-dropdown on-toggle="notificationToggle(open)">
-        <div uib-dropdown-toggle class="no-caret">
-            <i class="fa fa-bell" ng-class="{'empty':getUnreadActivities() == 0}"></i>
-            <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
-        </div>
-        <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'notifications.panel.html'"></div>
+        <button id="login"
+                ng-show="!(currentUser.username)"
+                class="btn btn-secondary"
+                ng-click="logIn()"
+                defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
+                tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
-    <div ng-if=":: currentUser.username" uib-dropdown>
-        <a hotkey="{ 'shift+h': goToHome}"
-           hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
-           ng-href="{{:: serverUrl }}/#/">
-            <img ng-src="{{ currentUser | userAvatar }}"
-                 class="{{ currentUser | userColorRoles }}"
-                 tooltip-placement="left"
-                 defer-tooltip="{{ currentUser.email }} {{:: getCurrentUserRoles() }}"
-                 height="37px"
-                 width="37px"/>
-        </a>
-    </div>
-    <button id="login"
-            ng-show="!(currentUser.username)"
-            class="btn btn-secondary"
-            ng-click="logIn()"
-            defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
-            tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 </nav>

@@ -145,6 +145,7 @@ body.splash-screen > *:not(#application-loading), body:not(.splash-screen) #appl
 
 nav.navbar {
   position: relative;
+  padding-right: 0;
 
   #menu-loader {
     width: 33px;
@@ -160,15 +161,14 @@ nav.navbar {
     font-size: $is-font-size-sm;
   }
 
-  .nav-item-logo {
-    border-right: 1px solid rgba(200, 200, 204, 0.42);
-    display: flex;
-  }
-
   .nav-item-main {
     margin-left: 9px;
     font-size: 1.125rem;
     line-height: 1;
+
+    &.workspace-menu {
+      border-left: 1px solid rgba(200, 200, 204, 0.42);
+    }
 
     .nav-link {
       display: flex;
@@ -243,10 +243,23 @@ nav.navbar {
     }
   }
 
-  .is-search {
-    input {
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 $is-spacer-x;
+
+    .btn-sm {
+      background-color: $is-bg-color;
+    }
+
+    .search-input {
       height: 35px;
-      box-shadow: 0 2px 9px 0 $is-shadow-color-3;
+      background-size: 16px;
+      padding-left: 44px;
+      // Hack because search hidden dropdown messes up the input-group
+      border-top-right-radius: $input-border-radius;
+      border-bottom-right-radius: $input-border-radius;
     }
   }
 }
@@ -619,6 +632,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 }
 
 .search-input {
+  box-shadow: 0 2px 9px 0 $is-shadow-color-3;
   background: url("search.svg") no-repeat 16px center;
   background-color: $is-bg-color;
   padding-left: 52px;
