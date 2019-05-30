@@ -149,7 +149,8 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   .sticky-note {
-    background: none !important;
+    box-shadow: none !important; // Override js style
+    background: none !important; // Override js style
     padding: 0.3125rem;
     color: $is_text-color;
 
@@ -312,6 +313,9 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   .sticky-note {
+    &:not(:hover) {
+      box-shadow: none !important; // Override js style
+    }
     position: relative;
 
     .sticky-note-state-progress {

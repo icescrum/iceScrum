@@ -155,11 +155,11 @@ filters
     })
     .filter('createGradientBackground', ['ColorService', function(ColorService) {
         return function(originalHex) {
+            var originalRgb = ColorService.hexToRgb(originalHex);
             if (!gradientBackgroundCache[originalHex]) {
                 // Shift the color and lighten it a little on the top
                 var hCoef = 7; // Shift the color hue by 7 in one direction and if the color is darker we try 7 in the other direction
                 var lCoef = 0.01; // Lighten the color by adding 1%
-                var originalRgb = ColorService.hexToRgb(originalHex);
                 var originalHsl = ColorService.rgbToHsl(originalRgb[0], originalRgb[1], originalRgb[2]);
                 var targetS = originalHsl[1];
                 var targetL = originalHsl[2] + lCoef;
@@ -177,8 +177,10 @@ filters
                 var targetRgb = ColorService.hslToRgb(targetH, targetS, targetL);
                 gradientBackgroundCache[originalHex] = 'linear-gradient(to top, rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ',1) 0%, rgba(' + targetRgb[0] + ',' + targetRgb[1] + ',' + targetRgb[2] + ', 1) 100%)';
             }
-            // The background image gets overriden by css if table, border is overriden if sticky note
-            return {'background-image': gradientBackgroundCache[originalHex]};
+            return {
+                'background-image': gradientBackgroundCache[originalHex],
+                'box-shadow': '0 42px 48px 0 rgba('+ originalRgb[0] + ',' +originalRgb[1] + ',' + originalRgb[2] + ', 0.2)'
+            };
         };
     }])
     .filter('actorTag', ['$state', 'ContextService', function($state, ContextService) {
