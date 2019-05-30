@@ -34,7 +34,7 @@
                 <div class="rect_3"></div>
                 <div class="login">
                     <div class="text-center">
-                        <a href="/">
+                        <a href="https://www.icescrum.com" target="_blank">
                             <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
                             <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-responsive">
                         </a>

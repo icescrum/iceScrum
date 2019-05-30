@@ -253,6 +253,45 @@ nav.navbar {
       background-color: $is-bg-color;
     }
 
+    .main-notifications {
+      position: relative;
+      margin: 0 15px;
+      width: 18px;
+      height: 35px;
+
+      .fi-bell {
+        position: absolute;
+        top: 8px;
+        @include rectangle-background(18px, 20px);
+        background-image: url("bell.svg");
+      }
+
+      &.has-notifications {
+        width: 31px;
+
+        .fi-bell {
+          top: 14px;
+        }
+
+        .notification-count {
+          padding-top: 2px;
+          text-align: center;
+          position: absolute;
+          top: 0;
+          right: 0;
+          font-family: $is-font-family-bold;
+          text-shadow: 0 1px 4px #443702;
+          color: #ffffff;
+          font-size: 10px;
+          background-image: linear-gradient(44deg, #ffe802, #fdcc01);
+          width: 23px;
+          height: 23px;
+          border-radius: 11.5px;
+          border: solid 2px $is-bg-color;
+        }
+      }
+    }
+
     .search-input {
       height: 35px;
       background-size: 16px;

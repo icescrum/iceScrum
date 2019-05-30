@@ -247,8 +247,10 @@
         </g:if>
         <div ng-if=":: currentUser.username" uib-dropdown on-toggle="notificationToggle(open)">
             <div uib-dropdown-toggle class="no-caret">
-                <i class="fa fa-bell" ng-class="{'empty':getUnreadActivities() == 0}"></i>
-                <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
+                <div class="main-notifications" ng-class="{'has-notifications': getUnreadActivities() != 0}">
+                    <div class="fi-bell"></div>
+                    <span class="notification-count" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
+                </div>
             </div>
             <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'notifications.panel.html'"></div>
         </div>
