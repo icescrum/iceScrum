@@ -204,7 +204,7 @@
 }
 
 #view-planning .timeline {
-  margin-top: 8px;
+  margin-top: 6px;
   margin-left: $is-spacer-x;
   margin-right: $is-spacer-x;
   height: 110px;
@@ -230,9 +230,7 @@
   }
 
   .brush .extent {
-    stroke: $is-border-color;
-    stroke-width: 2;
-    fill-opacity: .075;
+    fill-opacity: .2;
     shape-rendering: crispEdges;
   }
 
@@ -255,15 +253,16 @@
     }
   }
 
-  .release-todo {
-    fill: #c8c8cc;
-  }
-
-  .sprint-todo {
-    fill: #f4f4f4;
-  }
-
   stop {
+
+    &.todoReleaseGradient-left, &.todoReleaseGradient-right {
+      stop-color: #c8c8cc;
+    }
+
+    &.todoSprintGradient-left, &.todoSprintGradient-right {
+      stop-color: #f4f4f4;
+    }
+
     &.inProgressReleaseGradient-left {
       stop-color: #1180e7;
     }
@@ -273,11 +272,11 @@
     }
 
     &.doneReleaseGradient-left {
-      stop-color: #50e3c2;
+      stop-color: #43bfa2;
     }
 
     &.doneReleaseGradient-right {
-      stop-color: #88f3e2;
+      stop-color: #73d3c2;
     }
 
     &.inProgressSprintGradient-left {

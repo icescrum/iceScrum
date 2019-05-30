@@ -408,12 +408,34 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 y = d3.scale.linear().domain([elementHeight - releaseYMargin, 0 - releaseYMargin]).range([elementHeight, 0]),
                 selectedItems = [];
             var rootSvg = d3.select(element[0]).append('svg').attr('height', elementHeight);
+            // Defs
             var defs = rootSvg.append('defs');
-            _.each(['inProgressReleaseGradient', 'doneReleaseGradient', 'inProgressSprintGradient', 'doneSprintGradient'], function(gradientId) {
+            _.each(['todoSprintGradient', 'todoReleaseGradient', 'inProgressReleaseGradient', 'doneReleaseGradient', 'inProgressSprintGradient', 'doneSprintGradient'], function(gradientId) {
                 var gradient = defs.append('linearGradient').attr('id', gradientId);
                 gradient.append('stop').attr('class', gradientId + '-left').attr('offset', '0');
                 gradient.append('stop').attr('class', gradientId + '-right').attr('offset', '1');
             });
+            var shadows = [
+                {id: 'selectedSprintShadow', attrs: {dx: 0, dy: 8, stdDeviation: 6, 'flood-color': 'rgb(0, 0, 5)', 'flood-opacity': 0.33}},
+                {id: 'sprintShadow', attrs: {dx: 0, dy: 3, stdDeviation: 2, 'flood-color': 'rgb(0, 0, 5)', 'flood-opacity': 0.10}}
+            ];
+            _.each(shadows, function(shadow) {
+                var filter = defs.append('filter').attr('id', shadow.id).attr('height', '200%').attr('width', '200%');
+                // Option 1
+                var shadowFilter = filter.append('feDropShadow');
+                _.each(shadow.attrs, function(value, key) {
+                    shadowFilter.attr(key, value);
+                });
+                // Option 2 that may be compatible with more browsers
+                // filter.append('feGaussianBlur').attr('in', 'SourceAlpha').attr('stdDeviation', shadow.attrs.stdDeviation);
+                // filter.append('feOffset').attr('dx', shadow.attrs.dx).attr('dy', shadow.attrs.dy).attr('result', 'offsetBlur');
+                // filter.append('feFlood').attr('flood-color', shadow.attrs['flood-color']).attr('flood-opacity', shadow.attrs['flood-opacity']);
+                // filter.append('feComposite').attr('in2', 'offsetBlur').attr('operator', 'in');
+                // var feMerge = filter.append('feMerge');
+                // feMerge.append('feMergeNode');
+                // feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            // Elements
             var svg = rootSvg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             var timelineBackground = svg.append('rect').attr('class', 'timeline-background').attr('height', elementHeight);
             var xAxisSelector = svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + (height - margin.bottom + 3) + ')');
@@ -470,7 +492,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var versionEnter = versionSelector.enter().append('g')
                     .attr('class', 'version');
                 versionEnter.append('text')
-                    .attr('y', 2)
+                    .attr('y', 5)
                     .style('text-anchor', 'middle')
                     .attr('font-size', '11px');
                 // Update
@@ -501,7 +523,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr('width', getWidth)
                     .attr('class', function(sprint) { return 'sprint sprint-' + stateClass[sprint.state] + selectedClass(sprint); })
                     .attr('transform', function(sprint) { return isSelected(sprint) ? 'translate(0,' + selectedSprintOffset + ')' : ''; })
-                    .attr('fill', function(sprint) { return 'url(#' + stateClass[sprint.state] + 'SprintGradient)' });
+                    .attr('fill', function(sprint) { return 'url(#' + stateClass[sprint.state] + 'SprintGradient)' })
+                    .style('filter', function(sprint) { return 'url(#' + (isSelected(sprint) ? 'selectedSprintShadow' : 'sprintShadow') + ')' });
                 sprintTextsSelector
                     .text(function(sprint) { return sprint.index; })
                     .attr('x', function(sprint) { return x(new Date(sprint.startDate.getTime() + (sprint.endDate.getTime() - sprint.startDate.getTime()) / 2)); })
