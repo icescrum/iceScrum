@@ -445,7 +445,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var brush = d3.svg.brush().x(x).y(y).on('brush', onBrush).on('brushend', onBrushEnd);
             var brushSelector = svg.append('g').attr('class', 'brush').call(brush);
             var versions = svg.append('g').attr('class', 'versions');
-            var today = svg.append('rect').attr('class', 'today').attr('height', releaseHeight).attr('width', 1.5);
+            var today = svg.append("path").attr("d", d3.svg.symbol().size(21).type("triangle-up")).attr('class', 'today');
             var getEffectiveEndDate = function(sprint) { return sprint.state == SprintStatesByName.DONE ? sprint.doneDate : sprint.endDate; };
 
             // Main rendering
@@ -536,7 +536,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .text(function(sprint) { return sprint.deliveredVersion; })
                     .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
                 todaySelector
-                    .attr('transform', function(date) { return 'translate(' + x(date) + ',' + releaseYMargin + ')'; }); // Offset to align border rather than center
+                    .attr('transform', function(date) { return 'translate(' + x(date) + ',' + (height - 9) + ')'; }); // Offset to align border rather than center
             }
 
             // Brush management
