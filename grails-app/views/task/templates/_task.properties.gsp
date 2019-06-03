@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div ng-if="task.parentStory" class="form-1-tier">
-                <label for="parentStory"> ${message(code: 'is.story')}</label>
+                <label for="parentStory">${message(code: 'is.story')}</label>
                 <input class="form-control" disabled="disabled" type="text" value="{{ task.parentStory.name }}"/>
             </div>
             <div ng-if="task.type" class="form-1-tier">
@@ -98,8 +98,8 @@
         <div class="row is-form-row">
             <div class="form-half">
                 <label for="estimation">
-                    <i class="fa {{ task.state | taskStateIcon }}"></i> ${message(code: 'is.task.estimation')}
-                <entry:point id="task-estimation-after-label"/>
+                    ${message(code: 'is.task.estimation')}
+                    <entry:point id="task-estimation-after-label"/>
                 </label>
                 <div class="input-group">
                     <span class="input-group-prepend">
