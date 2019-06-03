@@ -50,6 +50,7 @@ $acceptance-test-states: tocheck, success, failed;
 
   .sticky-note-state-progress {
     height: 15px;
+    position: relative;
 
     .progress {
       height: 15px;
@@ -62,18 +63,19 @@ $acceptance-test-states: tocheck, success, failed;
 
     .state {
       position: absolute;
+      top: 0;
       font-size: 0.625rem;
       text-align: right;
     }
 
     .status {
       position: absolute;
+      top: 0;
       font-size: 0.625rem;
     }
   }
 
   .sticky-note-actions {
-    font-size: 0.8125rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -144,6 +146,7 @@ $acceptance-test-states: tocheck, success, failed;
 
   &.sticky-notes {
     .sticky-note-container {
+      margin: 0 $is-spacer-x;
       border-top: solid 1px $is-border-color-alt;
 
       &:last-child {
@@ -155,7 +158,7 @@ $acceptance-test-states: tocheck, success, failed;
   .sticky-note {
     box-shadow: none !important; // Override js style
     background: none !important; // Override js style
-    padding: 0.3125rem;
+    padding: 0.3125rem 0;
     color: $is_text-color;
 
     a {
@@ -164,9 +167,10 @@ $acceptance-test-states: tocheck, success, failed;
 
     > div {
       display: flex;
+      align-items: center;
 
       > div {
-        padding: 0.625rem;
+        padding: 0 0.625rem;
         height: 3.0625rem;
 
         &:not(:last-child):not(.sticky-note-content) {
@@ -181,16 +185,16 @@ $acceptance-test-states: tocheck, success, failed;
 
     .id-icon {
       display: block;
-      font-size: 1rem;
 
       text {
+        font-size: 1rem;
         fill: $is-sticky-note-text;
       }
     }
 
     .sticky-note-head {
       display: flex;
-      width: 48px;
+      width: 67px;
       padding-left: 0;
       justify-content: space-between;
       align-items: center;
@@ -231,21 +235,25 @@ $acceptance-test-states: tocheck, success, failed;
     }
 
     .sticky-note-state-progress {
-      position: relative;
+      height: 1.125rem;
       width: 230px;
+
+      .progress {
+        height: 1.125rem;
+      }
 
       .progress, .progress-bar {
         background-color: rgba(104, 117, 131, 0.2);
       }
 
       .state {
-        top: 0.625rem;
         right: 1.25rem;
+        font-size: 0.75rem;
       }
 
       .status {
-        top: 0.625rem;
         left: 1.25rem;
+        font-size: 0.75rem;
       }
     }
 
@@ -254,6 +262,10 @@ $acceptance-test-states: tocheck, success, failed;
       justify-content: space-around;
 
       .action {
+        .action-icon {
+          @include square-background(0.875rem);
+        }
+
         @each $action in $action-list {
           .action-icon-#{$action} {
             background-image: url("action-#{$action}-grey.svg");
@@ -262,7 +274,15 @@ $acceptance-test-states: tocheck, success, failed;
       }
     }
 
+    .badge {
+      font-size: 0.875rem;
+    }
+
     &.sticky-note-type {
+      .sticky-note-type-icon {
+        @include rectangle-background(1.0625rem, 1.125rem);
+      }
+
       @each $type in (defect, technical, architectural) {
         &.#{$type} .sticky-note-type-icon {
           background-image: url("type-#{$type}-grey.svg");
@@ -285,8 +305,19 @@ $acceptance-test-states: tocheck, success, failed;
       color: $is_text-color;
     }
 
+    .id-icon svg {
+      width: 1.1875rem;
+      height: 1.1875rem;
+
+      text {
+        font-size: 1.0625rem;
+      }
+    }
+
     .sticky-note-head {
       font-size: 0.6875rem;
+      padding-left: 0.625rem;
+      width: 61px;
     }
 
     > div > div {
@@ -312,6 +343,10 @@ $acceptance-test-states: tocheck, success, failed;
       .item-values {
         font-size: 0.75rem;
       }
+    }
+
+    &.sticky-note-type .sticky-note-type-icon {
+      @include rectangle-background(0.75rem, 0.8125rem);
     }
   }
 }
@@ -347,12 +382,10 @@ $acceptance-test-states: tocheck, success, failed;
       left: 0;
 
       .state {
-        top: 0;
         right: 0.5rem;
       }
 
       .status {
-        top: 0;
         left: 0.5rem;
       }
     }

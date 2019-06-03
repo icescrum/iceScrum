@@ -27,7 +27,7 @@
      ng-class=":: [((story | storyColor) | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="sticky-note-head">
-            <span class="id-icon" ng-include="'story.icon.html'"></span>
+            <div class="id-icon" ng-include="'story.icon.html'"></div>
             <span class="id">{{:: story.uid }}</span>
             <div class="sticky-note-type-icon"></div>
         </div>
