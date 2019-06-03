@@ -264,7 +264,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     this.httpGet = function(path, params, isAbsolute) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {};
-        if(!paramObj.headers){
+        if (!paramObj.headers) {
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
@@ -275,7 +275,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     this.httpDelete = function(path, params, isAbsolute) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {};
-        if(!paramObj.headers){
+        if (!paramObj.headers) {
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
@@ -291,7 +291,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
                 return self.formObjectData(data, '');
             }
         };
-        if(!paramObj.headers){
+        if (!paramObj.headers) {
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
@@ -1076,10 +1076,10 @@ services.service("ColorService", [function() {
         var b = num & 255;
         return [r, g, b];
     };
-    this.rgbToHsl = function(r, g, b) {
-        r /= 255;
-        g /= 255;
-        b /= 255;
+    this.rgbToHsl = function(rgb) {
+        var r = rgb[0] / 255;
+        var g = rgb[1] / 255;
+        var b = rgb[2] / 255;
         var max = Math.max(r, g, b);
         var min = Math.min(r, g, b);
         var delta = max - min;

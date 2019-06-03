@@ -165,7 +165,7 @@ filters
                 // Shift the color and lighten it a little on the top
                 var hCoef = 7; // Shift the color hue by 7 in one direction and if the color is darker we try 7 in the other direction
                 var lCoef = 0.01; // Lighten the color by adding 1%
-                var originalHsl = ColorService.rgbToHsl(originalRgb[0], originalRgb[1], originalRgb[2]);
+                var originalHsl = ColorService.rgbToHsl(originalRgb);
                 var targetS = originalHsl[1];
                 var targetL = originalHsl[2] + lCoef;
                 var targetH = originalHsl[0] + hCoef;
