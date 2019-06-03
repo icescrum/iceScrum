@@ -252,7 +252,7 @@
                              ng-click="selectStory($event, story.id)"
                              is-watch="story"
                              ng-class="{'is-selected': isSelected(story)}">
-                            <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
+                            <div ng-include="'story.html'"></div>
                         </div>
                     </div>
                     <div class="kanban-row"
@@ -300,7 +300,7 @@
                      ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'">
                     <div class="list-group list-group-small">
                         <div class="sticky-note-container sticky-note-story" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
-                            <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
+                            <div ng-include="'story.light.html'"></div>
                         </div>
                     </div>
                     <div class="kanban-row">

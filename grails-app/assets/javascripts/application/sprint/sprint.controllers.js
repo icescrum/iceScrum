@@ -133,7 +133,6 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     });
                 };
                 // Init
-                $scope.disabledGradient = true;
                 $scope.backlog = {
                     stories: [],
                     storiesLoaded: false
