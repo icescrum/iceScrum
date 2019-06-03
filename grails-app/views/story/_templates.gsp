@@ -26,6 +26,7 @@
 <g:render template="/story/templates/story.details"/>
 <g:render template="/story/templates/story.editor"/>
 <g:render template="/story/templates/story.effort"/>
+<g:render template="/story/templates/story.icon"/>
 <g:render template="/story/templates/story.light"/>
 <g:render template="/story/templates/story.multiple"/>
 <g:render template="/story/templates/story.new"/>

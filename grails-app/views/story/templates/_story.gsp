@@ -24,9 +24,10 @@
 <script type="text/ng-template" id="story.html">
 <div class="sticky-note"
      sticky-note-color="{{:: story.feature.color }}"
-     ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
+     ng-class=":: [((story | storyColor) | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="sticky-note-head">
+            <span class="id-icon" ng-include="'story.icon.html'"></span>
             <span class="id">{{:: story.uid }}</span>
             <div class="sticky-note-type-icon"></div>
         </div>

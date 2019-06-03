@@ -1076,6 +1076,13 @@ services.service("ColorService", [function() {
         var b = num & 255;
         return [r, g, b];
     };
+    this.rgbToHex = function(rgb) {
+        var decimalToRgb = function(decimal) {
+            var hex = decimal.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        };
+        return '#' + decimalToRgb(rgb[0]) + decimalToRgb(rgb[1]) + decimalToRgb(rgb[2]);
+    };
     this.rgbToHsl = function(rgb) {
         var r = rgb[0] / 255;
         var g = rgb[1] / 255;

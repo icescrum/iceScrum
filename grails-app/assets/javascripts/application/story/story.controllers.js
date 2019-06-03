@@ -420,6 +420,9 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
         template += $scope.message('is.story.template.to') + ' ';
         return template;
     };
+    $scope.getGradientColor = function(colorHex) {
+        return gradientCache[colorHex];
+    };
     // Init
     $scope.storyStatesByName = StoryStatesByName;
 }]);

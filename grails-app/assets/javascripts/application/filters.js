@@ -22,7 +22,7 @@
  *
  */
 
-var contrastColorCache = {}, gradientBackgroundCache = {}, userVisualRolesCache = {};
+var contrastColorCache = {}, gradientBackgroundCache = {}, gradientCache = {}, userVisualRolesCache = {};
 var filters = angular.module('filters', []);
 
 filters
@@ -180,7 +180,8 @@ filters
                     }
                 }
                 var targetRgb = ColorService.hslToRgb(targetH, targetS, targetL);
-                gradientBackgroundCache[originalHex] = 'linear-gradient(to top, rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ',1) 0%, rgba(' + targetRgb[0] + ',' + targetRgb[1] + ',' + targetRgb[2] + ', 1) 100%)';
+                gradientCache[originalHex] = ColorService.rgbToHex(targetRgb);
+                gradientBackgroundCache[originalHex] = 'linear-gradient(to top, rgb(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ') 0%, rgb(' + targetRgb[0] + ',' + targetRgb[1] + ',' + targetRgb[2] + ') 100%)';
             }
             return {
                 'background-image': gradientBackgroundCache[originalHex],

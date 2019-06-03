@@ -44,6 +44,10 @@ $acceptance-test-states: tocheck, success, failed;
     font-family: $is-font-family-bold;
   }
 
+  .id-icon {
+    display: none;
+  }
+
   .sticky-note-state-progress {
     height: 15px;
 
@@ -171,6 +175,19 @@ $acceptance-test-states: tocheck, success, failed;
       }
     }
 
+    .id {
+      display: none;
+    }
+
+    .id-icon {
+      display: block;
+      font-size: 1rem;
+
+      text {
+        fill: $is-sticky-note-text;
+      }
+    }
+
     .sticky-note-head {
       display: flex;
       width: 48px;
@@ -252,6 +269,10 @@ $acceptance-test-states: tocheck, success, failed;
         }
       }
     }
+
+    &.invert .id-icon text {
+      fill: $is-sticky-note-text-invert;
+    }
   }
 }
 
@@ -316,6 +337,7 @@ $acceptance-test-states: tocheck, success, failed;
     &:not(:hover) {
       box-shadow: none !important; // Override js style
     }
+
     position: relative;
 
     .sticky-note-state-progress {
@@ -644,10 +666,6 @@ $acceptance-test-states: tocheck, success, failed;
     .sticky-note {
       width: $is-story-width-sm;
       height: $is-story-heigth-sm;
-
-      .sticky-note-head .id {
-        left: 131px;
-      }
 
       .sticky-note-content {
         height: 60px;
