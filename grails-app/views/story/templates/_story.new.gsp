@@ -40,8 +40,8 @@
             </div>
             <div class="sticky-notes grid-group">
                 <div class="sticky-note-container sticky-note-story">
-                    <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
-                         class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
+                    <div ng-style="(storyPreview | storyColor) | createGradientBackground"
+                         class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                         <div class="sticky-note-head">
                             <span class="id">42</span>
                             <div class="sticky-note-type-icon"></div>

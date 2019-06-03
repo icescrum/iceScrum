@@ -130,7 +130,7 @@
                         <ui-select-choices refresh="searchDependenceEntries(editableStory, $select)"
                                            refresh-delay="100"
                                            repeat="dependenceEntry in dependenceEntries">
-                            <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i>
+                            <i class="fa fa-sticky-note" ng-style="{color: (dependenceEntry | storyColor)}"></i>
                             <span ng-bind-html="dependenceEntry | storyLabel : false : !hasSameProject(editableStory, dependenceEntry) | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>

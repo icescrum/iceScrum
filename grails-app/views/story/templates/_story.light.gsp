@@ -22,8 +22,8 @@
 --}%
 
 <script type="text/ng-template" id="story.light.html">
-<div ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground"
-     class="sticky-note story {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
+<div ng-style="(story | storyColor) | createGradientBackground"
+     class="sticky-note story {{ ((story | storyColor) | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="sticky-note-head">
             <span class="id">{{:: story.uid }}</span>

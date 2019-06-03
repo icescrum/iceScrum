@@ -129,6 +129,11 @@ filters
             return _.join(array, ', ');
         };
     })
+    .filter('storyColor', function() {
+        return function(story) {
+            return (story && story.feature) ? story.feature.color : '#f9f157';
+        };
+    })
     .filter('contrastColor', function() {
         return function(bg, invert) {
             if (bg && contrastColorCache[bg] != undefined) {
@@ -179,7 +184,7 @@ filters
             }
             return {
                 'background-image': gradientBackgroundCache[originalHex],
-                'box-shadow': '0 42px 48px 0 rgba('+ originalRgb[0] + ',' +originalRgb[1] + ',' + originalRgb[2] + ', 0.2)'
+                'box-shadow': '0 42px 48px 0 rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ', 0.2)'
             };
         };
     }])
