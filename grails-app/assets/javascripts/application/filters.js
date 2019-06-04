@@ -161,24 +161,23 @@ filters
     .filter('createGradientBackground', ['ColorService', function(ColorService) {
         return function(originalHex) {
             var originalRgb = ColorService.hexToRgb(originalHex);
+            // Shift the color hue by hOffset in one direction and if the color is darker try hOffset in the other direction
+            var shiftH = function(originalH, targetS, targetL, hOffset) {
+                var targetH = originalH + hOffset;
+                targetH = ColorService.normalizeH(targetH);
+                var tempRgb = ColorService.hslToRgb(targetH, targetS, targetL);
+                if (ColorService.brightness(tempRgb) < ColorService.brightness(originalRgb)) {
+                    targetH = originalH - hOffset;
+                    targetH = ColorService.normalizeH(targetH);
+                }
+                return targetH;
+            };
             if (!gradientBackgroundCache[originalHex]) {
-                // Shift the color and lighten it a little on the top
-                var hCoef = 7; // Shift the color hue by 7 in one direction and if the color is darker we try 7 in the other direction
-                var lCoef = 0.01; // Lighten the color by adding 1%
+                var lCoef = originalHex === '#ffcc01' ? 0.01 : 0.05; // Hack to preserve task yellow
                 var originalHsl = ColorService.rgbToHsl(originalRgb);
                 var targetS = originalHsl[1];
                 var targetL = originalHsl[2] + lCoef;
-                var targetH = originalHsl[0] + hCoef;
-                if (targetH >= 360) {
-                    targetH -= 360;
-                }
-                var tempRgb = ColorService.hslToRgb(targetH, targetS, targetL);
-                if (_.sum(tempRgb) < _.sum(originalRgb)) { // Keep the lightest on top
-                    targetH = originalHsl[0] - hCoef;
-                    if (targetH < 0) {
-                        targetH += 360;
-                    }
-                }
+                var targetH = shiftH(originalHsl[0], targetS, targetL, 7);
                 var targetRgb = ColorService.hslToRgb(targetH, targetS, targetL);
                 gradientCache[originalHex] = ColorService.rgbToHex(targetRgb);
                 gradientBackgroundCache[originalHex] = 'linear-gradient(to top, rgb(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ') 0%, rgb(' + targetRgb[0] + ',' + targetRgb[1] + ',' + targetRgb[2] + ') 100%)';

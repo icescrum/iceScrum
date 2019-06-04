@@ -1131,4 +1131,16 @@ services.service("ColorService", [function() {
         var m = l - c * 0.5;
         return [Math.round(255 * (rgb1[0] + m)), Math.round(255 * (rgb1[1] + m)), Math.round(255 * (rgb1[2] + m))];
     };
+    this.normalizeH = function(originalH) { // H values range from 0 to 359 as they are degrees
+        if (originalH >= 360) {
+            return originalH - 360;
+        } else if (originalH < 0) {
+            return originalH + 360;
+        } else {
+            return originalH;
+        }
+    };
+    this.brightness = function(rgb) {
+        return Math.sqrt(0.241 * Math.pow(rgb[0], 2) + 0.691 * Math.pow(rgb[1], 2) + 0.068 * Math.pow(rgb[2], 2));
+    };
 }]);
