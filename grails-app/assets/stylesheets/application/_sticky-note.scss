@@ -170,6 +170,7 @@ $acceptance-test-states: tocheck, success, failed;
       align-items: center;
 
       > div {
+        flex: 0 0 auto;
         padding: 0 0.625rem;
         height: 3.0625rem;
 
@@ -201,7 +202,7 @@ $acceptance-test-states: tocheck, success, failed;
     }
 
     .sticky-note-content {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
       display: flex;
       flex-direction: column-reverse;
       padding-top: 0;
@@ -700,6 +701,10 @@ $acceptance-test-states: tocheck, success, failed;
     .sticky-note {
       width: $is-story-width-sm;
       height: $is-story-heigth-sm;
+
+      .sticky-note-head .id {
+        left: 131px;
+      }
 
       .sticky-note-content {
         height: 60px;
