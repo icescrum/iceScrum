@@ -62,35 +62,37 @@
             <div class="sprint col"
                  ng-repeat="sprint in visibleSprints"
                  ng-controller="sprintBacklogCtrl">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <a href="{{ openSprintUrl(sprint) }}" class="sprint-title">
-                            {{ (sprint | sprintName) }}
-                        </a>
-                        <span class="state-title state-title-small">
-                            <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
-                            <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="{{ openSprintUrl(sprint) }}" class="sprint-title">
+                                {{ (sprint | sprintName) }}
+                            </a>
+                            <span class="state-title state-title-small">
+                                <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
+                                <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                            </span>
+                        </div>
+                        <div class="btn-menu" uib-dropdown>
+                            <shortcut-menu ng-model="sprint" model-menus="menus" btn-sm="true"></shortcut-menu>
+                            <div uib-dropdown-toggle></div>
+                            <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                        </div>
+                    </div>
+                    <span>
+                        <span class="timebox-dates timebox-dates-small">
+                            <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                         </span>
-                    </div>
-                    <div class="btn-menu" uib-dropdown>
-                        <shortcut-menu ng-model="sprint" model-menus="menus" btn-sm="true"></shortcut-menu>
-                        <div uib-dropdown-toggle></div>
-                        <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
-                    </div>
+                        <span class="sprint-values ml-3">
+                            <span ng-if="sprint.velocity || sprint.capacity">
+                                <span>{{ message('is.sprint.' + (sprint.state > sprintStatesByName.TODO ? 'velocity' : 'plannedVelocity')) }}</span>
+                                <strong ng-if="sprint.state > sprintStatesByName.TODO"
+                                        defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</strong>
+                                <strong defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</strong>
+                            </span>
+                        </span>
+                    </span>
                 </div>
-                <span>
-                    <span class="timebox-dates timebox-dates-small">
-                        <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
-                    </span>
-                    <span class="sprint-values ml-3">
-                        <span ng-if="sprint.velocity || sprint.capacity">
-                            <span>{{ message('is.sprint.' + (sprint.state > sprintStatesByName.TODO ? 'velocity' : 'plannedVelocity')) }}</span>
-                            <strong ng-if="sprint.state > sprintStatesByName.TODO"
-                                    defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</strong>
-                            <strong defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</strong>
-                        </span>
-                    </span>
-                </span>
                 <div class="sticky-notes {{ stickyNoteClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"

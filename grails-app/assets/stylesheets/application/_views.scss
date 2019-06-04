@@ -183,16 +183,27 @@
   display: flex;
 
   .sprint {
+    display: flex;
+    flex-direction: column;
     background: $is-bg-color;
     border-radius: 6px;
     border: solid 1px $is-outline-color;
     margin: 1rem 12px 0 12px;
     padding: 15px;
 
-    .grid-group.sticky-notes {
-      padding-left: 0;
-      padding-right: 0;
-      margin: 0 (-$is-sticky-note-spacer);
+    .sticky-notes {
+      overflow-y: auto;
+
+      &.grid-group {
+        padding-left: 0;
+        padding-right: 0;
+        margin: 0 (-$is-sticky-note-spacer);
+      }
+
+      &.list-group {
+        margin-left: 0;
+        margin-right: 0;
+      }
     }
 
     .sprint-title {

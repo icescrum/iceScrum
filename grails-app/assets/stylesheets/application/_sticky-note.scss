@@ -145,13 +145,11 @@ $acceptance-test-states: tocheck, success, failed;
 .list-group {
 
   &.sticky-notes {
-    .sticky-note-container {
-      margin: 0 $is-spacer-x;
-      border-top: solid 1px $is-border-color-alt;
+    margin: 0 $is-spacer-x;
+    margin-top: 3px;
 
-      &:last-child {
-        border-bottom: solid 1px $is-border-color-alt;
-      }
+    .sticky-note-container {
+      border-bottom: solid 1px $is-border-color-alt;
     }
   }
 
