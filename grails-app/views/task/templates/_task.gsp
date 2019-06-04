@@ -27,11 +27,11 @@
      ng-class=":: ['task', (task.color | contrastColor), { 'task-blocked': task.blocked }]">
     <div as-sortable-item-handle="authorizedTask('rank', task)">
         <div class="sticky-note-head">
+            <span class="id">{{:: task.uid }}</span>
             <img ng-src="{{:: task.responsible | userAvatar }}"
                  ng-if=":: task.responsible"
                  ng-class="::['responsible', (task.responsible | userColorRoles)]"
                  defer-tooltip="{{:: task.responsible | userFullName }}">
-            <span class="id">{{:: task.uid }}</span>
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">

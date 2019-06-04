@@ -629,6 +629,7 @@ $acceptance-test-states: tocheck, success, failed;
 
       .sticky-note-head {
         display: flex;
+        flex-direction: row-reverse;
         justify-content: space-between;
         margin-bottom: 5px;
 
