@@ -23,7 +23,7 @@
 <is:window windowDefinition="${windowDefinition}" classes="widget-view">
     <div class="d-flex flex-wrap panels">
         <div class="panel-column col-md-6">
-            <div class="card hover-container">
+            <div class="card hover-container project-summary">
                 <div class="card-header">
                     <span class="card-title workspace-title">
                         <span class="sharpie-highlight">{{ project.name }}</span>
@@ -48,51 +48,38 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
+                    <a ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
+                       ng-click="showProjectEditModal('administration')">
+                        ${message(code: 'is.ui.project.sample.delete')}
+                    </a>
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
-                        </div>
-                        <div class="col-md-4 text-right">
+                        <div class="col-md-6">
                             <span ng-repeat="user in allMembers">
                                 <img ng-src="{{:: user | userAvatar }}"
                                      height="36" width="36" style="margin:5px"
                                      class="{{:: user | userColorRoles }}"
                                      defer-tooltip="{{:: user | userFullName }}"/>
                             </span>
-                            <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
+                        </div>
+                        <div class="col-md-3"><span class="count-count">{{ project.stories_count }}</span> <span class="count-title">${message(code: 'todo.is.ui.stories')}</span></div>
+                        <div class="col-md-3"><span class="count-count">{{ project.releases_count }}</span> <span class="count-title">${message(code: 'todo.is.ui.releases')}</span></div>
+                    </div>
+                    <div ng-if="release.vision_html" class="release-vision">
+                        <strong class="release-vision-label">${message(code: 'is.ui.project.vision.title')}</strong>
+                        <div class="rich-content"
+                             ng-bind-html="release.vision_html">
                         </div>
                     </div>
-                    <a ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
-                       ng-click="showProjectEditModal('administration')">
-                        ${message(code: 'is.ui.project.sample.delete')}
-                    </a>
-                    <div class="row project-info">
-                        <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${message(code: 'todo.is.ui.stories')}</div>
-                        <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${message(code: 'todo.is.ui.releases')}</div>
+                    <div class="row release-dates">
+                        <div class="col-md-6"><strong>{{ release.startDate | dayShort }}</strong></div>
+                        <div class="col-md-6 text-right"><strong>{{ release.endDate | dayShort }}</strong></div>
                     </div>
                     <ng-include src="'release.timeline.html'" ng-controller="releaseTimelineCtrl"></ng-include>
-                    <div class="row project-rel-dates">
-                        <div class="col-md-6">{{ release.startDate | dayShort }}</div>
-                        <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
+                    <div ng-if="currentOrNextSprint.goal" class="sprint-goal">
+                        <div class="sprint-goal-label">{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</div>
+                        <div>{{ currentOrNextSprint.goal }}</div>
                     </div>
-                    <div ng-show="currentOrNextSprint.goal">
-                        <p><strong>{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</strong> {{ currentOrNextSprint.goal }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="card hover-container">
-                <div class="card-header">
-                    <span class="card-title">
-                        ${message(code: 'is.ui.project.vision.title')}
-                    </span>
-                    <a class="btn btn-secondary btn-sm float-right hover-visible"
-                       href="#/planning/{{ release.id }}/details"
-                       ng-if="release.id && authorizedRelease('update', release)">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                </div>
-                <div class="card-body rich-content"
-                     ng-bind-html="release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'">
                 </div>
             </div>
             <div class="card hover-container">
