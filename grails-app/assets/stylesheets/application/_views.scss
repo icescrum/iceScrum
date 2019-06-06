@@ -524,13 +524,47 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
 .project-summary {
 
-  .count-count {
-    font-size: 2.5rem;
-  }
+  .avatars-and-stats {
+    display: flex;
+    align-items: center;
+    height: 78px;
+    border-top: solid 1px $is-border-color-alt;
+    border-bottom: solid 1px $is-border-color-alt;
+    padding: 13px 0;
+    margin: 25px 0;
 
-  .count-title {
-    padding-left: 11px;
-    font-size: $is-font-size-sm;
+    .avatars {
+      flex: 0 0 50%;
+      margin-left: 8px;
+      text-align: center;
+
+      .avatar {
+        margin-left: -8px;
+        border: solid 2px $is-bg-color;
+      }
+    }
+
+    .stats {
+      flex: 0 0 25%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .stat-number {
+        line-height: 1.21;
+        font-size: 2.5rem;
+      }
+
+      .stat-title {
+        padding-top: 12px;
+        padding-left: 15px;
+        font-size: $is-font-size-sm;
+      }
+    }
+
+    > div:not(:first-of-type) {
+      border-left: solid 1px $is-border-color-alt;
+    }
   }
 
   .release-dates {
@@ -545,14 +579,18 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   .sprint-goal {
     background-image: linear-gradient(84deg, rgba(99, 171, 235, 0.26), rgba(209, 230, 240, 0.26));
     padding: 15px 21px;
+
+    .sprint-goal-label {
+      color: #64aceb;
+    }
   }
 
-  .release-vision-label {
-    color: $is-text-color-alt;
-  }
+  .release-vision {
+    margin-bottom: 23px;
 
-  .sprint-goal-label {
-    color: #64aceb;
+    .release-vision-label {
+      color: $is-text-color-alt;
+    }
   }
 }
 

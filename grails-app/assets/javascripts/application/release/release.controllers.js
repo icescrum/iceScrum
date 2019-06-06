@@ -264,7 +264,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);
 }]);
 
-controllers.controller('releaseTimelineCtrl', ['$scope', 'DateService', function($scope, DateService) {
+controllers.controller('releaseTimelineCtrl', ['$scope', 'DateService', 'SprintStatesByName', function($scope, DateService, SprintStatesByName) {
     // Functions
     $scope.computeReleaseParts = function(release) {
         var parts = [];
@@ -286,4 +286,5 @@ controllers.controller('releaseTimelineCtrl', ['$scope', 'DateService', function
             $scope.releaseParts = $scope.computeReleaseParts(newRelease);
         }
     }, true);
+    $scope.sprintStatesByName = SprintStatesByName;
 }]);

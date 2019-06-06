@@ -21,8 +21,11 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.tooltip.html">
-<p ng-if="sprint.goal">{{ sprint.goal }}</p>
-<p ng-if="sprint.state">{{ sprint.state | i18n:'SprintStates' }}</p>
-<p ng-if="sprint.capacity || sprint.velocity">{{ (sprint.velocity | roundNumber:2) + '/' + (sprint.capacity | roundNumber:2) }} (${message(code: 'is.sprint.velocity')} / ${message(code: 'is.sprint.plannedVelocity')})</p>
-<p><i class="fa fa-calendar"></i> {{ sprint.startDate | dayShorter }} <i class="fa fa-arrow-right"></i> {{ sprint.endDate | dayShorter }}</p>
+<div ng-if="sprint.state">{{ sprint.startDate | dayShorter }} | {{ sprint.endDate | dayShorter }}
+    <div>{{ sprint.state | i18n:'SprintStates' }}</div>
+    <div ng-if="sprint.capacity || sprint.velocity">
+        <span>{{ message('is.sprint.' + (sprint.state > sprintStatesByName.TODO ? 'velocity' : 'plannedVelocity')) }}</span>
+        <strong ng-if="sprint.state > sprintStatesByName.TODO">{{ sprint.velocity | roundNumber:2 }} /</strong>
+        <strong>{{ sprint.capacity | roundNumber:2 }}</strong>
+    </div>
 </script>

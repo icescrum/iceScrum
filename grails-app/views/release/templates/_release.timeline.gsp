@@ -22,13 +22,12 @@
 --}%
 <script type="text/ng-template" id="release.timeline.html">
 <uib-progress class="timeline-bar"
-              uib-tooltip="{{ release.name }}"
               max="release.duration">
     <uib-bar ng-repeat="sprint in releaseParts"
              class="{{ $last ? 'last-bar' : '' }}"
              uib-tooltip-template="'sprint.tooltip.html'"
              tooltip-enable="sprint.id"
-             tooltip-placement="bottom"
+             tooltip-placement="top"
              type="{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
              value="sprint.duration">
         {{ sprint.id ? sprint.index : '' }}

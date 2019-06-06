@@ -30,6 +30,12 @@
                         <entry:point id="window-project-name-right"/>
                     </span>
                     <div class="btn-toolbar float-right">
+                        <button ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
+                                class="btn btn-secondary btn-sm hover-visible"
+                                ng-click="showProjectEditModal('administration')"
+                                type="button">
+                            ${message(code: 'is.ui.project.sample.delete')}
+                        </button>
                         <button class="btn btn-secondary btn-sm hover-visible"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
@@ -49,24 +55,25 @@
                 </div>
                 <div class="card-body">
                     <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
-                    <a ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
-                       ng-click="showProjectEditModal('administration')">
-                        ${message(code: 'is.ui.project.sample.delete')}
-                    </a>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <span ng-repeat="user in allMembers">
-                                <img ng-src="{{:: user | userAvatar }}"
-                                     height="36" width="36" style="margin:5px"
-                                     class="{{:: user | userColorRoles }}"
-                                     defer-tooltip="{{:: user | userFullName }}"/>
-                            </span>
+                    <div class="avatars-and-stats">
+                        <div class="avatars">
+                            <img ng-src="{{:: user | userAvatar }}"
+                                 ng-repeat="user in allMembers"
+                                 height="36" width="36"
+                                 class="avatar {{:: user | userColorRoles }}"
+                                 uib-tooltip="{{:: user | userFullName }}"/>
                         </div>
-                        <div class="col-md-3"><span class="count-count">{{ project.stories_count }}</span> <span class="count-title">${message(code: 'todo.is.ui.stories')}</span></div>
-                        <div class="col-md-3"><span class="count-count">{{ project.releases_count }}</span> <span class="count-title">${message(code: 'todo.is.ui.releases')}</span></div>
+                        <div class="stats">
+                            <div class="stat-number">{{ project.stories_count }}</div>
+                            <div class="stat-title">${message(code: 'todo.is.ui.stories')}</div>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-number">{{ project.releases_count }}</div>
+                            <div class="stat-title">${message(code: 'todo.is.ui.releases')}</div>
+                        </div>
                     </div>
                     <div ng-if="release.vision_html" class="release-vision">
-                        <strong class="release-vision-label">${message(code: 'is.ui.project.vision.title')}</strong>
+                        <strong class="release-vision-label">${message(code: 'is.release')} {{ release.name }}</strong>
                         <div class="rich-content"
                              ng-bind-html="release.vision_html">
                         </div>
