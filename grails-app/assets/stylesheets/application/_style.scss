@@ -162,7 +162,7 @@ nav.navbar {
   }
 
   .nav-item-main {
-    margin-left: 9px;
+    padding-left: 9px;
     font-size: 1.125rem;
     line-height: 1;
 
@@ -689,6 +689,16 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 
 .has-error .form-control {
   border-color: $is-red;
+}
+
+.empty-content, .empty-view {
+  text-align: center;
+}
+
+.empty-view {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: ($is-spacer-x - $is-sticky-note-spacer);
 }
 
 ////////////////////

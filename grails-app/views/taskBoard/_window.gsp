@@ -350,16 +350,13 @@
             </div>
         </div>
     </div>
-    <div ng-if="!sprint"
-         class="card">
-        <div class="card-body">
-            <div class="empty-view">
-                <p class="form-text">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
-                <a class="btn btn-primary"
-                   href="#planning">
-                    <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
-                </a>
-            </div>
+    <div ng-if="!sprint">
+        <div class="empty-view">
+            <p class="form-text">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
+            <a class="btn btn-primary"
+               href="#planning">
+                <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
+            </a>
         </div>
     </div>
 </is:window>
