@@ -69,16 +69,16 @@
                         <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
                     </div>
                     <div>
-                        <div>
-                            <a href="{{:: getProjectUrl(project, 'backlog') }}"
-                               class="btn btn-secondary btn-sm mt-2 mb-2"
-                               role="button">${message(code: 'is.ui.backlogs')}</a>
-                        </div>
-                        <div>
-                            <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
-                               class="btn btn-secondary btn-sm"
-                               role="button">${message(code: 'todo.is.ui.taskBoard')}</a>
-                        </div>
+                        <a href="{{:: getProjectUrl(project, 'backlog') }}"
+                           class="btn btn-secondary btn-sm mb-2"
+                           role="button">
+                            <span class="fi-main-menu fi-main-menu-backlog d-inline-block"></span> ${message(code: 'is.ui.backlogs')}
+                        </a>
+                        <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
+                           class="btn btn-secondary btn-sm"
+                           role="button">
+                            <span class="fi-main-menu fi-main-menu-taskBoard d-inline-block"></span> ${message(code: 'todo.is.ui.taskBoard')}
+                        </a>
                     </div>
                 </div>
                 <div class="home-project-add"

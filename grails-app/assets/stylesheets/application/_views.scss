@@ -51,12 +51,24 @@
   .home-projects {
     display: flex;
 
+    .btn {
+      width: 126px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .home-project, .home-project-add {
       border-radius: 6px;
       padding: 1.25rem;
       width: 350px;
       height: 121px;
       margin: $is-spacer-x;
+
+      &:not(:first-of-type) {
+        margin-left: ($is-spacer-x / 2);
+      }
     }
 
     .home-project {

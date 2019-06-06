@@ -229,18 +229,6 @@ nav.navbar {
     .nav-link-title {
       line-height: 1.14;
     }
-
-    .nav-link-icon {
-      margin-right: 4px;
-      @include rectangle-background(21px, 20px);
-    }
-
-    // TODO make a loop that can be extended from plugin
-    @each $menu in (project backlog planning taskBoard feature) {
-      .nav-link-icon-#{$menu} {
-        background-image: url("menu-#{$menu}.svg");
-      }
-    }
   }
 
   .navbar-right {
@@ -300,6 +288,18 @@ nav.navbar {
       border-top-right-radius: $input-border-radius;
       border-bottom-right-radius: $input-border-radius;
     }
+  }
+}
+
+.fi-main-menu {
+  margin-right: 4px;
+  @include rectangle-background(21px, 20px);
+}
+
+// TODO make a loop that can be extended from plugin
+@each $menu in (project backlog planning taskBoard feature) {
+  .fi-main-menu-#{$menu} {
+    background-image: url("menu-#{$menu}.svg");
   }
 }
 
