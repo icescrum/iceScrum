@@ -29,9 +29,6 @@
     <div class="row is-form-row">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
-                <span class="input-group-prepend">
-                    <span class="input-group-text no-style"><strong>42</strong></span>
-                </span>
                 <input required
                        type="text"
                        ng-maxlength="255"

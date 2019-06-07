@@ -622,6 +622,16 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
+.empty-content, .empty-view {
+  text-align: center;
+}
+
+.empty-view {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: ($is-spacer-x - $is-sticky-note-spacer);
+}
+
 ////////////////////
 // Form
 ////////////////////
@@ -691,14 +701,28 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   border-color: $is-red;
 }
 
-.empty-content, .empty-view {
-  text-align: center;
+.form-control.placeholder {
+  color: $input-placeholder-color;
 }
 
-.empty-view {
-  max-width: 500px;
-  margin: 30px auto;
-  padding: ($is-spacer-x - $is-sticky-note-spacer);
+.form-not-expanded {
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .btn-toolbar, .hidden-not-expanded, .input-group-prepend {
+    display: none;
+  }
+
+  textarea, .markitup-preview {
+    min-height: $input-height;
+    height: $input-height !important;
+    overflow: hidden !important;
+  }
+}
+
+.form-expanded .visible-hidden {
+  display: none;
 }
 
 ////////////////////

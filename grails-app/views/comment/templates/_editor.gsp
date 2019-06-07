@@ -24,7 +24,6 @@
 <form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
       ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
-      ng-class="{'form-not-expanded': !formHolder.formExpanded}"
       novalidate>
     <div class="form-group" style="position:relative;">
         <div class="visible-hidden" style="right:0;position:absolute;">

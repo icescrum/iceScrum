@@ -25,7 +25,6 @@
 <form ng-submit="save(task, selected)"
       name="formHolder.taskForm"
       ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
-      show-validation
       novalidate>
     <div class="row is-form-row">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'" ng-click="formHolder.formExpanded = true;">
@@ -36,7 +35,7 @@
                        name="name"
                        ng-model="task.name"
                        ng-focus="formHolder.formExpanded = true;"
-                       placeholder="${message(code: 'is.ui.task.noname')}"
+                       placeholder="${message(code: 'is.task')}"
                        class="form-control">
                 <span class="input-group-append visible-hidden">
                     <button class="btn btn-primary btn-sm" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
@@ -44,19 +43,14 @@
             </div>
         </div>
         <div class="form-group col-sm-4 hidden-not-expanded">
-            <div class="input-group">
-                <span class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-hourglass-start small-icon"></i></span>
-                </span>
-                <input name="estimation"
-                       ng-model="task.estimation"
-                       type="number"
-                       min="0"
-                       step="any"
-                       ng-blur="formHolder.formExpanded = task.name || task.description || task.estimation;"
-                       placeholder="${message(code: 'is.task.estimation')}"
-                       class="form-control text-right">
-            </div>
+            <input name="estimation"
+                   ng-model="task.estimation"
+                   type="number"
+                   min="0"
+                   step="any"
+                   ng-blur="formHolder.formExpanded = task.name || task.description || task.estimation;"
+                   placeholder="${message(code: 'is.task.estimation')}"
+                   class="form-control">
         </div>
     </div>
     <div class="form-group hidden-not-expanded">

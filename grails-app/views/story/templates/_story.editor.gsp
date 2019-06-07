@@ -29,9 +29,6 @@
     <div class="row is-form-row">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
-                <span class="input-group-prepend no-style">
-                    <span class="input-group-text"><strong>42</strong></span>
-                </span>
                 <input required
                        type="text"
                        ng-maxlength="100"
@@ -39,7 +36,7 @@
                        ng-model="editableStory.name"
                        ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
-                       placeholder="${message(code: 'is.ui.story.noname')}">
+                       placeholder="${message(code: 'is.story')}">
                 <span class="input-group-append visible-hidden">
                     <button class="btn btn-primary btn-sm"
                             type="button"
