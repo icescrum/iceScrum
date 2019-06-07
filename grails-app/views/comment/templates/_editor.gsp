@@ -27,7 +27,7 @@
       novalidate>
     <div class="form-group" style="position:relative;">
         <div class="visible-hidden" style="right:0;position:absolute;">
-            <button class="btn btn-primary"
+            <button class="btn btn-primary btn-sm"
                     type="button"
                     ng-click="expandCommentEditor()">
                 <i class="fa fa-plus"></i>

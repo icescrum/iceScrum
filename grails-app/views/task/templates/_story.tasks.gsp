@@ -21,52 +21,44 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="tasks card-body" ng-controller="taskSortableStoryCtrl">
-    <table class="table" ng-repeat="(taskState, tasks) in tasksByState">
-        <thead>
-            <tr>
-                <th style="border-top: 0; border-bottom: 0; padding:0">
-                    <div class="text-center" style="margin-top:30px;margin-bottom:10px;font-size:15px;">
-                        {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
+<div class="story-tasks card-body" ng-controller="taskSortableStoryCtrl">
+    <div ng-repeat="(taskState, tasks) in tasksByState">
+        <h5 class="text-center mb-2">
+            {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
+        </h5>
+        <div is-disabled="!isTaskSortableByState(taskState)"
+             class="mb-4"
+             as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
+             ng-model="tasks">
+            <div class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <span class="name">
+                            <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
+                            <a ui-sref=".task.details({taskId: task.id})" class="link">
+                                <strong class="task-id">{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
+                            </a>
+                        </span>
                     </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody style="border-top: 0;"
-               is-disabled="!isTaskSortableByState(taskState)"
-               as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
-               ng-model="tasks">
-            <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
-                <td class="content">
-                    <div class="row is-form-row">
-                        <div class="col-sm-8">
-                            <span class="name">
-                                <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
-                                <a ui-sref=".task.details({taskId: task.id})" class="link">
-                                    <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
-                                </a>
-                            </span>
-                        </div>
-                        <div class="col-sm-4 text-right" ng-controller="taskCtrl">
-                            <div class="btn-group">
-                                <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
-                                <div class="btn-group btn-group-sm" uib-dropdown>
-                                    <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                                    </button>
-                                    <div uib-dropdown-menu class="float-right" ng-init="itemType = 'task'" template-url="item.menu.html"></div>
-                                </div>
-                                <visual-states ng-model="task" model-states="taskStatesByName"/>
+                    <div class="col-sm-4 text-right" ng-controller="taskCtrl">
+                        <span class="small mr-2">{{ task.state | i18n: 'TaskStates' }}</span>
+                        <div class="btn-group">
+                            <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
+                            <div class="btn-group btn-group-sm" uib-dropdown>
+                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                                </button>
+                                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'task'" template-url="item.menu.html"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="row is-form-row" ng-if="task.description">
-                        <p class="description form-control-plaintext" ng-bind-html="task.description | lineReturns"></p>
-                    </div>
-                    <hr ng-if="!$last"/>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+                <div ng-if="task.description">
+                    <p class="description form-control-plaintext" ng-bind-html="task.description | lineReturns"></p>
+                </div>
+                <hr ng-if="!$last"/>
+            </div>
+        </div>
+    </div>
     <div class="form-text text-center"
          ng-if="selected.tasks !== undefined && !selected.tasks.length">
         ${message(code: 'is.ui.task.help.story')}

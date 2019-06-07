@@ -59,7 +59,7 @@
                         <div class="avatars">
                             <img ng-src="{{:: user | userAvatar }}"
                                  ng-repeat="user in allMembers"
-                                 height="36" width="36"
+                                 height="41" width="41"
                                  class="avatar {{:: user | userColorRoles }}"
                                  uib-tooltip="{{:: user | userFullName }}"/>
                         </div>

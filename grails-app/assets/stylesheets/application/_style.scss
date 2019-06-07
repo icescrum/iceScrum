@@ -725,6 +725,10 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
   display: none;
 }
 
+.uib-datepicker-popup {
+  z-index: 9999; // Ensure that it's in front in modals
+}
+
 ////////////////////
 // Login / register etc.
 ////////////////////

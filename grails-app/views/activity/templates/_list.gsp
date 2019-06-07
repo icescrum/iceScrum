@@ -23,7 +23,11 @@
 <div class="activities card-body" ng-controller="activityCtrl">
     <div ng-repeat="groupedActivity in groupedActivities">
         <div class="activity media">
-            <img ng-src="{{groupedActivity.poster | userAvatar}}" class="{{ groupedActivity.poster | userColorRoles }}" alt="{{groupedActivity.poster | userFullName}}"/>
+            <img ng-src="{{groupedActivity.poster | userAvatar}}"
+                 width="37"
+                 height="37"
+                 class="mr-2 {{ groupedActivity.poster | userColorRoles }}"
+                 alt="{{groupedActivity.poster | userFullName}}"/>
             <div class="media-body">
                 <div class="text-muted float-right">
                     <time timeago datetime="{{ groupedActivity.dateCreated }}">

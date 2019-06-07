@@ -607,6 +607,31 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
+// Activities
+////////////////////
+
+.activities {
+  font-size: $is-font-size-sm;
+
+  .activity ul {
+    padding-inline-start: 17px;
+    margin-bottom: 0;
+  }
+}
+
+////////////////////
+// Story tasks
+////////////////////
+
+.story-tasks {
+  font-size: $is-font-size-sm;
+
+  .task-id {
+    color: $is-text-color-alt;
+  }
+}
+
+////////////////////
 // Other
 ////////////////////
 
