@@ -22,23 +22,21 @@
 --}%
 <script type="text/ng-template" id="story.tasks.html">
 <div class="story-tasks card-body" ng-controller="taskSortableStoryCtrl">
-    <div ng-repeat="(taskState, tasks) in tasksByState">
-        <h5 class="text-center mb-2">
+    <div ng-repeat="(taskState, tasks) in tasksByState"
+         class="mb-5">
+        <h5 class="text-center mt-2 mb-3">
             {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
         </h5>
         <div is-disabled="!isTaskSortableByState(taskState)"
-             class="mb-4"
              as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
              ng-model="tasks">
-            <div class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
+            <div ng-repeat="task in tasks" as-sortable-item>
                 <div class="row">
                     <div class="col-sm-8">
-                        <span class="name">
-                            <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
-                            <a ui-sref=".task.details({taskId: task.id})" class="link">
-                                <strong class="task-id">{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
-                            </a>
-                        </span>
+                        <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
+                        <a ui-sref=".task.details({taskId: task.id})" class="link">
+                            <strong class="task-id">{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
+                        </a>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">
                         <span class="small mr-2">{{ task.state | i18n: 'TaskStates' }}</span>

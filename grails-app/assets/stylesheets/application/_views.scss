@@ -620,13 +620,18 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
-// Story tasks
+// Story tasks, Feature stories
 ////////////////////
 
-.story-tasks {
+.story-tasks, .feature-stories {
   font-size: $is-font-size-sm;
 
-  .task-id {
+  hr {
+    margin-top: 0.5rem;
+    width: 50%;
+  }
+
+  .task-id, .story-id {
     color: $is-text-color-alt;
   }
 }

@@ -22,59 +22,43 @@
 --}%
 
 <script type="text/ng-template" id="nested.stories.html">
-<div class="stories card-body">
-    <table class="table" ng-controller="featureStoriesCtrl">
-        <tbody ng-repeat="storyEntry in storyEntries" style="border-top: 0;">
-            <tr>
-                <th style="border-top: 0; padding:0">
-                    <div class="text-center"
-                         style="margin-top:30px;margin-bottom:10px;font-size:15px;"
-                         ng-bind-html="storyEntry.label">
+<div class="feature-stories card-body">
+    <div ng-controller="featureStoriesCtrl">
+        <div ng-repeat="storyEntry in storyEntries"
+             class="mb-5">
+            <h5 class="text-center mt-2 mb-3"
+                ng-bind-html="storyEntry.label">
+            </h5>
+            <div ng-repeat="story in storyEntry.stories">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <a ng-href="{{ openStoryUrl(story.id) }}" class="link">
+                            <strong class="story-id">{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                        </a>
                     </div>
-                </th>
-            </tr>
-            <tr ng-repeat="story in storyEntry.stories">
-                <td class="content">
-                    <div class="row is-form-row">
-                        <div class="col-sm-8">
-                            <span class="name">
-                                <a ng-href="{{ openStoryUrl(story.id) }}" class="link"><strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}</a>
-                            </span>
-                        </div>
-                        <div class="col-sm-4 text-right" ng-controller="storyCtrl">
-                            <div class="btn-group">
-                                <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
-                                <div class="btn-group btn-group-sm" uib-dropdown>
-                                    <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                                    </button>
-                                    <div uib-dropdown-menu class="float-right" ng-init="itemType = 'story'" template-url="item.menu.html"></div>
-                                </div>
-                                <visual-states ng-model="story" model-states="storyStatesByName"/>
+                    <div class="col-sm-4 text-right" ng-controller="storyCtrl">
+                        <span class="small mr-2">{{ story.state | i18n: 'StoryStates' }}</span>
+                        <div class="btn-group">
+                            <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
+                            <div class="btn-group btn-group-sm" uib-dropdown>
+                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                                </button>
+                                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'story'" template-url="item.menu.html"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix no-padding" ng-if="story.description">
-                        <p class="description form-control-plaintext" ng-bind-html="story.description | lineReturns | actorTag: actors"></p>
-                    </div>
-                    <hr ng-if="!$last"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="col-sm-12"
-                         style="margin-top:10px;border-bottom:1px solid #eeeeee;margin-bottom:10px;">
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-        <tbody>
-            <tr ng-show="selected.stories !== undefined && !selected.stories.length">
-                <td class="empty-content">
-                    <small>${message(code: 'todo.is.ui.story.empty')}</small>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+                <div ng-if="story.description">
+                    <p class="description form-control-plaintext" ng-bind-html="story.description | lineReturns | actorTag: actors"></p>
+                </div>
+                <hr ng-if="!$last"/>
+            </div>
+        </div>
+        <div ng-show="selected.stories !== undefined && !selected.stories.length"
+             class="empty-content">
+            <small>${message(code: 'todo.is.ui.story.empty')}</small>
+        </div>
+    </div>
 </div>
 <div class="card-footer" ng-controller="featureStoryCtrl">
     <div ng-if="authorizedStory('create')" ng-include="'feature.storyForm.editor.html'"></div>
