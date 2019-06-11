@@ -142,6 +142,9 @@
                         </ui-select>
                     </div>
                 </div>
+                <div style="margin-top:0;margin-bottom:10px;padding:5px;" ng-if="messageDuplicate"
+                     class="help-block bg-warning spaced-help-block"
+                     ng-bind-html="messageDuplicate"></div>
                 <div class="clearfix">
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary"
@@ -161,9 +164,6 @@
                         </button>
                     </div>
                 </div>
-                <div style="margin-top:10px;padding: 5px;" ng-if="messageDuplicate"
-                     class="help-block bg-warning spaced-help-block"
-                     ng-bind-html="messageDuplicate"></div>
             </form>
         </div>
     </div>
