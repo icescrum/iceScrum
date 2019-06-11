@@ -786,7 +786,7 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
                 if ($scope.lastSearchedTerm != trimmedTerm) {
                     StoryService.findDuplicates(trimmedTerm, project.id).then(function(messageDuplicate) {
                         $scope.lastSearchedTerm = trimmedTerm;
-                        $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
+                        $scope.messageDuplicate = messageDuplicate ? ('<i class="fa fa-warning"></i> ' + messageDuplicate) : '';
                     });
                 }
             }, 500);
