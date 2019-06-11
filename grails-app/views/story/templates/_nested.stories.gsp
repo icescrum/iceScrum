@@ -28,7 +28,8 @@
             <tr>
                 <th style="border-top: 0; padding:0">
                     <div class="text-center"
-                         style="margin-top:30px;margin-bottom:10px;font-size:15px;"
+                         style="margin-bottom:10px;font-size:15px;"
+                         ng-style="::{ 'margin-top': !$first ? '30px' : '0' }"
                          ng-bind-html="storyEntry.label">
                     </div>
                 </th>
@@ -54,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix no-padding" ng-if="story.description">
+                    <div class="clearfix no-padding" ng-if="story.description" style="margin-top: 5px">
                         <p class="description form-control-static" ng-bind-html="story.description | lineReturns | actorTag: actors"></p>
                     </div>
                     <hr ng-if="!$last"/>

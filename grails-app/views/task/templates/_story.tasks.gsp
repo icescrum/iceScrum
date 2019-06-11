@@ -22,26 +22,27 @@
 --}%
 <script type="text/ng-template" id="story.tasks.html">
 <div class="tasks panel-body" ng-controller="taskSortableStoryCtrl">
-    <table class="table" ng-repeat="(taskState, tasks) in tasksByState">
+    <table class="table" ng-repeat="taskEntry in tasksByState">
         <thead>
             <tr>
                 <th style="border-top: 0; border-bottom: 0; padding:0">
-                    <div class="text-center" style="margin-top:30px;margin-bottom:10px;font-size:15px;">
-                        {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
+                    <div class="text-center" style="margin-bottom:10px;font-size:15px;"
+                         ng-style="::{ 'margin-top': (taskEntry.state != 0) ? '30px' : '0' }"
+                         ng-bind-html="taskEntry.label">
                     </div>
                 </th>
             </tr>
         </thead>
         <tbody style="border-top: 0;"
-               is-disabled="!isTaskSortableByState(taskState)"
+               is-disabled="!isTaskSortableByState(taskEntry.state)"
                as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
-               ng-model="tasks">
-            <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
+               ng-model="taskEntry.tasks">
+            <tr class="task-for-story" ng-repeat="task in taskEntry.tasks" as-sortable-item>
                 <td class="content">
                     <div class="clearfix no-padding">
                         <div class="col-sm-8">
                             <span class="name">
-                                <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
+                                <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle></i>
                                 <a ui-sref=".task.details({taskId: task.id})" class="link">
                                     <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                                 </a>
@@ -60,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix no-padding" ng-if="task.description">
+                    <div class="clearfix no-padding" ng-if="task.description" style="margin-top: 5px">
                         <p class="description form-control-static" ng-bind-html="task.description | lineReturns"></p>
                     </div>
                     <hr ng-if="!$last"/>
