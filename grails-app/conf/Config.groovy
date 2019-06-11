@@ -177,7 +177,7 @@ icescrum {
             portfolio           : [include: ['businessOwners', 'stakeHolders', 'invitedBusinessOwners', 'invitedStakeHolders'],
                                    asShort: ['name', 'fkey'],
                                    textile: ['description']],
-            story               : [include: ['testState', 'tags', 'dependences', 'countDoneTasks', 'project'],
+            story               : [include: ['testState', 'tags', 'dependences', 'countDoneTasks', 'totalRemainingTime', 'project'],
                                    exclude: ['voters', 'metaDatas'],
                                    withIds: ['actors', 'followers'],
                                    textile: ['notes'],

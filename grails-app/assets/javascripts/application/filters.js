@@ -590,6 +590,10 @@ filters
     return function(inside) {
         return inside ? '(' + inside + ')' : '';
     }
+}).filter('countAndRemaining', function() {
+    return function(story) {
+        return story.tasks_count ? '(' + story.tasks_count + (story.totalRemainingTime ? ' - ' + story.totalRemainingTime + ' <i class="fa fa-hourglass fa-small"></i>' : '') + ')' : '';
+    }
 }).filter('ellipsis', ['limitToFilter', function(limitToFilter) {
     return function(text, limit, moreSign) {
         if (!moreSign) {

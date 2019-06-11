@@ -127,7 +127,7 @@
                     ng-if="!application.focusedDetailsView"
                     ng-class="{'active':$state.params.storyTabId == 'tasks'}">
                     <a href="{{ tabUrl('tasks') }}">
-                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} <span ng-bind-html="story | countAndRemaining"></span>
                     </a>
                 </li>
                 <li role="presentation" class="dropdown display-on-hover">
@@ -179,7 +179,7 @@
                 <li role="presentation"
                     class="active">
                     <a href>
-                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} <span ng-bind-html="story | countAndRemaining"></span>
                     </a>
                 </li>
             </ul>
