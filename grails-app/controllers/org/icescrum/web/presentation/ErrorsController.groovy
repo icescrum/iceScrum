@@ -121,22 +121,23 @@ class ErrorsController implements ControllerErrorHandler {
                                 params.remove(it)
                             }
                             notificationEmailService.send([
-                                    from   : grailsApplication.config.icescrum.alerts.default.from,
-                                    replyTo: user?.email ?: null,
-                                    to     : grailsApplication.config.icescrum.alerts.errors.to,
-                                    bcc    : admins*.email.toArray(),
-                                    subject: "[iceScrum][report] Error report v7",
-                                    view   : '/emails-templates/reportError',
-                                    model  : [uriParams : params,
-                                              uri       : request.forwardURI,
-                                              version   : g.meta(name: 'app.version'),
-                                              stackTrace: ExceptionUtils.getStackTrace(exception),
-                                              message   : exception.message,
-                                              appID     : grailsApplication.config.icescrum.appID,
-                                              ip        : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
-                                              method    : request.method,
-                                              user      : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
-                                    async  : false
+                                    from        : grailsApplication.config.icescrum.alerts.default.from,
+                                    replyTo     : user?.email ?: null,
+                                    envelopeFrom: grailsApplication.config.icescrum.mail?.envelopeFrom ?: grailsApplication.config.icescrum.alerts.default.from,
+                                    to          : grailsApplication.config.icescrum.alerts.errors.to,
+                                    bcc         : admins*.email.toArray(),
+                                    subject     : "[iceScrum][report] Error report v7",
+                                    view        : '/emails-templates/reportError',
+                                    model       : [uriParams : params,
+                                                   uri       : request.forwardURI,
+                                                   version   : g.meta(name: 'app.version'),
+                                                   stackTrace: ExceptionUtils.getStackTrace(exception),
+                                                   message   : exception.message,
+                                                   appID     : grailsApplication.config.icescrum.appID,
+                                                   ip        : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                                                   method    : request.method,
+                                                   user      : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
+                                    async       : false
                             ]);
                             returnError(code: 'is.error.and.message.sent', exception: exception)
                         } else {

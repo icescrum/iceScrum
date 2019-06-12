@@ -52,7 +52,12 @@ icescrum {
         emailPerAccount = false
         errors.to = "dev@icescrum.org"
     }
+
     alerts.default.from = "webmaster@icescrum.org"
+
+    mail {
+        envelopeFrom = null
+    }
 
     sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default // TODO may not work on Tomcat 8.5, see maxInactiveInterval in https://tomcat.apache.org/migration-85.html
 
