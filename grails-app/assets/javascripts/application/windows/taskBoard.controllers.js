@@ -74,46 +74,47 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         tasks = $scope.sprint.tasks;
         _.each(TaskStatesByName, function(state, key) {
             var taskCountByState = {
-                state: state,
-                label: 0
+                state: state
             };
+            if (state === TaskStatesByName.TODO) {
+                taskCountByState.label = $scope.message('is.task.state.wait');
+            } else if (state === TaskStatesByName.IN_PROGRESS) {
+                taskCountByState.label = $scope.message('is.task.state.inprogress');
+            } else {
+                taskCountByState.label = $scope.message('is.task.state.done');
+            }
             var tasksState = _.filter(tasks, ['state', state]);
             if (tasksState) {
-                var label;
-                label = ' (' + tasksState.length;
+                taskCountByState.label += ' (' + tasksState.length;
                 var totalEffort = state !== TaskStatesByName.DONE ? _.sumBy(tasksState, 'estimation') : 0;
                 if (totalEffort) {
-                    label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>';
+                    taskCountByState.label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>';
                 }
-                label += ')';
-                taskCountByState = {
-                    state: state,
-                    label: label
-                };
+                taskCountByState.label += ')';
+                taskCountByState.state = state;
             }
             $scope.taskCountByState[state] = taskCountByState;
         });
 
-        $scope.taskCountByType = _.chain(tasks)
-            .groupBy(function(task) {
-                return task.type;
-            })
-            .map(function(tasks) {
-                var label;
-                var state = tasks[0].state;
-                label = $filter('i18n')(state, 'TaskTypes');
-                label += ' (' + tasks.length;
-                var totalEffort = _.sumBy(tasks, 'estimation');
+        _.each(TaskTypesByName, function(type, key) {
+            var taskCountByType = {
+                type: type
+            };
+            taskCountByType.label = type === TaskStatesByName.URGENT ? $scope.message('is.ui.sprintPlan.kanban.urgentTasks') : $scope.message('is.ui.sprintPlan.kanban.recurrentTasks');
+            var tasksType = _.filter(tasks, ['type', type]);
+            if (tasksType) {
+                taskCountByType.label += ' (' + tasksType.length;
+                var totalEffort = _.sumBy(tasksType, 'estimation');
                 if (totalEffort) {
-                    label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>'
+                    var started = _.find(tasks, ['state', TaskStatesByName.IN_PROGRESS]);
+                    taskCountByType.label += ' - ' + totalEffort + ' <i class="fa fa-hourglass-' + (started ? 'half' : 'start') + ' fa-small"></i>';
                 }
-                label += ')';
-                return {
-                    state: state,
-                    label: label
-                };
-            })
-            .value();
+                taskCountByType.label += ')';
+                taskCountByType.type = type;
+            }
+            $scope.taskCountByType[type] = taskCountByType;
+        });
+
         $scope.countByFilter();
         switch ($scope.sprint.state) {
             case SprintStatesByName.TODO:
@@ -336,6 +337,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.tasksByTypeByStateAndSearchFiltered = {};
     $scope.tasksByStoryByState = {};
     $scope.taskCountByState = {};
+    $scope.taskCountByType = {};
     $scope.taskStatesByName = TaskStatesByName;
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.taskTypesByName = TaskTypesByName;

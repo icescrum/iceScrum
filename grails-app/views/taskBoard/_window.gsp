@@ -148,13 +148,13 @@
                 <thead>
                     <tr class="table-header sticky-header sticky-stack">
                         <th ng-if="sprint.state != sprintStatesByName.DONE">
-                            <span>${message(code: 'is.task.state.wait')}</span> <span ng-bind-html="taskCountByState[taskStatesByName.TODO].label"></span>
+                            <span ng-bind-html="taskCountByState[taskStatesByName.TODO].label"></span>
                         </th>
                         <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
-                            <span>${message(code: 'is.task.state.inprogress')}</span> <span ng-bind-html="taskCountByState[taskStatesByName.IN_PROGRESS].label"></span>
+                            <span ng-bind-html="taskCountByState[taskStatesByName.IN_PROGRESS].label"></span>
                         </th>
                         <th ng-if="sprint.state != sprintStatesByName.TODO">
-                            <span>${message(code: 'is.task.state.done')}</span> <span ng-bind-html="taskCountByState[taskStatesByName.DONE].label"></span>
+                            <span ng-bind-html="taskCountByState[taskStatesByName.DONE].label"></span>
                         </th>
                     </tr>
                 </thead>
@@ -162,7 +162,7 @@
                        ng-if="authorizedTask('showUrgent')">
                     <tr class="sticky-header">
                         <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
-                            <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')} ({{ taskCountByType[taskTypesByName.URGENT] | orElse:0 }})</h3>
+                            <h3 class="title" ng-bind-html="taskCountByType[taskTypesByName.URGENT].label"></h3>
                         </td>
                     </tr>
                     <tr>
@@ -213,7 +213,7 @@
                        ng-if="authorizedTask('showRecurrent')">
                     <tr class="sticky-header">
                         <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
-                            <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})</h3>
+                            <h3 class="title" ng-bind-html="taskCountByType[taskTypesByName.RECURRENT].label">s</h3>
                         </td>
                     </tr>
                     <tr>
