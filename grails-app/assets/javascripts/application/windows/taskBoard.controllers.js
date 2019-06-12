@@ -72,8 +72,48 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         }
         var tasks;
         tasks = $scope.sprint.tasks;
-        $scope.taskCountByState = _.countBy(tasks, 'state');
-        $scope.taskCountByType = _.countBy(tasks, 'type');
+        _.each(TaskStatesByName, function(state, key) {
+            var taskCountByState = {
+                state: state,
+                label: 0
+            };
+            var tasksState = _.filter(tasks, ['state', state]);
+            if (tasksState) {
+                var label;
+                label = ' (' + tasksState.length;
+                var totalEffort = state !== TaskStatesByName.DONE ? _.sumBy(tasksState, 'estimation') : 0;
+                if (totalEffort) {
+                    label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>';
+                }
+                label += ')';
+                taskCountByState = {
+                    state: state,
+                    label: label
+                };
+            }
+            $scope.taskCountByState[state] = taskCountByState;
+        });
+
+        $scope.taskCountByType = _.chain(tasks)
+            .groupBy(function(task) {
+                return task.type;
+            })
+            .map(function(tasks) {
+                var label;
+                var state = tasks[0].state;
+                label = $filter('i18n')(state, 'TaskTypes');
+                label += ' (' + tasks.length;
+                var totalEffort = _.sumBy(tasks, 'estimation');
+                if (totalEffort) {
+                    label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>'
+                }
+                label += ')';
+                return {
+                    state: state,
+                    label: label
+                };
+            })
+            .value();
         $scope.countByFilter();
         switch ($scope.sprint.state) {
             case SprintStatesByName.TODO:
