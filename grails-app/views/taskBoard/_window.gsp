@@ -136,7 +136,7 @@
                 </div>
             </h3>
         </div>
-        <div class="panel-body" id="tasks-board" ng-controller="taskCtrl">
+        <div class="panel-body scrollable-selectable-container" data-scroll-selectable-offset="120" id="tasks-board" ng-controller="taskCtrl">
             <div class="window-alert bg-warning"
                  ng-if="currentSprintFilter.id != 'allTasks'"
                  style="margin: 0 10px;">

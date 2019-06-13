@@ -106,7 +106,7 @@
                     ${message(code: 'is.ui.feature.rank.disabled')}
                 </div>
             </div>
-            <div class="panel-body"
+            <div class="panel-body scrollable-selectable-container"
                  selectable="selectableOptions">
                 <div ng-if="features.length == 0"
                      class="empty-view">

@@ -109,7 +109,7 @@
                     </div>
                 </h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body scrollable-selectable-container">
                 <div class="postits {{ postitClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"

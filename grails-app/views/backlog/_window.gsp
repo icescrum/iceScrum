@@ -153,7 +153,7 @@
                     </div>
                 </h3>
             </div>
-            <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
+            <div class="panel-body scrollable-selectable-container" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
                 <div class="postits {{ postitClass }}"
                      ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
