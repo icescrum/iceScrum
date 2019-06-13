@@ -197,14 +197,12 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
             }, 50);
         }
         $timeout.cancel(scrollToSelectedVisible);
-        scrollToSelectedVisible = $timeout(function(){
-             _.debounce(function() {
-                var selected = angular.element('.is-selected');
-                if(selected.length){
-                    selected.parents('.scrollable-selectable-container').scrollToVisible(selected);
-                }
-            }, 50)();
-        }, 50);
+        scrollToSelectedVisible = $timeout(function() {
+            var selected = angular.element('.is-selected');
+            if (selected.length) {
+                selected.parents('.scrollable-selectable-container').scrollToVisible(selected);
+            }
+        }, 100);
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {
