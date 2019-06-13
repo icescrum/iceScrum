@@ -100,7 +100,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             var taskCountByType = {
                 type: type
             };
-            taskCountByType.label = type === TaskStatesByName.URGENT ? $scope.message('is.ui.sprintPlan.kanban.urgentTasks') : $scope.message('is.ui.sprintPlan.kanban.recurrentTasks');
+            taskCountByType.label = type === TaskTypesByName.URGENT ? $scope.message('is.ui.sprintPlan.kanban.urgentTasks') : $scope.message('is.ui.sprintPlan.kanban.recurrentTasks');
             var tasksType = _.filter(tasks, ['type', type]);
             if (tasksType) {
                 taskCountByType.label += ' (' + tasksType.length;
@@ -113,6 +113,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
                 taskCountByType.type = type;
             }
             $scope.taskCountByType[type] = taskCountByType;
+            debugger;
         });
 
         $scope.countByFilter();
