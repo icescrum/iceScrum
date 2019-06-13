@@ -113,7 +113,6 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
                 taskCountByType.type = type;
             }
             $scope.taskCountByType[type] = taskCountByType;
-            debugger;
         });
 
         $scope.countByFilter();
