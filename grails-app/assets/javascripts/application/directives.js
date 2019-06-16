@@ -752,7 +752,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}]).directive("stickyList", ['$window', function($window) {
+}]).directive("stickyList", ['$window', '$timeout', function($window, $timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -843,6 +843,19 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     }
                 });
             };
+
+            var refreshHeaders = function() {
+                $headers = getHeaders();
+                _.each($headerClones, function($headerClone, index) {
+                    if ($headers[index]) {
+                        $headerClone.html($headers[index].html());
+                        computeWidth(index);
+                    } else {
+                        return false;
+                    }
+                });
+            };
+
             // Init
             var offset;
             var wasOnTop = true;
@@ -859,6 +872,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 viewElement.off("scroll", position);
             });
             render();
+
+            if (attrs.stickyWatch) {
+                scope.$watchCollection(attrs.stickyWatch, _.debounce(refreshHeaders, 100));
+            }
         }
     };
 }]).directive('visualStates', ['$compile', '$filter', function($compile, $filter) {

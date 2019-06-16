@@ -32,7 +32,7 @@ jQuery.fn.scrollToVisible = function($elem, speed) {
     scrollOffset = scrollOffset ? scrollOffset : 0;
     var selfOffsetTop = $self.offset().top;
     var elemOffsetTop = $elem.offset().top;
-    var isVisible = ((elemOffsetTop + $elem.height() - scrollOffset) <= (selfOffsetTop + $self.height())) && elemOffsetTop >= selfOffsetTop;
+    var isVisible = ((elemOffsetTop + $elem.height()) <= (selfOffsetTop + $self.height())) && elemOffsetTop >= selfOffsetTop;
     if (!isVisible) {
         $self.animate({
             scrollTop: $self.scrollTop() - selfOffsetTop + elemOffsetTop - (scrollOffset ? scrollOffset : 0)

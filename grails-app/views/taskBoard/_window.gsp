@@ -144,7 +144,7 @@
                 {{ currentSprintFilter.name }}
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
-            <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
+            <table class="table" selectable="selectableOptions" sticky-list="#tasks-board" sticky-watch="taskCountByState">
                 <thead>
                     <tr class="table-header sticky-header sticky-stack">
                         <th ng-if="sprint.state != sprintStatesByName.DONE">
