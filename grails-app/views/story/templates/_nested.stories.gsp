@@ -26,7 +26,8 @@
     <div ng-controller="featureStoriesCtrl">
         <div ng-repeat="storyEntry in storyEntries"
              class="mb-5">
-            <h5 class="text-center mt-2 mb-3"
+            <h5 class="text-center mb-3"
+                ng-class="::{ 'mt-2': !$first }"
                 ng-bind-html="storyEntry.label">
             </h5>
             <div ng-repeat="story in storyEntry.stories">

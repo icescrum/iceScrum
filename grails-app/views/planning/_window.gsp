@@ -93,7 +93,7 @@
                         </span>
                     </span>
                 </div>
-                <div class="sticky-notes {{ stickyNoteClass }}"
+                <div class="sticky-notes {{ stickyNoteClass }} scrollable-selectable-container"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"

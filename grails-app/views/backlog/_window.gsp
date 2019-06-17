@@ -140,7 +140,7 @@
                        class="btn btn-icon btn-icon-close">
                     </a>
                 </div>
-                <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
+                <div class="scrollable-selectable-container" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                     <div class="loading-logo" ng-include="'loading.html'"></div>
                     <div class="sticky-notes {{ stickyNoteClass }}"
                          ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"

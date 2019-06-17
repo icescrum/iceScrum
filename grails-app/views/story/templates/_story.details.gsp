@@ -125,7 +125,7 @@
                     <a href="{{ tabUrl('tasks') }}"
                        class="nav-link"
                        ng-class="{'active':$state.params.storyTabId == 'tasks'}">
-                        ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                        ${message(code: 'todo.is.ui.tasks')} <span ng-bind-html="story | countAndRemaining"></span>
                     </a>
                 </li>
                 <li role="presentation"
@@ -179,7 +179,7 @@
                     class="nav-item">
                     <a href
                        class="nav-link">
-                        ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                        ${message(code: 'todo.is.ui.tasks')} <span ng-bind-html="story | countAndRemaining"></span>
                     </a>
                 </li>
             </ul>

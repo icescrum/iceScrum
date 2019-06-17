@@ -8,6 +8,7 @@ servlets = [
                 mapping   : "/stream/app/*",
                 handler   : IceScrumMeteorHandler,
                 initParams: [
+                        "org.atmosphere.cpr.broadcasterCacheClass"                                   : "org.atmosphere.cache.UUIDBroadcasterCache",
                         "org.atmosphere.cpr.AtmosphereFramework.analytics"                           : false,
                         "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 30, // seconds
                         "org.atmosphere.cpr.CometSupport.maxInactiveActivity"                        : 30 * 60000, // 30 minutes

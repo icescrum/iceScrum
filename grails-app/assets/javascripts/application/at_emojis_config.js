@@ -652,6 +652,7 @@ if (isSettings.enableEmojis) {
         }, {"name": "vietnam", "v": "🇻🇳"}, {"name": "wallis_futuna", "v": "🇼🇫"}, {"name": "western_sahara", "v": "🇪🇭"}, {"name": "yemen", "v": "🇾🇪"}, {"name": "zambia", "v": "🇿🇲"}, {"name": "zimbabwe", "v": "🇿🇼"}],
         displayTpl: "<li>${v} ${name}</li>",
         insertTpl: '${v}',
+        highlightFirst:false,
         delay: 500
     };
 }

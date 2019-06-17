@@ -24,7 +24,8 @@
 <div class="story-tasks card-body" ng-controller="taskSortableStoryCtrl">
     <div ng-repeat="(taskState, tasks) in tasksByState"
          class="mb-5">
-        <h5 class="text-center mt-2 mb-3">
+        <h5 class="text-center mb-3"
+            ng-class="::{{ 'mt-2':!$first }}">
             {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
         </h5>
         <div is-disabled="!isTaskSortableByState(taskState)"

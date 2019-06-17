@@ -103,9 +103,6 @@
                                ng-maxlength="100"
                                ng-model="story.name"
                                ng-change="findDuplicates(story.name)"/>
-                        <div ng-if="messageDuplicate"
-                             class="form-text bg-warning spaced-form-text"
-                             ng-bind-html="messageDuplicate"></div>
                     </div>
                     <entry:point id="story-new-form"/>
                 </div>
@@ -138,22 +135,27 @@
                         </ui-select>
                     </div>
                 </div>
-                <div class="btn-toolbar float-right">
-                    <button class="btn btn-primary"
-                            ng-disabled="formHolder.storyForm.$invalid || application.submitting"
-                            defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
-                            hotkey="{'shift+return': hotkeyClick }"
-                            hotkey-allow-in="INPUT"
-                            hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"
-                            type='button'
-                            ng-click="save(story, true)">
-                        ${message(code: 'todo.is.ui.create.and.continue')}
-                    </button>
-                    <button class="btn btn-primary"
-                            ng-disabled="formHolder.storyForm.$invalid || application.submitting"
-                            type="submit">
-                        ${message(code: 'default.button.create.label')}
-                    </button>
+                <div style="margin-top:0;margin-bottom:10px;padding:5px;" ng-if="messageDuplicate"
+                     class="form-text bg-warning spaced-form-block"
+                     ng-bind-html="messageDuplicate"></div>
+                <div class="clearfix">
+                    <div class="btn-toolbar float-right">
+                        <button class="btn btn-primary"
+                                ng-disabled="formHolder.storyForm.$invalid || application.submitting"
+                                defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                                hotkey="{'shift+return': hotkeyClick }"
+                                hotkey-allow-in="INPUT"
+                                hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"
+                                type='button'
+                                ng-click="save(story, true)">
+                            ${message(code: 'todo.is.ui.create.and.continue')}
+                        </button>
+                        <button class="btn btn-primary"
+                                ng-disabled="formHolder.storyForm.$invalid || application.submitting"
+                                type="submit">
+                            ${message(code: 'default.button.create.label')}
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

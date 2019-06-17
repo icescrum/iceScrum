@@ -97,7 +97,7 @@
              ng-if="authorizedFeature('update') && !isSortableFeature()">
             ${message(code: 'is.ui.feature.rank.disabled')}
         </div>
-        <div class="card-body"
+        <div class="card-body scrollable-selectable-container"
              selectable="selectableOptions">
             <div ng-if="features.length == 0"
                  class="empty-view">

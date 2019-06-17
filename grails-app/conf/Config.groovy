@@ -53,7 +53,12 @@ icescrum {
         emailPerAccount = false
         errors.to = "dev@icescrum.org"
     }
+
     alerts.default.from = "webmaster@icescrum.org"
+
+    mail {
+        envelopeFrom = null
+    }
 
     sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default // TODO may not work on Tomcat 8.5, see maxInactiveInterval in https://tomcat.apache.org/migration-85.html
 
@@ -180,7 +185,7 @@ icescrum {
             portfolio           : [include: ['businessOwners', 'stakeHolders', 'invitedBusinessOwners', 'invitedStakeHolders'],
                                    asShort: ['name', 'fkey'],
                                    textile: ['description']],
-            story               : [include: ['testState', 'tags', 'dependences', 'countDoneTasks', 'project'],
+            story               : [include: ['testState', 'tags', 'dependences', 'countDoneTasks', 'totalRemainingTime', 'project'],
                                    exclude: ['voters', 'metaDatas'],
                                    withIds: ['actors', 'followers'],
                                    textile: ['notes'],

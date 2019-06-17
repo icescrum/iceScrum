@@ -181,6 +181,8 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     // Init loading
     var w = angular.element($window);
     var resizeTimeout = null;
+    var scrollToSelectedVisible = null;
+
     $scope.$on('$viewContentLoaded', function(event) {
         if (!event.defaultPrevented) {
             if ($scope.application.loadingPercent < 90) {
@@ -193,6 +195,13 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
                 w.triggerHandler('resize');
             }, 50);
         }
+        $timeout.cancel(scrollToSelectedVisible);
+        scrollToSelectedVisible = $timeout(function() {
+            var selected = angular.element('.is-selected');
+            if (selected.length) {
+                selected.parents('.scrollable-selectable-container').scrollToVisible(selected);
+            }
+        }, 100);
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {

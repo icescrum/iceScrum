@@ -48,7 +48,7 @@ extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', f
     $scope.resetTaskForm();
 }]);
 
-extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session', 'TaskStatesByName', function($scope, TaskService, Session, TaskStatesByName) {
+extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', 'TaskService', 'Session', 'TaskStatesByName', function($scope, $filter, TaskService, Session, TaskStatesByName) {
     // Functions
     $scope.taskSortableOptions = {
         orderChanged: function(event) {
@@ -68,9 +68,27 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
     };
     // Init
     $scope.$watch('selected.tasks', function(tasks) {
-        $scope.tasksByState = _.mapValues(_.groupBy(tasks, 'state'), function(tasksOfState) {
-            return _.sortBy(tasksOfState, 'rank');
-        });
+        $scope.tasksByState = _.chain(tasks)
+            .groupBy(function(task) {
+                return task.state;
+            })
+            .map(function(tasks) {
+                var label;
+                var state = tasks[0].state;
+                label = $filter('i18n')(state, 'TaskStates');
+                label += ' (' + tasks.length;
+                var totalEffort = _.sumBy(tasks, 'estimation');
+                if (totalEffort) {
+                    label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>'
+                }
+                label += ')';
+                return {
+                    state: state,
+                    label: label,
+                    tasks: _.sortBy(tasks, 'rank')
+                };
+            })
+            .value();
     }, true);
     $scope.sortableId = 'story-tasks';
 }]);

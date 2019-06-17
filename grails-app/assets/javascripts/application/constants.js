@@ -23,6 +23,21 @@
  *
  */
 
+jQuery.fn.scrollToVisible = function($elem, speed) {
+    var $self = $(this);
+    var scrollOffset = $self.data('scrollSelectableOffset');
+    scrollOffset = scrollOffset ? scrollOffset : 0;
+    var selfOffsetTop = $self.offset().top;
+    var elemOffsetTop = $elem.offset().top;
+    var isVisible = ((elemOffsetTop + $elem.height()) <= (selfOffsetTop + $self.height())) && elemOffsetTop >= selfOffsetTop;
+    if (!isVisible) {
+        $self.animate({
+            scrollTop: $self.scrollTop() - selfOffsetTop + elemOffsetTop - (scrollOffset ? scrollOffset : 0)
+        }, speed === undefined ? 100 : speed);
+    }
+    return this;
+};
+
 isApplication
     .constant('SERVER_ERRORS', {
         loginFailed: 'is:auth-login-failed',
