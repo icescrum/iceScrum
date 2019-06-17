@@ -88,7 +88,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
                 taskCountByState.label += ' (' + tasksState.length;
                 var totalEffort = state !== TaskStatesByName.DONE ? _.sumBy(tasksState, 'estimation') : 0;
                 if (totalEffort) {
-                    taskCountByState.label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>';
+                    taskCountByState.label += ' - ' + totalEffort;
                 }
                 taskCountByState.label += ')';
                 taskCountByState.state = state;

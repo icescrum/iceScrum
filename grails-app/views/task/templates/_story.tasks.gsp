@@ -25,7 +25,7 @@
     <div ng-repeat="(taskState, tasks) in tasksByState"
          class="mb-5">
         <h5 class="text-center mb-3"
-            ng-class="::{{ 'mt-2':!$first }}">
+            ng-class="::{ 'mt-2':!$first }">
             {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
         </h5>
         <div is-disabled="!isTaskSortableByState(taskState)"

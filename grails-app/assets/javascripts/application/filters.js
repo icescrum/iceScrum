@@ -611,7 +611,7 @@ filters
     }
 }).filter('countAndRemaining', function() {
     return function(story) {
-        return story.tasks_count ? '(' + story.tasks_count + (story.totalRemainingTime ? ' - ' + story.totalRemainingTime + ' <i class="fa fa-hourglass fa-small"></i>' : '') + ')' : '';
+        return story.tasks_count ? '(' + story.tasks_count + (story.totalRemainingTime ? ' - ' + story.totalRemainingTime : '') + ')' : '';
     }
 }).filter('ellipsis', ['limitToFilter', function(limitToFilter) {
     return function(text, limit, moreSign) {
