@@ -125,21 +125,15 @@
             </div>
             <div selectable="selectableOptions">
                 <div class="kanban-states">
-                    <div ng-if="sprint.state != sprintStatesByName.DONE">
-                        ${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] | orElse:0 }})
-                    </div>
-                    <div ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
-                        ${message(code: 'is.task.state.inprogress')} ({{ taskCountByState[taskStatesByName.IN_PROGRESS] | orElse:0 }})
-                    </div>
-                    <div ng-if="sprint.state != sprintStatesByName.TODO">
-                        ${message(code: 'is.task.state.done')} ({{ taskCountByState[taskStatesByName.DONE] | orElse:0 }})
-                    </div>
+                    <div ng-if="sprint.state != sprintStatesByName.DONE" ng-bind-html="taskCountByState[taskStatesByName.TODO].label"></div>
+                    <div ng-if="sprint.state == sprintStatesByName.IN_PROGRESS" ng-bind-html="taskCountByState[taskStatesByName.IN_PROGRESS].label"></div>
+                    <div ng-if="sprint.state != sprintStatesByName.TODO" ng-bind-html="taskCountByState[taskStatesByName.DONE].label"></div>
                 </div>
                 <div class="kanban-swimlane"
                      ng-if="authorizedTask('showUrgent')">
                     <div class="kanban-row">
                         <div class="kanban-column-header col">
-                            <span class="swimlane-title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')} ({{ taskCountByType[taskTypesByName.URGENT] | orElse:0 }})</span>
+                            <span class="swimlane-title" ng-bind-html="taskCountByType[taskTypesByName.URGENT].label"></span>
                         </div>
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
@@ -191,7 +185,7 @@
                     <div class="kanban-row">
                         <div class="kanban-column-header col">
                             <span class="swimlane-title">
-                                ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})
+                                <span ng-bind-html="taskCountByType[taskTypesByName.RECURRENT].label"></span>
                                 <a ng-if="authorizedTask('create', {sprint: sprint})"
                                    class="swimlane-subtitle"
                                    ng-click="copyRecurrentTasks(sprint)"

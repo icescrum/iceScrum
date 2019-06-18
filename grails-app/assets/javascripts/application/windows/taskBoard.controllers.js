@@ -106,8 +106,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
                 taskCountByType.label += ' (' + tasksType.length;
                 var totalEffort = _.sumBy(tasksType, 'estimation');
                 if (totalEffort) {
-                    var started = _.find(tasks, ['state', TaskStatesByName.IN_PROGRESS]);
-                    taskCountByType.label += ' - ' + totalEffort + ' <i class="fa fa-hourglass-' + (started ? 'half' : 'start') + ' fa-small"></i>';
+                    taskCountByType.label += ' - ' + totalEffort;
                 }
                 taskCountByType.label += ')';
                 taskCountByType.type = type;
