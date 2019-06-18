@@ -126,7 +126,7 @@
                    class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             </div>
         </div>
-        <div class="card-body backlog-list" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
+        <div class="card-body backlog-list scrollable-selectable-container" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
             <div class="window-alert bg-warning" ng-if="selectableOptions.selectingMultiple">
                 ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
@@ -140,7 +140,7 @@
                        class="btn btn-icon btn-icon-close">
                     </a>
                 </div>
-                <div class="scrollable-selectable-container" ng-class="{'loading': !backlogContainer.storiesLoaded}">
+                <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
                     <div class="loading-logo" ng-include="'loading.html'"></div>
                     <div class="sticky-notes {{ stickyNoteClass }}"
                          ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
