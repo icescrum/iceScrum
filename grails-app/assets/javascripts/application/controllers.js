@@ -197,9 +197,9 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
         }
         $timeout.cancel(scrollToSelectedVisible);
         scrollToSelectedVisible = $timeout(function() {
-            var selected = angular.element('.is-selected');
-            if (selected.length) {
-                selected.parents('.scrollable-selectable-container').scrollToVisible(selected);
+            var $element = angular.element('.is-selected');
+            if ($element && $element[0]) {
+                $element.parents('.scrollable-selectable-container').scrollToVisible($element[0]);
             }
         }, 100);
     });

@@ -23,19 +23,14 @@
  *
  */
 
-jQuery.fn.scrollToVisible = function($elem, speed) {
-    var $self = $(this);
-    var scrollOffset = $self.data('scrollSelectableOffset');
-    scrollOffset = scrollOffset ? scrollOffset : 0;
-    var selfOffsetTop = $self.offset().top;
-    var elemOffsetTop = $elem.offset().top;
-    var isVisible = ((elemOffsetTop + $elem.height()) <= (selfOffsetTop + $self.height())) && elemOffsetTop >= selfOffsetTop;
-    if (!isVisible) {
-        $self.animate({
-            scrollTop: $self.scrollTop() - selfOffsetTop + elemOffsetTop - (scrollOffset ? scrollOffset : 0)
-        }, speed === undefined ? 100 : speed);
+jQuery.fn.scrollToVisible = function(element, speed) {
+    var customOffset = this.data('scrollToVisibleOffset');
+    customOffset = customOffset ? customOffset : 0;
+    var offsetBottom = element.offsetTop + element.offsetHeight;
+    var scrollBottom = this[0].scrollTop + this[0].offsetHeight;
+    if (((element.offsetTop - customOffset) < this[0].scrollTop) || (offsetBottom > scrollBottom)) {
+        this.animate({scrollTop: element.offsetTop - customOffset}, speed ? speed : 100);
     }
-    return this;
 };
 
 isApplication
