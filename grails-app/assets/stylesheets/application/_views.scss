@@ -506,6 +506,10 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
+.pdf-viewer {
+  overflow: auto;
+}
+
 ////////////////////
 // Oauth confirm
 ////////////////////
