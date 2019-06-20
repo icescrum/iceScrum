@@ -111,13 +111,18 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
                 controller: ['$scope', 'PDFViewerService', function($scope, pdf) {
                     $scope.title = attachment.filename;
                     $scope.pdfURL = attachmentBaseUrl + type + "/" + attachmentable.id + "/" + attachment.id;
-                    $scope.scale = 1.5;
                     $scope.viewer = pdf.Instance("viewer");
                     $scope.nextPage = function() {
                         $scope.viewer.nextPage();
                     };
                     $scope.prevPage = function() {
                         $scope.viewer.prevPage();
+                    };
+                    $scope.zoomIn = function() {
+                        $scope.viewer.zoomIn();
+                    };
+                    $scope.zoomOut = function() {
+                        $scope.viewer.zoomOut();
                     };
                     $scope.pageLoaded = function(curPage, totalPages) {
                         $scope.currentPage = curPage;
