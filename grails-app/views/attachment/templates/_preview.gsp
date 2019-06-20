@@ -27,19 +27,13 @@
         <div class="btn-group">
             <button class="btn btn-secondary" ng-click="prevPage()"><i class="fa fa-angle-left"></i></button>
             <button class="btn btn-secondary" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
+            <button class="btn btn-secondary" ng-click="zoomIn()"><i class="fa fa-search-plus"></i></button>
+            <button class="btn btn-secondary" ng-click="zoomOut()"><i class="fa fa-search-minus"></i></button>
         </div>
         <span class="float-right">{{ currentPage + '/' + totalPages }}</span>
     </div>
     <div class="pdf-viewer">
-        <pdfviewer src="{{ pdfURL }}" on-page-load='pageLoaded(page,total)' id="viewer"></pdfviewer>
-    </div>
-    <div class="form-text clearfix">
-        <a href="{{ pdfURL }}" class="btn btn-info"><i class="fa fa-download"></i></a>
-        <div class="btn-group">
-            <button class="btn btn-secondary" ng-click="prevPage()"><i class="fa fa-angle-left"></i></button>
-            <button class="btn btn-secondary" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
-        </div>
-        <span class="float-right">{{ currentPage + '/' + totalPages }}</span>
+        <pdfviewer src="{{ pdfURL }}" on-page-load='pageLoaded(page,total)' id="viewer" width="page-fit"></pdfviewer>
     </div>
 </is:modal>
 </script>
