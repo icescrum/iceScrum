@@ -24,7 +24,7 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view sprint-state-{{ sprint.state }}"
          ng-if="sprint">
-        <div class="card-header">
+        <div class="card-header kanban-header">
             <div class="card-header-left">
                 <span uib-dropdown on-toggle="scrollToActiveSprint(open)">
                     <span uib-dropdown-toggle class="card-title">{{ (sprint | sprintName) }}</span>
@@ -117,7 +117,7 @@
         </div>
         <div class="card-body scrollable-selectable-container"
              data-scroll-to-visible-computed-offset-top="true"
-             data-scroll-to-visible-offset="50"
+             data-scroll-to-visible-offset=".kanban-header"
              id="tasks-board"
              ng-controller="taskCtrl">
             <div class="window-alert bg-warning"

@@ -37,7 +37,7 @@ jQuery.fn.scrollToVisible = function(element, speed) {
         offset = element.offsetTop;
     }
     var customOffset = this.data('scrollToVisibleOffset');
-    customOffset = customOffset ? customOffset : 0;
+    customOffset = customOffset ? (angular.isNumber(customOffset) ? customOffset : angular.element(customOffset)[0].offsetHeight) : 0;
     var scrollBottom = this[0].scrollTop + this[0].offsetHeight;
     var offsetBottom = offset + element.offsetHeight;
     if (((offset - customOffset) < this[0].scrollTop) || (offsetBottom > scrollBottom)) {
