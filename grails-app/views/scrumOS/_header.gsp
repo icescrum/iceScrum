@@ -39,7 +39,7 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul ng-controller="mainMenuCtrl"
-            class="nav navbar-nav"
+            class="nav navbar-nav menu-header"
             is-disabled="!currentUser.id || workspaceType != 'project'"
             as-sortable="menuSortableOptions"
             ng-model="application.menus.visible">
