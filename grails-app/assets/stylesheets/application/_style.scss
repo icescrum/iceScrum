@@ -330,12 +330,23 @@ nav.navbar {
       }
     }
 
-    .btn, .nav-link {
+    .btn, .nav-link, .more-item {
       padding: 0.5625rem 1rem;
       font-size: $is-font-size-sm;
       line-height: 1.29;
     }
+
+    .more-item [as-sortable="elementsListSortableOptions"] {
+      min-height: 40px;
+    }
   }
+}
+
+.nav-pills .as-sortable-dragging-item .nav-link {
+  padding: 0.64rem 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.29;
+  background: #ddd;
 }
 
 .btn-menu {

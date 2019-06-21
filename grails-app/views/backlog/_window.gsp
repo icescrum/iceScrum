@@ -22,8 +22,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="card card-view" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
-        <div class="card-header">
+    <div class="card card-view">
+        <div class="card-header" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
             <ul class="nav nav-pills"
                 ng-class="{ 'hasElements': visibleElementsList.length > 0 }"
                 as-sortable="elementsListSortableOptions"
@@ -38,14 +38,13 @@
                         <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
                     </a>
                 </li>
-                <li class="nav-item"
+                <li class="nav-item more-item"
                     uib-dropdown
                     is-open="more.isopen || menuDragging"
                     ng-show="menuDragging || hiddenElementsList.length > 0">
                     <a uib-dropdown-toggle
                        href
-                       ng-class="{'active': isShownInMore()}"
-                       style="padding: 15px">
+                       ng-class="{'active': isShownInMore()}">
                         ${message(code: 'todo.is.ui.more')}
                     </a>
                     <div uib-dropdown-menu
