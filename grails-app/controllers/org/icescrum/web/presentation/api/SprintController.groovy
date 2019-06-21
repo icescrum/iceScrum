@@ -83,8 +83,8 @@ class SprintController implements ControllerErrorHandler {
     def update(long project, long id) {
         def sprintParams = params.sprint
         Sprint sprint = Sprint.withSprint(project, id)
-        def startDate = sprintParams.startDate ? DateUtils.parseDateISO8601(sprintParams.startDate) : sprint.startDate
-        def endDate = sprintParams.endDate ? DateUtils.parseDateISO8601(sprintParams.endDate) : sprint.endDate
+        def startDate = sprintParams.startDate && sprintParams.startDate != "null" ? DateUtils.parseDateISO8601(sprintParams.startDate) : sprint.startDate //catch a strange bug when "null"
+        def endDate = sprintParams.endDate && sprintParams.endDate != "null" ? DateUtils.parseDateISO8601(sprintParams.endDate) : sprint.endDate //catch a strange bug when "null"
         Sprint.withTransaction {
             bindData(sprint, sprintParams, [include: ['goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
             sprintService.update(sprint, startDate, endDate)
