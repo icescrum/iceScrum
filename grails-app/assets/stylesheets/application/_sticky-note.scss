@@ -153,6 +153,11 @@ $acceptance-test-states: tocheck, success, failed;
     }
   }
 
+  &.sticky-notes.as-sortable-drag {
+    position: absolute;
+    display: block;
+  }
+
   .sticky-note {
     box-shadow: none !important; // Override js style
     background: none !important; // Override js style
@@ -365,6 +370,11 @@ $acceptance-test-states: tocheck, success, failed;
     .sticky-note-container {
       margin: $is-sticky-note-spacer;
     }
+  }
+
+  &.sticky-notes.as-sortable-drag {
+    position: absolute;
+    display: block;
   }
 
   .sticky-note {
