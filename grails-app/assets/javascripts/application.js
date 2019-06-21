@@ -34,7 +34,7 @@
 //= require           vendors/angular/angular-route.min
 //= require           vendors/angular/angular-resource.min
 
-//= require           vendors/angular/plugins/ng-pdfviewer.min
+//= require           vendors/angular/plugins/ng-pdfviewer
 //= require_full_tree vendors/i18n
 
 //= require_full_tree vendors
