@@ -375,6 +375,7 @@ $acceptance-test-states: tocheck, success, failed;
   &.sticky-notes.as-sortable-drag {
     position: absolute;
     display: block;
+
   }
 
   .sticky-note {
@@ -694,6 +695,10 @@ $acceptance-test-states: tocheck, success, failed;
 
 .backlog .grid-group .sticky-note-story .sticky-note:after {
   border-color: $is-bg-color-ter $is-bg-color-ter white white;
+}
+
+.grid-group.as-sortable-dragging .sticky-note-story .sticky-note:after {
+  border-color: $is-bg-color-ter $is-bg-color-ter white white; //better than white...
 }
 
 ////////////////////

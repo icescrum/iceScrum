@@ -1367,7 +1367,8 @@
                             var x = e.pageX - offset.left;
                             var y = e.pageY - offset.top;
                             $helper.cleanStyles();
-                            element.addClass('sortable-item-over sortable-item-over-' + (x > ((offset.width / 2) || y > (offset.height / 2)) ? 'right' : 'left'));
+                            var position = x > (offset.width / 2) || y > (offset.height / 2) ? 'right' : 'left';
+                            element.addClass('sortable-item-over sortable-item-over-' + position);
                         }
                     }, sortableConfig.throttle));
                     element.on('mouseleave', _.throttle(function() {
