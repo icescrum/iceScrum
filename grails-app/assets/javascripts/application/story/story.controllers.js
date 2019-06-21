@@ -417,7 +417,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
     $scope.storyStatesByName = StoryStatesByName;
 }]);
 
-extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, $controller, $q, StoryService, StoryStatesByName, story) {
+extensibleController('storySplitCtrl', ['$scope', 'Session', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, Session, $controller, $q, StoryService, StoryStatesByName, story) {
     $controller('storyCtrl', {$scope: $scope});
     $controller('storyAtWhoCtrl', {$scope: $scope});
     // Functions
@@ -439,11 +439,15 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
             }
         }
         // Split effort from original story
-        if ($scope.storyReference.effort > 0) {
+        if ($scope.storyReference.effort > 0 && Session.sm()) {
             var effort = parseInt($scope.storyReference.effort / $scope.splitCount);
             effort = effort >= 1 ? effort : 1;
             _.each($scope.stories, function(story) {
                 story.effort = effort;
+            });
+        }else {
+            _.each($scope.stories, function(story) {
+                delete story.effort;
             });
         }
         if ($scope.storyReference.value > 0) {
