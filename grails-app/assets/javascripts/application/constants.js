@@ -24,12 +24,24 @@
  */
 
 jQuery.fn.scrollToVisible = function(element, speed) {
+    var computedOffsetTop = this.data('scrollToVisibleComputedOffsetTop');
+    var offset = 0;
+    if (computedOffsetTop) {
+        offset = 0;
+        var parent = $(element).parent();
+        while (parent[0] !== this[0]) {
+            offset += parent[0].offsetTop;
+            parent = parent.parent();
+        }
+    } else {
+        offset = element.offsetTop;
+    }
     var customOffset = this.data('scrollToVisibleOffset');
     customOffset = customOffset ? customOffset : 0;
-    var offsetBottom = element.offsetTop + element.offsetHeight;
     var scrollBottom = this[0].scrollTop + this[0].offsetHeight;
-    if (((element.offsetTop - customOffset) < this[0].scrollTop) || (offsetBottom > scrollBottom)) {
-        this.animate({scrollTop: element.offsetTop - customOffset}, speed ? speed : 100);
+    var offsetBottom = offset + element.offsetHeight;
+    if (((offset - customOffset) < this[0].scrollTop) || (offsetBottom > scrollBottom)) {
+        this.animate({scrollTop: offset - customOffset}, speed ? speed : 100);
     }
 };
 

@@ -414,7 +414,12 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
-////////////////////
+//to make scrollTop computation true
+.kanban-swimlane, .kanban-column, .kanban-row {
+  position: relative;
+}
+
+  ////////////////////
 // Apps
 ////////////////////
 

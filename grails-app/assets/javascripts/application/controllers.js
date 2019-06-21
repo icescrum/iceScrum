@@ -201,7 +201,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
             if ($element && $element[0]) {
                 $element.parents('.scrollable-selectable-container').scrollToVisible($element[0]);
             }
-        }, 100);
+        }, 150);
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {

@@ -115,7 +115,11 @@
                 </div>
             </div>
         </div>
-        <div class="card-body" id="tasks-board" ng-controller="taskCtrl">
+        <div class="card-body scrollable-selectable-container"
+             data-scroll-to-visible-computed-offset-top="true"
+             data-scroll-to-visible-offset="50"
+             id="tasks-board"
+             ng-controller="taskCtrl">
             <div class="window-alert bg-warning"
                  ng-if="currentSprintFilter.id != 'allTasks'"
                  style="margin: 0 10px;">
@@ -123,7 +127,7 @@
                 {{ currentSprintFilter.name }}
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
-            <div selectable="selectableOptions">
+            <div selectable="selectableOptions" style="position: relative">
                 <div class="kanban-states">
                     <div ng-if="sprint.state != sprintStatesByName.DONE" ng-bind-html="taskCountByState[taskStatesByName.TODO].label"></div>
                     <div ng-if="sprint.state == sprintStatesByName.IN_PROGRESS" ng-bind-html="taskCountByState[taskStatesByName.IN_PROGRESS].label"></div>
