@@ -349,6 +349,10 @@ nav.navbar {
   background: #ddd;
 }
 
+.nav-pills .as-sortable-placeholder {
+  margin-right: 0.5rem !important;
+}
+
 .btn-menu {
   display: inline-flex;
   align-items: center;
@@ -738,6 +742,10 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 
 .uib-datepicker-popup {
   z-index: 9999; // Ensure that it's in front in modals
+}
+
+.as-sortable-placeholder {
+  border:1px dashed $is-blue;
 }
 
 ////////////////////
