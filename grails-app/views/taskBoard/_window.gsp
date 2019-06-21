@@ -127,7 +127,7 @@
                 {{ currentSprintFilter.name }}
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
-            <div selectable="selectableOptions" style="position: relative">
+            <div selectable="selectableOptions" class="kanban">
                 <div class="kanban-states">
                     <div ng-if="sprint.state != sprintStatesByName.DONE" ng-bind-html="taskCountByState[taskStatesByName.TODO].label"></div>
                     <div ng-if="sprint.state == sprintStatesByName.IN_PROGRESS" ng-bind-html="taskCountByState[taskStatesByName.IN_PROGRESS].label"></div>
