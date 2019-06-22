@@ -37,9 +37,8 @@
        tooltip-placement="right"
        defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
     </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul ng-controller="mainMenuCtrl"
-            class="nav navbar-nav menu-header"
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" ng-controller="mainMenuCtrl">
+        <ul class="nav navbar-nav menu-header"
             is-disabled="!currentUser.id || workspaceType != 'project'"
             as-sortable="menuSortableOptions"
             ng-model="application.menus.visible">
@@ -185,6 +184,8 @@
                 ng-class="{'active':$state.includes(menu.id)}"
                 class="nav-item">
             </li>
+        </ul>
+        <ul class="nav navbar-nav menu-header-hidden">
             <li class="nav-item"
                 uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
                 <a uib-dropdown-toggle href class="nav-link">${message(code: 'todo.is.ui.more')}</a>

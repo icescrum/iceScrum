@@ -317,6 +317,14 @@ nav.navbar {
     background-color: $is-bg-color;
     box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
 
+    > .card-nav {
+      display: flex;
+      > .nav-pills { //give sortable placeholder some space when there is no elements
+        min-width: 30px;
+        min-height: 20px;
+      }
+    }
+
     .card-header-left {
       display: flex;
       align-items: center;
@@ -334,10 +342,6 @@ nav.navbar {
       padding: 0.5625rem 1rem;
       font-size: $is-font-size-sm;
       line-height: 1.29;
-    }
-
-    .more-item [as-sortable="elementsListSortableOptions"] {
-      min-height: 40px;
     }
   }
 }
@@ -375,6 +379,10 @@ nav.navbar {
   font-family: $font-family-base;
   font-size: 0.875rem;
   box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
+}
+
+nav.navbar .menu-header-hidden .nav-link {
+  padding: 5px;
 }
 
 @each $state, $color in $is-state-colors {

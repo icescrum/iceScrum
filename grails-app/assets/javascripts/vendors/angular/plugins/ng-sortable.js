@@ -39,7 +39,6 @@
             hiddenClass: 'as-sortable-hidden',
             dragging: 'as-sortable-dragging',
             throttle: 50,
-            elementsOver: [],
             elementsBounding: []
         });
 }());
@@ -496,7 +495,6 @@
 
                     element.on('mouseenter', _.throttle(function() {
                         if ($rootScope.application.dragging) {
-                            sortableConfig.elementsOver.push(element);
                             element.addClass('sortable-container-over');
                         }
                     }, sortableConfig.throttle));
@@ -969,6 +967,7 @@
                             } else {
                                 targetElement = targetElements;
                             }
+                            console.log(targetElement);
                             // CUSTOM
                             if (eventObj) {
                                 // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.

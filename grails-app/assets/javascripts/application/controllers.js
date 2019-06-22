@@ -406,7 +406,6 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
     $scope.menuSortableOptions = {
         itemMoved: menuSortableChange,
         orderChanged: menuSortableChange,
-        containment: '.menu-header',
         accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         },
