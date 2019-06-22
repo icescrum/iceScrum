@@ -365,6 +365,7 @@ $acceptance-test-states: tocheck, success, failed;
     display: flex;
     flex-wrap: wrap;
     position: relative;
+    height:100%;
     align-content: flex-start;
     padding: ($is-spacer-x - $is-sticky-note-spacer);
     .sticky-note-container, .as-sortable-placeholder {

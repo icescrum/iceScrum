@@ -524,9 +524,9 @@ $state-dot-size-sm: 0.5rem;
 }
 
 .warning-message, .window-alert {
-  margin-top:0;
-  margin-bottom:10px;
-  padding:5px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
 .window-alert {
@@ -657,6 +657,10 @@ $state-dot-size-sm: 0.5rem;
   padding: ($is-spacer-x - $is-sticky-note-spacer);
 }
 
+.sortable-moving .empty-view {
+  display: none;
+}
+
 ////////////////////
 // Form
 ////////////////////
@@ -755,7 +759,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 }
 
 .as-sortable-placeholder {
-  border:1px dashed $is-blue;
+  border: 1px dashed $is-blue;
 }
 
 ////////////////////
