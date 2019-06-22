@@ -127,7 +127,7 @@
         </div>
         <div class="card-body backlog-list scrollable-selectable-container" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
             <div class="window-alert bg-warning" ng-if="selectableOptions.selectingMultiple">
-                ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
+                <i class="fa fa-warning"></i> ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
             <div ng-repeat="backlogContainer in backlogContainers"
                  class="backlog col">

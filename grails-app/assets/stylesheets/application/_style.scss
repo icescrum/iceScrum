@@ -523,6 +523,16 @@ $state-dot-size-sm: 0.5rem;
   align-items: baseline;
 }
 
+.warning-message, .window-alert {
+  margin-top:0;
+  margin-bottom:10px;
+  padding:5px;
+}
+
+.window-alert {
+  text-align: center;
+}
+
 ////////////////////
 // Details view
 ////////////////////

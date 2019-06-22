@@ -135,8 +135,8 @@
                         </ui-select>
                     </div>
                 </div>
-                <div style="margin-top:0;margin-bottom:10px;padding:5px;" ng-if="messageDuplicate"
-                     class="form-text bg-warning spaced-form-block"
+                <div ng-if="messageDuplicate"
+                     class="form-text bg-warning spaced-form-block warning-message"
                      ng-bind-html="messageDuplicate"></div>
                 <div class="clearfix">
                     <div class="btn-toolbar float-right">
