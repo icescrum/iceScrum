@@ -33,7 +33,7 @@
             <div ng-repeat="task in taskEntry.tasks" as-sortable-item>
                 <div class="row">
                     <div class="col-sm-8">
-                        <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
+                        <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle></i>
                         <a ui-sref=".task.details({taskId: task.id})" class="link">
                             <strong class="task-id">{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                         </a>
