@@ -338,7 +338,7 @@ class StoryController implements ControllerErrorHandler {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         Story.withTransaction {
-            stories.each { Story story ->
+            stories.reverse().each { Story story ->    //TODO validate this change with other
                 storyService.returnToSandbox(story, rank)
             }
         }
