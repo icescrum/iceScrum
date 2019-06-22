@@ -22,16 +22,15 @@
 --}%
 <script type="text/ng-template" id="story.tasks.html">
 <div class="story-tasks card-body" ng-controller="taskSortableStoryCtrl">
-    <div ng-repeat="(taskState, tasks) in tasksByState"
+    <div ng-repeat="taskEntry in tasksByState"
          class="mb-5">
         <h5 class="text-center mb-3"
-            ng-class="::{ 'mt-2':!$first }">
-            {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
-        </h5>
-        <div is-disabled="!isTaskSortableByState(taskState)"
+            ng-class="::{ 'mt-2':!$first }"
+            ng-bind-html="taskEntry.label"></h5>
+        <div is-disabled="!isTaskSortableByState(taskEntry.state)"
              as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
-             ng-model="tasks">
-            <div ng-repeat="task in tasks" as-sortable-item>
+             ng-model="taskEntry.tasks">
+            <div ng-repeat="task in taskEntry.tasks" as-sortable-item>
                 <div class="row">
                     <div class="col-sm-8">
                         <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
