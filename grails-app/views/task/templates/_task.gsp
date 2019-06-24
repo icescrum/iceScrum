@@ -39,7 +39,7 @@
                       ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)"
                       defer-tooltip="${message(code: 'is.task.estimation')}">
-                    {{:: task.estimation != undefined ? task.estimation : '?' }} <i ng-class="::['fa fa-small', (task.state | taskStateIcon)]"></i>
+                    {{:: task.estimation != undefined ? task.estimation : '?' }} <i ng-class="::['fa', (task.state | taskStateIcon)]"></i>
                 </span>
             </div>
         </div>
