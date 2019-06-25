@@ -73,8 +73,8 @@ class ReleaseController implements ControllerErrorHandler {
     def update(long project, long id) {
         def releaseParams = params.release
         Release release = Release.withRelease(project, id)
-        def startDate = releaseParams.startDate && releaseParams.startDate != "null" ? DateUtils.parseDateISO8601(releaseParams.startDate) : release.startDate //catch a strange bug when "null"
-        def endDate = releaseParams.endDate && releaseParams.endDate != "null" ? DateUtils.parseDateISO8601(releaseParams.endDate) : release.endDate //catch a strange bug when "null"
+        def startDate = releaseParams.startDate && releaseParams.startDate != 'null' ? DateUtils.parseDateISO8601(releaseParams.startDate) : release.startDate // Catch a strange bug when "null"
+        def endDate = releaseParams.endDate && releaseParams.endDate != 'null' ? DateUtils.parseDateISO8601(releaseParams.endDate) : release.endDate // Catch a strange bug when "null"
         Release.withTransaction {
             bindData(release, releaseParams, [include: ['name', 'vision', 'firstSprintIndex']])
             releaseService.update(release, startDate, endDate)

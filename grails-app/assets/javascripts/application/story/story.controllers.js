@@ -455,7 +455,7 @@ extensibleController('storySplitCtrl', ['$scope', 'Session', '$controller', '$q'
             _.each($scope.stories, function(story) {
                 story.effort = effort;
             });
-        }else {
+        } else {
             _.each($scope.stories, function(story) {
                 delete story.effort;
             });
