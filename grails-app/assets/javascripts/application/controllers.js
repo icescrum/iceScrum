@@ -183,7 +183,6 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     var w = angular.element($window);
     var resizeTimeout = null;
     var scrollToSelectedVisible = null;
-
     $scope.$on('$viewContentLoaded', function(event) {
         if (!event.defaultPrevented) {
             if ($scope.application.loadingPercent < 90) {

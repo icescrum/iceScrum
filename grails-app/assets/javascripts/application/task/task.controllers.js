@@ -73,7 +73,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', 'TaskService
             .map(function(tasks) {
                 var state = tasks[0].state;
                 var label = $filter('i18n')(state, 'TaskStates') + ' (' + tasks.length;
-                var totalEffort = _.sumBy(tasks, 'estimation');
+                var totalEffort = $filter('floatSumBy')(tasks, 'estimation');
                 if (totalEffort) {
                     label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>'
                 }

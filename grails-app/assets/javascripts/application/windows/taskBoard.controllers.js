@@ -76,7 +76,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             var tasksState = _.filter(tasks, {state: state});
             if (tasksState) {
                 label += ' (' + tasksState.length;
-                var totalEffort = state !== TaskStatesByName.DONE ? _.sumBy(tasksState, 'estimation') : 0;
+                var totalEffort = state !== TaskStatesByName.DONE ? $filter('floatSumBy')(tasksState, 'estimation') : 0;
                 if (totalEffort) {
                     label += ' - ' + totalEffort + ' <i class="fa ' + $filter('taskStateIcon')(state) + ' fa-small"></i>';
                 }
@@ -92,7 +92,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             var tasksType = _.filter(tasks, {type: type});
             if (tasksType) {
                 label += ' (' + tasksType.length;
-                var totalEffort = _.sumBy(tasksType, 'estimation');
+                var totalEffort = $filter('floatSumBy')(tasksType, 'estimation');
                 if (totalEffort) {
                     var started = _.find(tasksType, ['state', TaskStatesByName.IN_PROGRESS]);
                     label += ' - ' + totalEffort + ' <i class="fa fa-hourglass-' + (started ? 'half' : 'start') + ' fa-small"></i>';

@@ -879,7 +879,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
                     label = $filter('i18n')(state, 'StoryStates');
                 }
                 label += ' (' + stories.length;
-                var totalEffort = _.sumBy(stories, 'effort');
+                var totalEffort = $filter('floatSumBy')(stories, 'effort');
                 if (totalEffort) {
                     label += ' - ' + totalEffort + '<i class="fa fa-dollar fa-small"></i></small>'
                 }
