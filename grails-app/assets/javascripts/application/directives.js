@@ -788,7 +788,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}]).directive("stickyList", ['$window', '$timeout', function($window, $timeout) {
+}]).directive("stickyList", ['$window', function($window) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -879,9 +879,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     }
                 });
             };
-
             var refreshHeaders = function() {
-                $headers = getHeaders();
+                var $headers = getHeaders();
                 _.each($headerClones, function($headerClone, index) {
                     if ($headers[index]) {
                         $headerClone.html($headers[index].html());
@@ -891,7 +890,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     }
                 });
             };
-
             // Init
             var offset;
             var wasOnTop = true;
@@ -908,7 +906,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 viewElement.off("scroll", position);
             });
             render();
-
             if (attrs.stickyWatch) {
                 scope.$watchCollection(attrs.stickyWatch, _.debounce(refreshHeaders, 100));
             }

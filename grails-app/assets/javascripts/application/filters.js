@@ -580,6 +580,10 @@ filters
             return number * multiplicator;
         }) / multiplicator;
     }
+}]).filter('floatSumBy', ['preciseFloatSumFilter', function(preciseFloatSumFilter) {
+    return function(items, path) {
+        return preciseFloatSumFilter(_.filter(_.map(items, path), _.id));
+    }
 }]).filter('yesNo', ['$rootScope', function($rootScope) {
     return function(boolean) {
         return $rootScope.message(boolean ? 'is.yes' : 'is.no');

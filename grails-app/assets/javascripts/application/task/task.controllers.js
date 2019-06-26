@@ -69,15 +69,11 @@ extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', 'TaskService
     // Init
     $scope.$watch('selected.tasks', function(tasks) {
         $scope.tasksByState = _.chain(tasks)
-            .groupBy(function(task) {
-                return task.state;
-            })
+            .groupBy('state')
             .map(function(tasks) {
-                var label;
                 var state = tasks[0].state;
-                label = $filter('i18n')(state, 'TaskStates');
-                label += ' (' + tasks.length;
-                var totalEffort = _.sumBy(tasks, 'estimation');
+                var label = $filter('i18n')(state, 'TaskStates') + ' (' + tasks.length;
+                var totalEffort = $filter('floatSumBy')(tasks, 'estimation');
                 if (totalEffort) {
                     label += ' - ' + totalEffort
                 }

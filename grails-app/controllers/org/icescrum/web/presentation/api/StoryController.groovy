@@ -139,7 +139,7 @@ class StoryController implements ControllerErrorHandler {
                 commonTags = commonTags == null ? story.tags : commonTags.intersect(story.tags)
             }
         }
-        stories.each { Story story ->
+        stories.sort { it.rank }.each { Story story ->
             def user = springSecurityService.currentUser
             Map props = [:]
             if (storyParams.rank != null) {
@@ -322,7 +322,7 @@ class StoryController implements ControllerErrorHandler {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         Story.withTransaction {
-            stories.each { Story story ->
+            stories.sort { it.rank }.each { Story story ->
                 storyService.acceptToBacklog(story, rank)
             }
         }
@@ -338,7 +338,7 @@ class StoryController implements ControllerErrorHandler {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         Story.withTransaction {
-            stories.sort { a, b -> b.rank <=> a.rank }.each { Story story ->
+            stories.sort { -it.rank }.each { Story story ->
                 storyService.returnToSandbox(story, rank)
             }
         }
