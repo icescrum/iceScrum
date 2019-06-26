@@ -319,7 +319,8 @@ nav.navbar {
 
     > .card-nav {
       display: flex;
-      > .nav-pills { //give sortable placeholder some space when there is no elements
+
+      > .nav-pills { // Give sortable placeholder some space to drop to when there is no elements
         min-width: 30px;
         min-height: 20px;
       }

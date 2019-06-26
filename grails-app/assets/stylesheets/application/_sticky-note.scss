@@ -148,6 +148,7 @@ $acceptance-test-states: tocheck, success, failed;
     margin: 0 $is-spacer-x;
     margin-top: 3px;
     position: relative;
+
     .sticky-note-container {
       border-bottom: solid 1px $is-border-color-alt;
     }
@@ -365,9 +366,10 @@ $acceptance-test-states: tocheck, success, failed;
     display: flex;
     flex-wrap: wrap;
     position: relative;
-    height:100%;
+    height: 100%;
     align-content: flex-start;
     padding: ($is-spacer-x - $is-sticky-note-spacer);
+
     .sticky-note-container, .as-sortable-placeholder {
       margin: $is-sticky-note-spacer;
     }
@@ -376,7 +378,6 @@ $acceptance-test-states: tocheck, success, failed;
   &.sticky-notes.as-sortable-drag {
     position: absolute;
     display: block;
-
   }
 
   .sticky-note {
@@ -694,12 +695,10 @@ $acceptance-test-states: tocheck, success, failed;
   }
 }
 
-.backlog .grid-group .sticky-note-story .sticky-note:after {
-  border-color: $is-bg-color-ter $is-bg-color-ter white white;
-}
-
-.grid-group.as-sortable-dragging .sticky-note-story .sticky-note:after {
-  border-color: $is-bg-color-ter $is-bg-color-ter white white; //better than white...
+.backlog .grid-group, .grid-group.as-sortable-dragging {
+  .sticky-note-story .sticky-note:after {
+    border-color: $is-bg-color-ter $is-bg-color-ter white white; // Better than white...
+  }
 }
 
 ////////////////////

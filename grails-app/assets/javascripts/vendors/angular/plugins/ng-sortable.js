@@ -856,8 +856,7 @@
                         if (scope.itemScope.sortableScope.cloning) {
                             // clone option is enabled or triggered, so clone the element.
                             dragElement.append(scope.itemScope.element.clone());
-                        }
-                        else {
+                        } else {
                             // add hidden placeholder element in original position.
                             scope.itemScope.element.addClass('as-sortable-dragging-item');
                             scope.itemScope.element.after(placeElement);
@@ -967,7 +966,6 @@
                             } else {
                                 targetElement = targetElements;
                             }
-                            console.log(targetElement);
                             // CUSTOM
                             if (eventObj) {
                                 // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
