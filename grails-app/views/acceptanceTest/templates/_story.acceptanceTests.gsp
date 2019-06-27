@@ -123,7 +123,7 @@
                 <hr ng-if="!$last"/>
             </td>
         </tr>
-        <tr ng-show="selected.acceptanceTests !== undefined && !selected.acceptanceTests.length">
+        <tr ng-show="selected.acceptanceTests_count === 0">
             <td class="empty-content">
                 <div class="help-block">
                     ${message(code: 'is.ui.acceptanceTest.help')}
