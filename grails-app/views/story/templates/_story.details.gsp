@@ -110,7 +110,7 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    class="nav-item hidden-sm"
+                    class="nav-item d-none d-md-block"
                     ng-if="!application.focusedDetailsView"
                     uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                     <a href="{{ tabUrl('tests') }}"
@@ -120,7 +120,7 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    class="nav-item hidden-sm hidden-md"
+                    class="nav-item d-none d-lg-block"
                     ng-if="!application.focusedDetailsView">
                     <a href="{{ tabUrl('tasks') }}"
                        class="nav-link"
@@ -128,32 +128,34 @@
                         ${message(code: 'todo.is.ui.tasks')} <span ng-bind-html="story | countAndRemaining"></span>
                     </a>
                 </li>
-                <li role="presentation"
-                    class="nav-item dropdown display-on-hover">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
-                    <ul class="dropdown-menu dropdown-more dropdown-menu-right">
-                        <li role="presentation"
-                            class="visible-sm-block"
-                            uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
-                            ng-class="getAcceptanceTestClass(story)">
-                            <a href="{{ tabUrl('tests') }}">
-                                ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
-                            </a>
-                        </li>
-                        <li role="presentation"
-                            class="visible-sm-block visible-md-block"
-                            ng-class="{'active':$state.params.storyTabId == 'tasks'}">
-                            <a href="{{ tabUrl('tasks') }}">
-                                ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
-                            </a>
-                        </li>
-                        <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'activities'}">
-                            <a href="{{ tabUrl('activities') }}">
-                                ${message(code: 'todo.is.ui.history')}
-                            </a>
-                        </li>
+                <li uib-dropdown
+                    role="presentation"
+                    class="nav-item display-on-hover">
+                    <a class="nav-link"
+                       uib-dropdown-toggle
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false"></a>
+                    <div uib-dropdown-menu
+                         class="dropdown-menu-right">
+                        <a class="dropdown-item d-md-none"
+                           uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                           ng-class="getAcceptanceTestClass(story)"
+                           href="{{ tabUrl('tests') }}">
+                            ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
+                        </a>
+                        <a class="dropdown-item d-lg-none"
+                           ng-class="{'active':$state.params.storyTabId == 'tasks'}"
+                           href="{{ tabUrl('tasks') }}">
+                            ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                        </a>
+                        <a class="dropdown-item"
+                           ng-class="{'active':$state.params.storyTabId == 'activities'}"
+                           href="{{ tabUrl('activities') }}">
+                            ${message(code: 'todo.is.ui.history')}
+                        </a>
                         <entry:point id="story-details-tab-button"/>
-                    </ul>
+                    </div>
                 </li>
             </ul>
             <div ui-view="details-tab-left">
