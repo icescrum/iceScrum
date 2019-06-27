@@ -37,16 +37,17 @@ $is-shadow-color-1: rgba(156, 164, 171, 0.5) !default;
 $is-shadow-color-2: rgba(156, 164, 171, 0.62) !default;
 $is-shadow-color-3: rgba(62, 57, 107, 0.07) !default;
 
+$is-primary-color: #0067e8 !default;
+$is-outline-color: #c8c8cc !default;
+$is-border-color: #d3d8de !default;
+$is-border-color-alt: #e9e9e9 !default;
+
 $is-red: #ff3e33;
 $is-orange: #ff6b1c;
 $is-yellow: #ffcc01;
 $is-green: #27d285;
 $is-blue: #0067e8;
-
-$is-primary-color: #0067e8 !default;
-$is-outline-color: #c8c8cc !default;
-$is-border-color: #d3d8de !default;
-$is-border-color-alt: #e9e9e9 !default;
+$is-grey: #acb5c0;
 
 $is-spacer-x: 1.25rem;
 $is-sticky-note-spacer: 0.5rem;

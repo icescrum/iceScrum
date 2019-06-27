@@ -270,7 +270,7 @@
     fill: white;
 
     &.todo {
-      fill: #acb5c0;
+      fill: $is-grey;
     }
   }
 
@@ -412,8 +412,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
-//to make scrollTop computation true
-.kanban, .kanban-states, .kanban-swimlane, .kanban-column, .kanban-row {
+.kanban, .kanban-states, .kanban-swimlane, .kanban-column, .kanban-row { // To make scrollTop computation true
   position: relative;
 }
 
@@ -507,10 +506,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     margin-top: 10px;
     margin-bottom: 21px;
   }
-}
-
-.pdf-viewer {
-  overflow: auto;
 }
 
 ////////////////////

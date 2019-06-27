@@ -542,6 +542,28 @@ $state-dot-size-sm: 0.5rem;
   text-align: center;
 }
 
+.pdf-viewer {
+  overflow: auto;
+}
+
+.as-sortable-placeholder {
+  border: 1px dashed $is-blue;
+}
+
+.empty-content, .empty-view {
+  text-align: center;
+}
+
+.empty-view {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: ($is-spacer-x - $is-sticky-note-spacer);
+}
+
+.sortable-moving .empty-view {
+  display: none;
+}
+
 ////////////////////
 // Details view
 ////////////////////
@@ -640,7 +662,7 @@ $state-dot-size-sm: 0.5rem;
     color: #ffffff;
 
     &.bg-todo {
-      color: #acb5c0;
+      color: $is-grey;
       background-color: #f4f4f4;
     }
 
@@ -654,20 +676,6 @@ $state-dot-size-sm: 0.5rem;
       box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
     }
   }
-}
-
-.empty-content, .empty-view {
-  text-align: center;
-}
-
-.empty-view {
-  max-width: 500px;
-  margin: 30px auto;
-  padding: ($is-spacer-x - $is-sticky-note-spacer);
-}
-
-.sortable-moving .empty-view {
-  display: none;
 }
 
 ////////////////////
@@ -765,10 +773,6 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 
 .uib-datepicker-popup {
   z-index: 9999; // Ensure that it's in front in modals
-}
-
-.as-sortable-placeholder {
-  border: 1px dashed $is-blue;
 }
 
 ////////////////////
