@@ -695,10 +695,8 @@ $acceptance-test-states: tocheck, success, failed;
   }
 }
 
-.backlog .grid-group, .grid-group.as-sortable-dragging {
-  .sticky-note-story .sticky-note:after {
-    border-color: $is-bg-color-ter $is-bg-color-ter white white; // Better than white...
-  }
+.grid-group.backlog-sticky-notes .sticky-note-story .sticky-note:after {
+  border-color: $is-bg-color-ter $is-bg-color-ter white white; // Better than white...
 }
 
 ////////////////////
