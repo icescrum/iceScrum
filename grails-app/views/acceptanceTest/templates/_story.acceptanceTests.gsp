@@ -120,7 +120,7 @@
             </form>
             <hr ng-if="!$last"/>
         </div>
-        <div ng-show="selected.acceptanceTests !== undefined && !selected.acceptanceTests.length"
+        <div ng-show="selected.acceptanceTests_count === 0"
              class="empty-content">
             <div class="form-text">
                 ${message(code: 'is.ui.acceptanceTest.help')}
