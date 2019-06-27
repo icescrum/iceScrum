@@ -46,6 +46,10 @@
                         </div>
                     </div>
                 </span>
+                <span class="state-title">
+                    <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
+                    <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                </span>
                 <span class="timebox-dates">
                     <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                 </span>
@@ -57,10 +61,6 @@
                         <strong defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</strong>
                     </span>
                     <span>${message(code: 'is.task.estimation')} <strong>{{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }}</strong></span>
-                </span>
-                <span class="state-title">
-                    <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
-                    <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
                 </span>
             </div>
             <div>

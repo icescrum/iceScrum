@@ -216,6 +216,10 @@
       }
     }
 
+    .sprint-header-left > * {
+      margin-right: 10px;
+    }
+
     .sprint-title {
       font-size: 1rem;
       font-family: $is-font-family-bold;
@@ -400,15 +404,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       @include square-background(1.875rem);
       background-image: url("plus-highlight.svg");
     }
-  }
-}
-
-.sprint-values {
-  line-height: 1.17;
-  font-size: $is-font-size-sm;
-
-  > span:not(:last-child) {
-    margin-right: 10px;
   }
 }
 

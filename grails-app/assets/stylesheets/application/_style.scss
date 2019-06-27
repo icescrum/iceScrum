@@ -418,7 +418,6 @@ $state-dot-size-sm: 0.5rem;
     font-weight: $font-weight-normal;
 
     .state-dot {
-      margin-left: 7px;
       margin-right: 4px;
       width: $state-dot-size-sm;
       height: $state-dot-size-sm;
@@ -487,6 +486,19 @@ $state-dot-size-sm: 0.5rem;
     .end-date {
       padding-left: $timebox-dates-padding-sm;
     }
+  }
+}
+
+.sprint-values {
+  line-height: 1.17;
+  font-size: $is-font-size-sm;
+
+  &.sprint-values-small {
+    font-size: 0.75rem;
+  }
+
+  > span:not(:last-child) {
+    margin-right: 10px;
   }
 }
 
