@@ -616,7 +616,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 // Story tasks, Feature stories
 ////////////////////
 
-.story-tasks, .feature-stories {
+.story-tasks, .feature-stories, .story-acceptanceTests {
   font-size: $is-font-size-sm;
 
   hr {
