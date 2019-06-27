@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <a ng-href="{{ openStoryUrl(story.id) }}" class="link">
-                            <strong class="story-id">{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                            <strong class="text-accent">{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                         </a>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="storyCtrl">

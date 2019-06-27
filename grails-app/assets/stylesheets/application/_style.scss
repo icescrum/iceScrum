@@ -576,6 +576,11 @@ $state-dot-size-sm: 0.5rem;
   display: none;
 }
 
+.fa-drag-handle:before {
+  content: "\f142 \f142";
+  letter-spacing: 0.1em;
+}
+
 ////////////////////
 // Details view
 ////////////////////

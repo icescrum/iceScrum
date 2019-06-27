@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div ng-if="release.vision_html" class="release-vision">
-                        <strong class="release-vision-label">${message(code: 'is.release')} {{ release.name }}</strong>
+                        <strong class="text-accent">${message(code: 'is.release')} {{ release.name }}</strong>
                         <div class="rich-content"
                              ng-bind-html="release.vision_html">
                         </div>

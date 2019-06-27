@@ -35,7 +35,7 @@
                     <div class="col-sm-8">
                         <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle></i>
                         <a ui-sref=".task.details({taskId: task.id})" class="link">
-                            <strong class="task-id">{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
+                            <strong class="text-accent">{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                         </a>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">

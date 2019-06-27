@@ -596,10 +596,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   .release-vision {
     margin-bottom: 23px;
-
-    .release-vision-label {
-      color: $is-text-color-alt;
-    }
   }
 }
 
@@ -626,10 +622,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   hr {
     margin-top: 0.5rem;
     width: 50%;
-  }
-
-  .task-id, .story-id {
-    color: $is-text-color-alt;
   }
 }
 
