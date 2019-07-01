@@ -75,13 +75,13 @@
                         <div uib-dropdown-menu role="menu">
                             <div role="menuitem"
                                  ng-repeat="sprintFilter in sprintFilters"
-                                 ng-class="{'dropdown-header': sprintFilter.id == 'header', 'dropdown-divider': sprintFilter.id == 'divider'}">
-                                <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'"
+                                 ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">
+                                <a ng-if="sprintFilter.id != 'divider'"
+                                   class="dropdown-item"
                                    ng-click="changeSprintFilter(sprintFilter)"
                                    href>
                                     {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}
                                 </a>
-                                <span ng-if="sprintFilter.id == 'header'">{{ ::sprintFilter.name }}</span>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                 <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                             </button>
                             <div uib-dropdown-menu
-                                 class="float-right"
+                                 class="dropdown-menu-right"
                                  role="menu">
                                 <g:each in="${formats}" var="format">
                                     <a role="menuitem"
@@ -107,7 +107,7 @@
                     <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
                         <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                         <div uib-dropdown-toggle></div>
-                        <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                        <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                     </div>
                     <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
                         <i class="fa fa-pencil"></i>

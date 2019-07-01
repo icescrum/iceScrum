@@ -110,9 +110,12 @@
                             uib-dropdown-toggle>
                         <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i></span>
                     </button>
-                    <ul uib-dropdown-menu>
-                        <li ng-repeat="chart in projectCharts.sprint"><a href ng-click="openChart('sprint', chart.id, sprint)">{{ message(chart.name) }}</a></li>
-                    </ul>
+                    <div uib-dropdown-menu class="dropdown-menu-right">
+                        <a href
+                           ng-repeat="chart in projectCharts.sprint"
+                           class="dropdown-item"
+                           ng-click="openChart('sprint', chart.id, sprint)">{{ message(chart.name) }}</a>
+                    </div>
                 </div>
                 <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
             </div>

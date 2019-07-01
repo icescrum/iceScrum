@@ -189,15 +189,15 @@
             <li class="nav-item"
                 uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
                 <a uib-dropdown-toggle href class="nav-link">${message(code: 'todo.is.ui.more')}</a>
-                <ul uib-dropdown-menu
-                    is-disabled="!currentUser.id || workspaceType != 'project'"
-                    as-sortable="menuSortableOptions"
-                    ng-model="application.menus.hidden">
-                    <li ng-repeat="menu in application.menus.hidden"
-                        ng-include="'menuitem.item.html'"
-                        as-sortable-item
-                        ng-class="{'active':$state.includes(menu.id)}"></li>
-                </ul>
+                <div uib-dropdown-menu
+                     is-disabled="!currentUser.id || workspaceType != 'project'"
+                     as-sortable="menuSortableOptions"
+                     ng-model="application.menus.hidden">
+                    <span ng-repeat="menu in application.menus.hidden"
+                          ng-include="'menuitem.item.html'"
+                          as-sortable-item
+                          ng-class="{'active':$state.includes(menu.id)}"></span>
+                </div>
             </li>
         </ul>
     </div>

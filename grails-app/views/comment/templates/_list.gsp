@@ -47,16 +47,15 @@
                                 </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
                             <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
-                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
-                                <ul uib-dropdown-menu class="float-right">
-                                    <li>
-                                        <a href ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
-                                            ${message(code: 'default.button.delete.label')}
-                                        </a>
-                                    </li>
-                                </ul>
+                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle></button>
+                                <div uib-dropdown-menu
+                                     class="dropdown-menu-right">
+                                    <a href
+                                       class="dropdown-item"
+                                       ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
+                                        ${message(code: 'default.button.delete.label')}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

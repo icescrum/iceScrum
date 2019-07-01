@@ -104,38 +104,36 @@
                 </div>
                 <div class="col-md-6">
                     <div class="btn-toolbar">
-                        <div class="btn-group">
-                            <button type="button"
-                                    ng-if="authorizedStories('accept', stories)"
-                                    class="btn btn-secondary"
-                                    ng-click="acceptToBacklogMultiple()">
-                                ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.ACCEPTED | i18n:'StoryStates' }}
-                            </button>
-                            <button type="button"
-                                    ng-if="authorizedStories('copy', stories)"
-                                    class="btn btn-secondary"
-                                    ng-click="copyMultiple()">
-                                ${message(code: 'is.ui.copy')}
-                            </button>
-                            <button type="button"
-                                    ng-if="authorizedStories('returnToSandbox', stories)"
-                                    class="btn btn-secondary"
-                                    ng-click="returnToSandboxMultiple()">
-                                ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.SUGGESTED | i18n:'StoryStates' }}
-                            </button>
-                            <button type="button"
-                                    ng-if="authorizedStories('delete', stories)"
-                                    class="btn btn-secondary"
-                                    ng-click="confirmDelete({ callback: deleteMultiple })">
-                                ${message(code: 'is.ui.backlog.menu.delete')}
-                            </button>
-                        </div>
+                        <button type="button"
+                                ng-if="authorizedStories('accept', stories)"
+                                class="btn btn-secondary btn-sm"
+                                ng-click="acceptToBacklogMultiple()">
+                            ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.ACCEPTED | i18n:'StoryStates' }}
+                        </button>
+                        <button type="button"
+                                ng-if="authorizedStories('copy', stories)"
+                                class="btn btn-secondary btn-sm"
+                                ng-click="copyMultiple()">
+                            ${message(code: 'is.ui.copy')}
+                        </button>
+                        <button type="button"
+                                ng-if="authorizedStories('returnToSandbox', stories)"
+                                class="btn btn-secondary btn-sm"
+                                ng-click="returnToSandboxMultiple()">
+                            ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.SUGGESTED | i18n:'StoryStates' }}
+                        </button>
+                        <button type="button"
+                                ng-if="authorizedStories('delete', stories)"
+                                class="btn btn-secondary btn-sm"
+                                ng-click="confirmDelete({ callback: deleteMultiple })">
+                            ${message(code: 'is.ui.backlog.menu.delete')}
+                        </button>
                         <entry:point id="story-multiple-toolbar"/>
                         <div ng-if="authorizedStories('follow', stories)"
                              class="btn-group">
                             <button type="button"
                                     ng-switch="allFollowed(stories)"
-                                    class="btn btn-secondary"
+                                    class="btn btn-secondary btn-sm"
                                     ng-click="followMultiple(!allFollowed(stories))">
                                 <i class="fa"
                                    ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'"
@@ -149,22 +147,22 @@
                              class="btn-group"
                              uib-dropdown>
                             <button type="button"
-                                    class="btn btn-secondary"
+                                    class="btn btn-secondary btn-sm"
                                     uib-dropdown-toggle>
                                 ${message(code: 'is.ui.story.turnInto')}
                             </button>
-                            <ul uib-dropdown-menu role="menu">
-                                <li>
-                                    <a href ng-click="confirm({message: message('is.ui.story.turnIntoFeature.confirm.multiple'), callback: turnIntoMultiple, args: ['Feature']})">
-                                        ${message(code: 'is.ui.story.turnIntoFeature')}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href ng-click="confirm({message: message('is.ui.story.turnIntoTask.confirm.multiple'), callback: turnIntoMultiple, args: ['Task']})">
-                                        ${message(code: 'is.ui.story.turnIntoTask')}
-                                    </a>
-                                </li>
-                            </ul>
+                            <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
+                                <a href
+                                   class="dropdown-item"
+                                   ng-click="confirm({message: message('is.ui.story.turnIntoFeature.confirm.multiple'), callback: turnIntoMultiple, args: ['Feature']})">
+                                    ${message(code: 'is.ui.story.turnIntoFeature')}
+                                </a>
+                                <a href
+                                   class="dropdown-item"
+                                   ng-click="confirm({message: message('is.ui.story.turnIntoTask.confirm.multiple'), callback: turnIntoMultiple, args: ['Task']})">
+                                    ${message(code: 'is.ui.story.turnIntoTask')}
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <br>
