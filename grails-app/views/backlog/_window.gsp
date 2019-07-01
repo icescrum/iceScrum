@@ -145,7 +145,7 @@
                 </div>
                 <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
                     <div class="loading-logo" ng-include="'loading.html'"></div>
-                    <div class="sticky-notes backlog-sticky-notes {{ stickyNoteClass }}"
+                    <div class="sticky-notes grey-sticky-notes {{ stickyNoteClass }}"
                          ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
                          ng-controller="storyBacklogCtrl"
                          as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"

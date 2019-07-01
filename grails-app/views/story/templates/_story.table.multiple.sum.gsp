@@ -21,10 +21,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.table.multiple.sum.html">
-<div class="table-responsive">
+<div class="table-responsive table-sm">
     <table class="table">
         <thead>
-            <th>${message(code: 'todo.is.ui.story.multiple.table.title')}</th>
+            <th colspan="2">${message(code: 'todo.is.ui.story.multiple.table.title')}</th>
         </thead>
         <tbody>
             <tr><td>${message(code: 'is.story.effort')}</td><td>{{ stories | floatSumBy:'effort' }}</td></tr>
