@@ -563,7 +563,8 @@ filters
     }
 }]).filter('floatSumBy', ['preciseFloatSumFilter', function(preciseFloatSumFilter) {
     return function(items, path) {
-        return preciseFloatSumFilter(_.filter(_.map(items, path), _.id));
+        var total = preciseFloatSumFilter(_.filter(_.map(items, path), _.id));
+        return total ? total : 0;
     }
 }]).filter('yesNo', ['$rootScope', function($rootScope) {
     return function(boolean) {
