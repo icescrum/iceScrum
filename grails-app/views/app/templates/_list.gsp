@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="more-results" ng-hide="filteredApps.length">
+    <div class="my-5 mx-auto" ng-if="appDefinitions.length > 0 && filteredApps.length == 0">
         <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
     </div>
 </div>

@@ -58,8 +58,6 @@
             <div ng-include="'app.details.html'"></div>
         </div>
     </div>
-    <div class="row" ng-if="!appDefinition">
-        <div ng-include="'app.list.html'"></div>
-    </div>
+    <div class="row" ng-if="!appDefinition" ng-include="'app.list.html'"></div>
 </is:modal>
 </script>
