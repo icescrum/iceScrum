@@ -131,7 +131,7 @@
                     </button>
                 </div>
             </div>
-            <button class="btn btn-secondary"
+            <button class="btn btn-secondary btn-sm"
                     style="width: 100%"
                     type="button"
                     name="delete"
