@@ -385,7 +385,7 @@ class StoryController implements ControllerErrorHandler {
         def terms = params.term?.tokenize()?.findAll { it.size() >= 5 }
         if (terms) {
             stories = Story.search(_project.id, [story: [term: terms], list: [max: 3]]).collect {
-                "<a href='${createLink(absolute: true, action: 'permalink', params: [project: _project.pkey, uid: it.uid])}'>$it.name</a>"
+                "<strong><a href='${createLink(absolute: true, action: 'permalink', params: [project: _project.pkey, uid: it.uid])}'>$it.name</a></strong>"
             }
         }
         render(status: 200, text: stories ? message(code: 'is.ui.story.duplicate') + ' ' + stories.join(" or ") : "")

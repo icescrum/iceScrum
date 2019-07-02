@@ -31,66 +31,66 @@
                 <span class="item-name" title="${message(code: 'todo.is.ui.feature.new')}">${message(code: 'todo.is.ui.feature.new')}</span>
             </div>
         </div>
-    </div>
-    <div class="details-no-tab">
-        <div class="card-body">
-            <div class="form-text">
-                ${message(code: 'is.ui.feature.help')}
-                <documentation doc-url="features-stories-tasks#features"/>
-            </div>
-            <div class="sticky-notes grid-group">
-                <div class="sticky-note-container sticky-note-feature">
-                    <div ng-style="feature.color | createGradientBackground"
-                         class="sticky-note {{ feature.color | contrastColor }}">
-                        <div class="sticky-note-head">
-                            <span class="id">42</span>
-                            <div class="sticky-note-type-icon"></div>
-                        </div>
-                        <div class="sticky-note-content">
-                            <div class="item-values"></div>
-                            <div class="title">{{ feature.name }}</div>
-                        </div>
-                        <div class="sticky-note-tags"></div>
-                        <div class="sticky-note-actions">
-                            <span class="action"><a class="action-link"><span class="action-icon action-icon-attach"></span></a></span>
-                            <span class="action"><a class="action-link"><span class="action-icon action-icon-story"></span></a></span>
-                            <span class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
-                        </div>
+        <div class="form-text">
+            ${message(code: 'is.ui.feature.help')}
+            <documentation doc-url="features-stories-tasks#features"/>
+        </div>
+        <div class="sticky-notes grid-group">
+            <div class="sticky-note-container sticky-note-feature">
+                <div ng-style="feature.color | createGradientBackground"
+                     class="sticky-note {{ feature.color | contrastColor }}">
+                    <div class="sticky-note-head">
+                        <span class="id">42</span>
+                        <div class="sticky-note-type-icon"></div>
+                    </div>
+                    <div class="sticky-note-content">
+                        <div class="item-values"></div>
+                        <div class="title">{{ feature.name }}</div>
+                    </div>
+                    <div class="sticky-note-tags"></div>
+                    <div class="sticky-note-actions">
+                        <span class="action"><a class="action-link"><span class="action-icon action-icon-attach"></span></a></span>
+                        <span class="action"><a class="action-link"><span class="action-icon action-icon-story"></span></a></span>
+                        <span class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
                     </div>
                 </div>
             </div>
-            <form ng-submit="save(feature, false)"
-                  name='formHolder.featureForm'
-                  novalidate>
-                <div class="row is-form-row">
-                    <div class="form-group">
-                        <label for="name">${message(code: 'is.feature.name')}</label>
-                        <div class="input-group">
-                            <input required
-                                   name="name"
-                                   autofocus
-                                   ng-model="feature.name"
-                                   type="text"
-                                   class="form-control"
-                                   ng-disabled="!authorizedFeature('create')"
-                                   placeholder="${message(code: 'is.ui.feature.noname')}"/>
-                            <span class="input-group-append">
-                                <button colorpicker
-                                        class="btn {{ feature.color | contrastColor }}"
-                                        type="button"
-                                        ng-style="{'background-color': feature.color}"
-                                        colorpicker-position="left"
-                                        colorpicker-with-input="true"
-                                        ng-click="refreshAvailableColors()"
-                                        colors="availableColors"
-                                        name="color"
-                                        ng-model="feature.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
-                            </span>
-                        </div>
+        </div>
+    </div>
+    <div class="details-no-tab">
+        <form ng-submit="save(feature, false)"
+              name='formHolder.featureForm'
+              novalidate>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="name">${message(code: 'is.feature.name')}</label>
+                    <div class="input-group">
+                        <input required
+                               name="name"
+                               autofocus
+                               ng-model="feature.name"
+                               type="text"
+                               class="form-control"
+                               ng-disabled="!authorizedFeature('create')"
+                               placeholder="${message(code: 'is.ui.feature.noname')}"/>
+                        <span class="input-group-append">
+                            <button colorpicker
+                                    class="btn btn-sm {{ feature.color | contrastColor }}"
+                                    type="button"
+                                    ng-style="{'background-color': feature.color}"
+                                    colorpicker-position="left"
+                                    colorpicker-with-input="true"
+                                    ng-click="refreshAvailableColors()"
+                                    colors="availableColors"
+                                    name="color"
+                                    ng-model="feature.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
+                        </span>
                     </div>
                 </div>
                 <entry:point id="feature-new-form"/>
-                <div ng-if="authorizedFeature('create')" class="btn-toolbar float-right">
+            </div>
+            <div class="card-footer" ng-if="authorizedFeature('create')">
+                <div class="btn-toolbar">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.featureForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
@@ -107,8 +107,8 @@
                         ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </script>

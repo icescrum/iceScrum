@@ -29,83 +29,83 @@
         <div class="card-title">
             ${message(code: "is.ui.feature")} ({{ features.length }})
         </div>
-    </div>
-    <div class="details-no-tab">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="sticky-notes grid-group">
-                        <div class="sticky-note-container sticky-note-feature stack twisted">
-                            <div ng-style="topFeature.color | createGradientBackground"
-                                 class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
-                                <div class="sticky-note-head">
-                                    <span class="id">{{ topFeature.uid }}</span>
-                                    <div class="sticky-note-type-icon"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="sticky-notes grid-group">
+                    <div class="sticky-note-container sticky-note-feature stack twisted">
+                        <div ng-style="topFeature.color | createGradientBackground"
+                             class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
+                            <div class="sticky-note-head">
+                                <span class="id">{{ topFeature.uid }}</span>
+                                <div class="sticky-note-type-icon"></div>
+                            </div>
+                            <div class="sticky-note-content" ng-class="::{'has-description':!!feature.description}">
+                                <div class="item-values">
+                                    <span ng-if="topFeature.value">
+                                        ${message(code: 'is.feature.value')} <strong>{{  topFeature.value }}</strong>
+                                    </span>
                                 </div>
-                                <div class="sticky-note-content" ng-class="::{'has-description':!!feature.description}">
-                                    <div class="item-values">
-                                        <span ng-if="topFeature.value">
-                                            ${message(code: 'is.feature.value')} <strong>{{  topFeature.value }}</strong>
-                                        </span>
-                                    </div>
-                                    <div class="title">{{ topFeature.name }}</div>
-                                    <div class="description"
-                                         ng-bind-html="topFeature.description | lineReturns"></div>
-                                </div>
-                                <div class="sticky-note-tags">
-                                    <a ng-repeat="tag in topFeature.tags"
-                                       href="{{ tagContextUrl(tag) }}">
-                                        <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
-                                              ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                                <div class="title">{{ topFeature.name }}</div>
+                                <div class="description"
+                                     ng-bind-html="topFeature.description | lineReturns"></div>
+                            </div>
+                            <div class="sticky-note-tags">
+                                <a ng-repeat="tag in topFeature.tags"
+                                   href="{{ tagContextUrl(tag) }}">
+                                    <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
+                                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                                </a>
+                            </div>
+                            <div class="sticky-note-actions">
+                                <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
+                                <span class="action" ng-class="{'active':topFeature.attachments_count}">
+                                    <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                        <i class="fa fa-paperclip"></i>
                                     </a>
-                                </div>
-                                <div class="sticky-note-actions">
-                                    <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-                                    <span class="action" ng-class="{'active':topFeature.attachments_count}">
-                                        <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                            <i class="fa fa-paperclip"></i>
-                                        </a>
-                                    </span>
-                                    <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                        <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
-                                            <i class="fa fa-tasks"></i>
-                                            <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
-                                        </a>
-                                    </span>
-                                </div>
-                                <div class="sticky-note-state-progress">
-                                    <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
-                                </div>
+                                </span>
+                                <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
+                                    <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
+                                        <i class="fa fa-tasks"></i>
+                                        <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="sticky-note-state-progress">
+                                <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="btn-toolbar">
-                        <entry:point id="feature-multiple-toolbar"/>
-                        <div ng-if="authorizedFeature('delete')"
-                             class="btn-group">
-                            <button type="button"
-                                    class="btn btn-secondary"
-                                    ng-click="confirmDelete({ callback: deleteMultiple })">
-                                ${message(code: 'default.button.delete.label')}
-                            </button>
-                        </div>
-                    </div>
-                    <br/>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tr><td>${message(code: 'is.feature.value')}</td><td>{{ sumValues(features) }}</td></tr>
-                            <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ sumStories(features) }}</td></tr>
-                        </table>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-toolbar">
+                    <entry:point id="feature-multiple-toolbar"/>
+                    <div ng-if="authorizedFeature('delete')"
+                         class="btn-group">
+                        <button type="button"
+                                class="btn btn-secondary btn-sm"
+                                ng-click="confirmDelete({ callback: deleteMultiple })">
+                            ${message(code: 'default.button.delete.label')}
+                        </button>
                     </div>
                 </div>
+                <br/>
+                <div class="table-responsive table-sm">
+                    <table class="table">
+                        <tr><td>${message(code: 'is.feature.value')}</td><td>{{ sumValues(features) }}</td></tr>
+                        <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ sumStories(features) }}</td></tr>
+                    </table>
+                </div>
             </div>
-            <form ng-submit="updateMultiple(featurePreview)"
-                  ng-if="authorizedFeature('update')"
-                  name='featureForm'
-                  show-validation
-                  novalidate>
+        </div>
+    </div>
+    <div class="details-no-tab">
+        <form ng-submit="updateMultiple(featurePreview)"
+              ng-if="authorizedFeature('update')"
+              name='featureForm'
+              show-validation
+              novalidate>
+            <div class="card-body">
                 <div class="row is-form-row">
                     <div class="form-half">
                         <label for="type">${message(code: 'is.feature.type')}</label>
@@ -137,19 +137,21 @@
                     </ui-select>
                 </div>
                 <entry:point id="feature-multiple-properties-after-tag"/>
+            </div>
+            <div class="card-footer">
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary float-right"
+                    <a class="btn btn-secondary"
+                       href="#/{{ ::viewName }}">
+                        ${message(code: 'is.button.cancel')}
+                    </a>
+                    <button class="btn btn-primary"
                             type="submit"
                             ng-disabled="!featureForm.$dirty || featureForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
-                    <a class="btn btn-secondary float-right"
-                       href="#/{{ ::viewName }}">
-                        ${message(code: 'is.button.cancel')}
-                    </a>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </script>

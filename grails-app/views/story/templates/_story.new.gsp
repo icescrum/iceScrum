@@ -31,66 +31,66 @@
                 <span class="item-name" title="${message(code: 'todo.is.ui.story.new')}">${message(code: 'todo.is.ui.story.new')}</span>
             </div>
         </div>
-    </div>
-    <div class="details-no-tab">
-        <div class="card-body">
-            <div class="form-text">
-                ${message(code: 'is.ui.sandbox.help')}
-                <documentation doc-url="features-stories-tasks#stories"/>
-            </div>
-            <div class="sticky-notes grid-group">
-                <div class="sticky-note-container sticky-note-story">
-                    <div ng-style="(storyPreview | storyColor) | createGradientBackground"
-                         class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
-                        <div class="sticky-note-head">
-                            <span class="id">42</span>
-                            <div class="sticky-note-type-icon"></div>
-                        </div>
-                        <div class="sticky-note-content">
-                            <div class="item-values"></div>
-                            <div class="title">{{ story.name }}</div>
-                            <div class="description-template"
-                                 ng-bind-html="storyPreview.description"></div>
-                        </div>
-                        <div class="sticky-note-tags">
-                            <a ng-repeat="tag in storyPreview.tags"
-                               href="{{ tagContextUrl(tag) }}">
-                                <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
-                                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+        <div class="form-text">
+            ${message(code: 'is.ui.sandbox.help')}
+            <documentation doc-url="features-stories-tasks#stories"/>
+        </div>
+        <div class="sticky-notes grid-group size-sm">
+            <div class="sticky-note-container sticky-note-story">
+                <div ng-style="(storyPreview | storyColor) | createGradientBackground"
+                     class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
+                    <div class="sticky-note-head">
+                        <span class="id">42</span>
+                        <div class="sticky-note-type-icon"></div>
+                    </div>
+                    <div class="sticky-note-content">
+                        <div class="item-values"></div>
+                        <div class="title">{{ story.name }}</div>
+                        <div class="description-template"
+                             ng-bind-html="storyPreview.description"></div>
+                    </div>
+                    <div class="sticky-note-tags">
+                        <a ng-repeat="tag in storyPreview.tags"
+                           href="{{ tagContextUrl(tag) }}">
+                            <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
+                                  ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                        </a>
+                    </div>
+                    <div class="sticky-note-actions">
+                        <span class="action">
+                            <a class="action-link"><span class="action-icon action-icon-attach"></span></a>
+                        </span>
+                        <span class="action">
+                            <a class="action-link"><span class="action-icon action-icon-comment"></span></a>
+                        </span>
+                        <span class="action" ng-class="{'active':storyPreview.tasks_count}">
+                            <a class="action-link"
+                               defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                <span class="action-icon action-icon-task"></span>
+                                <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                             </a>
-                        </div>
-                        <div class="sticky-note-actions">
-                            <span class="action">
-                                <a class="action-link"><span class="action-icon action-icon-attach"></span></a>
-                            </span>
-                            <span class="action">
-                                <a class="action-link"><span class="action-icon action-icon-comment"></span></a>
-                            </span>
-                            <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                                <a class="action-link"
-                                   defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                    <span class="action-icon action-icon-task"></span>
-                                    <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
-                                </a>
-                            </span>
-                            <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                                <a class="action-link"
-                                   defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
-                                    <span class="action-icon action-icon-test"></span>
-                                    <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
-                                </a>
-                            </span>
-                            <span class="action">
-                                <a class="action-link"><span class="action-icon action-icon-menu"></span></a>
-                            </span>
-                        </div>
+                        </span>
+                        <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
+                            <a class="action-link"
+                               defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                <span class="action-icon action-icon-test"></span>
+                                <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
+                            </a>
+                        </span>
+                        <span class="action">
+                            <a class="action-link"><span class="action-icon action-icon-menu"></span></a>
+                        </span>
                     </div>
                 </div>
             </div>
-            <form ng-if="authorizedStory('create')"
-                  ng-submit="save(story, false)"
-                  name='formHolder.storyForm'
-                  novalidate>
+        </div>
+    </div>
+    <div class="details-no-tab">
+        <form ng-if="authorizedStory('create')"
+              ng-submit="save(story, false)"
+              name='formHolder.storyForm'
+              novalidate>
+            <div class="card-body">
                 <div class="row is-form-row">
                     <div class="form-half">
                         <label for="name">${message(code: 'is.story.name')}</label>
@@ -138,27 +138,27 @@
                 <div ng-if="messageDuplicate"
                      class="form-text bg-warning spaced-form-block warning-message"
                      ng-bind-html="messageDuplicate"></div>
-                <div class="clearfix">
-                    <div class="btn-toolbar float-right">
-                        <button class="btn btn-primary"
-                                ng-disabled="formHolder.storyForm.$invalid || application.submitting"
-                                defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
-                                hotkey="{'shift+return': hotkeyClick }"
-                                hotkey-allow-in="INPUT"
-                                hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"
-                                type='button'
-                                ng-click="save(story, true)">
-                            ${message(code: 'todo.is.ui.create.and.continue')}
-                        </button>
-                        <button class="btn btn-primary"
-                                ng-disabled="formHolder.storyForm.$invalid || application.submitting"
-                                type="submit">
-                            ${message(code: 'default.button.create.label')}
-                        </button>
-                    </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-toolbar">
+                    <button class="btn btn-primary"
+                            ng-disabled="formHolder.storyForm.$invalid || application.submitting"
+                            defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            hotkey="{'shift+return': hotkeyClick }"
+                            hotkey-allow-in="INPUT"
+                            hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"
+                            type='button'
+                            ng-click="save(story, true)">
+                        ${message(code: 'todo.is.ui.create.and.continue')}
+                    </button>
+                    <button class="btn btn-primary"
+                            ng-disabled="formHolder.storyForm.$invalid || application.submitting"
+                            type="submit">
+                        ${message(code: 'default.button.create.label')}
+                    </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </script>

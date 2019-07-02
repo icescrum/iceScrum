@@ -548,6 +548,11 @@ $state-dot-size-sm: 0.5rem;
   margin-top: 0;
   margin-bottom: 10px;
   padding: 5px;
+  color: $is-text-color-alt;
+  font-size: $is-font-size-sm;
+  a {
+    color: $is-text-color-alt;
+  }
 }
 
 .window-alert {

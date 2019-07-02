@@ -31,36 +31,36 @@
                 <span class="item-name" title="${message(code: 'todo.is.ui.task.new')}">${message(code: 'todo.is.ui.task.new')}</span>
             </div>
         </div>
-    </div>
-    <div class="details-no-tab">
-        <div class="card-body">
-            <div class="form-text">
-                ${message(code: 'is.ui.task.help')}
-                <documentation doc-url="features-stories-tasks#tasks"/>
-            </div>
-            <div class="sticky-notes grid-group">
-                <div class="sticky-note-container sticky-note-task">
-                    <div ng-style="'#f9f157' | createGradientBackground"
-                         class="sticky-note {{ ('#f9f157' | contrastColor) }}">
-                        <div class="sticky-note-head">
-                            <span class="id">42</span>
-                        </div>
-                        <div class="sticky-note-content">
-                            <div class="item-values"></div>
-                            <div class="title">{{ task.name }}</div>
-                        </div>
-                        <div class="sticky-note-tags"></div>
-                        <div class="sticky-note-actions">
-                            <span class="action"><a class="action-link"><span class="action-icon action-icon-attach"></span></a></span>
-                            <span class="action"><a class="action-link"><span class="action-icon action-icon-comment"></span></a></span>
-                            <span class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
-                        </div>
+        <div class="form-text">
+            ${message(code: 'is.ui.task.help')}
+            <documentation doc-url="features-stories-tasks#tasks"/>
+        </div>
+        <div class="sticky-notes grid-group">
+            <div class="sticky-note-container sticky-note-task">
+                <div ng-style="'#ffcc01' | createGradientBackground"
+                     class="sticky-note {{ ('#f9f157' | contrastColor) }}">
+                    <div class="sticky-note-head">
+                        <span class="id">42</span>
+                    </div>
+                    <div class="sticky-note-content">
+                        <div class="item-values"></div>
+                        <div class="title">{{ task.name }}</div>
+                    </div>
+                    <div class="sticky-note-tags"></div>
+                    <div class="sticky-note-actions">
+                        <span class="action"><a class="action-link"><span class="action-icon action-icon-attach"></span></a></span>
+                        <span class="action"><a class="action-link"><span class="action-icon action-icon-comment"></span></a></span>
+                        <span class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
                     </div>
                 </div>
             </div>
-            <form ng-submit="save(task, false)"
-                  name='formHolder.taskForm'
-                  novalidate>
+        </div>
+    </div>
+    <div class="details-no-tab">
+        <form ng-submit="save(task, false)"
+              name='formHolder.taskForm'
+              novalidate>
+            <div class="card-body">
                 <div class="row is-form-row">
                     <div class="form-half">
                         <label for="name">${message(code: 'is.task.name')}</label>
@@ -92,7 +92,9 @@
                         </ui-select>
                     </div>
                 </div>
-                <div ng-if="authorizedTask('create')" class="btn-toolbar float-right">
+            </div>
+            <div class="card-footer" ng-if="authorizedTask('create')" >
+                <div class="btn-toolbar">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.taskForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
@@ -109,8 +111,8 @@
                         ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </script>

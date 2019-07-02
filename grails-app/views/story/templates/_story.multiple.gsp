@@ -229,7 +229,7 @@
                     </ui-select>
                 </div>
                 <entry:point id="story-multiple-properties-after-tag"/>
-                <div class="row is-form-row">
+                <div ng-class="{ 'row is-form-row' : authorizedStories('updateEstimate', stories) }">
                     <div class="form-group"
                          ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
                         <label for="value">${message(code: 'is.story.value')}</label>
@@ -286,15 +286,15 @@
         </form>
         <div class="card-footer">
             <div class="btn-toolbar">
-                <button class="btn btn-primary float-right"
+                <a class="btn btn-secondary"
+                   ui-sref="^.^">
+                    ${message(code: 'is.button.cancel')}
+                </a>
+                <button class="btn btn-primary"
                         type="submit"
                         ng-disabled="!storyForm.$dirty || storyForm.$invalid || application.submitting">
                     ${message(code: 'default.button.update.label')}
                 </button>
-                <a class="btn btn-secondary float-right"
-                   ui-sref="^.^">
-                    ${message(code: 'is.button.cancel')}
-                </a>
             </div>
         </div>
     </div>

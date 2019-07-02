@@ -31,14 +31,14 @@
                 <span class="item-name" title="${message(code: "todo.is.ui.sprint.new")}">${message(code: "todo.is.ui.sprint.new")}</span>
             </div>
         </div>
+        <div class="form-text">${message(code: 'is.ui.sprint.help')}</div>
     </div>
     <div class="details-no-tab">
-        <div class="card-body">
-            <div class="form-text">${message(code: 'is.ui.sprint.help')}</div>
-            <form ng-submit="save(sprint, false)"
-                  name='formHolder.sprintForm'
-                  show-validation
-                  novalidate>
+        <form ng-submit="save(sprint, false)"
+              name='formHolder.sprintForm'
+              show-validation
+              novalidate>
+            <div class="card-body">
                 <div class="form-group" ng-class="{'has-error': releaseEndDateWarning}">
                     <label for="sprint.parentRelease">${message(code: 'is.release')}</label>
                     <div class="input-group">
@@ -108,7 +108,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-toolbar float-right">
+            </div>
+            <div class="card-footer">
+                <div class="btn-toolbar">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.sprintForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
@@ -125,8 +127,8 @@
                         ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </script>

@@ -31,14 +31,14 @@
                 <span class="item-name" title="${message(code: "todo.is.ui.release.new")}">${message(code: "todo.is.ui.release.new")}</span>
             </div>
         </div>
+        <div class="form-text">${message(code: 'is.ui.release.help')}</div>
     </div>
     <div class="details-no-tab">
-        <div class="card-body">
-            <div class="form-text">${message(code: 'is.ui.release.help')}</div>
-            <form ng-submit="save(release, false)"
-                  name='formHolder.releaseForm'
-                  show-validation
-                  novalidate>
+        <form ng-submit="save(release, false)"
+              name='formHolder.releaseForm'
+              show-validation
+              novalidate>
+            <div class="card-body">
                 <div class="form-group">
                     <label for="name">${message(code: 'is.release.name')}</label>
                     <input required
@@ -97,7 +97,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-toolbar float-right">
+            </div>
+            <div class="card-footer">
+                <div class="btn-toolbar">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.releaseForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
@@ -114,8 +116,8 @@
                         ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </script>

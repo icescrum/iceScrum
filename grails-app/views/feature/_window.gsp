@@ -93,9 +93,9 @@
              ng-if="selectableOptions.selectingMultiple">
             <i class="fa fa-warning"></i> ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
         </div>
-        <div class="window-alert bg-info"
+        <div class="window-alert bg-warning"
              ng-if="authorizedFeature('update') && !isSortableFeature()">
-            <i class="fa fa-info"></i> ${message(code: 'is.ui.feature.rank.disabled')}
+            <i class="fa fa-warning"></i> ${message(code: 'is.ui.feature.rank.disabled')}
         </div>
         <div class="card-body scrollable-selectable-container"
              selectable="selectableOptions">
