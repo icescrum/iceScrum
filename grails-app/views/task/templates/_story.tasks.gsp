@@ -40,13 +40,10 @@
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">
                         <span class="small mr-2">{{ task.state | i18n: 'TaskStates' }}</span>
-                        <div class="btn-group">
+                        <div class="btn-menu" uib-dropdown>
                             <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
-                            <div class="btn-group btn-group-sm" uib-dropdown>
-                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                                </button>
-                                <div uib-dropdown-menu ng-init="itemType = 'task'" template-url="item.menu.html"></div>
-                            </div>
+                            <div uib-dropdown-toggle></div>
+                            <div uib-dropdown-menu ng-init="itemType = 'task'" template-url="item.menu.html"></div>
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,6 @@
         <div class="card-header" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
             <div class="card-nav">
                 <ul class="nav nav-pills"
-                    ng-class="{ 'hasElements': visibleElementsList.length > 0 }"
                     as-sortable="elementsListSortableOptions"
                     ng-model="visibleElementsList">
                     <li class="nav-item mr-2"

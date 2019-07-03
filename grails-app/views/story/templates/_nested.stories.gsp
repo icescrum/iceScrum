@@ -39,12 +39,10 @@
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="storyCtrl">
                         <span class="small mr-2">{{ story.state | i18n: 'StoryStates' }}</span>
-                        <div class="btn-group">
+                        <div class="btn-menu" uib-dropdown>
                             <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
-                            <div class="btn-group btn-group-sm" uib-dropdown>
-                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle></button>
-                                <div uib-dropdown-menu ng-init="itemType = 'story'" template-url="item.menu.html"></div>
-                            </div>
+                            <div uib-dropdown-toggle></div>
+                            <div uib-dropdown-menu ng-init="itemType = 'story'" template-url="item.menu.html"></div>
                         </div>
                     </div>
                 </div>
