@@ -206,14 +206,6 @@
 
     <script type="text/ng-template" id="details.layout.buttons.html">
     <span>
-        <button class="btn btn-icon btn-window minimizable"
-                ng-click="toggleMinimizedDetailsView()"
-                defer-tooltip="${message(code: 'is.ui.window.minimize')}">
-        </button>
-        <button class="btn btn-icon btn-window detachable"
-                ng-click="toggleDetachedDetailsView()"
-                defer-tooltip="${message(code: 'is.ui.window.detach')}">
-        </button>
         <a class="btn btn-icon btn-icon-close" href="{{ closeDetailsViewUrl() }}"></a>
     </span>
     </script>

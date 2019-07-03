@@ -868,8 +868,6 @@ var isApplication = angular.module('isApplication', [
             loadingPercent: 0,
             submitting: false,
             isFullScreen: false,
-            detachedDetailsView: $localStorage['detachedDetailsView'] ? $localStorage['detachedDetailsView'] : false,
-            minimizedDetailsView: $localStorage['minimizedDetailsView'] ? $localStorage['minimizedDetailsView'] : false,
             menus: Session.menus,
             mobile: screenSize.is('xs, sm'),
             mobilexs: screenSize.is('xs')
@@ -1008,9 +1006,6 @@ var isApplication = angular.module('isApplication', [
                 }
             }
             $rootScope.application.focusedDetailsView = toState.name.indexOf('.focus') > 0;
-            if (_.endsWith(fromState.name, 'details') && !_.endsWith(toState.name, 'details')) {
-                $rootScope.application.minimizedDetailsView = false;
-            }
         });
         screenSize.onChange($rootScope, 'xs, sm', function(isMatch) {
             $rootScope.application.mobile = isMatch;

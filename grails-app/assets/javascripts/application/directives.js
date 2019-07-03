@@ -994,20 +994,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 }
                 return $state.href(stateName);
             };
-            scope.toggleDetachedDetailsView = function() {
-                scope.application.detachedDetailsView = !scope.application.detachedDetailsView;
-                if (!scope.application.detachedDetailsView) {
-                    scope.application.minimizedDetailsView = false;
-                }
-                $localStorage['minimizedDetailsView'] = scope.application.minimizedDetailsView;
-                $localStorage['detachedDetailsView'] = scope.application.detachedDetailsView;
-            };
-            scope.toggleMinimizedDetailsView = function() {
-                scope.application.minimizedDetailsView = !scope.application.minimizedDetailsView;
-                $localStorage['minimizedDetailsView'] = scope.application.minimizedDetailsView;
-            };
-            // Init
-            scope.application = $rootScope.application;
         }
     };
 }]).directive('iconBadge', function() { // Be careful, this directive has no watch, it will work only under isWatch
