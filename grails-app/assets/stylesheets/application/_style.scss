@@ -241,9 +241,16 @@ nav.navbar {
       background-color: $is-bg-color;
     }
 
+    > *:not(:first-child) {
+      margin-left: 15px;
+    }
+
+    .whats-new {
+      font-size: 1.5625rem;
+    }
+
     .main-notifications {
       position: relative;
-      margin: 0 15px;
       width: 18px;
       height: 35px;
 

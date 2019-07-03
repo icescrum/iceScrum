@@ -104,7 +104,7 @@
                 </span>
             </p>
         </div>
-        <table ng-if="team.members.length" class="table table-striped table-responsive">
+        <table ng-if="team.members.length" class="table table-striped table-responsive table-sm">
             <thead>
                 <tr>
                     <th colspan="2">${message(code: 'is.ui.team.members')} ({{ team.members.length }})</th>
