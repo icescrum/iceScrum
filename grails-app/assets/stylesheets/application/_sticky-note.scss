@@ -540,7 +540,7 @@ $acceptance-test-states: tocheck, success, failed;
   .sticky-note-story {
     width: $is-story-width;
     height: $is-story-heigth;
-    box-shadow: -1px 1px 2px -1px rgba(156, 164, 171, 0.5); // TODO put the real thing
+    box-shadow: -1px 1px 2px -1px rgba(156, 164, 171, 0.2); // TODO put the real thing
 
     .sticky-note {
       padding: 0.5625rem;
@@ -699,12 +699,27 @@ $acceptance-test-states: tocheck, success, failed;
   border-color: $is-bg-color-ter $is-bg-color-ter white white; // Better than white...
 }
 
+.grid-group.grey-sticky-notes-alt .sticky-note-story .sticky-note:after {
+  border-color: $is-bg-color-alt $is-bg-color-alt white white; // Better than white...
+}
+
+////////////////////
+// Standalone
+////////////////////
+
+.sticky-notes.grid-group.sticky-notes-standalone {
+  padding: 15px 0 5px 0;
+
+  .sticky-note-container {
+    margin: 0;
+  }
+}
+
 ////////////////////
 // Grid  SM
 ////////////////////
 
-
-.grid-group.size-sm {
+.sticky-notes.grid-group.size-sm {
   .sticky-note-story {
     width: $is-story-width-sm;
     height: $is-story-heigth-sm;

@@ -35,7 +35,7 @@
             ${message(code: 'is.ui.task.help')}
             <documentation doc-url="features-stories-tasks#tasks"/>
         </div>
-        <div class="sticky-notes grid-group">
+        <div class="sticky-notes sticky-notes-standalone grid-group">
             <div class="sticky-note-container sticky-note-task">
                 <div ng-style="'#ffcc01' | createGradientBackground"
                      class="sticky-note {{ ('#f9f157' | contrastColor) }}">

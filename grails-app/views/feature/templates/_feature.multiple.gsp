@@ -31,7 +31,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="sticky-notes grid-group">
+                <div class="sticky-notes sticky-notes-standalone grid-group">
                     <div class="sticky-note-container sticky-note-feature stack twisted">
                         <div ng-style="topFeature.color | createGradientBackground"
                              class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">

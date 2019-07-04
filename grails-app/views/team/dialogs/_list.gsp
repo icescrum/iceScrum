@@ -136,7 +136,7 @@
                             </span>
                         </div>
                         <div ng-if="projects != undefined && !projects.length">
-                            <a class="btn btn-primary"
+                            <a class="btn btn-primary btn-sm"
                                ng-click="$close(true)"
                                ui-sref="newProject">
                                 ${message(code: 'todo.is.ui.project.createNew')}

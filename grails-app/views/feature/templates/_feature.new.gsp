@@ -35,7 +35,7 @@
             ${message(code: 'is.ui.feature.help')}
             <documentation doc-url="features-stories-tasks#features"/>
         </div>
-        <div class="sticky-notes grid-group">
+        <div class="sticky-notes sticky-notes-standalone grid-group">
             <div class="sticky-note-container sticky-note-feature">
                 <div ng-style="feature.color | createGradientBackground"
                      class="sticky-note {{ feature.color | contrastColor }}">
