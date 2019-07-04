@@ -106,7 +106,7 @@
     </script>
 
     <script type="text/ng-template" id="item.menu.html">
-    <div ng-controller="menuItemCtrl" class="dropdown-menu-right" uib-dropdown-menu role="menu">
+    <div ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
         <a class="dropdown-item"
            ng-repeat="menuElement in menus | visibleMenuElement: getItem()"
            href="{{ menuElement.url(getItem()) | orElse: '' }}"
