@@ -51,7 +51,7 @@
                 <div uib-pagination
                      boundary-links="true"
                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                     class="pagination-sm"
+                     class="pagination-sm justify-content-center mt-2"
                      max-size="3"
                      total-items="workspaceCount"
                      items-per-page="workspacesPerPage"
