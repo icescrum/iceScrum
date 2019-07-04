@@ -84,62 +84,40 @@
                 </form>
             </div>
             <div ng-switch-when="true">
-                <div class="form-text">
+                <p class="form-text">
                     ${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}
-                </div>
+                </p>
                 <form ng-submit="update(team)"
                       name="formHolder.updateTeamForm"
                       show-validation
                       novalidate>
-                    <div class="col-sm-12 form-group">
-                        <label for="team.owner">
-                            ${message(code: 'is.role.owner')}
-                            <entry:point id="team-list-owner"/>
-                        </label>
-                        <span class="form-control-plaintext"
-                              ng-if="!authorizedTeam('changeOwner', team)">{{ team.owner | userFullName }}</span>
-                        <ui-select class="form-control"
-                                   name="owner"
-                                   ng-if="authorizedTeam('changeOwner', team)"
-                                   ng-model="team.owner">
-                            <ui-select-match>{{ $select.selected | userFullName }}</ui-select-match>
-                            <ui-select-choices repeat="ownerCandidate in ownerCandidates">{{ ownerCandidate | userFullName }}</ui-select-choices>
-                        </ui-select>
-                    </div>
-                    <div class="form-half">
-                        <label for="team.name">${message(code: 'todo.is.ui.name')}</label>
-                        <input required
-                               ng-maxlength="100"
-                               name="team.name"
-                               ng-model="team.name"
-                               type="text"
-                               class="form-control">
-                    </div>
-                    <div class="form-half">
-                        <label for="member.search">${message(code: 'todo.is.ui.select.member')}</label>
-                        <p class="input-group">
-                            <input autocomplete="off"
+                    <div class="row is-form-row">
+                        <div class="form-half">
+                            <label for="team.name">${message(code: 'todo.is.ui.name')}</label>
+                            <input required
+                                   ng-maxlength="100"
+                                   name="team.name"
+                                   ng-model="team.name"
                                    type="text"
-                                   name="member.search"
-                                   id="member.search"
-                                   autofocus
-                                   class="form-control"
-                                   placeholder="${message(code: 'is.ui.user.search.placeholder' + (grailsApplication.config.icescrum.user.search.enable ? '' : '.email'))}"
-                                   ng-model="member.name"
-                                   uib-typeahead="member as member.name for member in searchMembers($viewValue)"
-                                   typeahead-loading="searchingMember"
-                                   typeahead-min-length="2"
-                                   typeahead-wait-ms="250"
-                                   typeahead-on-select="addTeamMember($item, $model, $label)"
-                                   typeahead-template-url="select.member.html">
-                            <span class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
-                                </span>
-                            </span>
-                        </p>
+                                   class="form-control">
+                        </div>
+                        <div class="form-half">
+                            <label for="team.owner">
+                                ${message(code: 'is.role.owner')}
+                                <entry:point id="team-list-owner"/>
+                            </label>
+                            <span class="form-control-plaintext"
+                                  ng-if="!authorizedTeam('changeOwner', team)">{{ team.owner | userFullName }}</span>
+                            <ui-select class="form-control"
+                                       name="owner"
+                                       ng-if="authorizedTeam('changeOwner', team)"
+                                       ng-model="team.owner">
+                                <ui-select-match>{{ $select.selected | userFullName }}</ui-select-match>
+                                <ui-select-choices repeat="ownerCandidate in ownerCandidates">{{ ownerCandidate | userFullName }}</ui-select-choices>
+                            </ui-select>
+                        </div>
                     </div>
-                    <div class="col-sm-12 form-group">
+                    <div class="form-group">
                         <label>${message(code: 'is.ui.projects')}</label>
                         <div class="form-control-plaintext"
                              ng-if="projects.length">
@@ -165,7 +143,31 @@
                             </a>
                         </div>
                     </div>
-                    <table ng-if="team.members.length" class="table table-striped table-responsive">
+                    <div class="form-group">
+                        <label for="member.search">${message(code: 'todo.is.ui.select.member')}</label>
+                        <p class="input-group">
+                            <input autocomplete="off"
+                                   type="text"
+                                   name="member.search"
+                                   id="member.search"
+                                   autofocus
+                                   class="form-control"
+                                   placeholder="${message(code: 'is.ui.user.search.placeholder' + (grailsApplication.config.icescrum.user.search.enable ? '' : '.email'))}"
+                                   ng-model="member.name"
+                                   uib-typeahead="member as member.name for member in searchMembers($viewValue)"
+                                   typeahead-loading="searchingMember"
+                                   typeahead-min-length="2"
+                                   typeahead-wait-ms="250"
+                                   typeahead-on-select="addTeamMember($item, $model, $label)"
+                                   typeahead-template-url="select.member.html">
+                            <span class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                    <table ng-if="team.members.length" class="table table-striped table-sm">
                         <thead>
                             <tr>
                                 <th colspan="2">${message(code: 'is.ui.team.members')} ({{ team.members.length }})</th>

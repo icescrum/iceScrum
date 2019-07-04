@@ -736,6 +736,11 @@ $state-dot-size-sm: 0.5rem;
   @extend .col-md-9;
 }
 
+.form-control-plaintext {
+  font-size: 0.875rem;
+  line-height: 1.2; // Override
+}
+
 textarea:not(.fixedRow):not(.handsontableInput), .atwho-preview {
   min-height: 150px;
   height: 150px;
