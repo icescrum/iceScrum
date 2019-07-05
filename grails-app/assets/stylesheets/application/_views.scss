@@ -83,6 +83,11 @@
   }
 }
 
+.task-widget .sticky-notes.grid-group {
+  padding: 0;
+  margin: 0 (-$is-sticky-note-spacer) (-$is-sticky-note-spacer) (-$is-sticky-note-spacer);
+}
+
 ////////////////////
 // Dashboards (settings + project dashboard)
 ////////////////////

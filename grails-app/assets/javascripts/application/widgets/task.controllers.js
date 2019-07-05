@@ -34,6 +34,5 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller'
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
     });
-    widget.settings = widget.settings ? widget.settings : {stickyNoteSize: 'list-group'};
     $scope.viewName = 'taskWidget';
 }]);

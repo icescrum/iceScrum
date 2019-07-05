@@ -23,7 +23,7 @@
  *
  */
 
-extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'stickyNoteSize', 'screenSize', function($scope, $controller, $filter, FormService, FeatureService, stickyNoteSize, screenSize) {
+extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', function($scope, $controller, $filter, FormService, FeatureService) {
     $controller('tagCtrl', {$scope: $scope, type: 'feature'});
     // Functions
     $scope.authorizedFeature = FeatureService.authorizedFeature;
@@ -55,13 +55,6 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
             action: function(feature) { $scope.confirmDelete({callback: $scope.delete, args: [feature]}); }
         }
     ];
-    // Init
-    var getStickyNoteClass = function() {
-        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, 'grid-group size-sm');
-    };
-    getStickyNoteClass();
-    screenSize.on('xs, sm', getStickyNoteClass, $scope);
-    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStickyNoteClass);
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features, project) {

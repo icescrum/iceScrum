@@ -991,64 +991,43 @@ services.service('TagService', ['FormService', function(FormService) {
 }]);
 
 services.service('stickyNoteSize', ['screenSize', '$localStorage', function(screenSize, $localStorage) {
-    this.stickyNoteClass = function(viewName, defaultSize) {
-        return screenSize.is('xs, sm') ? 'list-group' : this.currentStickyNoteSize(viewName, defaultSize);
-    };
-    this.standaloneStickyNoteClass = function(viewName, defaultSize) {
-        if (screenSize.is('xs, sm')) {
-            return 'grid-group size-xs';
-        } else {
-            var selectedSize = this.currentStickyNoteSize(viewName, defaultSize);
-            return (selectedSize == 'list-group') ? 'grid-group size-l' : selectedSize;
-        }
-    };
     this.currentStickyNoteSize = function(viewName, defaultSize) {
-        var contextSizeName = viewName + 'PostitSize';
-        if (defaultSize && !$localStorage[contextSizeName]) {
-            $localStorage[contextSizeName] = defaultSize;
+        if (screenSize.is('xs, sm')) {
+            return 'list-group';
+        } else {
+            var contextSizeName = viewName + 'PostitSize';
+            if (defaultSize && !$localStorage[contextSizeName]) {
+                $localStorage[contextSizeName] = defaultSize;
+            }
+            return $localStorage[contextSizeName];
         }
-        return screenSize.is('xs, sm') ? 'list-group' : $localStorage[contextSizeName];
-    };
-    this.cleanStickyNoteSize = function(viewName) {
-        var contextSizeName = viewName + 'PostitSize';
-        delete $localStorage[contextSizeName];
     };
     this.iconCurrentStickyNoteSize = function(viewName) {
         var icon;
         switch (this.currentStickyNoteSize(viewName)) {
-            case 'grid-group size-l':
-                icon = 'fa-sticky-note fa-xl';
-                break;
-            case 'grid-group size-sm':
-                icon = 'fa-sticky-note fa-lg';
-                break;
-            case 'grid-group size-xs':
-                icon = 'fa-sticky-note';
-                break;
             case 'list-group':
                 icon = 'fa-list';
                 break;
-            default:
+            case 'grid-group size-sm':
                 icon = 'fa-sticky-note';
+                break;
+            default:
+                icon = 'fa-sticky-note fa-lg';
                 break;
         }
         return icon;
     };
-    this.setStickyNoteSize = function(viewName) {
+    this.setStickyNoteSize = function(viewName, skipSm) {
         var next;
         switch (this.currentStickyNoteSize(viewName)) {
-            case 'grid-group size-l':
-                next = 'grid-group size-sm';
+            case 'grid-group':
+                next = skipSm ? 'list-group' : 'grid-group size-sm';
                 break;
             case 'grid-group size-sm':
-                next = 'grid-group size-xs';
-                break;
-            case 'grid-group size-xs':
                 next = 'list-group';
                 break;
             default:
-            case 'list-group':
-                next = 'grid-group size-l';
+                next = 'grid-group';
                 break;
         }
         var contextSizeName = viewName + 'PostitSize';

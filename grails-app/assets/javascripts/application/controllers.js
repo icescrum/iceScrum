@@ -136,20 +136,12 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     $scope.fullScreen = function() {
         $scope.application.isFullScreen = !$scope.application.isFullScreen;
     };
-    // Sticky note size
-    $scope.currentStickyNoteSize = function(viewName, defaultSize) {
-        return stickyNoteSize.currentStickyNoteSize(viewName, defaultSize);
-    };
-    $scope.iconCurrentStickyNoteSize = function(viewName) {
-        return stickyNoteSize.iconCurrentStickyNoteSize(viewName);
-    };
-    $scope.setStickyNoteSize = function(viewName) {
-        stickyNoteSize.setStickyNoteSize(viewName);
-    };
+    $scope.currentStickyNoteSize = stickyNoteSize.currentStickyNoteSize;
+    $scope.iconCurrentStickyNoteSize = stickyNoteSize.iconCurrentStickyNoteSize;
+    $scope.setStickyNoteSize = stickyNoteSize.setStickyNoteSize;
     $scope.goToHome = function() {
         window.location.href = $scope.serverUrl;
     };
-    // Print
     $scope.print = function(data) {
         var url = data;
         if (angular.isObject(data)) {

@@ -765,7 +765,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
     refreshStories();
 }]);
 
-extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'stickyNoteSize', 'screenSize', 'project', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, stickyNoteSize, screenSize, project) {
+extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'project', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, project) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
@@ -818,15 +818,9 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         allowIn: ['INPUT'],
         callback: $scope.resetStoryForm
     });
-    var getStandaloneStickyNoteClass = function() {
-        $scope.stickyNoteClass = stickyNoteSize.standaloneStickyNoteClass($scope.viewName, 'grid-group size-sm');
-    };
-    getStandaloneStickyNoteClass();
-    screenSize.on('xs, sm', getStandaloneStickyNoteClass, $scope);
-    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStandaloneStickyNoteClass);
 }]);
 
-controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 'stickyNoteSize', 'screenSize', function($controller, $scope, $filter, stickyNoteSize, screenSize) {
+controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', function($controller, $scope, $filter) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Don't use orderBy filter on ng-repeat because it triggers sort on every single digest on the page, which happens all the time...
     // We are only interested in story updates
@@ -835,12 +829,6 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     };
     $scope.$watch('backlog.stories', updateOrder, true);
     $scope.$watch('orderBy', updateOrder, true);
-    var getStickyNoteClass = function() {
-        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, 'grid-group size-sm');
-    };
-    getStickyNoteClass();
-    screenSize.on('xs, sm', getStickyNoteClass, $scope);
-    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStickyNoteClass);
     // Hack to provide all the lists of stories to the current view
     // So it can look for previous / next story from a details view
     if ($scope.storyListGetters) {

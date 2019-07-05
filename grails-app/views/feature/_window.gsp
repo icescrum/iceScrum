@@ -82,7 +82,7 @@
                 <button type="button"
                         class="btn btn-secondary btn-sm hidden-xs hidden-sm"
                         defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                        ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
+                        ng-click="setStickyNoteSize(viewName, true)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                 </button>
                 <a ng-if="authorizedFeature('create')"
                    href="#/{{ ::viewName }}/new"
@@ -121,7 +121,7 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="sticky-notes {{ stickyNoteClass }}"
+            <div class="sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
                  ng-class="{'has-selected': hasSelected() }"
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"

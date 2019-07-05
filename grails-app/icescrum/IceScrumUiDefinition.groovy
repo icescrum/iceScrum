@@ -197,9 +197,6 @@ widgets = {
         allowDuplicate false
         secured 'isAuthenticated()'
         ngController 'taskWidgetCtrl'
-        defaultSettings = [
-                stickyNoteSize: 'list-group'
-        ]
     }
     'chart' {
         height 2
