@@ -121,7 +121,7 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
+            <div class="sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group') }}"
                  ng-class="{'has-selected': hasSelected() }"
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
