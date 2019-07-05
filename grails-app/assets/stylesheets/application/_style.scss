@@ -179,28 +179,12 @@ nav.navbar {
         padding-top: 0.125rem;
       }
 
-      .is-icon {
-        @include rectangle-background(1.125rem, 1rem);
+      .fi-private, .fi-public {
+        margin-right: 0.6875rem;
+      }
 
-        &.icon-private {
-          background-image: url("icon-private.svg");
-          margin-right: 0.6875rem;
-        }
-
-        &.icon-public {
-          background-image: url("icon-public.svg");
-          margin-right: 0.6875rem;
-        }
-
-        &.icon-project {
-          background-image: url("icon-project.svg");
-          margin-right: 1rem;
-        }
-
-        &.icon-portfolio {
-          background-image: url("icon-portfolio.svg");
-          margin-right: 1rem;
-        }
+      .fi-project, .fi-portfolio {
+        margin-right: 1rem;
       }
     }
   }
@@ -297,6 +281,27 @@ nav.navbar {
       border-bottom-right-radius: $input-border-radius;
     }
   }
+}
+
+.workspace-icon {
+  @include rectangle-background(1.125rem, 1rem);
+  display: inline-block;
+}
+
+.fi-private {
+  background-image: url("icon-private.svg");
+}
+
+.fi-public {
+  background-image: url("icon-public.svg");
+}
+
+.fi-project {
+  background-image: url("icon-project.svg");
+}
+
+.fi-portfolio {
+  background-image: url("icon-portfolio.svg");
 }
 
 .fi-main-menu {
@@ -557,6 +562,7 @@ $state-dot-size-sm: 0.5rem;
   padding: 5px;
   color: $is-text-color-alt;
   font-size: $is-font-size-sm;
+
   a {
     color: $is-text-color-alt;
   }

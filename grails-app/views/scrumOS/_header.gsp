@@ -49,15 +49,15 @@
                    href
                    class="nav-link">
                     <g:if test="${workspace}">
-                        <div class="is-icon"
-                             ng-class="'icon-' + (workspace.preferences.hidden ? 'private' : 'public')"
+                        <div class="workspace-icon"
+                             ng-class="'fi-' + (workspace.preferences.hidden ? 'private' : 'public')"
                              ng-if="workspace.preferences"
                              tooltip-placement="bottom"
                              uib-tooltip="{{ message('is.ui.${workspace.name}.' + (workspace.preferences.hidden ? 'private' : 'public')) }}"
                              ng-click="authorized${workspace.name.capitalize()}('edit') && show${workspace.name.capitalize()}EditModal();">
                         </div>
                         <g:if test="${workspace.name}">
-                            <div class="is-icon icon-${workspace.name}"></div>
+                            <div class="workspace-icon fi-${workspace.name}"></div>
                             <span class="workspace-title text-ellipsis">{{ workspace.name }}</span>
                         </g:if>
                     </g:if>
