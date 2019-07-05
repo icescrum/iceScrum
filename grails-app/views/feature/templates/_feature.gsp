@@ -27,6 +27,7 @@
      ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]">
     <div as-sortable-item-handle>
         <div class="sticky-note-head">
+            <div class="id-icon" ng-include="'feature.icon.html'"></div>
             <span class="id">{{:: feature.uid }}</span>
             <div class="sticky-note-type-icon"></div>
         </div>

@@ -23,5 +23,6 @@
 
 <g:render template="/feature/templates/feature"/>
 <g:render template="/feature/templates/feature.details"/>
+<g:render template="/feature/templates/feature.icon"/>
 <g:render template="/feature/templates/feature.multiple"/>
 <g:render template="/feature/templates/feature.new"/>

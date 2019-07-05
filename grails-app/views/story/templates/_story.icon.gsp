@@ -41,7 +41,7 @@
             <use fill="#000" filter="url(#b)" xlink:href="#c"/>
             <use fill="#FFF" xlink:href="#c"/>
         </g>
-        <text x="47%" y="73%" text-anchor="middle" class="id-text">{{:: story.uid }}</text>
+        <text x="47%" y="73%" text-anchor="middle">{{:: story.uid }}</text>
     </g>
 </svg>
 </script>
