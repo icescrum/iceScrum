@@ -560,7 +560,7 @@ $acceptance-test-states: tocheck, success, failed;
         top: 0;
         right: 0;
         border: 15px solid;
-        border-color: white white rgba(255, 255, 255, 0.97) rgba(255, 255, 255, 0.97);
+        border-color: $is-bg-color $is-bg-color rgba(255, 255, 255, 0.97) rgba(255, 255, 255, 0.97);
         z-index: 1;
       }
 

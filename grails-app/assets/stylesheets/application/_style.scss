@@ -474,7 +474,7 @@ $state-dot-size-sm: 0.5rem;
   $timebox-dates-padding: 0.625rem;
   $timebox-dates-padding-sm: 0.5rem;
   line-height: 1.17;
-  background: #f4f4f4; // Todo dark mode
+  background: $is-bg-color-alt;
   font-size: $is-font-size-sm;
   padding: 10px $timebox-dates-padding;
 
@@ -698,7 +698,7 @@ $state-dot-size-sm: 0.5rem;
 
     &.bg-todo {
       color: $is-grey;
-      background-color: #f4f4f4;
+      background-color: $is-bg-color-alt;
     }
 
     &.bg-inProgress {
