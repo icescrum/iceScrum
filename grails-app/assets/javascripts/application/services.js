@@ -1110,7 +1110,7 @@ services.service("ColorService", [function() {
         var m = l - c * 0.5;
         return [Math.round(255 * (rgb1[0] + m)), Math.round(255 * (rgb1[1] + m)), Math.round(255 * (rgb1[2] + m))];
     };
-    this.normalizeH = function(originalH) { // H values range from 0 to 359 as they are degrees
+    this.normalizeH = function(originalH) { // H from HSL ranges from 0 to 359 as the value represents degrees on a circle
         if (originalH >= 360) {
             return originalH - 360;
         } else if (originalH < 0) {
@@ -1119,7 +1119,10 @@ services.service("ColorService", [function() {
             return originalH;
         }
     };
-    this.brightness = function(rgb) {
-        return Math.sqrt(0.241 * Math.pow(rgb[0], 2) + 0.691 * Math.pow(rgb[1], 2) + 0.068 * Math.pow(rgb[2], 2));
+    this.brightness = function(rgb) { // Luminance / Luma in YIQ
+        return ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
+    }
+    this.rgbStringToRgb = function(rgbString) {
+        return rgbString.replace(/^(rgb|rgba)\(/, '').replace(/\)$/, '').replace(/\s/g, '').split(',');
     };
 }]);

@@ -134,30 +134,19 @@ filters
             return (story && story.feature) ? story.feature.color : '#f9f157';
         };
     })
-    .filter('contrastColor', function() {
-        return function(bg, invert) {
-            if (bg && contrastColorCache[bg] != undefined) {
-                return invert ? (contrastColorCache[bg] == 'invert' ? '' : 'invert') : contrastColorCache[bg];
-            } else if (bg && contrastColorCache[bg] == undefined) {
-                //convert hex to rgb
-                var color;
-                if (bg.indexOf('#') == 0) {
-                    var bigint = parseInt(bg.substring(1), 16);
-                    var r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
-                    color = 'rgb(' + r + ', ' + g + ', ' + b + ')';
-                } else {
-                    color = bg;
+    .filter('contrastColor', ['ColorService', function(ColorService) {
+        return function(color) {
+            if (color) {
+                if (contrastColorCache[color] === undefined) {
+                    var rgb = color.indexOf('#') === 0 ? ColorService.hexToRgb(color) : ColorService.rgbStringToRgb(color);
+                    contrastColorCache[color] = ColorService.brightness(rgb) >= 169 ? '' : 'invert';
                 }
-                //get r,g,b and decide
-                var rgb = color.replace(/^(rgb|rgba)\(/, '').replace(/\)$/, '').replace(/\s/g, '').split(',');
-                var yiq = ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
-                contrastColorCache[bg] = (yiq >= 169) ? '' : 'invert';
-                return invert ? (contrastColorCache[bg] == 'invert' ? '' : 'invert') : contrastColorCache[bg];
+                return contrastColorCache[color];
             } else {
                 return '';
             }
         };
-    })
+    }])
     .filter('createGradientBackground', ['ColorService', function(ColorService) {
         return function(originalHex) {
             var originalRgb = ColorService.hexToRgb(originalHex);
@@ -317,7 +306,7 @@ filters
             return items.slice().reverse();
         };
     })
-    .filter('permalink', ['$rootScope', 'Session', function($rootScope, Session) {
+    .filter('permalink', ['$rootScope', function($rootScope) {
         return function(uid, type, projectKey) {
             var prefixByType = {
                 story: '',

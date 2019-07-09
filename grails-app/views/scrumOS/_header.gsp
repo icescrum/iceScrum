@@ -201,7 +201,7 @@
             </li>
         </ul>
     </div>
-    <div class="navbar-right {{ application.context.color | contrastColor:true }}"
+    <div class="navbar-right"
          ng-style="application.context | contextStyle">
         <g:if test="${project}">
             <form class="form-inline" role="search">

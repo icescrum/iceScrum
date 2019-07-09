@@ -38,7 +38,7 @@
         <div class="sticky-notes sticky-notes-standalone grid-group">
             <div class="sticky-note-container sticky-note-task">
                 <div ng-style="'#ffcc01' | createGradientBackground"
-                     class="sticky-note {{ ('#f9f157' | contrastColor) }}">
+                     class="sticky-note">
                     <div class="sticky-note-head">
                         <span class="id">42</span>
                     </div>
