@@ -131,7 +131,7 @@
                     </a>
                 </div>
                 <div class="postits {{ postitClass }}"
-                     ng-class="{'has-selected': hasSelected() }"
+                     ng-class="{'has-selected': hasSelected(), 'sortable-multiple': application.sortableMultiple }"
                      ng-controller="featureCtrl"
                      as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingFeature()"

@@ -156,7 +156,7 @@
             <div class="panel-body scrollable-selectable-container" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
                 <div class="postits {{ postitClass }}"
-                     ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
+                     ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingBacklog(backlogContainer)"

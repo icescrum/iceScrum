@@ -254,14 +254,19 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
-            story.rank = newRank;
-            StoryService.update(story).then(function(updatedStory) {
-                if (updatedStory.rank !== newRank) {
-                    $scope.notifyWarning('is.ui.story.warning.rank.dependsOn');
-                }
-            }).catch(function() {
-                $scope.revertSortable(event);
-            });
+            if ($state.params.storyListId !== undefined) {
+                var ids = $state.params.storyListId.split(',');
+                StoryService.rankMultiple(ids, newRank, story.backlog.id);
+            } else {
+                story.rank = newRank;
+                StoryService.update(story).then(function(updatedStory) {
+                    if (updatedStory.rank !== newRank) {
+                        $scope.notifyWarning('is.ui.story.warning.rank.dependsOn');
+                    }
+                }).catch(function() {
+                    $scope.revertSortable(event);
+                });
+            }
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;

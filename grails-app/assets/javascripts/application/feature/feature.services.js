@@ -106,6 +106,11 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             });
         }).$promise;
     };
+    this.rankMultiple = function(ids, rank, projectId) {
+        return Feature.updateArray({projectId: projectId, id: ids, rank: rank, action: 'rank'}, {}, function(features) {
+            _.each(features, crudMethods[IceScrumEventType.UPDATE]);
+        }).$promise;
+    };
     this.authorizedFeature = function(action, project) {
         switch (action) {
             case 'create':

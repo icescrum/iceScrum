@@ -66,10 +66,16 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
     $scope.features = features;
     var updateRank = function(event) {
         var feature = event.source.itemScope.modelValue;
-        feature.rank = event.dest.index + 1;
-        FeatureService.update(feature).catch(function() {
-            $scope.revertSortable(event);
-        });
+        var newRank = event.dest.index + 1;
+        if ($state.params.featureListId !== undefined) {
+            var ids = $state.params.featureListId.split(',');
+            FeatureService.rankMultiple(ids, newRank, project.id);
+        } else {
+            feature.rank = newRank;
+            FeatureService.update(feature).catch(function() {
+                $scope.revertSortable(event);
+            });
+        }
     };
     $scope.featureSortableOptions = {
         itemMoved: updateRank,
