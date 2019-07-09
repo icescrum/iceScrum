@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="story.icon.html">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="31" height="30" viewBox="0 0 31 30">
     <defs>
-        <linearGradient id="{{:: story | storyColor }}" x1="50%" x2="50%" y1="0%" y2="100%">
+        <linearGradient id="story-{{:: story | storyColor }}" x1="50%" x2="50%" y1="0%" y2="100%">
             <stop offset="0%" stop-color="{{:: getGradientColor(story | storyColor) }}"/>
             <stop offset="100%" stop-color="{{:: story | storyColor }}"/>
         </linearGradient>
@@ -36,7 +36,7 @@
         </filter>
     </defs>
     <g fill="none" fill-rule="evenodd">
-        <path fill="url(#{{:: story | storyColor }})" fill-rule="nonzero" d="M0 0h22.34l6.498 6.48v22.277H0z" transform="translate(0 1)"/>
+        <path fill="url(#story-{{:: story | storyColor }})" fill-rule="nonzero" d="M0 0h22.34l6.498 6.48v22.277H0z" transform="translate(0 1)"/>
         <g transform="translate(0 1)">
             <use fill="#000" filter="url(#b)" xlink:href="#c"/>
             <use fill="#FFF" xlink:href="#c"/>
