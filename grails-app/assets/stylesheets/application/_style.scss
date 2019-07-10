@@ -113,6 +113,12 @@ body {
 // General style
 ////////////////////
 
+a {
+  &:not(.btn), &:not(.btn):hover, &:not(.btn):visited {
+    color: $blue;
+  }
+}
+
 .text-accent {
   color: $is-text-color-alt;
 }
@@ -603,6 +609,27 @@ $state-dot-size-sm: 0.5rem;
   letter-spacing: 0.1em;
 }
 
+.toggle-more {
+  font-family: $is-font-family-bold;
+  color: $is-text-color-alt;
+  cursor: pointer;
+  &::after {
+    display: inline-block;
+    content: "";
+    margin-left: 0.4em;
+    vertical-align: 0.2em;
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+  }
+
+  &:empty::after {
+    margin-left: 0;
+  }
+}
+
 ////////////////////
 // Details view
 ////////////////////
@@ -688,31 +715,48 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-.timeline-bar {
-  height: 49px;
-  background-color: #054ca6;
-  padding: 8px 5px;
-  font-size: 14px;
+.timeline-bar-container {
+  position: relative;
+  &:after {
+    right: -24.5px;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-left-color: $is-deep-blue;
+    border-width: 24.5px;
+    margin-top: -24.5px;
+  }
+  .timeline-bar {
+    height: 49px;
+    background-color: $is-deep-blue;
+    padding: 8px 5px;
+    font-size: 14px;
+    margin-right: 24.5px;
 
-  .progress-bar {
-    border-radius: 2px;
-    border-right: 4px solid #054ca6;
-    background-color: #054ca6;
-    color: #ffffff;
+    .progress-bar {
+      border-radius: 2px;
+      margin-right: 4px;
+      background-color: $is-deep-blue;
+      color: #ffffff;
 
-    &.bg-todo {
-      color: $is-grey;
-      background-color: $is-bg-color-alt;
-    }
+      &.bg-todo {
+        color: $is-grey;
+        background-color: $is-bg-color-alt;
+      }
 
-    &.bg-inProgress {
-      background-image: linear-gradient(75deg, #63abeb, #d1e6f0);
-      box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
-    }
+      &.bg-inProgress {
+        background-image: linear-gradient(75deg, #63abeb, #d1e6f0);
+        box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
+      }
 
-    &.bg-done {
-      background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
-      box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
+      &.bg-done {
+        background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+        box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
+      }
     }
   }
 }

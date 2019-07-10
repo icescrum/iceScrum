@@ -21,17 +21,19 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="release.timeline.html">
-<uib-progress class="timeline-bar"
-              max="release.duration">
-    <uib-bar ng-repeat="sprint in releaseParts"
-             class="{{ $last ? 'last-bar' : '' }}"
-             uib-tooltip-template="'sprint.tooltip.html'"
-             tooltip-enable="sprint.id"
-             tooltip-placement="top"
-             type="{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
-             value="sprint.duration">
-        {{ sprint.id ? sprint.index : '' }}
-    </uib-bar>
-    <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
-</uib-progress>
+<div class="timeline-bar-container">
+    <uib-progress class="timeline-bar"
+                  max="release.duration">
+        <uib-bar ng-repeat="sprint in releaseParts"
+                 class="{{ $last ? 'last-bar' : '' }}"
+                 uib-tooltip-template="'sprint.tooltip.html'"
+                 tooltip-enable="sprint.id"
+                 tooltip-placement="top"
+                 type="{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
+                 value="sprint.duration">
+            {{ sprint.id ? sprint.index : '' }}
+        </uib-bar>
+        <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
+    </uib-progress>
+</div>
 </script>

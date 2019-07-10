@@ -600,10 +600,40 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     .sprint-goal-label {
       color: #64aceb;
     }
+    margin-right: 24.5px;
   }
 
   .release-vision {
     margin-bottom: 23px;
+  }
+}
+
+////////////////////
+// Attachments
+////////////////////
+
+.attachments {
+
+  .upload-and-apps {
+    display: flex;
+  }
+
+  > .card-body {
+    padding-top: 0;
+  }
+
+  .upload-file, .upload-apps {
+    flex: 0 0 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 34px;
+    padding-top: 6px;
+    font-size: 0.875rem;
+    color: $is-text-color-alt;
+  }
+
+  .upload-apps {
+    border-left: solid 1px #e9e9e9;
   }
 }
 
@@ -613,6 +643,9 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
 .activities {
   font-size: $is-font-size-sm;
+  .activity-name {
+    color: $is-text-color-alt;
+  }
 
   .activity ul {
     padding-inline-start: 17px;

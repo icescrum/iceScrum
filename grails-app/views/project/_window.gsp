@@ -87,6 +87,7 @@
                         <div class="sprint-goal-label">{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</div>
                         <div>{{ currentOrNextSprint.goal }}</div>
                     </div>
+                    <div class=""></div>
                 </div>
             </div>
             <div class="card hover-container">
@@ -119,7 +120,7 @@
                      ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'">
                 </div>
             </div>
-            <div class="card"
+            <div class="card attachments"
                  flow-init
                  flow-drop
                  flow-files-submitted="attachmentQuery($flow, project)"
@@ -132,18 +133,16 @@
                         ${message(code: 'is.ui.project.attachment.title')}
                     </span>
                 </div>
-                <div class="card-body" style="padding-bottom:0">
-                    <div ng-if="authorizedProject('upload', project)"
-                         style="position:relative"
-                         ng-controller="attachmentNestedCtrl">
-                        <button type="button"
-                                class="btn btn-secondary btn-sm"
-                                flow-btn>
-                            <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
-                        </button>
-                        <entry:point id="attachment-add-buttons"/>
+                <div class="card-body">
+                    <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps">
+                        <div class="upload-file">
+                            <a flow-btn href="">Add file</a> or drop file
+                        </div>
+                        <div class="upload-apps">
+                            <entry:point id="attachment-add-buttons"/>
+                        </div>
                     </div>
-                    <div class="row" style="max-height: 175px; margin-top:10px;">
+                    <div class="row">
                         <div ng-include="'attachment.list.html'">
                         </div>
                     </div>
@@ -244,24 +243,21 @@
                                     <time timeago datetime="{{ activity.dateCreated }}">
                                         {{ activity.dateCreated | dateTime }}
                                     </time>
-                                    <i class="fa fa-clock-o"></i>
                                 </div>
                                 <div>
                                     {{activity.poster | userFullName}}
                                 </div>
                                 <div>
-                                    {{ activity | activityName }}
-                                    <strong ng-if="activity.code != 'delete'">
-                                        <a href ng-click="openFromId(activity)">{{ activity.label }}</a>
-                                    </strong>
-                                    <strong ng-if="activity.code == 'delete'">{{ activity.label }}</strong>
+                                    <span class="activity-name">{{ activity | activityName }}</span>
+                                    <a href ng-click="openFromId(activity)" ng-if="activity.code != 'delete'">{{ activity.label }}</a>
+                                    <span ng-if="activity.code == 'delete'">{{ activity.label }}</span>
                                 </div>
                             </div>
                         </div>
                         <hr ng-if="!$last">
                     </div>
                     <div ng-if="activities.length > 5 && !pref.showMore" class="text-center">
-                        <a href ng-click="showMore()"><i class="fa fa-caret-down"></i></a>
+                        <span ng-click="showMore()" class="toggle-more">See more</span>
                     </div>
                     <div ng-if="activities != undefined && activities.length == 0">
                         <div style="text-align: center; padding:5px; font-size:14px;">
