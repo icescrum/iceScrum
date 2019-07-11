@@ -56,7 +56,7 @@
                 minute: "about a minute",
                 minutes: "%d minutes",
                 hour: "about an hour",
-                hours: "about %d hours",
+                hours: "%d hours",
                 day: "a day",
                 days: "%d days",
                 month: "about a month",
