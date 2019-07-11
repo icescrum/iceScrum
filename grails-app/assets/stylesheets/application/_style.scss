@@ -739,7 +739,7 @@ $state-dot-size-sm: 0.5rem;
 
     .progress-bar {
       border-radius: 2px;
-      margin-right: 4px;
+      margin-right: 6px;
       background-color: $is-deep-blue;
       color: #ffffff;
 
@@ -756,6 +756,9 @@ $state-dot-size-sm: 0.5rem;
       &.bg-done {
         background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
         box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
+      }
+      &:last-of-type {
+        margin-right: 0;
       }
     }
   }

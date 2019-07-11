@@ -23,20 +23,35 @@
 <div class="drop-zone">
     <h2>${message(code: 'todo.is.ui.drop.here')}</h2>
 </div>
+<div ng-repeat="attachment in attachmentable.attachments" ng-show="$index < 10 || pref.showMore">
+    <hr ng-class="{'mt-0':$first}">
+    <div class="attachment media" ng-class="{'mb-3':$last || (attachmentable.attachments.length > 10 && !pref.showMore)}">
+        <img ng-src="{{attachment.ext }}"
+             width="27px"
+             height="27px"
+             class="align-self-center mr-3"
+             alt="{{ attachment.ext }}"/>
+        <div class="media-body">
+            <div>
+                <a target="{{:: attachment.provider ? '_blank' : '' }}"
+                   ng-show="!isPreviewable(attachment)"
+                   href="{{:: getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
+                <a ng-show="isPreviewable(attachment)"
+                   href
+                   ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="attachmentable.attachments.length > 10 && !pref.showMore" class="text-center">
+    <span ng-click="showMore()" class="toggle-more">See more</span>
+</div>
+
 <table class="table table-striped attachments">
     <tbody>
         <tr ng-repeat="attachment in attachmentable.attachments">
             <td>
                 <div class="col-xs-8">
-                    <div class="filename" title="{{ attachment.filename }}">
-                        <i ng-if=":: attachment.ext | fileicon" class="fa fa-{{:: attachment.ext | fileicon }}"></i>
-                        <a target="{{:: attachment.provider ? '_blank' : '' }}"
-                           ng-show="!isPreviewable(attachment)"
-                           href="{{:: getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
-                        <a ng-show="isPreviewable(attachment)"
-                           href
-                           ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a>
-                    </div>
                     <a href
                        ng-if=":: authorizedAttachment('update', attachment)"
                        style="margin-top: 2px; vertical-align: top;"

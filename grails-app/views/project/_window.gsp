@@ -142,10 +142,7 @@
                             <entry:point id="attachment-add-buttons"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div ng-include="'attachment.list.html'">
-                        </div>
-                    </div>
+                    <div ng-include="'attachment.list.html'"></div>
                 </div>
             </div>
         </div>
