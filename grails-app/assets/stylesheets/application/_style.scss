@@ -555,8 +555,34 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-.drop-zone {
-  display: none;
+.drop-zone.d-flex {
+  display: none !important;
+}
+
+.drop-enabled {
+  .card-body {
+    position: relative;
+  }
+  .drop-zone.d-flex {
+    display: flex !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 6px;
+    background-color: rgba(17, 17, 17, 0.8);
+    .drop-text {
+      color:#FFF;
+      font-family: "averta-bold";
+    }
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 1.25rem;
+    }
+  }
 }
 
 .slider-header {
@@ -601,6 +627,10 @@ $state-dot-size-sm: 0.5rem;
 }
 
 .sortable-moving .empty-view {
+  display: none;
+}
+
+.sortable-multiple .is-selected:not(.stack) { // HACK
   display: none;
 }
 
