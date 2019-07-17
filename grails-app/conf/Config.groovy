@@ -337,6 +337,16 @@ icescrum {
 println "| Server Timezone: ${icescrum.timezone.default}"
 println "| Java version: ${System.getProperty('java.version')}"
 
+if (System.getProperty('https.proxyPort') || System.getProperty('http.proxyPort')) {
+    println "| Proxy params sets: }"
+    if (System.getProperty('https.proxyPort')) {
+        println "| HTTPS Proxy: ${System.getProperty('https.proxyHost')}:${System.getProperty('https.proxyPort')}"
+    }
+    if (System.getProperty('http.proxyPort')) {
+        println "| HTTP Proxy: ${System.getProperty('http.proxyHost')}:${System.getProperty('http.proxyPort')}"
+    }
+}
+
 /* Headless mode */
 System.setProperty("java.awt.headless", "true")
 
