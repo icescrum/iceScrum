@@ -338,7 +338,7 @@ println "| Server Timezone: ${icescrum.timezone.default}"
 println "| Java version: ${System.getProperty('java.version')}"
 
 if (System.getProperty('https.proxyPort') || System.getProperty('http.proxyPort')) {
-    println "| HTTP(S) Proxy params sets:"
+    println "| HTTP Client will use a Proxy:"
     if (System.getProperty('https.proxyPort')) {
         println "| HTTPS Proxy: ${System.getProperty('https.proxyHost')}:${System.getProperty('https.proxyPort')}"
     }
