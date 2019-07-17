@@ -124,6 +124,25 @@ class FeatureController implements ControllerErrorHandler {
         }
     }
 
+    @Secured(['productOwner() and !archivedProject()'])
+    def rank() {
+        def features = Feature.withFeatures(params).sort { it.rank }
+        def rank = params.rank instanceof Number ? params.rank : params.rank.toInteger()
+        def (beforeRank, afterRank) = features.split { it.rank <= rank }
+        Feature.withTransaction {
+            afterRank.reverse().each { Feature feature ->
+                feature.rank = rank
+                featureService.update(feature)
+            }
+            beforeRank.each { Feature feature ->
+                feature.rank = afterRank.size() ? rank - 1 : rank
+                featureService.update(feature)
+            }
+        }
+        def returnData = features.size() > 1 ? features : features.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
     def projectParkingLotChart() {
         forward(controller: 'project', action: 'projectParkingLotChart', params: ['controllerName': controllerName])
     }

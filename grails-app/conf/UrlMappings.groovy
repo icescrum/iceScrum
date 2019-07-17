@@ -446,6 +446,7 @@ class UrlMappings {
         "401"(controller: "errors", action: "error401")
         "403"(controller: "errors", action: "error403")
         "404"(controller: "errors", action: "error404")
+        "500"(controller: "errors", action: "error403", exception: BadCredentialsException)
         "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
         "500"(controller: "errors", action: "error403", exception: NotFoundException)
         "500"(controller: 'errors', action: 'memory', exception: OutOfMemoryError)

@@ -881,9 +881,14 @@ var isApplication = angular.module('isApplication', [
                 scrollableContainerSelector: scrollableContainerSelector ? scrollableContainerSelector : '.card-body',
                 dragStart: function() {
                     $rootScope.application.sortableMoving = true;
+                    if ($state.params.storyListId || $state.params.featureListId) {
+                        $rootScope.application.sortableMultiple = true;
+                        angular.element('.as-sortable-dragging-item').addClass('stack twisted');
+                    }
                 },
                 dragEnd: function() {
                     $rootScope.application.sortableMoving = false;
+                    $rootScope.application.sortableMultiple = false;
                 }
             }
         };
