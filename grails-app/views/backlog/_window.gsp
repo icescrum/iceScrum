@@ -145,7 +145,7 @@
                 <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
                     <div class="loading-logo" ng-include="'loading.html'"></div>
                     <div class="sticky-notes grey-sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
-                         ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
+                         ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
                          ng-controller="storyBacklogCtrl"
                          as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                          is-disabled="!isSortingBacklog(backlogContainer)"
