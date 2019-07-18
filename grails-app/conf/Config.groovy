@@ -342,12 +342,12 @@ println "| Server Timezone: ${icescrum.timezone.default}"
 println "| Java version: ${System.getProperty('java.version')}"
 
 if (System.getProperty('https.proxyPort') || System.getProperty('http.proxyPort')) {
-    println "| HTTP Client will use a Proxy:"
+    println "| HTTP Client will use a Forward Proxy:"
     if (System.getProperty('https.proxyPort')) {
-        println "| HTTPS Proxy: ${System.getProperty('https.proxyHost')}:${System.getProperty('https.proxyPort')}"
+        println "| HTTPS Forward Proxy: ${System.getProperty('https.proxyHost')}:${System.getProperty('https.proxyPort')}"
     }
     if (System.getProperty('http.proxyPort')) {
-        println "| HTTP Proxy: ${System.getProperty('http.proxyHost')}:${System.getProperty('http.proxyPort')}"
+        println "| HTTP Forward Proxy: ${System.getProperty('http.proxyHost')}:${System.getProperty('http.proxyPort')}"
     }
 }
 
