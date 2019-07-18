@@ -106,6 +106,7 @@ $acceptance-test-states: tocheck, success, failed;
 
   .sticky-note-tags {
     height: 1.6875rem;
+    overflow: hidden;
 
     .tag {
       font-size: 0.625rem;

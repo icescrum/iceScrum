@@ -542,18 +542,6 @@ $state-dot-size-sm: 0.5rem;
   cursor: default;
 }
 
-.hover-container {
-  .hover-visible {
-    opacity: 0;
-  }
-
-  &:hover {
-    .hover-visible {
-      opacity: 1;
-    }
-  }
-}
-
 .drop-zone.d-flex {
   display: none !important;
 }
@@ -1121,5 +1109,16 @@ th {
   body {
     height: 100vh;
     overflow: hidden;
+  }
+  .hover-container {
+    .hover-visible {
+      visibility: hidden;
+    }
+
+    &:hover {
+      .hover-visible {
+        visibility: visible;
+      }
+    }
   }
 }

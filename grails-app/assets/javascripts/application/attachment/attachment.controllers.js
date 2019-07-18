@@ -57,7 +57,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
         if (attachment.provider && $scope.getMethod(attachment, 'getAttachmentProviderName')) {
             return $scope.getMethod(attachment, 'getAttachmentProviderName')(attachment)
         } else {
-            return attachment.provider ? '(' + attachment.provider + ')' : '';
+            return attachment.provider ? attachment.provider : '';
         }
     };
     $scope.isPreviewable = function(attachment) {

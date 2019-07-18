@@ -620,11 +620,9 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   > .card-body {
     padding-top: 0;
-    padding-bottom: 0;
   }
 
   .upload-file, .upload-apps {
-    flex: 0 0 50%;
     margin-top: 0.625rem;
     margin-bottom: 0.625rem;
     height: 2rem;
@@ -652,11 +650,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     a.filename {
       color: $is-text-color;
     }
-    .btn.btn-secondary, .attachment-remove-grey {
-      visibility: hidden;
-    }
     .btn.btn-secondary {
-      visibility: hidden;
       margin-left: 0.25rem;
       margin-right: 0.25rem;
       color: $is-text-color;
@@ -671,18 +665,29 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       a.filename, .size {
         color: $is-text-color-link;
       }
-      .btn.btn-secondary, .attachment-remove-grey {
-        visibility: visible;
-      }
     }
     .size {
       margin-left: 1.25rem;
       font-size: 0.75rem;
     }
     .attachment-action {
-      margin-top: 0.55rem;
       display: inline-block;
       @include square-background(0.7rem);
+    }
+    .attachment-type {
+      padding-left: 45px;
+      background-size: 30px !important;
+      background: no-repeat left center;
+      line-height:30px;
+    }
+    .attachment-type-pdf {
+      background-image: url("attachment-type-pdf.svg");
+    }
+    .attachment-type-media {
+      background-image: url("attachment-type-media.svg");
+    }
+    .attachment-type-picture {
+      background-image: url("attachment-type-picture.svg");
     }
     .attachment-remove-grey {
       margin-left: 1.25rem;
@@ -726,7 +731,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       }
     }
   }
-
 }
 
 ////////////////////

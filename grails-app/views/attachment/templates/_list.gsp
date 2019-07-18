@@ -20,42 +20,38 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="attachment.list.html">
-<div ng-repeat="attachment in attachmentable.attachments" ng-show="$index < 10 || pref.showMore['attachments']">
+<div ng-repeat="attachment in attachmentable.attachments" class="hover-container" ng-show="$index < 10 || pref.showMore['attachments']">
     <hr ng-class="{'mt-0':$first}">
     <div class="attachment media d-flex align-content-stretch flex-wrap" ng-class="{'mb-3':$last || (attachmentable.attachments.length > 10 && !pref.showMore['attachments'])}">
-        <img ng-src="{{:: attachment.ext | fileicon }}"
-             width="30px"
-             height="30px"
-             class="align-self-center mr-3"
-             alt="{{:: attachment.ext | fileicon }}"/>
-        <div class="media-body flex-grow-1" style="line-height:30px;">
-            <div class="d-flex">
+        <div class="media-body flex-grow-1 attachment-type {{:: attachment.provider ? 'attachment-type-'+getAttachmentProviderName(attachment) : (attachment.ext | fileicon) }}">
+            <div class="d-flex align-items-center justify-content-end flex-wrap">
                 <a ng-if="!isPreviewable(attachment)"
-                   class="filename flex-grow-1"
+                   class="filename flex-grow-1 order-0 mb-1 mb-md-0"
                    target="{{:: attachment.provider ? '_blank' : '' }}"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
                 <a ng-if="isPreviewable(attachment)"
-                   class="filename flex-grow-1"
+                   class="filename flex-grow-1 order-0 mb-1 mb-md-0"
                    ng-click="showPreview(attachment, attachmentable, clazz)"
                    href>{{ attachment.filename }}</a>
-                <a ng-if=":: authorizedAttachment('update', attachment)"
-                   class="btn btn-secondary btn-sm"
-                   ng-click="showEditAttachmentName(attachment, attachmentable)"
-                   href>${message(code: 'todo.is.ui.attachment.edit')}</a>
+                <div class="w-100 order-2 d-block d-md-none"></div>
                 <a ng-if=":: isAttachmentEditable(attachment)"
-                   class="btn btn-secondary btn-sm"
+                   class="btn btn-secondary btn-sm hover-visible order-3 order-md-2"
                    ng-click=":: editAttachment(attachment, attachmentable, clazz)"
                    href>Edit</a>
+                <a ng-if=":: authorizedAttachment('update', attachment)"
+                   class="btn btn-secondary btn-sm hover-visible order-4 order-md-3"
+                   ng-click="showEditAttachmentName(attachment, attachmentable)"
+                   href>${message(code: 'todo.is.ui.attachment.edit')}</a>
                 <a ng-if=":: isAttachmentDownloadable(attachment)"
-                   class="btn btn-secondary btn-sm"
+                   class="btn btn-secondary btn-sm hover-visible order-5 order-md-4"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">Download</a>
                 <a ng-if=":: !isAttachmentDownloadable(attachment)"
-                   class="btn btn-secondary btn-sm"
+                   class="btn btn-secondary btn-sm hover-visible order-6 order-md-5"
                    target="_blank"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">View</a>
-                <div ng-if=":: attachment.length > 0" class="size">{{:: attachment.length | filesize }}</div>
+                <div ng-if=":: attachment.length > 0" class="size order-sm-1 order-md-6">{{:: attachment.length | filesize }}</div>
                 <a ng-if=":: authorizedAttachment('delete', attachment)"
-                   class="attachment-action attachment-remove-grey"
+                   class="attachment-action attachment-remove-grey hover-visible order-7"
                    ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
                    href></a>
             </div>
@@ -65,12 +61,7 @@
 <div ng-repeat="file in $flow.files | flowFilesNotCompleted">
     <hr ng-class="{'mt-0':!attachmentable.attachments}">
     <div class="attachment media d-flex align-content-stretch flex-wrap" ng-class="{'mb-3':$last}">
-        <img ng-src="{{:: file.name | fileicon }}"
-             width="30px"
-             height="30px"
-             class="align-self-center mr-3"
-             alt="{{:: file.name | fileicon }}"/>
-        <div class="media-body flex-grow-1" style="line-height:30px;">
+        <div class="media-body flex-grow-1 attachment-type {{:: attachment.ext | fileicon }}">
             <div class="d-flex uploading" ng-class="{'paused':file.paused}">
                 <span class="flex-grow-1">{{:: file.name }}</span>
                 <div class="size" ng-if="file.isUploading() || file.paused">{{file.sizeUploaded() / file.size * 100 | number:0}}%</div>

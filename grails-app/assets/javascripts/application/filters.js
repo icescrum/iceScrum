@@ -250,52 +250,28 @@ filters
                 }
                 var icon;
                 switch (ext) {
-                    case 'xls':
-                    case 'csv':
-                    case 'xlsx':
-                        icon = 'file-excel-o';
-                        break;
                     case 'pdf':
-                        icon = 'file-pdf-o';
-                        break;
-                    case 'txt':
-                        icon = 'file-text-o';
-                        break;
-                    case 'doc':
-                    case 'docx':
-                        icon = 'file-word-o';
-                        break;
-                    case 'ppt':
-                    case 'pptx':
-                        icon = 'file-powerpoint-o';
-                        break;
-                    case 'zip':
-                    case 'rar':
-                    case 'gz':
-                    case 'gzip':
-                        icon = 'file-archive-o';
+                        icon = 'attachment-type-pdf';
                         break;
                     case 'png':
                     case 'gif':
                     case 'jpg':
                     case 'jpeg':
                     case 'bmp':
-                        icon = 'file-image-o';
+                        icon = 'attachment-type-picture';
                         break;
                     case 'mp3':
                     case 'wave':
                     case 'aac':
-                        icon = 'file-audio-o';
-                        break;
                     case 'avi':
                     case 'flv':
                     case 'mp4':
                     case 'mpg':
                     case 'mpeg':
-                        icon = 'file-movie-o';
+                        icon = 'attachment-type-media';
                         break;
                     default :
-                        icon = 'file-o';
+                        icon = 'attachment-type-other attachment-type-' + ext;
                 }
                 return icon;
             }

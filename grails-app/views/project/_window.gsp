@@ -79,15 +79,14 @@
                         </div>
                     </div>
                     <div class="row release-dates">
-                        <div class="col-md-6"><strong>{{ release.startDate | dayShort }}</strong></div>
-                        <div class="col-md-6 text-right"><strong>{{ release.endDate | dayShort }}</strong></div>
+                        <div class="col-6"><strong>{{ release.startDate | dayShort }}</strong></div>
+                        <div class="col-6 text-right"><strong>{{ release.endDate | dayShort }}</strong></div>
                     </div>
                     <ng-include src="'release.timeline.html'" ng-controller="releaseTimelineCtrl"></ng-include>
                     <div ng-if="currentOrNextSprint.goal" class="sprint-goal">
                         <div class="sprint-goal-label">{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</div>
                         <div>{{ currentOrNextSprint.goal }}</div>
                     </div>
-                    <div class=""></div>
                 </div>
             </div>
             <div class="card hover-container">
@@ -140,11 +139,11 @@
                             <span class="drop-text">${message(code: 'todo.is.ui.drop.here')}</span>
                         </div>
                     </div>
-                    <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps">
-                        <div class="upload-file">
+                    <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
+                        <div class="upload-file col-12 col-md-6">
                             <span class="attachment-icon"></span><span flow-btn class="link">Add file</span><span class="d-none d-md-inline"> or drop file</span>
                         </div>
-                        <div class="upload-apps">
+                        <div class="upload-apps col-12 col-md-6">
                             <entry:point id="attachment-add-buttons"/>
                         </div>
                     </div>
