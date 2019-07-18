@@ -113,10 +113,9 @@ body {
 // General style
 ////////////////////
 
-a {
-  &:not(.btn), &:not(.btn):hover, &:not(.btn):visited {
-    color: $blue;
-  }
+  .link, .link:hover, .link:visited {
+  color: $blue;
+  cursor:pointer;
 }
 
 .text-accent {

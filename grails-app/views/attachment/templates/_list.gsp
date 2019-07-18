@@ -20,109 +20,87 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="attachment.list.html">
-<div class="drop-zone">
-    <h2>${message(code: 'todo.is.ui.drop.here')}</h2>
-</div>
-<div ng-repeat="attachment in attachmentable.attachments" ng-show="$index < 10 || pref.showMore">
+<div ng-repeat="attachment in attachmentable.attachments" ng-show="$index < 10 || pref.showMore['attachments']">
     <hr ng-class="{'mt-0':$first}">
-    <div class="attachment media" ng-class="{'mb-3':$last || (attachmentable.attachments.length > 10 && !pref.showMore)}">
-        <img ng-src="{{attachment.ext }}"
-             width="27px"
-             height="27px"
+    <div class="attachment media d-flex align-content-stretch flex-wrap" ng-class="{'mb-3':$last || (attachmentable.attachments.length > 10 && !pref.showMore['attachments'])}">
+        <img ng-src="{{:: attachment.ext | fileicon }}"
+             width="30px"
+             height="30px"
              class="align-self-center mr-3"
-             alt="{{ attachment.ext }}"/>
-        <div class="media-body">
-            <div>
-                <a target="{{:: attachment.provider ? '_blank' : '' }}"
-                   ng-show="!isPreviewable(attachment)"
+             alt="{{:: attachment.ext | fileicon }}"/>
+        <div class="media-body flex-grow-1" style="line-height:30px;">
+            <div class="d-flex">
+                <a ng-if="!isPreviewable(attachment)"
+                   class="filename flex-grow-1"
+                   target="{{:: attachment.provider ? '_blank' : '' }}"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
-                <a ng-show="isPreviewable(attachment)"
-                   href
-                   ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a>
+                <a ng-if="isPreviewable(attachment)"
+                   class="filename flex-grow-1"
+                   ng-click="showPreview(attachment, attachmentable, clazz)"
+                   href>{{ attachment.filename }}</a>
+                <a ng-if=":: authorizedAttachment('update', attachment)"
+                   class="btn btn-secondary btn-sm"
+                   ng-click="showEditAttachmentName(attachment, attachmentable)"
+                   href>${message(code: 'todo.is.ui.attachment.edit')}</a>
+                <a ng-if=":: isAttachmentEditable(attachment)"
+                   class="btn btn-secondary btn-sm"
+                   ng-click=":: editAttachment(attachment, attachmentable, clazz)"
+                   href>Edit</a>
+                <a ng-if=":: isAttachmentDownloadable(attachment)"
+                   class="btn btn-secondary btn-sm"
+                   href="{{:: getUrl(clazz, attachmentable, attachment) }}">Download</a>
+                <a ng-if=":: !isAttachmentDownloadable(attachment)"
+                   class="btn btn-secondary btn-sm"
+                   target="_blank"
+                   href="{{:: getUrl(clazz, attachmentable, attachment) }}">View</a>
+                <div ng-if=":: attachment.length > 0" class="size">{{:: attachment.length | filesize }}</div>
+                <a ng-if=":: authorizedAttachment('delete', attachment)"
+                   class="attachment-action attachment-remove-grey"
+                   ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
+                   href></a>
             </div>
         </div>
     </div>
 </div>
-<div ng-if="attachmentable.attachments.length > 10 && !pref.showMore" class="text-center">
-    <span ng-click="showMore()" class="toggle-more">See more</span>
+<div ng-repeat="file in $flow.files | flowFilesNotCompleted">
+    <hr ng-class="{'mt-0':!attachmentable.attachments}">
+    <div class="attachment media d-flex align-content-stretch flex-wrap" ng-class="{'mb-3':$last}">
+        <img ng-src="{{:: file.name | fileicon }}"
+             width="30px"
+             height="30px"
+             class="align-self-center mr-3"
+             alt="{{:: file.name | fileicon }}"/>
+        <div class="media-body flex-grow-1" style="line-height:30px;">
+            <div class="d-flex uploading" ng-class="{'paused':file.paused}">
+                <span class="flex-grow-1">{{:: file.name }}</span>
+                <div class="size" ng-if="file.isUploading() || file.paused">{{file.sizeUploaded() / file.size * 100 | number:0}}%</div>
+                <div class="progress" ng-if="file.isUploading() || file.paused">
+                    <div class="progress-bar" role="progressbar" ng-style="{width: (file.sizeUploaded() / file.size * 100) + '%'}"></div>
+                </div>
+                <a ng-if="!file.paused && file.isUploading()"
+                   class="attachment-action attachment-pause-grey"
+                   ng-click="file.pause()"
+                   href></a>
+                <a ng-if="file.paused"
+                   class="attachment-action attachment-resume-grey"
+                   ng-click="file.resume()"
+                   href></a>
+                <a ng-if="!file.isComplete()"
+                   class="attachment-action attachment-stop-grey"
+                   ng-click="file.cancel()"
+                   href></a>
+                <a ng-if="file.error"
+                   class="attachment-action attachment-retry-grey"
+                   ng-click="file.retry()"
+                   href></a>
+                <a ng-if=":: authorizedAttachment('delete', attachment)"
+                   class="attachment-action attachment-remove-grey hidden"></a>
+            </div>
+        </div>
+    </div>
 </div>
-
-<table class="table table-striped attachments">
-    <tbody>
-        <tr ng-repeat="attachment in attachmentable.attachments">
-            <td>
-                <div class="col-xs-8">
-                    <a href
-                       ng-if=":: authorizedAttachment('update', attachment)"
-                       style="margin-top: 2px; vertical-align: top;"
-                       class="small"
-                       ng-click="showEditAttachmentName(attachment, attachmentable)">(${message(code: 'todo.is.ui.attachment.edit')})</a>
-                    <div><small ng-if=":: attachment.length > 0">{{:: attachment.length | filesize }}</small> <small>{{ getAttachmentProviderName(attachment) }}</small></div>
-                </div>
-                <div class="col-xs-4 text-right">
-                    <div class="btn-group">
-                        <a ng-if=":: isAttachmentEditable(attachment)"
-                           ng-click=":: editAttachment(attachment, attachmentable, clazz)"
-                           defer-tooltip="${message(code: 'is.button.update')}"
-                           class="btn btn-secondary btn-sm"><i class="fa fa-pencil"></i></a>
-                        <a href="{{:: getUrl(clazz, attachmentable, attachment) }}"
-                           ng-if=":: isAttachmentDownloadable(attachment)"
-                           defer-tooltip="${message(code: 'todo.is.ui.attachment.download')}"
-                           class="btn btn-secondary btn-sm"><i class="fa fa-download"></i></a>
-                        <a href="{{:: getUrl(clazz, attachmentable, attachment) }}"
-                           ng-if=":: !isAttachmentDownloadable(attachment)"
-                           target="_blank"
-                           defer-tooltip="${message(code: 'todo.is.ui.attachment.open')}"
-                           class="btn btn-secondary btn-sm"><i class="fa fa-external-link"></i></a>
-                        <button ng-click="showPreview(attachment, attachmentable, clazz)" type="button"
-                                class="btn btn-sm btn-secondary ng-hide" ng-show="isPreviewable(attachment)"
-                                defer-tooltip="${message(code: 'todo.is.ui.attachment.preview')}">
-                            <i class="fa fa-search"></i>
-                        </button>
-                        <button ng-if=":: authorizedAttachment('delete', attachment)"
-                                ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
-                                defer-tooltip="${message(code: 'default.button.delete.label')}"
-                                type="button" class="btn btn-danger btn-sm">
-                            <i class="fa fa-close"></i>
-                        </button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr ng-repeat="file in $flow.files | flowFilesNotCompleted">
-            <td>
-                <div class="col-sm-8">
-                    <div class="filename" title="{{file.name}}"><i class="fa fa-{{ file.name | fileicon }}"></i> {{ file.name }}</div>
-                    <div><small>{{ file.size | filesize }}</small></div>
-                </div>
-                <div class="col-sm-4 text-right">
-                    <div class="progress ng-hide" ng-show="!file.paused && file.isUploading()">
-                        <div class="progress-bar" role="progressbar" ng-style="{width: (file.sizeUploaded() / file.size * 100) + '%'}">
-                            {{file.sizeUploaded() / file.size * 100 | number:0}}%
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-warning ng-hide" defer-tooltip="${message(code: 'todo.is.ui.attachment.pause')}" type="button" ng-click="file.pause()" ng-show="!file.paused && file.isUploading()">
-                            <i class="fa fa-pause"></i>
-                        </button>
-                        <button class="btn btn-sm btn-warning ng-hide" defer-tooltip="${message(code: 'todo.is.ui.attachment.resume')}" type="button" ng-click="file.resume()" ng-show="file.paused">
-                            <i class="fa fa-play"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger ng-hide" defer-tooltip="${message(code: 'is.button.cancel')}" type="button" ng-click="file.cancel()" ng-show="file.isComplete()">
-                            <i class="fa fa-close"></i>
-                        </button>
-                        <button class="btn btn-sm btn-info ng-hide" defer-tooltip="${message(code: 'todo.is.ui.attachment.retry')}" type="button" ng-click="file.retry()" ng-show="file.error">
-                            <i class="fa fa-refresh"></i>
-                        </button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr ng-show="attachmentable.attachments !== undefined && attachmentable.attachments.length == 0">
-            <td class="empty-content">
-                <small>${message(code: 'todo.is.ui.attachment.empty')}</small>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div ng-if="attachmentable.attachments.length > 10 && !pref.showMore['attachments']" class="text-center">
+    <span ng-click="showMore('attachments')" class="toggle-more">See more</span>
+</div>
 </script>
+

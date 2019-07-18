@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="10px" viewBox="0 0 8 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>budicon-pause</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Kit" transform="translate(-1323.000000, -1177.000000)" fill="#687583">
+            <g id="budicon-pause" transform="translate(1323.000000, 1177.000000)">
+                <path d="M2.8,0.714285714 L2.8,9.28571429 C2.8,9.66666667 2.47333333,10 2.1,10 L0.7,10 C0.326666667,10 0,9.66666667 0,9.28571429 L0,0.714285714 C0,0.333333333 0.326666667,0 0.7,0 L2.1,0 C2.47333333,0 2.8,0.333333333 2.8,0.714285714 Z M7.3,0 L5.9,0 C5.52666667,0 5.2,0.333333333 5.2,0.714285714 L5.2,9.28571429 C5.2,9.66666667 5.52666667,10 5.9,10 L7.3,10 C7.67333333,10 8,9.66666667 8,9.28571429 L8,0.714285714 C8,0.333333333 7.67333333,0 7.3,0 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

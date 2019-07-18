@@ -134,9 +134,15 @@
                     </span>
                 </div>
                 <div class="card-body">
+                    <div class="drop-zone d-flex align-items-center justify-content-center">
+                        <div>
+                            <asset:image src="application/upload.svg" width="70" height="70"/>
+                            <span class="drop-text">${message(code: 'todo.is.ui.drop.here')}</span>
+                        </div>
+                    </div>
                     <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps">
                         <div class="upload-file">
-                            <a flow-btn href="">Add file</a> or drop file
+                            <span class="attachment-icon"></span><span flow-btn class="link">Add file</span><span class="d-none d-md-inline"> or drop file</span>
                         </div>
                         <div class="upload-apps">
                             <entry:point id="attachment-add-buttons"/>
@@ -228,7 +234,7 @@
                     </small>
                 </div>
                 <div class="card-body activities">
-                    <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore">
+                    <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">
                         <div class="activity media">
                             <img ng-src="{{activity.poster | userAvatar}}"
                                  width="37px"
@@ -246,15 +252,15 @@
                                 </div>
                                 <div>
                                     <span class="activity-name">{{ activity | activityName }}</span>
-                                    <a href ng-click="openFromId(activity)" ng-if="activity.code != 'delete'">{{ activity.label }}</a>
+                                    <a href ng-click="openFromId(activity)" ng-if="activity.code != 'delete'" class="link">{{ activity.label }}</a>
                                     <span ng-if="activity.code == 'delete'">{{ activity.label }}</span>
                                 </div>
                             </div>
                         </div>
                         <hr ng-if="!$last">
                     </div>
-                    <div ng-if="activities.length > 5 && !pref.showMore" class="text-center">
-                        <span ng-click="showMore()" class="toggle-more">See more</span>
+                    <div ng-if="activities.length > 5 && !pref.showMore['activities']" class="text-center">
+                        <span ng-click="showMore('activities')" class="toggle-more">See more</span>
                     </div>
                     <div ng-if="activities != undefined && activities.length == 0">
                         <div style="text-align: center; padding:5px; font-size:14px;">
