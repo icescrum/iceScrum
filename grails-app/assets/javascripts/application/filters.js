@@ -257,6 +257,7 @@ filters
                     case 'gif':
                     case 'jpg':
                     case 'jpeg':
+                    case 'svg':
                     case 'bmp':
                         icon = 'attachment-type-picture';
                         break;

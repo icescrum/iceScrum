@@ -22,31 +22,28 @@
 --}%
 <script type="text/ng-template" id="attachment.preview.pdf.html">
 <is:modal title="{{ title }}">
-    <div class="form-text">
-        <a href="{{ pdfURL }}" class="btn btn-info"><i class="fa fa-download"></i></a>
-        <div class="btn-group">
-            <button class="btn btn-secondary" ng-click="prevPage()"><i class="fa fa-angle-left"></i></button>
-            <button class="btn btn-secondary" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
-            <button class="btn btn-secondary" ng-click="zoomIn()"><i class="fa fa-search-plus"></i></button>
-            <button class="btn btn-secondary" ng-click="zoomOut()"><i class="fa fa-search-minus"></i></button>
+    <div class="d-flex justify-content-end">
+        <div class="flex-grow-1 nb-pages">{{ currentPage + '/' + totalPages }}</div>
+        <div class="mb-3">
+            <button class="btn btn-secondary btn-sm" ng-click="prevPage()"><i class="fa fa-angle-left"></i></button>
+            <button class="btn btn-secondary btn-sm" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
+            <button class="btn btn-secondary btn-sm" ng-click="zoomIn()"><i class="fa fa-search-plus"></i></button>
+            <button class="btn btn-secondary btn-sm" ng-click="zoomOut()"><i class="fa fa-search-minus"></i></button>
+            <a href="{{ pdfURL }}" class="btn btn-secondary btn-sm ml-3">download</a>
         </div>
-        <span class="float-right">{{ currentPage + '/' + totalPages }}</span>
     </div>
-    <div class="pdf-viewer">
+    <div class="pdf-viewer mt-2">
         <pdfviewer src="{{ pdfURL }}" on-page-load='pageLoaded(page,total)' id="viewer" width="page-fit"></pdfviewer>
     </div>
 </is:modal>
 </script>
 <script type="text/ng-template" id="attachment.preview.picture.html">
 <is:modal title="{{ title }}">
-    <div class="form-text">
-        <a href="{{ srcURL }}" class="btn btn-info"><i class="fa fa-download"></i></a>
+    <div class="text-right">
+        <a href="{{ srcURL }}" class="btn btn-secondary btn-sm mb-3">Download</a>
     </div>
-    <div class="text-center">
+    <div class="text-center mt-2">
         <img ng-src="{{ srcURL }}" style="max-width:100%" title="{{ title }}"/>
-    </div>
-    <div class="form-text">
-        <a href="{{ srcURL }}" class="btn btn-info"><i class="fa fa-download"></i></a>
     </div>
 </is:modal>
 </script>
