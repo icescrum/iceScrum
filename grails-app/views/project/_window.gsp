@@ -24,19 +24,19 @@
     <div class="d-flex flex-wrap panels">
         <div class="panel-column col-md-6">
             <div class="card hover-container project-summary">
-                <div class="card-header">
-                    <span class="card-title workspace-title">
+                <div class="card-header d-md-flex justify-content-md-between align-items-end">
+                    <div class="card-title workspace-title text-truncate">
                         <span class="sharpie-highlight">{{ project.name }}</span>
                         <entry:point id="window-project-name-right"/>
-                    </span>
-                    <div class="btn-toolbar float-right">
+                    </div>
+                    <div class="btn-toolbar ml-1 mt-1 mt-lg-0 align-items-end d-block d-md-flex flex-nowrap">
                         <button ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
-                                class="btn btn-secondary btn-sm hover-visible"
+                                class="btn btn-secondary btn-sm hover-visible text-danger text-nowrap"
                                 ng-click="showProjectEditModal('administration')"
                                 type="button">
                             ${message(code: 'is.ui.project.sample.delete')}
                         </button>
-                        <button class="btn btn-secondary btn-sm hover-visible"
+                        <button class="btn btn-secondary btn-sm hover-visible text-nowrap"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
                                 type="button">
@@ -44,12 +44,12 @@
                         </button>
                         <a ng-if="authorizedFeature('create')"
                            href="#/feature/new"
-                           class="btn btn-secondary btn-sm">${message(code: "todo.is.ui.feature.new")}</a>
+                           class="btn btn-secondary btn-sm text-nowrap">${message(code: "todo.is.ui.feature.new")}</a>
                         <a ui-sref="backlog.backlog.story.new({elementId: 'sandbox'})"
-                           class="btn btn-secondary btn-sm">${message(code: "todo.is.ui.story.new")}</a>
+                           class="btn btn-secondary btn-sm text-nowrap">${message(code: "todo.is.ui.story.new")}</a>
                         <a ng-if="currentOrNextSprint && authorizedTask('create', {sprint: currentOrNextSprint}) && !(session.po() && !session.sm())"
                            ui-sref="taskBoard.task.new({sprintId: currentOrNextSprint.id})"
-                           class="btn btn-secondary btn-sm">${message(code: "todo.is.ui.task.new")}</a>
+                           class="btn btn-secondary btn-sm text-nowrap">${message(code: "todo.is.ui.task.new")}</a>
                         <entry:point id="project-dashboard-buttons"/>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
             </div>
         </div>
         <div class="panel-column col-md-6">
-            <div class="card" ng-controller="chartCtrl">
+            <div class="card project-indicators" ng-controller="chartCtrl">
                 <div class="card-header" ng-controller="projectChartCtrl">
                     <span class="card-title">
                         ${message(code: 'is.ui.project.chart.title')}

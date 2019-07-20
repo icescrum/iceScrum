@@ -110,7 +110,8 @@
 
       .workspace-title {
         font-size: 2.8125rem;
-        line-height: 0.49;
+        line-height: 1em;
+        margin-bottom: 0 !important;
       }
     }
 
@@ -540,6 +541,16 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 ////////////////////
 
 .project-summary {
+  &.card {
+    margin-top: 0 !important;
+  }
+  .card-header {
+    padding-top: 1.55rem;
+    padding-bottom: 0.25rem !important;
+    .btn-toolbar .btn {
+      margin-bottom: 0.50rem;
+    }
+  }
 
   .avatars-and-stats {
     display: flex;

@@ -58,7 +58,7 @@
                         </div>
                         <g:if test="${workspace.name}">
                             <div class="workspace-icon fi-${workspace.name}"></div>
-                            <span class="workspace-title text-ellipsis">{{ workspace.name }}</span>
+                            <span class="workspace-title text-truncate">{{ workspace.name }}</span>
                         </g:if>
                     </g:if>
                 </a>

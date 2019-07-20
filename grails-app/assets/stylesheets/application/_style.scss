@@ -186,6 +186,7 @@ nav.navbar {
       .workspace-title {
         font-family: $is-font-family-bold;
         padding-top: 0.125rem;
+        max-width: 150px;
       }
 
       .fi-private, .fi-public {
@@ -476,6 +477,15 @@ $state-dot-size-sm: 0.5rem;
 
   &.btn-icon-close {
     @include background-image-retina('close'); // Use png at low res screen for beter rendering
+  }
+}
+
+.btn.text-danger {
+  &:not(:hover) {
+    box-shadow: 0 0 0 1px $is-red inset;
+  }
+  &:hover {
+    box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-4;
   }
 }
 
