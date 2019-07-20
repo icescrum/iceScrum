@@ -250,8 +250,29 @@ filters
                 }
                 var icon;
                 switch (ext) {
+                    case 'doc':
+                    case 'docx':
+                        icon = 'attachment-type-docx';
+                        break;
+                    case 'xls':
+                    case 'xlsx':
+                        icon = 'attachment-type-xlsx';
+                        break;
+                    case 'ppt':
+                    case 'pptx':
+                        icon = 'attachment-type-pptx';
+                        break;
                     case 'pdf':
                         icon = 'attachment-type-pdf';
+                        break;
+                    case 'psd':
+                        icon = 'attachment-type-psd';
+                        break;
+                    case 'ai':
+                        icon = 'attachment-type-ai';
+                        break;
+                    case 'idml':
+                        icon = 'attachment-type-idml';
                         break;
                     case 'png':
                     case 'gif':

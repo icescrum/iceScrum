@@ -693,14 +693,11 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       background: no-repeat left center;
       line-height: 30px;
     }
-    .attachment-type-pdf {
-      background-image: url("attachment-type-pdf.svg");
-    }
-    .attachment-type-media {
-      background-image: url("attachment-type-media.svg");
-    }
-    .attachment-type-picture {
-      background-image: url("attachment-type-picture.svg");
+
+    @each $type in (pdf, media, picture, pptx, docx, xlsx, psd, ai, idml) {
+      .attachment-type-#{$type} {
+        background-image: url("attachment-type-#{$type}.svg");
+      }
     }
     .attachment-type-default {
       background-image: url("attachment-type-default.svg");
