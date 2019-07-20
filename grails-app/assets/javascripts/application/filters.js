@@ -272,7 +272,7 @@ filters
                         icon = 'attachment-type-media';
                         break;
                     default :
-                        icon = 'attachment-type-other attachment-type-' + ext;
+                        icon = 'attachment-type-default attachment-type-' + ext;
                 }
                 return icon;
             }

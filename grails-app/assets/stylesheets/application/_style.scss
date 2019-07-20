@@ -113,9 +113,13 @@ body {
 // General style
 ////////////////////
 
-  .link, .link:hover, .link:visited {
+.text-truncate-fix {
+  width: 1px;
+}
+
+.link, .link:hover, .link:visited {
   color: $blue;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .text-accent {
@@ -561,7 +565,7 @@ $state-dot-size-sm: 0.5rem;
     background-color: rgba(17, 17, 17, 0.8);
     z-index: 100;
     .drop-text {
-      color:#FFF;
+      color: #FFF;
       font-family: "averta-bold";
     }
     img {
@@ -1111,15 +1115,9 @@ th {
     height: 100vh;
     overflow: hidden;
   }
-  .hover-container {
+  .hover-container:not(:hover) {
     .hover-visible {
-      visibility: hidden;
-    }
-
-    &:hover {
-      .hover-visible {
-        visibility: visible;
-      }
+      display: none;
     }
   }
 }

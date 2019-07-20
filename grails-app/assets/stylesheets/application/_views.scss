@@ -702,6 +702,9 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     .attachment-type-picture {
       background-image: url("attachment-type-picture.svg");
     }
+    .attachment-type-default {
+      background-image: url("attachment-type-default.svg");
+    }
     .attachment-remove-grey {
       margin-left: 1.25rem;
       background-image: url("attachment-remove-grey.svg");

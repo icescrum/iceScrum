@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="27px" viewBox="0 0 27 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Group 31 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="8.48044693 0 10.9454717 3.35195531 8.48044693 3.35195531"></polygon>
+        <filter x="-81.1%" y="-29.8%" width="262.3%" height="219.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0666666667   0 0 0 0 0.0666666667   0 0 0 0 0.0666666667  0 0 0 0.356600996 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Kit" transform="translate(-60.000000, -233.000000)">
+            <g id="Group-31-Copy" transform="translate(60.000000, 233.000000)">
+                <rect id="Rectangle" fill="#F4F4F9" fill-rule="nonzero" x="0" y="0" width="27" height="27"></rect>
+                <g id="Group-9-Copy" transform="translate(8.000000, 6.000000)">
+                    <g id="Group">
+                        <polygon id="Rectangle-27" fill="#687583" fill-rule="nonzero" points="0 0 8.4735227 0 10.9385475 3.35195531 10.9385475 14.8743017 0 14.8743017"></polygon>
+                        <g id="Rectangle-28">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

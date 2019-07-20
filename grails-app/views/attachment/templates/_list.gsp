@@ -26,32 +26,31 @@
         <div class="media-body flex-grow-1 attachment-type {{:: attachment.provider ? 'attachment-type-'+getAttachmentProviderName(attachment) : (attachment.ext | fileicon) }}">
             <div class="d-flex align-items-center justify-content-end flex-wrap">
                 <a ng-if="!isPreviewable(attachment)"
-                   class="filename flex-grow-1 order-0 mb-1 mb-md-0"
+                   class="filename flex-grow-1 mb-1 mb-md-0 text-truncate text-truncate-fix"
                    target="{{:: attachment.provider ? '_blank' : '' }}"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
                 <a ng-if="isPreviewable(attachment)"
-                   class="filename flex-grow-1 order-0 mb-1 mb-md-0"
+                   class="filename flex-grow-1 mb-1 mb-md-0 text-truncate text-truncate-fix"
                    ng-click="showPreview(attachment, attachmentable, clazz)"
                    href>{{ attachment.filename }}</a>
-                <div class="w-100 order-2 d-block d-md-none"></div>
                 <a ng-if=":: isAttachmentEditable(attachment)"
-                   class="btn btn-secondary btn-sm hover-visible order-3 order-md-2"
+                   class="btn btn-secondary btn-sm hover-visible"
                    ng-click=":: editAttachment(attachment, attachmentable, clazz)"
                    href>Edit</a>
                 <a ng-if=":: authorizedAttachment('update', attachment)"
-                   class="btn btn-secondary btn-sm hover-visible order-4 order-md-3"
+                   class="btn btn-secondary btn-sm hover-visible"
                    ng-click="showEditAttachmentName(attachment, attachmentable)"
                    href>${message(code: 'todo.is.ui.attachment.edit')}</a>
                 <a ng-if=":: isAttachmentDownloadable(attachment)"
-                   class="btn btn-secondary btn-sm hover-visible order-5 order-md-4"
+                   class="btn btn-secondary btn-sm hover-visible"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">Download</a>
                 <a ng-if=":: !isAttachmentDownloadable(attachment)"
-                   class="btn btn-secondary btn-sm hover-visible order-6 order-md-5"
+                   class="btn btn-secondary btn-sm hover-visible"
                    target="_blank"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">View</a>
-                <div ng-if=":: attachment.length > 0" class="size order-sm-1 order-md-6">{{:: attachment.length | filesize }}</div>
+                <div ng-if=":: attachment.length > 0" class="size">{{:: attachment.length | filesize }}</div>
                 <a ng-if=":: authorizedAttachment('delete', attachment)"
-                   class="attachment-action attachment-remove-grey hover-visible order-7"
+                   class="attachment-action attachment-remove-grey hover-visible"
                    ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
                    href></a>
             </div>
