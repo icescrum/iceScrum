@@ -140,10 +140,10 @@
                         </div>
                     </div>
                     <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
-                        <div class="upload-file col-12 col-md-6">
+                        <div class="upload-file col-6">
                             <span class="attachment-icon"></span><span flow-btn class="link">Add file</span><span class="d-none d-md-inline"> or drop file</span>
                         </div>
-                        <div class="upload-apps col-12 col-md-6">
+                        <div class="upload-apps col-6">
                             <entry:point id="attachment-add-buttons"/>
                         </div>
                     </div>
