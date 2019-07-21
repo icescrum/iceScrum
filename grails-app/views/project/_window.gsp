@@ -141,7 +141,7 @@
                     </div>
                     <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
                         <div class="upload-file col-6">
-                            <span class="attachment-icon"></span><span flow-btn class="link">Add file </span><span class="d-none d-md-inline">or drop file</span>
+                            <span class="attachment-icon"></span><span flow-btn class="link">Add file</span><span class="d-none d-md-inline">or drop file</span>
                         </div>
                         <div class="upload-apps col-6">
                             <entry:point id="attachment-add-buttons"/>
@@ -158,26 +158,13 @@
                         ${message(code: 'is.ui.project.chart.title')}
                     </span>
                     <div class="btn-toolbar float-right">
-                        <entry:point id="dashboard-chart-toolbar"/>
-                        <div class="btn-group">
-                            <button class="btn btn-secondary btn-sm"
-                                    ng-click="openChartInModal(chartParams)"
-                                    type="button">
-                                <i class="fa fa-search-plus"></i>
-                            </button>
-                            <button class="btn btn-secondary btn-sm"
-                                    ng-click="saveChart(chartParams)"
-                                    type="button">
-                                <i class="fa fa-floppy-o"></i>
-                            </button>
-                        </div>
                         <div uib-dropdown
                              class="btn-group btn-group-sm">
-                            <button class="btn btn-secondary btn-sm"
+                            <button class="btn btn-secondary btn-sm btn-color-lighter"
                                     type="button"
                                     aria-label="${message(code: 'todo.is.ui.charts')}"
                                     uib-dropdown-toggle>
-                                <i class="fa fa-bar-chart"></i>
+                                {{ options.title.text }}
                             </button>
                             <div uib-dropdown-menu
                                  class="dropdown-menu-right">
@@ -210,12 +197,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
+                <div class="card-body" ng-if="userChart.item">
+                    <div class="clearfix mb-2">
+                        <div class="float-right">
+                            <div class="btn-group">
+                                <entry:point id="dashboard-chart-toolbar"/>
+                                <button class="btn-action btn btn-secondary btn-sm"
+                                        ng-click="saveChart(chartParams)"
+                                        type="button">
+                                    <i class="action action-save"></i>
+                                </button>
+                                <button class="btn-action btn btn-secondary btn-sm"
+                                        ng-click="openChartInModal(chartParams)"
+                                        type="button">
+                                    <i class="action action-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
-                </div>
-                <div class="text-right"
-                     style="padding: 0 10px 6px 0">
-                    <documentation doc-url="indicators-and-reporting" title="is.chart.help"/>
+                    <div class="clearfix mt-2">
+                        <div class="float-right">
+                            <documentation doc-url="indicators-and-reporting" title="${message(code:'is.chart.help')}"/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <entry:point id="project-dashboard-top-right"/>
@@ -224,13 +229,11 @@
                     <span class="card-title">
                         ${message(code: 'todo.is.ui.history')}
                     </span>
-                    <small class="float-right">
-                        <a class="rss"
-                           defer-tooltip="${message(code: 'todo.is.ui.feed')}"
-                           href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
-                            <i class="fa fa-rss fa-lg hover-visible"></i>
-                        </a>
-                    </small>
+                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible btn-icon btn-edit"
+                       href="{{ openWorkspaceUrl(project) + 'project/feed' }}"
+                       defer-tooltip="${message(code: 'todo.is.ui.feed')}">
+                        <i class="action action-rss"></i>
+                    </a>
                 </div>
                 <div class="card-body activities">
                     <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">

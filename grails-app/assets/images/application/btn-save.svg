@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>save</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Kit" transform="translate(-572.000000, -14742.000000)" stroke="#687583" stroke-width="1.5">
+            <g id="Rectangle-4-Copy-14" transform="translate(29.000000, 14716.000000)">
+                <g id="Group-101" transform="translate(530.000000, 19.000000)">
+                    <g id="save" transform="translate(14.000000, 8.000000)">
+                        <path d="M11.5555556,13 L1.44444444,13 C0.646699806,13 0,12.3533002 0,11.5555556 L0,1.44444444 C0,0.646699806 0.646699806,0 1.44444444,0 L9.38888889,0 L13,3.61111111 L13,11.5555556 C13,12.3533002 12.3533002,13 11.5555556,13 Z" id="Path"></path>
+                        <polyline id="Path" points="10.1111111 13 10.1111111 7.22222222 2.88888889 7.22222222 2.88888889 13"></polyline>
+                        <polyline id="Path" points="2.88888889 0 2.88888889 3.61111111 8.66666667 3.61111111"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

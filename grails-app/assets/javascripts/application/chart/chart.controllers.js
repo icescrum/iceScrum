@@ -224,7 +224,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 if ($scope.options.computeYDomain) {
                     $scope.options.chart.yDomain = $scope.options.computeYDomain(chart.data);
                 }
-                $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
+                $scope.options.title.enable = false;
                 if (chart.labelsX) {
                     $scope.labelsX = chart.labelsX;
                 }

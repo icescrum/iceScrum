@@ -323,11 +323,10 @@
 
     <script type="text/ng-template" id="documentation.html">
     <a target="_blank"
-       style="font-weight: bold"
-       class="text-muted"
        ng-class="{small: !big}"
+       class="link-documentation"
        href="https://www.icescrum.com/documentation/{{ docUrl }}?utm_source=tool&utm_medium=link&utm_campaign=icescrum">
-        <i class="fa fa-question-circle"></i>
+        <div class="fi-help"></div>
         <span ng-bind-html="message(title != null ? title : 'is.ui.documentation')"></span>
     </a>
     </script>

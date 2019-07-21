@@ -319,6 +319,14 @@ nav.navbar {
   @include rectangle-background(21px, 20px);
 }
 
+.fi-help {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-bottom: -4px;
+  background: url("help.svg") no-repeat center center;
+}
+
 // TODO make a loop that can be extended from plugin
 @each $menu in (project backlog planning taskBoard feature) {
   .fi-main-menu-#{$menu} {
@@ -485,16 +493,23 @@ $state-dot-size-sm: 0.5rem;
   width: 1.875rem !important;
   height: 1.875rem !important;
   .action {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     display: block;
     background-size: 0.75rem 0.8125rem;
     background: no-repeat center center;
-    @each $icon in (edit) {
+    @each $icon in (edit, save, expand, rss) {
       &.action-#{$icon} {
         background-image: url("btn-#{$icon}.svg") !important;
       }
     }
+  }
+}
+
+.btn.btn-color-lighter {
+  color: $is-text-color !important;
+  &::after {
+    color: $is-text-color-alt !important;
   }
 }
 
@@ -678,6 +693,11 @@ $state-dot-size-sm: 0.5rem;
   &:empty::after {
     margin-left: 0;
   }
+}
+
+a.link-documentation {
+  font-family: "averta-bold";
+  color: $is-text-color-doc;
 }
 
 ////////////////////

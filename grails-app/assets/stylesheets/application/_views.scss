@@ -637,16 +637,15 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   .attachments.attachments-bordered {
     border-radius: 6px;
     border: solid 1px $is-outline-color;
-    padding-left: 11px;
-    padding-right: 11px;
   }
 }
 
 .attachments {
 
   &.attachments-bordered {
-    padding-left: 12px;
-    padding-right: 12px;
+    border: solid 1px transparent;
+    padding-left: 11px;
+    padding-right: 11px;
   }
 
   .upload-and-apps {

@@ -131,19 +131,17 @@
                  tabindex="0"
                  ng-bind-html="editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
-        <div class="form-group">
-            <label>${message(code: 'is.backlogelement.attachment')} {{ feature.attachments_count > 0 ? '(' + feature.attachments_count + ')' : '' }}</label>
-            <div ng-if="authorizedFeature('upload', feature)"
-                 ng-controller="attachmentNestedCtrl">
-                <button type="button"
-                        class="btn btn-secondary btn-sm"
-                        flow-btn>
-                    <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
-                </button>
-                <entry:point id="attachment-add-buttons"/>
+        <label>${message(code: 'is.backlogelement.attachment')} {{ feature.attachments_count > 0 ? '(' + feature.attachments_count + ')' : '' }}</label>
+        <div class="attachments attachments-bordered">
+            <div ng-if="authorizedFeature('upload', feature)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
+                <div class="upload-file col-6">
+                    <span class="attachment-icon"></span><span flow-btn class="link">Add file</span>&nbsp;<span class="d-none d-md-inline">or drop file</span>
+                </div>
+                <div class="upload-apps col-6">
+                    <entry:point id="attachment-add-buttons"/>
+                </div>
             </div>
-            <div class="form-control-plaintext" ng-include="'attachment.list.html'">
-            </div>
+            <div ng-include="'attachment.list.html'"></div>
         </div>
     </div>
     <div class="card-footer" ng-if="isModal || formHolder.editing">
