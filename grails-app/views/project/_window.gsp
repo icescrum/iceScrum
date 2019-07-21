@@ -197,7 +197,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" ng-if="userChart.item">
+                <div class="card-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
                     <div class="clearfix mb-2">
                         <div class="float-right">
                             <div class="btn-group">
@@ -229,7 +229,7 @@
                     <span class="card-title">
                         ${message(code: 'todo.is.ui.history')}
                     </span>
-                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible btn-icon btn-edit"
+                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible btn-icon"
                        href="{{ openWorkspaceUrl(project) + 'project/feed' }}"
                        defer-tooltip="${message(code: 'todo.is.ui.feed')}">
                         <i class="action action-rss"></i>
