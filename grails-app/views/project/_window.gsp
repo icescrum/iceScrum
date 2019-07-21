@@ -36,11 +36,11 @@
                                 type="button">
                             ${message(code: 'is.ui.project.sample.delete')}
                         </button>
-                        <button class="btn btn-secondary btn-sm hover-visible text-nowrap"
+                        <button class="btn btn-action btn-secondary btn-sm hover-visible text-nowrap"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
                                 type="button">
-                            <i class="fa fa-pencil"></i>
+                            <i class="action action-edit"></i>
                         </button>
                         <a ng-if="authorizedFeature('create')"
                            href="#/feature/new"
@@ -63,12 +63,12 @@
                                  class="avatar {{:: user | userColorRoles }}"
                                  uib-tooltip="{{:: user | userFullName }}"/>
                         </div>
-                        <div class="stats">
-                            <div class="stat-number">{{ project.stories_count }}</div>
+                        <div class="stats d-block d-sm-flex text-center flex-wrap justify-content-md-around justify-content-lg-center">
+                            <div class="stat-number mr-lg-2">{{ project.stories_count }}</div>
                             <div class="stat-title">${message(code: 'todo.is.ui.stories')}</div>
                         </div>
-                        <div class="stats">
-                            <div class="stat-number">{{ project.releases_count }}</div>
+                        <div class="stats d-block d-sm-flex text-center flex-wrap justify-content-md-around justify-content-lg-center">
+                            <div class="stat-number mr-lg-2">{{ project.releases_count }}</div>
                             <div class="stat-title">${message(code: 'todo.is.ui.releases')}</div>
                         </div>
                     </div>
@@ -94,10 +94,10 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.doneDefinition.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm float-right hover-visible"
+                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible btn-icon btn-edit"
                        href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                        ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
-                        <i class="fa fa-pencil"></i>
+                        <i class="action action-edit"></i>
                     </a>
                 </div>
                 <div class="card-body rich-content"
@@ -109,10 +109,10 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm float-right hover-visible"
+                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible"
                        href="#/taskBoard/{{ lastSprint.id }}/details"
                        ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
-                        <i class="fa fa-pencil"></i>
+                        <i class="action action-edit"></i>
                     </a>
                 </div>
                 <div class="card-body rich-content"
@@ -141,7 +141,7 @@
                     </div>
                     <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
                         <div class="upload-file col-6">
-                            <span class="attachment-icon"></span><span flow-btn class="link">Add file</span><span class="d-none d-md-inline"> or drop file</span>
+                            <span class="attachment-icon"></span><span flow-btn class="link">Add file </span><span class="d-none d-md-inline">or drop file</span>
                         </div>
                         <div class="upload-apps col-6">
                             <entry:point id="attachment-add-buttons"/>

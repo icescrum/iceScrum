@@ -480,6 +480,24 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
+.btn-action {
+  padding: 0;
+  width: 1.875rem !important;
+  height: 1.875rem !important;
+  .action {
+    width:100%;
+    height:100%;
+    display: block;
+    background-size: 0.75rem 0.8125rem;
+    background: no-repeat center center;
+    @each $icon in (edit) {
+      &.action-#{$icon} {
+        background-image: url("btn-#{$icon}.svg") !important;
+      }
+    }
+  }
+}
+
 .btn.text-danger {
   &:not(:hover) {
     box-shadow: 0 0 0 1px $is-red inset;
@@ -852,7 +870,7 @@ form.form-editable:not(:hover):not(.form-editing) .form-control {
 .search-input {
   box-shadow: 0 2px 9px 0 $is-shadow-color-3;
   background: url("search.svg") no-repeat 16px center;
-  background-color: $is-bg-color;
+  background-color: $is-search-bg-color;
   padding-left: 52px;
 }
 

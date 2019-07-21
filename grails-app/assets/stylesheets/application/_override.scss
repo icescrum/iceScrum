@@ -37,6 +37,7 @@ html, body {
 
 strong {
   font-family: $is-font-family-bold;
+  font-weight: normal;
 }
 
 ////////////////////
@@ -264,7 +265,6 @@ form label {
   font-family: $is-font-family-bold;
 }
 
-
 .nav-fill .nav-item {
   text-align: left;
 }
@@ -305,7 +305,6 @@ form label {
 }
 
 .tooltip {
-
   font-family: "FontAwesome", $font-family-base; // For arrows
 
   // It seems that with the new bootstrap the arrow position is computed by JS and applied on the element directly, we do it here the old way with CSS
@@ -332,4 +331,11 @@ form label {
     left: 50%;
     margin-left: -$tooltip-arrow-width/2;
   }
+}
+
+//chart colors
+
+.nvd3 .nv-axis path, .nvd3 .nv-axis line {
+  fill: $is-chart-lines-axis;
+  stroke: $is-chart-lines-axis;
 }

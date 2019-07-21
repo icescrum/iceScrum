@@ -569,6 +569,19 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       .avatar {
         margin-left: -8px;
         border: solid 2px $is-bg-color;
+        position: relative;
+        &:hover {
+          z-index: 1;
+          width: 56px;
+          height: 56px;
+          border: solid 6px $is-bg-color;
+        }
+        &:hover:not(:last-of-type), &:hover:not(:last-of-type) + img {
+          margin-left: -16px;
+        }
+        &:hover:last-of-type {
+          margin-left: -24px;
+        }
       }
     }
 
@@ -584,8 +597,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       }
 
       .stat-title {
-        padding-top: 12px;
-        padding-left: 15px;
         font-size: $is-font-size-sm;
       }
     }
@@ -661,7 +672,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 
   .upload-apps {
-    border-left: solid 1px #e9e9e9;
+    border-left: solid 1px $is-border-color-alt;
     line-height: 2rem;
   }
 
