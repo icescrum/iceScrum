@@ -176,7 +176,7 @@ nav.navbar {
     line-height: 1;
 
     &.workspace-menu {
-      border-left: 1px solid rgba(200, 200, 204, 0.42);
+      border-left: 1px solid $is-border-color;
     }
 
     .nav-link {
