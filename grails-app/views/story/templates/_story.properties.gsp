@@ -26,6 +26,12 @@
       show-validation
       novalidate>
     <div class="card-body">
+        <div class="drop-zone d-flex align-items-center justify-content-center">
+            <div>
+                <asset:image src="application/upload.svg" width="70" height="70"/>
+                <span class="drop-text">${message(code: 'todo.is.ui.drop.here')}</span>
+            </div>
+        </div>
         <div class="row">
             <entry:point id="story-properties-before-properties"/>
             <div class="form-2-tiers">
