@@ -1228,4 +1228,7 @@ th {
   .hover-container:not(:hover) .hover-visible {
     display: none;
   }
+  .hover-container:not(:hover) .hover-visible-visibility {
+    visibility: hidden;
+  }
 }

@@ -36,12 +36,6 @@
                                 type="button">
                             ${message(code: 'is.ui.project.sample.delete')}
                         </button>
-                        <button class="btn btn-action btn-secondary btn-sm hover-visible text-nowrap"
-                                ng-if="authorizedProject('update', project)"
-                                ng-click="showProjectEditModal()"
-                                type="button">
-                            <i class="action action-edit"></i>
-                        </button>
                         <a ng-if="authorizedFeature('create')"
                            href="#/feature/new"
                            class="btn btn-secondary btn-sm text-nowrap">${message(code: "todo.is.ui.feature.new")}</a>
@@ -54,6 +48,14 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div class="d-flex justify-content-end mb-2">
+                        <button class="btn btn-action btn-secondary btn-sm hover-visible-visibility text-nowrap"
+                                ng-if="authorizedProject('update', project)"
+                                ng-click="showProjectEditModal()"
+                                type="button">
+                            <i class="action action-edit"></i>
+                        </button>
+                    </div>
                     <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                     <div class="avatars-and-stats">
                         <div class="avatars d-flex align-items-center justify-content-center">
@@ -94,14 +96,16 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.doneDefinition.title')}
                     </span>
-                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible btn-icon btn-edit"
-                       href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
-                       ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
-                        <i class="action action-edit"></i>
-                    </a>
                 </div>
-                <div class="card-body rich-content"
-                     ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'">
+                <div class="card-body rich-content">
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-action btn-secondary btn-sm float-right hover-visible-visibility btn-icon btn-edit"
+                           href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
+                           ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
+                            <i class="action action-edit"></i>
+                        </a>
+                    </div>
+                    <div ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
                 </div>
             </div>
             <div class="card hover-container">
@@ -109,14 +113,16 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
-                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible"
-                       href="#/taskBoard/{{ lastSprint.id }}/details"
-                       ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
-                        <i class="action action-edit"></i>
-                    </a>
                 </div>
-                <div class="card-body rich-content"
-                     ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'">
+                <div class="card-body rich-content">
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-action btn-secondary btn-sm float-right hover-visible-visibility"
+                           href="#/taskBoard/{{ lastSprint.id }}/details"
+                           ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
+                            <i class="action action-edit"></i>
+                        </a>
+                    </div>
+                    <div ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
                 </div>
             </div>
             <div class="card attachments"
@@ -224,18 +230,20 @@
                 </div>
             </div>
             <entry:point id="project-dashboard-top-right"/>
-            <div class="card hover-container">
+            <div class="card">
                 <div class="card-header">
                     <span class="card-title">
                         ${message(code: 'todo.is.ui.history')}
                     </span>
-                    <a class="btn btn-action btn-secondary btn-sm float-right hover-visible btn-icon"
-                       href="{{ openWorkspaceUrl(project) + 'project/feed' }}"
-                       defer-tooltip="${message(code: 'todo.is.ui.feed')}">
-                        <i class="action action-rss"></i>
-                    </a>
                 </div>
                 <div class="card-body activities">
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-action btn-secondary btn-sm btn-icon"
+                           href="{{ openWorkspaceUrl(project) + 'project/feed' }}"
+                           defer-tooltip="${message(code: 'todo.is.ui.feed')}">
+                            <i class="action action-rss"></i>
+                        </a>
+                    </div>
                     <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">
                         <div class="activity media">
                             <div class="{{ activity.poster | userColorRoles }} avatar mr-3">
