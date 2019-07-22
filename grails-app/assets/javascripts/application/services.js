@@ -39,6 +39,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
             var project = self.workspace;
             project.startDate = new Date(project.startDate);
             project.endDate = new Date(project.endDate);
+            project.onlineMembers = isSettings.onlineMembers;
         }
         CacheService.addOrUpdate(workspaceType, self.workspace);
         self.workspaceType = workspaceType;

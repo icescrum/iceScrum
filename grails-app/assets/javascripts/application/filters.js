@@ -78,7 +78,7 @@ filters
     }])
     .filter('userColorRoles', ['$rootScope', function($rootScope) {
         return function(user, project) {
-            var classes = "rounded-circle user-role";
+            var classes = "";
             if (!project) {
                 project = $rootScope.getProjectFromState();
             }
@@ -90,14 +90,18 @@ filters
             }
             if (!userVisualRolesCache[project.pkey][user.id]) {
                 if (_.find(project.productOwners, {id: user.id})) {
-                    classes += " po";
+                    classes += " role-po";
                 }
                 if (_.find(project.team.scrumMasters, {id: user.id})) {
-                    classes += " sm";
+                    classes += " role-sm";
                 }
                 userVisualRolesCache[project.pkey][user.id] = classes;
             }
-            return userVisualRolesCache[project.pkey][user.id];
+            var finalClasses = userVisualRolesCache[project.pkey][user.id];
+            if (_.find(project.onlineMembers, {id: user.id})) {
+                finalClasses += " user-online";
+            }
+            return finalClasses;
         };
     }])
     .filter('storyType', ['StoryTypesClasses', function(StoryTypesClasses) {

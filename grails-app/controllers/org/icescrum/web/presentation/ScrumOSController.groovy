@@ -47,6 +47,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def grailsApplication
     def uiDefinitionService
     def springSecurityService
+    def pushService
 
     def index() {
         User user = (User) springSecurityService.currentUser
@@ -130,6 +131,10 @@ class ScrumOSController implements ControllerErrorHandler {
                 }
             }
         }
+        def onlineMembers = ""
+        if (workspace?.name == 'project') {
+            onlineMembers = pushService.getOnlineUsers('/stream/app/project-' + workspace.object.id)
+        }
         try {
             render(status: 200, template: 'isSettings', model: [workspace      : workspace?.object,
                                                                 user           : springSecurityService.currentUser,
@@ -139,6 +144,7 @@ class ScrumOSController implements ControllerErrorHandler {
                                                                 menus          : menus,
                                                                 defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
                                                                 serverURL      : ApplicationSupport.serverURL(),
+                                                                onlineMembers  : onlineMembers,
                                                                 projectMenus   : projectMenus])
         } catch (Exception exception) {
             if (!exception.message?.contains("Row was updated or deleted by another transaction")) {

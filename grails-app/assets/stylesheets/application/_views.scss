@@ -573,19 +573,11 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         border: solid 2px $is-bg-color;
         position: relative;
 
-        &:hover {
+        &:hover img {
           z-index: 1;
           width: 56px;
           height: 56px;
           border: solid 6px $is-bg-color;
-        }
-
-        &:hover:not(:last-of-type), &:hover:not(:last-of-type) + img {
-          margin-left: -16px;
-        }
-
-        &:hover:last-of-type {
-          margin-left: -24px;
         }
       }
     }

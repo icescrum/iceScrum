@@ -30,6 +30,7 @@
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
         workspace: ${workspace ? workspace as JSON : 'null'},
+        onlineMembers: ${onlineMembers ? onlineMembers as JSON : 'null'},
         push: {
             enabled: true, // If == false, no atmosphere ressource is created
             transport: "${Holders.config.icescrum.push.transport ?: 'websocket'}",

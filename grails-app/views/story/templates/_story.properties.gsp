@@ -286,7 +286,9 @@
             <div class="form-half">
                 <label for="creator">${message(code: 'is.story.creator')}</label>
                 <div class="d-flex">
-                    <img ng-src="{{ editableStory.creator | userAvatar }}" class="mr-2 {{ editableStory.creator | userColorRoles }}" height="32px"/>
+                    <div class="avatar {{ editableStory.creator | userColorRoles }} mr-2">
+                        <img ng-src="{{ editableStory.creator | userAvatar }}" height="32px"/>
+                    </div>
                     <ui-select ng-click="editForm(true);searchCreator($select)"
                                ng-change="editForm(true)"
                                ng-disabled="!formEditable() || !authorizedStory('updateCreator', editableStory)"

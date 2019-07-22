@@ -79,6 +79,11 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('project', eventType, crudMethod);
     });
+
+    PushService.registerListener('project', "onlineMembers", function(message) {
+        return CacheService.addOrUpdate('project', message.project);
+    });
+
     this.get = function(id) {
         var cachedProject = CacheService.get('project', id);
         return cachedProject ? $q.when(cachedProject) : self.refresh(id);

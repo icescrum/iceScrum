@@ -112,6 +112,25 @@ body {
 ////////////////////
 // General style
 ////////////////////
+.avatar {
+  position: relative;
+  border-radius: 50% !important;
+  &.user-online::after {
+    background-color: $is-green;
+    border: 2px solid $is-bg-color;
+    border-radius: 50%;
+    height: 9px;
+    left: 72%;
+    position: absolute;
+    top: 75%;
+    width: 9px;
+    z-index: 1;
+    content: " ";
+  }
+  img {
+    border-radius: 50% !important;
+  }
+}
 
 .text-truncate-fix {
   width: 1px;

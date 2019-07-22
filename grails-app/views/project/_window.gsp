@@ -56,12 +56,12 @@
                 <div class="card-body">
                     <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                     <div class="avatars-and-stats">
-                        <div class="avatars">
-                            <img ng-src="{{:: user | userAvatar }}"
-                                 ng-repeat="user in allMembers"
-                                 height="41" width="41"
-                                 class="avatar {{:: user | userColorRoles }}"
-                                 uib-tooltip="{{:: user | userFullName }}"/>
+                        <div class="avatars d-flex align-items-center justify-content-around">
+                            <div class="avatar  {{ user | userColorRoles }}" ng-repeat="user in allMembers">
+                                <img ng-src="{{:: user | userAvatar }}"
+                                     height="41" width="41"
+                                     uib-tooltip="{{:: user | userFullName }}"/>
+                            </div>
                         </div>
                         <div class="stats d-block d-sm-flex text-center flex-wrap justify-content-md-around justify-content-lg-center">
                             <div class="stat-number mr-lg-2">{{ project.stories_count }}</div>
@@ -238,11 +238,13 @@
                 <div class="card-body activities">
                     <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">
                         <div class="activity media">
-                            <img ng-src="{{activity.poster | userAvatar}}"
-                                 width="37px"
-                                 height="37px"
-                                 class="align-self-center mr-3 {{ activity.poster | userColorRoles }}"
-                                 alt="{{:: activity.poster | userFullName}}"/>
+                            <div class="{{ activity.poster | userColorRoles }} avatar mr-3">
+                                <img ng-src="{{activity.poster | userAvatar}}"
+                                     width="37px"
+                                     height="37px"
+                                     class="align-self-center"
+                                     alt="{{:: activity.poster | userFullName}}"/>
+                            </div>
                             <div class="media-body">
                                 <div class="text-muted float-right">
                                     <time timeago datetime="{{ activity.dateCreated }}">

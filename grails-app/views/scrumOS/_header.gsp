@@ -260,12 +260,13 @@
             <a hotkey="{ 'shift+h': goToHome}"
                hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
                ng-href="{{:: serverUrl }}/#/">
-                <img ng-src="{{ currentUser | userAvatar }}"
-                     class="{{ currentUser | userColorRoles }}"
-                     tooltip-placement="left"
-                     defer-tooltip="{{ currentUser.email }} {{:: getCurrentUserRoles() }}"
-                     height="37px"
-                     width="37px"/>
+                <div class="avatar {{ currentUser | userColorRoles }}">
+                    <img ng-src="{{ currentUser | userAvatar }}"
+                         tooltip-placement="left"
+                         defer-tooltip="{{ currentUser.email }} {{:: getCurrentUserRoles() }}"
+                         height="37px"
+                         width="37px"/>
+                </div>
             </a>
         </div>
         <button id="login"
