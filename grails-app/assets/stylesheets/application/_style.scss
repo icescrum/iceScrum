@@ -492,6 +492,7 @@ $state-dot-size-sm: 0.5rem;
   padding: 0;
   width: 1.875rem !important;
   height: 1.875rem !important;
+
   .action {
     width: 100%;
     height: 100%;
@@ -508,6 +509,7 @@ $state-dot-size-sm: 0.5rem;
 
 .btn.btn-color-lighter {
   color: $is-text-color !important;
+
   &::after {
     color: $is-text-color-alt !important;
   }
@@ -517,6 +519,7 @@ $state-dot-size-sm: 0.5rem;
   &:not(:hover) {
     box-shadow: 0 0 0 1px $is-red inset;
   }
+
   &:hover {
     box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-4;
   }
@@ -597,6 +600,7 @@ $state-dot-size-sm: 0.5rem;
   .card-body {
     position: relative;
   }
+
   .drop-zone.d-flex {
     display: flex !important;
     position: absolute;
@@ -607,10 +611,12 @@ $state-dot-size-sm: 0.5rem;
     border-radius: 6px;
     background-color: rgba(17, 17, 17, 0.8);
     z-index: 100;
+
     .drop-text {
       color: #FFF;
       font-family: "averta-bold";
     }
+
     img {
       display: block;
       margin-left: auto;
@@ -678,6 +684,7 @@ $state-dot-size-sm: 0.5rem;
   font-family: $is-font-family-bold;
   color: $is-text-color-alt;
   cursor: pointer;
+
   &::after {
     display: inline-block;
     content: "";
@@ -791,6 +798,7 @@ a.link-documentation {
 
 .timeline-bar-container {
   position: relative;
+
   &:after {
     right: -24.5px;
     top: 50%;
@@ -804,6 +812,7 @@ a.link-documentation {
     border-width: 24.5px;
     margin-top: -24.5px;
   }
+
   .timeline-bar {
     height: 49px;
     background-color: $is-deep-blue;
@@ -831,6 +840,7 @@ a.link-documentation {
         background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
         box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
       }
+
       &:last-of-type {
         margin-right: 0;
       }

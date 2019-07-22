@@ -544,9 +544,11 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   &.card {
     margin-top: 0 !important;
   }
+
   .card-header {
     padding-top: 1.55rem;
     padding-bottom: 0.25rem !important;
+
     .btn-toolbar .btn {
       margin-bottom: 0.50rem;
     }
@@ -570,15 +572,18 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         margin-left: -8px;
         border: solid 2px $is-bg-color;
         position: relative;
+
         &:hover {
           z-index: 1;
           width: 56px;
           height: 56px;
           border: solid 6px $is-bg-color;
         }
+
         &:hover:not(:last-of-type), &:hover:not(:last-of-type) + img {
           margin-left: -16px;
         }
+
         &:hover:last-of-type {
           margin-left: -24px;
         }
@@ -622,6 +627,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     .sprint-goal-label {
       color: #64aceb;
     }
+
     margin-right: 24.5px;
   }
 
@@ -681,33 +687,41 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   .attachment {
     font-size: 0.875rem;
+
     a.filename {
       color: $is-text-color;
     }
+
     .btn.btn-secondary {
       margin-left: 0.25rem;
       margin-right: 0.25rem;
       color: $is-text-color;
     }
+
     .btn.btn-secondary:first-of-type {
       margin-left: 0;
     }
+
     .btn.btn-secondary:last-of-type {
       margin-right: 0;
     }
+
     &:hover {
       a.filename, .size {
         color: $is-text-color-link;
       }
     }
+
     .size {
       margin-left: 1.25rem;
       font-size: 0.75rem;
     }
+
     .attachment-action {
       display: inline-block;
       @include square-background(0.7rem);
     }
+
     .attachment-type {
       padding-left: 45px;
       background-size: 30px !important;
@@ -720,23 +734,29 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         background-image: url("attachment-type-#{$type}.svg");
       }
     }
+
     .attachment-type-default {
       background-image: url("attachment-type-default.svg");
     }
+
     .attachment-remove-grey {
       margin-left: 1.25rem;
       background-image: url("attachment-remove-grey.svg");
     }
+
     .attachment-pause-grey {
       background-image: url("attachment-pause-grey.svg");
     }
+
     .attachment-resume-grey {
       background-image: url("attachment-resume-grey.svg");
     }
+
     .attachment-stop-grey {
       margin-left: 0.75rem;
       background-image: url("attachment-stop-grey.svg");
     }
+
     .uploading {
       .progress {
         font-size: 0.825rem;
@@ -748,15 +768,18 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         margin-right: 1.25rem;
         margin-top: 0.825rem;
         border-radius: 0.375rem;
+
         .progress-bar {
           box-shadow: 0 0.1375rem 0.275rem 0 rgba(0, 103, 232, 0.35);
           border: solid 0.1375rem #0067e8;
           border-radius: 0.375rem;
         }
       }
+
       &:not(.paused) .size {
         color: $is-blue;
       }
+
       &.paused {
         .progress-bar {
           box-shadow: 0 0.1375rem 0.275rem 0 rgba(104, 117, 131, 0.33);
@@ -773,6 +796,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
 .activities {
   font-size: $is-font-size-sm;
+
   .activity-name {
     color: $is-text-color-alt;
   }

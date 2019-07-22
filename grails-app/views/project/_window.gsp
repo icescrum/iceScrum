@@ -218,7 +218,7 @@
                     <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
                     <div class="clearfix mt-2">
                         <div class="float-right">
-                            <documentation doc-url="indicators-and-reporting" title="${message(code:'is.chart.help')}"/>
+                            <documentation doc-url="indicators-and-reporting" title="${message(code: 'is.chart.help')}"/>
                         </div>
                     </div>
                 </div>
