@@ -118,7 +118,7 @@ body {
 }
 
 .link, .link:hover, .link:visited {
-  color: $blue;
+  color: $is-primary-color;
   cursor: pointer;
 }
 
@@ -320,11 +320,10 @@ nav.navbar {
 }
 
 .fi-help {
-  width: 20px;
-  height: 20px;
   display: inline-block;
   margin-bottom: -4px;
-  background: url("help.svg") no-repeat center center;
+  @include square-background(20px);
+  background-image: url("help.svg");
 }
 
 // TODO make a loop that can be extended from plugin
@@ -1184,9 +1183,7 @@ th {
     height: 100vh;
     overflow: hidden;
   }
-  .hover-container:not(:hover) {
-    .hover-visible {
-      display: none;
-    }
+  .hover-container:not(:hover) .hover-visible {
+    display: none;
   }
 }

@@ -639,6 +639,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 ////////////////////
 // Attachments
 ////////////////////
+
 .form-editing, .form-editable:hover {
   .attachments.attachments-bordered {
     border-radius: 6px;
@@ -708,7 +709,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
     &:hover {
       a.filename, .size {
-        color: $is-text-color-link;
+        color: $is-primary-color;
       }
     }
 
@@ -780,11 +781,9 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         color: $is-blue;
       }
 
-      &.paused {
-        .progress-bar {
-          box-shadow: 0 0.1375rem 0.275rem 0 rgba(104, 117, 131, 0.33);
-          border-color: #687583;
-        }
+      &.paused .progress-bar {
+        box-shadow: 0 0.1375rem 0.275rem 0 rgba(104, 117, 131, 0.33);
+        border-color: #687583;
       }
     }
   }
