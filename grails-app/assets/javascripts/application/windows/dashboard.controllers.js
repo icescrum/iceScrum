@@ -49,6 +49,11 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
         }
     };
     // Init
+    $scope.dashboardChartOptions = {
+        title: {
+            enable: false
+        }
+    };
     $scope.pref = {
         showMore: {
             attachments: false,

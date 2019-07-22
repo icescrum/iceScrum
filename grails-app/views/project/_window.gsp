@@ -172,7 +172,7 @@
                                 <a class="dropdown-item"
                                    ng-repeat="chart in projectCharts.project"
                                    href
-                                   ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">
+                                   ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart', dashboardChartOptions)">
                                     {{ message(chart.name) }}
                                 </a>
                                 <div ng-if="release.id" class="dropdown-divider"></div>
@@ -181,7 +181,7 @@
                                    ng-if="release.id"
                                    ng-repeat="chart in projectCharts.release"
                                    href
-                                   ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">
+                                   ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart', dashboardChartOptions)">
                                     {{ message(chart.name) }}
                                 </a>
                                 <div ng-if="currentOrLastSprint.id" class="dropdown-divider"></div>
@@ -190,14 +190,14 @@
                                    ng-if="currentOrLastSprint.id"
                                    ng-repeat="chart in projectCharts.sprint"
                                    href
-                                   ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">
+                                   ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart', dashboardChartOptions)">
                                     {{ message(chart.name) }}
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
+                <div class="card-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item, dashboardChartOptions)">
                     <div class="clearfix mb-2">
                         <div class="float-right">
                             <div class="btn-group">

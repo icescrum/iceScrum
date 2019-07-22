@@ -224,7 +224,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 if ($scope.options.computeYDomain) {
                     $scope.options.chart.yDomain = $scope.options.computeYDomain(chart.data);
                 }
-                $scope.options.title.enable = false;
+                $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
                 if (chart.labelsX) {
                     $scope.labelsX = chart.labelsX;
                 }
@@ -238,14 +238,14 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             });
         });
     };
-    $scope.openChartAndSaveSetting = function(itemType, chartName, item, workspace, windowName, settingName) {
+    $scope.openChartAndSaveSetting = function(itemType, chartName, item, workspace, windowName, settingName, options) {
         if (Session.authenticated()) {
             WindowService.get(windowName, workspace).then(function(window) {
                 window.settings[settingName] = {itemType: itemType, chartName: chartName};
                 return WindowService.update(window).$promise;
             });
         }
-        $scope.openChart(itemType, chartName, item);
+        $scope.openChart(itemType, chartName, item, options);
     };
     $scope.processSaveChart = function() {
         var title = $element.find('.title.h4');
@@ -263,7 +263,12 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 $element = angular.element('.modal-wide');
                 $controller('chartCtrl', {$scope: $scope, $element: $element});
                 $scope.defaultOptions.chart.height = ($window.innerHeight * 75 / 100);
-                $scope.openChart(chartParams.itemType, chartParams.chartName, chartParams.item);
+                $scope.chartTitle = $scope.message('is.ui.project.chart.title');
+                $scope.openChart(chartParams.itemType, chartParams.chartName, chartParams.item, {title: {enable: false}}).then(function(data) {
+                   if (data.options.title.text) {
+                       $scope.chartTitle = data.options.title.text;
+                   }
+                });
                 $scope.submit = function() {
                     $scope.$close(true);
                 };

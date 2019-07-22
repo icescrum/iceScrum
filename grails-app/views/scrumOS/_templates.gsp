@@ -26,7 +26,7 @@
     </script>
 
     <script type="text/ng-template" id="chart.modal.html">
-    <is:modal title="${message(code: 'is.ui.widget.chart.chart')}">
+    <is:modal title="{{ chartTitle }}">
         <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
     </is:modal>
     </script>
