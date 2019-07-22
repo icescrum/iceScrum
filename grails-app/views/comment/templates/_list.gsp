@@ -32,10 +32,11 @@
                       novalidate>
                     <div class="row is-form-row">
                         <div class="col-sm-1">
-                            <img height="30px"
-                                 class="{{ comment.poster | userColorRoles }}"
-                                 ng-src="{{comment.poster | userAvatar}}"
-                                 alt="{{comment.poster | userFullName}}"/>
+                            <div class="avatar {{ comment.poster | userColorRoles }}">
+                                <img height="30px"
+                                     ng-src="{{comment.poster | userAvatar}}"
+                                     alt="{{comment.poster | userFullName}}"/>
+                            </div>
                         </div>
                         <div class="form-half">
                             <span class="poster form-control-plaintext">{{comment.poster | userFullName}}</span>

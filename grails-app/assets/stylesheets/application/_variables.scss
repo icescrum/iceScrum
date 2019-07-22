@@ -26,6 +26,7 @@
 ////////////////////
 
 // Light mode
+$theme: "light" !default;
 $is-bg-color: #ffffff !default;
 $is-bg-color-alt: #f4f4f9 !default;
 $is-bg-color-ter: #f7f7fb !default;
@@ -37,12 +38,17 @@ $is-btn-secondary-end: $is-bg-color !default;
 $is-shadow-color-1: rgba(156, 164, 171, 0.5) !default;
 $is-shadow-color-2: rgba(156, 164, 171, 0.62) !default;
 $is-shadow-color-3: rgba(62, 57, 107, 0.07) !default;
+$is-shadow-color-4: rgba(104, 117, 131, 0.53) !default;
 $is-search-bg-color: #ffffff !default;
 $is-outline-color: #c8c8cc !default;
 $is-border-color: #d3d8de !default;
 $is-border-color-alt: #e9e9e9 !default;
 $is-chart-lines-axis: #d3d8de !default;
 $is-dropmenu-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15) !default;
+
+$is-bg-color-role-sm: $is-bg-color !default;
+$is-bg-color-role-po: $is-bg-color !default;
+$is-bg-color-role-po-sm: $is-bg-color !default;
 
 // TODO dark mode
 $is-shadow-color-4: rgba(255, 61, 51, 0.2) !default;

@@ -115,6 +115,7 @@ body {
 .avatar {
   position: relative;
   border-radius: 50% !important;
+  line-height:0;
   &.user-online::after {
     background-color: $is-green;
     border: 2px solid $is-bg-color;
@@ -129,6 +130,28 @@ body {
   }
   img {
     border-radius: 50% !important;
+  }
+  &.role-sm:before, &.role-po:before, &.role-po-sm:before {
+    border-radius: 50%;
+    z-index: 1;
+    content: " ";
+    width: 18px;
+    height: 18px;
+    box-shadow: 0 1px 5px 0 $is-shadow-color-4;
+    top: -5px;
+    right: -5px;
+    position: absolute;
+  }
+  &.role-po:before {
+    background: $is-bg-color-role-po url('role-po-#{$theme}.svg') no-repeat center;
+  }
+
+  &.role-sm:before {
+    background: $is-bg-color-role-sm url('role-sm-#{$theme}.svg') no-repeat center;
+  }
+
+  &.role-po-sm:before {
+    background: $is-bg-color-role-po-sm url('role-po-sm-#{$theme}.svg') no-repeat center;
   }
 }
 

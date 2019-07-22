@@ -25,6 +25,7 @@ $dark-grey: #3c3c3e;
 $dark-grey-alt: #3d3d3e;
 
 // Override
+$theme: "dark";
 $is-bg-color: #282829;
 $is-bg-color-alt: $dark-grey;
 $is-bg-color-ter: #39393b; // By Nico (since it's no a gradient anymore)
@@ -42,3 +43,7 @@ $is-border-color: $dark-grey-alt;
 $is-border-color-alt: $dark-grey-alt;
 $is-chart-lines-axis: $dark-grey-alt;
 $is-dropmenu-shadow: 0 42px 48px 0 rgba(5, 5, 5, 0.5);
+
+$is-bg-color-role-sm: #1180e7;
+$is-bg-color-role-po: #687583;
+$is-bg-color-role-po-sm: #ffe802;

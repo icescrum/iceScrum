@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="6px" viewBox="0 0 8 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="6.25807957%" y1="76.614614%" x2="82.2774248%" y2="56.1251698%" id="linearGradient-1">
+            <stop stop-color="#FFE802" offset="0%"></stop>
+            <stop stop-color="#FDCC01" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iceScrum_dashboard_3-user" transform="translate(-796.000000, -873.000000)" fill="url(#linearGradient-1)">
+            <path d="M803.890331,874.24645 C803.795831,874.1604 803.662472,874.142267 803.550706,874.2003 L801.840644,875.0883 L800.236082,873.114933 C800.176738,873.041933 800.176722,873 800.000003,873 C799.823285,873 799.823285,873.041933 799.763925,873.114933 L798.159363,875.088283 L796.4493,874.200283 C796.337535,874.142267 796.204191,874.160383 796.10966,874.246433 C796.015128,874.332483 795.977378,874.470117 796.013519,874.59695 L797.201019,878.763617 C797.241035,878.904033 797.362425,879 797.500003,879 L802.500003,879 C802.637566,879 802.758972,878.904033 802.798972,878.763633 L803.986472,874.596967 C804.022628,874.470133 803.984878,874.3325 803.890331,874.24645 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

@@ -56,7 +56,7 @@
                 <div class="card-body">
                     <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                     <div class="avatars-and-stats">
-                        <div class="avatars d-flex align-items-center justify-content-around">
+                        <div class="avatars d-flex align-items-center justify-content-center">
                             <div class="avatar  {{ user | userColorRoles }}" ng-repeat="user in allMembers">
                                 <img ng-src="{{:: user | userAvatar }}"
                                      height="41" width="41"

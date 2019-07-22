@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="6px" viewBox="0 0 8 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="6.25807957%" y1="97.3148694%" x2="6.25807957%" y2="97.3148694%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Ui-kit" transform="translate(-2475.000000, -2416.000000)" fill="url(#linearGradient-1)">
+            <path d="M2482.89033,2417.24645 C2482.79583,2417.1604 2482.66247,2417.14227 2482.55071,2417.2003 L2480.84064,2418.0883 L2479.23608,2416.11493 C2479.17674,2416.04193 2479.17672,2416 2479,2416 C2478.82328,2416 2478.82328,2416.04193 2478.76393,2416.11493 L2477.15936,2418.08828 L2475.4493,2417.20028 C2475.33753,2417.14227 2475.20419,2417.16038 2475.10966,2417.24643 C2475.01513,2417.33248 2474.97738,2417.47012 2475.01352,2417.59695 L2476.20102,2421.76362 C2476.24103,2421.90403 2476.36243,2422 2476.5,2422 L2481.5,2422 C2481.63757,2422 2481.75897,2421.90403 2481.79897,2421.76363 L2482.98647,2417.59697 C2483.02263,2417.47013 2482.98488,2417.3325 2482.89033,2417.24645 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

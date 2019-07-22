@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="11px" height="6px" viewBox="0 0 11 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Path Copy 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="4.82961516%" y1="38.0522526%" x2="101.999998%" y2="63.4755781%" id="linearGradient-1">
+            <stop stop-color="#1180E7" offset="0%"></stop>
+            <stop stop-color="#D1E6F0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iceScrum_dashboard_3-user" transform="translate(-795.000000, -742.000000)" fill="url(#linearGradient-1)">
+            <g id="Group-107-Copy-2" transform="translate(765.000000, 736.000000)">
+                <g id="Group" transform="translate(26.000000, 0.000000)">
+                    <path d="M11.6254744,6.17480179 C11.174007,6.05712215 10.7204162,6 10.4504327,6 C9.52247336,6 8.62557003,6.31902743 7.92489955,6.8983111 C7.28261994,7.42931169 6.84257062,8.14635806 6.67133696,8.9336842 C5.68690546,9.15989172 4.94858183,9.32954736 4.45636608,9.44265113 C4.19133028,9.50355236 4,9.68497283 4,9.89835738 C4,10.248597 4.30863672,10.4723557 4.45636608,10.621208 C5.18921541,11.1692578 6.3435934,11.2997575 6.67133696,11.2997575 C6.99908052,11.2997575 8.8030762,11.1966823 9.62144676,10.248597 C11.1170246,10.5890731 12.3705418,10.6894878 13.9302308,10.6955161 L14.1704448,10.6964421 L14.2215517,10.4723557 C14.280378,10.2144616 14.3102068,9.9495377 14.3102068,9.68497283 C14.3101672,8.04410374 13.1809079,6.65050831 11.6254744,6.17480179 Z" id="Path-Copy-2" transform="translate(9.155103, 8.649879) scale(-1, 1) translate(-9.155103, -8.649879) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

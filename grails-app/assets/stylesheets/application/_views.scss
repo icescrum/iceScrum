@@ -570,14 +570,12 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
       .avatar {
         margin-left: -8px;
-        border: solid 2px $is-bg-color;
         position: relative;
+        transition: all 0.5s;
 
-        &:hover img {
+        &:hover {
           z-index: 1;
-          width: 56px;
-          height: 56px;
-          border: solid 6px $is-bg-color;
+          transform: scale(1.2);
         }
       }
     }

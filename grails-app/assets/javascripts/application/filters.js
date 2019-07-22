@@ -93,7 +93,11 @@ filters
                     classes += " role-po";
                 }
                 if (_.find(project.team.scrumMasters, {id: user.id})) {
-                    classes += " role-sm";
+                    if(classes.indexOf('role-po') !== -1){
+                        classes += "-sm";
+                    } else {
+                        classes += " role-sm";
+                    }
                 }
                 userVisualRolesCache[project.pkey][user.id] = classes;
             }
