@@ -89,13 +89,15 @@ strong {
   }
 
   &.btn-sm {
-    box-shadow: 0 0 0 1px $is-outline-color inset; // Simulate border
+    box-shadow: none;
+    border: 1px solid $is-outline-color;
+    padding: ($btn-padding-y-sm - 0.0625rem) ($btn-padding-x-sm - 0.0625rem); // Cancel out the border
     font-family: $font-family-base;
     text-shadow: none;
     background: none;
 
     &:hover, &:not(:disabled):not(.disabled):active {
-      background-color: $is-bg-color;
+      box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
     }
   }
 }
@@ -331,11 +333,4 @@ form label {
     left: 50%;
     margin-left: -$tooltip-arrow-width/2;
   }
-}
-
-//chart colors
-
-.nvd3 .nv-axis path, .nvd3 .nv-axis line {
-  fill: $is-chart-lines-axis;
-  stroke: $is-chart-lines-axis;
 }

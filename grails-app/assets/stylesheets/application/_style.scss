@@ -375,9 +375,13 @@ nav.navbar {
     }
 
     .btn, .nav-link, .more-item {
-      padding: 0.5625rem 1rem;
       font-size: $is-font-size-sm;
       line-height: 1.29;
+      padding: 0.5625rem 1rem;
+
+      &.btn-sm {
+        padding: (0.5625rem - 0.0625rem) (1rem - 0.0625rem); // Cancel out the border
+      }
     }
   }
 }
@@ -489,7 +493,7 @@ $state-dot-size-sm: 0.5rem;
 }
 
 .btn-action {
-  padding: 0;
+  padding: 0 !important;
   width: 1.875rem !important;
   height: 1.875rem !important;
 
@@ -515,10 +519,8 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-.btn.text-danger {
-  &:not(:hover) {
-    box-shadow: 0 0 0 1px $is-red inset;
-  }
+.btn-sm.text-danger {
+  border-color: $is-red;
 
   &:hover {
     box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-4;
@@ -1032,6 +1034,11 @@ body.simple-without-ng-layout {
       fill: $is-text-color;
       font-size: $is-font-size-sm;
     }
+  }
+
+  .nv-axis path, .nv-axis line {
+    fill: $is-chart-lines-axis;
+    stroke: $is-chart-lines-axis;
   }
 }
 
