@@ -487,7 +487,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr('rx', sprintRadius)
                     .attr('ry', sprintRadius);
                 sprintTextsSelector.enter().append('text')
-                    .attr('y', 6 + height / 2)
+                    .attr('y', 5 + height / 2)
                     .style('text-anchor', 'middle')
                     .attr('font-size', '18px');
                 var versionEnter = versionSelector.enter().append('g')
