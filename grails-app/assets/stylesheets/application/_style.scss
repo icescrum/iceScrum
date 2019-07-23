@@ -851,14 +851,14 @@ a.link-documentation {
     width: 0;
     position: absolute;
     pointer-events: none;
-    border-left-color: $is-deep-blue;
+    border-left-color: $is-release-inprogress;
     border-width: 24.5px;
     margin-top: -24.5px;
   }
 
   .timeline-bar {
     height: 49px;
-    background-color: $is-deep-blue;
+    background-color: $is-release-inprogress;
     padding: 8px 5px;
     font-size: 14px;
     margin-right: 24.5px;
@@ -866,21 +866,21 @@ a.link-documentation {
     .progress-bar {
       border-radius: 2px;
       margin-right: 6px;
-      background-color: $is-deep-blue;
+      background-color: $is-release-inprogress;
       color: #ffffff;
 
       &.bg-todo {
         color: $is-grey;
-        background-color: $is-bg-color-alt;
+        background-color: $is-sprint-todo;
       }
 
       &.bg-inProgress {
-        background-image: linear-gradient(75deg, #63abeb, #d1e6f0);
+        background-image: linear-gradient(75deg, $is-sprint-inprogress-left, $is-sprint-inprogress-right);
         box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
       }
 
       &.bg-done {
-        background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+        background-image: linear-gradient(254deg, $is-sprint-done-right, $is-sprint-done-left);
         box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
       }
 

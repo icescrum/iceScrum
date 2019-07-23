@@ -289,43 +289,43 @@
   stop {
 
     &.todoReleaseGradient-left, &.todoReleaseGradient-right {
-      stop-color: #c8c8cc;
-    }
-
-    &.todoSprintGradient-left, &.todoSprintGradient-right {
-      stop-color: #f4f4f9;
+      stop-color: $is-release-todo;
     }
 
     &.inProgressReleaseGradient-left {
-      stop-color: #1180e7;
+      stop-color: $is-release-inprogress-left;
     }
 
     &.inProgressReleaseGradient-right {
-      stop-color: #d1e6f0;
+      stop-color: $is-release-inprogress-right;
     }
 
     &.doneReleaseGradient-left {
-      stop-color: #43bfa2;
+      stop-color: $is-release-done-left;
     }
 
     &.doneReleaseGradient-right {
-      stop-color: #73d3c2;
+      stop-color: $is-release-done-right;
+    }
+
+    &.todoSprintGradient-left, &.todoSprintGradient-right {
+      stop-color: $is-sprint-todo;
     }
 
     &.inProgressSprintGradient-left {
-      stop-color: #63abeb;
+      stop-color: $is-sprint-inprogress-left;
     }
 
     &.inProgressSprintGradient-right {
-      stop-color: #d1e6f0;
+      stop-color: $is-sprint-inprogress-right;
     }
 
     &.doneSprintGradient-left {
-      stop-color: #50e3c2;
+      stop-color: $is-sprint-done-left;
     }
 
     &.doneSprintGradient-right {
-      stop-color: #88f3e2;
+      stop-color: $is-sprint-done-right;
     }
   }
 }
@@ -611,7 +611,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 
   .sprint-goal {
-    background-image: linear-gradient(84deg, rgba(99, 171, 235, 0.26), rgba(209, 230, 240, 0.26));
+    background-image: linear-gradient(84deg, $is-sprint-goal-left, $is-sprint-goal-right);
     padding: 15px 21px;
 
     .sprint-goal-label {
