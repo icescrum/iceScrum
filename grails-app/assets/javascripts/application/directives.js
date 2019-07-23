@@ -416,6 +416,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 gradient.append('stop').attr('class', gradientId + '-right').attr('offset', '1');
             });
             var shadows = [
+                // Roughly equivalent to box-shadow, with: dx == offset-x | dy == offset-y | stdDeviation == blur-radius/2 | flood-color == color
                 {id: 'selectedSprintShadow', attrs: {dx: 0, dy: 8, stdDeviation: 6, 'flood-color': 'rgb(0, 0, 5)', 'flood-opacity': 0.33}},
                 {id: 'sprintShadow', attrs: {dx: 0, dy: 3, stdDeviation: 2, 'flood-color': 'rgb(0, 0, 5)', 'flood-opacity': 0.10}}
             ];

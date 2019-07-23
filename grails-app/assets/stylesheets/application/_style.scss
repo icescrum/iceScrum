@@ -872,6 +872,12 @@ a.link-documentation {
       margin-right: 6px;
       background-color: $is-release-inprogress;
       color: #ffffff;
+      font-family: $is-font-family-bold;
+      box-shadow: 0 3px 4px rgba(0, 0, 5, 0.10);
+
+      span {
+        padding-top: 2px // Hack to align text
+      }
 
       &.bg-todo {
         color: $is-grey;
@@ -880,12 +886,10 @@ a.link-documentation {
 
       &.bg-inProgress {
         background-image: linear-gradient(75deg, $is-sprint-inprogress-left, $is-sprint-inprogress-right);
-        box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
       }
 
       &.bg-done {
         background-image: linear-gradient(254deg, $is-sprint-done-right, $is-sprint-done-left);
-        box-shadow: 0 2px 11px 0 rgba(39, 210, 133, 0.34);
       }
 
       &:last-of-type {
