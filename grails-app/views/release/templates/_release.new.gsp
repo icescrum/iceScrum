@@ -47,6 +47,7 @@
                            ng-model="release.name"
                            type="text"
                            class="form-control"
+                           autocomplete="off"
                            placeholder="${message(code: 'is.ui.release.noname')}"/>
                 </div>
                 <div class="row is-form-row">

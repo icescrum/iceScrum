@@ -42,6 +42,7 @@
                            ng-disabled="!formEditable()"
                            name="name"
                            ng-model="editableTask.name"
+                           autocomplete="off"
                            type="text"
                            class="form-control">
                     <span class="input-group-append" ng-if="formEditable()">

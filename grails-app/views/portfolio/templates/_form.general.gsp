@@ -33,6 +33,7 @@
                    name="name"
                    type="text"
                    class="form-control"
+                   autocomplete="off"
                    placeholder="${message(code: 'is.ui.portfolio.noname')}"
                    ng-model="portfolio.name"
                    ng-change="nameChanged()"
@@ -58,6 +59,7 @@
                ng-pattern="/^[A-Z0-9]*[A-Z][A-Z0-9]*$/"
                pattern-error-message="${message(code: 'portfolio.fkey.matches.invalid')}"
                ng-required="isCurrentStep(1, 'portfolio')"
+               autocomplete="off"
                ng-maxlength="10"
                ng-remote-validate-code="portfolio.fkey.unique"
                ng-remote-validate="{{ checkPortfolioPropertyUrl }}/fkey">

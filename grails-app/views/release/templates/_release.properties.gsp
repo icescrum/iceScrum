@@ -40,6 +40,7 @@
                        ng-focus="editForm(true)"
                        ng-disabled="!formEditable()"
                        ng-model="editableRelease.name"
+                       autocomplete="off"
                        type="text"
                        class="form-control"
                        placeholder="${message(code: 'is.ui.release.noname')}"/>
@@ -51,6 +52,7 @@
                        ng-focus="editForm(true)"
                        ng-disabled="!formEditable()"
                        ng-model="editableRelease.firstSprintIndex"
+                       autocomplete="off"
                        type="number"
                        class="form-control"/>
             </div>

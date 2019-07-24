@@ -35,6 +35,7 @@
                        name="name"
                        ng-model="editableStory.name"
                        ng-focus="formHolder.formExpanded = true;"
+                       autocomplete="off"
                        class="form-control"
                        placeholder="${message(code: 'is.story')}">
                 <span class="input-group-append visible-hidden">

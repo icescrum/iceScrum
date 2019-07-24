@@ -31,6 +31,7 @@
         <input autofocus
                name="name"
                type="text"
+               autocomplete="off"
                class="form-control"
                placeholder="${message(code: 'todo.is.ui.project.noname')}"
                ng-model="project.name"

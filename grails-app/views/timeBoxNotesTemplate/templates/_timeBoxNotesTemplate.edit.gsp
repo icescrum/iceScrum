@@ -50,6 +50,7 @@
             <input required
                    name="name"
                    ng-maxlength="255"
+                   autocomplete="off"
                    ng-model="editableTimeBoxNotesTemplate.name"
                    type="text"
                    class="form-control"/>

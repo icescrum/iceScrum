@@ -70,6 +70,7 @@
                                ng-model="task.name"
                                type="text"
                                class="form-control"
+                               autocomplete="off"
                                ng-disabled="!authorizedTask('create')"
                                placeholder="${message(code: 'is.ui.task.noname')}"/>
                     </div>

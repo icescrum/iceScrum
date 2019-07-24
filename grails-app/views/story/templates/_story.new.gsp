@@ -102,6 +102,7 @@
                                placeholder="${message(code: 'is.ui.story.noname')}"
                                ng-maxlength="100"
                                ng-model="story.name"
+                               autocomplete="off"
                                ng-change="findDuplicates(story.name)"/>
                     </div>
                     <entry:point id="story-new-form"/>

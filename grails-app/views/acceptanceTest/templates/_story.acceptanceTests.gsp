@@ -45,6 +45,7 @@
                                type="text"
                                name="name"
                                ng-model="editableAcceptanceTest.name"
+                               autocomplete="off"
                                ng-change="editForm(true)"
                                class="form-control"
                                placeholder="${message(code: 'is.ui.backlogelement.noname')}">

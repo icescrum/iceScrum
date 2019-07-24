@@ -69,6 +69,7 @@
                                name="name"
                                autofocus
                                ng-model="feature.name"
+                               autocomplete="off"
                                type="text"
                                class="form-control"
                                ng-disabled="!authorizedFeature('create')"

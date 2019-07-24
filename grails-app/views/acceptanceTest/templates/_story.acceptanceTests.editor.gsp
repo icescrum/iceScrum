@@ -32,6 +32,7 @@
                 <input required
                        type="text"
                        ng-maxlength="255"
+                       autocomplete="off"
                        name="name"
                        ng-model="editableAcceptanceTest.name"
                        ng-focus="formHolder.formExpanded = true;"
