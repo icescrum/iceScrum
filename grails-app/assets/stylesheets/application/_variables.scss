@@ -129,7 +129,7 @@ $is-state-colors: (
 
 @mixin rectangle-background($width, $height) {
   background-position: center;
-  background-size: $width $height;
+  background-size: contain;
   background-repeat: no-repeat;
   width: $width;
   height: $height;

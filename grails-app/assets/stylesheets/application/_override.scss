@@ -275,6 +275,10 @@ form label {
   pointer-events: none;
 }
 
+.navbar-toggler {
+  border: none !important;
+}
+
 //https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
 .dropdown.open .dropdown-menu {
   display: block;

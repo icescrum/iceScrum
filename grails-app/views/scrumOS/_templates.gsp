@@ -143,6 +143,8 @@
     <script type="text/ng-template" id="menuitem.item.html">
     <a hotkey="{ '{{:: menu.shortcut }}' : hotkeyClick }"
        class="nav-link"
+       data-toggle="collapse"
+       data-target="#primary-menu"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
        href="{{ getMenuUrl(menu) }}">
         <span class="fi-main-menu" ng-class="'fi-main-menu-' + menu.id" as-sortable-item-handle></span>

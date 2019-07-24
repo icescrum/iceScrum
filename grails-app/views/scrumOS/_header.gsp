@@ -37,7 +37,7 @@
        tooltip-placement="right"
        defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
     </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" ng-controller="mainMenuCtrl">
+    <div class="collapse navbar-collapse order-3 order-lg-2" id="primary-menu" ng-controller="mainMenuCtrl">
         <ul class="nav navbar-nav menu-header"
             is-disabled="!currentUser.id || workspaceType != 'project'"
             as-sortable="menuSortableOptions"
@@ -201,7 +201,7 @@
             </li>
         </ul>
     </div>
-    <div class="navbar-right"
+    <div class="navbar-right  order-2 order-lg-3 flex-grow-1 justify-content-end"
          ng-style="application.context | contextStyle">
         <g:if test="${project}">
             <form class="form-inline" role="search">
@@ -241,13 +241,13 @@
         </g:else>
         <g:if test="${g.meta(name: 'app.displayReleaseNotes')}">
             <div ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true"
-                 class="whats-new">
+                 class="whats-new d-none d-lg-block">
                 <a href ng-click="showReleaseNotesModal()">
                     <i class="fa fa-gift" id="ga-show-whats-new-event"></i>
                 </a>
             </div>
         </g:if>
-        <div ng-if=":: currentUser.username" uib-dropdown on-toggle="notificationToggle(open)">
+        <div ng-if=":: currentUser.username" uib-dropdown class="header-notifications" on-toggle="notificationToggle(open)">
             <div uib-dropdown-toggle class="no-caret">
                 <div class="main-notifications" ng-class="{'has-notifications': getUnreadActivities() != 0}">
                     <div class="fi-bell"></div>
@@ -256,7 +256,7 @@
             </div>
             <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'notifications.panel.html'"></div>
         </div>
-        <div ng-if=":: currentUser.username" uib-dropdown>
+        <div ng-if=":: currentUser.username" class="d-none d-lg-block header-avatar">
             <a hotkey="{ 'shift+h': goToHome}"
                hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
                ng-href="{{:: serverUrl }}/#/">
@@ -264,8 +264,8 @@
                     <img ng-src="{{ currentUser | userAvatar }}"
                          tooltip-placement="left"
                          defer-tooltip="{{ currentUser.email }} {{:: getCurrentUserRoles() }}"
-                         height="37px"
-                         width="37px"/>
+                         height="36.5px"
+                         width="36.5px"/>
                 </div>
             </a>
         </div>
@@ -275,7 +275,7 @@
                 ng-click="logIn()"
                 defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
                 tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#primary-menu" aria-controls="primary-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>

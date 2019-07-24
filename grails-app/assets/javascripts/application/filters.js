@@ -76,7 +76,7 @@ filters
             return $rootScope.serverUrl + '/user/initialsAvatar/?firstName=' + user.firstName + '&lastName=' + user.lastName;
         };
     }])
-    .filter('userColorRoles', ['$rootScope', function($rootScope) {
+    .filter('userColorRoles', ['$rootScope', 'Session', function($rootScope, Session) {
         return function(user, project) {
             var classes = "";
             if (!project) {
@@ -102,7 +102,7 @@ filters
                 userVisualRolesCache[project.pkey][user.id] = classes;
             }
             var finalClasses = userVisualRolesCache[project.pkey][user.id];
-            if (_.find(project.onlineMembers, {id: user.id})) {
+            if (_.find(project.onlineMembers, {id: user.id}) && (Session.user && Session.user.id != user.id)) {
                 finalClasses += " user-online";
             }
             return finalClasses;
