@@ -88,6 +88,7 @@
                         <input at
                                type="text"
                                class="form-control"
+                               autocomplete="off"
                                name="user.firstName"
                                ng-model="editableUser.firstName"
                                autofocus
@@ -97,6 +98,7 @@
                         <label for="user.lastName">${message(code: 'is.user.lastname')}</label>
                         <input at
                                type="text"
+                               autocomplete="off"
                                class="form-control"
                                name="user.lastName"
                                ng-model="editableUser.lastName"
@@ -108,6 +110,7 @@
                         <label for="user.email">${message(code: 'is.user.email')}</label>
                         <input type="email"
                                name="user.email"
+                               autocomplete="off"
                                class="form-control"
                                ng-model="editableUser.email"
                                ng-blur="refreshAvatar(editableUser)"
@@ -146,6 +149,7 @@
                     <div class="col-md-12 form-group">
                         <label for="user.preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
                         <input name="user.preferences.activity"
+                               autocomplete="off"
                                type="text"
                                class="form-control"
                                ng-model="editableUser.preferences.activity">
@@ -168,6 +172,7 @@
                     <div class="input-group" hotkey="{'return': save }" hotkey-allow-in="INPUT">
                         <input type="text"
                                name="userToken.name"
+                               autocomplete="off"
                                class="form-control"
                                placeholder="${message(code: 'is.user.token.name.placeholder')}"
                                ng-model="editableUserToken.name">

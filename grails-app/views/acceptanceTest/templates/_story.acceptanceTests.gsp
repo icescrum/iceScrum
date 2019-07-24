@@ -45,6 +45,7 @@
                                        ng-maxlength="255"
                                        ng-focus="editForm(true)"
                                        type="text"
+                                       autocomplete="off"
                                        name="name"
                                        ng-model="editableAcceptanceTest.name"
                                        ng-change="editForm(true)"

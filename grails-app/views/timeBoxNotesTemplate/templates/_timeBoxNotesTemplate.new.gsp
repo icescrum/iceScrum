@@ -35,6 +35,7 @@
                    ng-maxlength="255"
                    ng-model="timeBoxNotesTemplate.name"
                    type="text"
+                   autocomplete="off"
                    class="form-control"/>
         </div>
         <div class="form-group">
