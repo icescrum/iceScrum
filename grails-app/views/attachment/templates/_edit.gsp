@@ -29,6 +29,7 @@
         <label for="name">${message(code: 'is.backlogelement.name')}</label>
         <input type="text"
                class="form-control"
+               autocomplete="off"
                autofocus
                name="name"
                ng-model="editableAttachment.name"/>

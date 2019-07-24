@@ -34,6 +34,7 @@
                        ng-focus="editForm(true)"
                        ng-disabled="!formEditable()"
                        name="name"
+                       autocomplete="off"
                        ng-model="editableFeature.name"
                        type="text"
                        class="form-control">

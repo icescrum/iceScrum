@@ -32,6 +32,7 @@
             <input autofocus
                    name="name"
                    type="text"
+                   autocomplete="off"
                    class="form-control"
                    placeholder="${message(code: 'todo.is.ui.project.noname')}"
                    ng-model="project.name"
@@ -60,6 +61,7 @@
                ng-model="project.pkey"
                ng-pattern="/^[A-Z0-9]*[A-Z][A-Z0-9]*$/"
                pattern-error-message="${message(code: 'project.pkey.matches.invalid')}"
+               autocomplete="off"
                ng-required="isCurrentStep(1, 'project')"
                ng-maxlength="10"
                ng-remote-validate-code="project.pkey.unique"

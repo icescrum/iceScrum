@@ -30,6 +30,7 @@
                class="form-control"
                name="user.username"
                ng-model="user.username"
+               autocomplete="off"
                ng-remote-validate="/user/available/username"
                ng-remote-validate-code="user.username.unique"
                autofocus/>
@@ -41,6 +42,7 @@
         <input required
                type="text"
                class="form-control"
+               autocomplete="off"
                name="user.firstName"
                ng-model="user.firstName"/>
     </div>
@@ -49,6 +51,7 @@
         <input required
                type="text"
                class="form-control"
+               autocomplete="off"
                name="user.lastName"
                ng-model="user.lastName"/>
     </div>
@@ -60,6 +63,7 @@
                type="email"
                name="user.email"
                class="form-control"
+               autocomplete="off"
                ng-model="user.email"
                ng-remote-validate-code="user.email.unique"
                ng-remote-validate="/user/available/email"/>

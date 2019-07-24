@@ -74,6 +74,7 @@
                                    ng-model="feature.name"
                                    type="text"
                                    class="form-control"
+                                   autocomplete="off"
                                    ng-disabled="!authorizedFeature('create')"
                                    placeholder="${message(code: 'is.ui.feature.noname')}"/>
                             <span class="input-group-btn">

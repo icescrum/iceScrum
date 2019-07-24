@@ -37,6 +37,7 @@
                        ng-model="editableStory.name"
                        ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
+                       autocomplete="off"
                        placeholder="${message(code: 'is.ui.story.noname')}">
                 <span class="input-group-btn visible-hidden">
                     <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
