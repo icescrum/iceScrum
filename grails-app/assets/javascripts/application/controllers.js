@@ -580,6 +580,7 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
         return $scope.application.context || $scope.application.search;
     };
     $scope.clearContextAndSearch = function() {
+        $scope.application.search = null;
         $scope.setContext(null);
     };
     $scope.setContextTermAndColorIfNeeded = function() {
