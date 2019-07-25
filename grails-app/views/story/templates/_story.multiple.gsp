@@ -56,8 +56,8 @@
                             <div class="sticky-note-tags">
                                 <a ng-repeat="tag in topStory.tags"
                                    href="{{ tagContextUrl(tag) }}">
-                                    <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
-                                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                                    <span class="tag {{ getTagColor(tag) | contrastColor }}"
+                                          ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
                                 </a>
                             </div>
                             <div class="sticky-note-actions">

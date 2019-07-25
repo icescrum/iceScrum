@@ -44,8 +44,8 @@
         </div>
         <div class="sticky-note-tags">
             <a ng-repeat="tag in ::task.tags" href>
-                <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"
-                      ng-style="{'background-color': getTagColor(tag, 'task') }">{{:: tag }}</span>
+                <span class="tag {{ getTagColor(tag) | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
             </a>
         </div>
         <div class="sticky-note-actions">

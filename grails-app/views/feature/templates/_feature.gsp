@@ -50,8 +50,8 @@
                         count="{{:: feature.tags.length }}"/>
             <a ng-repeat="tag in ::feature.tags"
                href="{{ tagContextUrl(tag) }}">
-                <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
-                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                <span class="tag {{ getTagColor(tag) | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
             </a>
         </div>
         <div class="sticky-note-actions">
