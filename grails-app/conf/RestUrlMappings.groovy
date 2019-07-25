@@ -127,6 +127,23 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
+        // Activities
+        "/ws/project/$project/activity/$type/$fluxiableId" {
+            controller = 'activity'
+            action = [GET: "index"]
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task', 'feature'])
+                fluxiableId(matches: /\d*/)
+            }
+        }
+        "/ws/project/$project/activities" {
+            controller = 'project'
+            action = [GET: "activities"]
+            constraints {
+                project(matches: /\d*/)
+            }
+        }
         // Comments
         "/ws/project/$project/comment/$type" {
             controller = 'comment'
@@ -164,15 +181,6 @@ class RestUrlMappings {
                 action(inList: ['accept', 'returnToSandbox', 'turnIntoFeature', 'turnIntoTask', 'copy', 'plan', 'unPlan', 'shiftToNextSprint', 'done', 'unDone'])
             }
             method = 'POST'
-        }
-        "/ws/project/$project/story/$id/$action" {
-            controller = 'story'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
-                action(inList: ['activities'])
-            }
-            method = 'GET'
         }
         // Story filter by backlog / actor / sprint / feature
         "/ws/project/$project/story/$type/$typeId" {
@@ -224,15 +232,6 @@ class RestUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 action(inList: ['print'])
-            }
-            method = 'GET'
-        }
-        "/ws/project/$project/feature/$id/$action" {
-            controller = 'feature'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
-                action(inList: ['activities'])
             }
             method = 'GET'
         }
