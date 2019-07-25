@@ -57,16 +57,20 @@
                                 </a>
                             </div>
                             <div class="sticky-note-actions">
-                                <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
                                 <span class="action" ng-class="{'active':topFeature.attachments_count}">
-                                    <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                        <i class="fa fa-paperclip"></i>
+                                    <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                        <span class="action-icon action-icon-attach"></span>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                    <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
-                                        <i class="fa fa-tasks"></i>
+                                    <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.stories')}">
+                                        <span class="action-icon action-icon-story"></span>
                                         <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
+                                    </a>
+                                </span>
+                                <span class="action">
+                                    <a class="action-link">
+                                        <span class="action-icon action-icon-menu"></span>
                                     </a>
                                 </span>
                             </div>
