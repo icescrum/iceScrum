@@ -141,7 +141,7 @@ class RestUrlMappings {
             controller = 'project'
             action = [GET: "activities"]
             constraints {
-                project(matches: /\d*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Comments
