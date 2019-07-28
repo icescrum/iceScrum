@@ -23,8 +23,8 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view">
-        <div class="card-header" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
-            <div class="card-nav">
+        <div class="card-header row" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
+            <div class="card-nav order-0 col-auto flex-grow-1">
                 <ul class="nav nav-pills"
                     as-sortable="elementsListSortableOptions"
                     ng-model="visibleElementsList">
@@ -33,7 +33,7 @@
                         ng-repeat="elem in visibleElementsList">
                         <a href="{{ toggleElementUrl(elem) }}"
                            class="nav-link"
-                           ng-class="{'active': isShown(elem)}"
+                           ng-class="{'active': isShown(elem), 'd-none d-lg-block': $index > 0}"
                            ng-click="clickOnElementHref($event)">
                             <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
                         </a>
@@ -66,86 +66,113 @@
                     <entry:point id="backlog-window-toolbar"/>
                 </ul>
             </div>
-            <div class="btn-toolbar">
-                <entry:point id="backlog-window-toolbar-right"/>
-                <div class="btn-group" ng-if="backlogContainers.length == 1">
-                    <div class="btn-group"
-                         uib-dropdown>
-                        <button class="btn btn-secondary btn-sm" uib-dropdown-toggle type="button">
-                            <span>{{ backlogContainers[0].orderBy.current.name }}</span>
+            <div class="w-100 order-2 d-block d-sm-none col-auto"></div>
+            <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto mt-2 mt-sm-0 pl-0 pr-0 justify-content-between">
+                <div class="btn-group ml-sm-0" ng-if="backlogContainers.length == 1">
+                    <div uib-dropdown>
+                        <button class="btn btn-secondary btn-sm"
+                                uib-dropdown-toggle
+                                type="button"><strong>${message(code:'todo.is.ui.order.sort')}</strong>&nbsp;{{ backlogContainers[0].orderBy.current.name }}<span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
                         </button>
-                        <div uib-dropdown-menu role="menu">
-                            <a role="menuitem"
-                               class="dropdown-item"
-                               ng-repeat="order in backlogContainers[0].orderBy.values"
-                               ng-click="changeBacklogOrder(backlogContainers[0], order)"
-                               href>
-                                {{ order.name }}</a>
+                        <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                            <div class="dropdown-header">${message(code:'todo.is.ui.order')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item"
+                                 ng-click="backlogContainers[0].orderBy.reverse = !backlogContainers[0].orderBy.reverse"
+                                 ng-class="{'active': backlogContainers[0].orderBy.reverse}">${message(code:'todo.is.ui.order.sort.asc')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item"
+                                 ng-click="backlogContainers[0].orderBy.reverse = !backlogContainers[0].orderBy.reverse"
+                                 ng-class="{'active': !backlogContainers[0].orderBy.reverse}">${message(code:'todo.is.ui.order.sort.desc')}</div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">${message(code:'todo.is.ui.order.sort')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item"
+                                 ng-repeat="order in backlogContainers[0].orderBy.values"
+                                 ng-click="changeBacklogOrder(backlogContainers[0], order)"
+                                 ng-class="{'active': backlogContainers[0].orderBy.current.id == order.id}">{{:: order.name }}</div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-secondary btn-sm"
-                            ng-click="reverseBacklogOrder(backlogContainers[0])"
-                            defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
-                        <i class="fa fa-sort-amount{{ backlogContainers[0].orderBy.reverse ? '-desc' : '-asc'}}"></i>
-                    </button>
                     <button type="button"
                             ng-if="backlogContainers[0].sortable && !isSortingBacklog(backlogContainers[0])"
-                            class="btn btn-secondary btn-sm hidden-sm hidden-xs"
+                            class="btn btn-secondary btn-sm"
                             ng-click="enableSortable(backlogContainers[0])"
                             uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
                         <i class="fa fa-hand-stop-o text-danger"></i>
                     </button>
                 </div>
-                <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated() && backlogContainers.length == 1">
-                    <button class="btn btn-secondary btn-sm"
-                            ng-disabled="!backlogContainers[0].backlog.stories.length"
-                            uib-dropdown-toggle type="button">
-                        <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
-                    </button>
-                    <div uib-dropdown-menu
-                         role="menu">
-                        <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
-                            <a role="menuitem"
-                               class="dropdown-item"
-                               href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainers[0].backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">
-                                ${format.name}
-                            </a>
-                        </g:each>
+                <div>
+                    <entry:point id="backlog-window-toolbar-right"/>
+                    <div class="btn-group" uib-dropdown ng-if="authenticated() && backlogContainers.length == 1">
+                        <button class="btn btn-secondary btn-sm"
+                                ng-disabled="!backlogContainers[0].backlog.stories.length"
+                                uib-dropdown-toggle type="button"><i class="fa fa-download"></i>
+                        </button>
+                        <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
+                            <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
+                                <a role="menuitem"
+                                   class="dropdown-item"
+                                   href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainers[0].backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                   ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">
+                                    ${format.name}
+                                </a>
+                            </g:each>
+                        </div>
                     </div>
+                    <div class="btn-group d-none d-lg-inline-block sticky-note-size dropdown" uib-dropdown>
+                        <button class="btn btn-secondary btn-sm with-icon"
+                                uib-dropdown-toggle
+                                type="button">
+                            <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
+                        </button>
+                        <div uib-dropdown-menu role="menu">
+                            <div class="dropdown-header">${message(code:'todo.is.ui.stickynote.display')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item clearfix"
+                                 ng-click="setStickyNoteSize(viewName,'list-group')"
+                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code:'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
+                            <div role="menuitem"
+                                 class="dropdown-item clearfix"
+                                 ng-click="setStickyNoteSize(viewName,'grid-group size-sm')"
+                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group-sm'}">${message(code:'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span></div>
+                            <div role="menuitem"
+                                 class="dropdown-item clearfix"
+                                 ng-click="setStickyNoteSize(viewName,'grid-group')"
+                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code:'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
+                        </div>
+                    </div>
+                    <a class="btn btn-icon btn-sm ml-1 mr-1"
+                       ng-if="backlogContainers.length == 1"
+                       ng-href="{{ openBacklogUrl(backlogContainers[0].backlog) }}">
+                        <span class="icon icon-details"></span>
+                    </a>
                 </div>
-                <a class="btn btn-secondary btn-sm"
-                   ng-if="backlogContainers.length == 1"
-                   ng-href="{{ openBacklogUrl(backlogContainers[0].backlog) }}">
-                    <i class="fa fa-pencil"></i>
+            </div>
+            <div class="order-1 order-sm-3 col-auto">
+                <a ui-sref="backlog.backlog.story.new" class="btn btn-primary">
+                    <span>${message(code: "todo.is.ui.story.new")}</span>
                 </a>
-                <button type="button"
-                        class="btn btn-secondary btn-sm hidden-xs hidden-sm"
-                        defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                        ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
-                </button>
-                <a ui-sref="backlog.backlog.story.new"
-                   class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             </div>
         </div>
         <div class="window-alert bg-warning" ng-if="selectableOptions.selectingMultiple">
             <i class="fa fa-warning"></i> ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
         </div>
         <div class="card-body backlog-list scrollable-selectable-container" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
-            <div ng-repeat="backlogContainer in backlogContainers"
-                 class="backlog col">
+            <div ng-repeat="backlogContainer in backlogContainers" class="backlog col" ng-class="{'has-selected': hasSelected()}">
                 <div ng-if="backlogContainers.length > 1" class="backlog-multiple-toolbar d-flex justify-content-between">
                     <span class="backlog-title">
                         {{ (backlogContainer.backlog | i18nName) + ' (' + backlogContainer.backlog.count + ')' }}
                     </span>
                     <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
-                       class="btn btn-icon btn-icon-close">
+                       class="btn btn-icon">
+                        <span class="icon-close action"></span>
                     </a>
                 </div>
                 <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
                     <div class="loading-logo" ng-include="'loading.html'"></div>
                     <div class="sticky-notes grey-sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
-                         ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
+                         ng-class="{'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
                          ng-controller="storyBacklogCtrl"
                          as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                          is-disabled="!isSortingBacklog(backlogContainer)"

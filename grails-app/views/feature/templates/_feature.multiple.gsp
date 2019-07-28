@@ -23,7 +23,9 @@
 <script type="text/ng-template" id="feature.multiple.html">
 <div class="card">
     <div class="details-header">
-        <a class="btn btn-icon btn-icon-close" href="#/{{ ::viewName }}"></a>
+        <a class="btn btn-icon" href="#/{{ ::viewName }}">
+            <span class="icon icon-close">s</span>
+        </a>
     </div>
     <div class="card-header">
         <div class="card-title">

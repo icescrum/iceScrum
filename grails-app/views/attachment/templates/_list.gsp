@@ -90,7 +90,7 @@
     </div>
 </div>
 <div ng-if="attachmentable.attachments.length > 10 && !pref.showMore['attachments']" class="text-center">
-    <span ng-click="showMore('attachments')" class="toggle-more">See more</span>
+    <span ng-click="showMore('attachments')" class="toggle-more">${message(code:'todo.is.ui.attachment.more')}</span>
 </div>
 </script>
 

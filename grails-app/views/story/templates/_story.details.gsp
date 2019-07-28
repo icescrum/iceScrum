@@ -32,38 +32,42 @@
     <div class="details-header">
         <entry:point id="story-details-right-title"/>
         <a ng-if="previousStory()"
-           class="btn btn-icon btn-caret-left"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            href="{{ currentStateUrl(previousStory().id) }}">
+            <span class="icon icon-caret-left"></span>
         </a>
         <a ng-if="nextStory()"
-           class="btn btn-icon btn-caret-right"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            href="{{ currentStateUrl(nextStory().id) }}">
+            <span class="icon icon-caret-right"></span>
         </a>
-        <a class="btn btn-icon btn-expand expandable"
+        <a class="btn btn-icon expandable"
            ng-if="!isModal && !application.focusedDetailsView"
            href="{{ toggleFocusUrl() }}"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)"
            hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.window.focus')}">
+            <span class="icon icon-expand"></span>
         </a>
-        <a class="btn btn-icon btn-compress expandable"
+        <a class="btn btn-icon expandable"
            ng-if="!isModal && application.focusedDetailsView"
            href="{{ toggleFocusUrl() }}"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"
            hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.window.unfocus')}">
+            <span class="icon icon-compress"></span>
         </a>
         <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
     </div>

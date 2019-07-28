@@ -144,7 +144,7 @@
     <a hotkey="{ '{{:: menu.shortcut }}' : hotkeyClick }"
        class="nav-link"
        data-toggle="collapse"
-       data-target="#primary-menu"
+       data-target="#primary-menu.show"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
        href="{{ getMenuUrl(menu) }}">
         <span class="fi-main-menu" ng-class="'fi-main-menu-' + menu.id" as-sortable-item-handle></span>
@@ -197,10 +197,9 @@
     </script>
 
     <script type="text/ng-template" id="states.html">
-    <div class="states progress">
+    <div class="states row">
         <div ng-repeat="state in states" class="progress-bar state {{ state.class }}"
-             ng-class="{'state-completed': state.completed, 'state-current': state.current}"
-             ng-style="{width: state.width + '%'}">
+             ng-class="{'state-completed': state.completed, 'state-current': state.current}">
             <span class="state-name" tooltip-placement="left" defer-tooltip="{{ state.tooltip  }}">{{ state.name }}</span>
         </div>
     </div>
@@ -208,7 +207,7 @@
 
     <script type="text/ng-template" id="details.layout.buttons.html">
     <span>
-        <a class="btn btn-icon btn-icon-close" href="{{ closeDetailsViewUrl() }}"></a>
+        <a class="btn btn-icon" href="{{ closeDetailsViewUrl() }}"><span class="icon icon-close"></span></a>
     </span>
     </script>
 

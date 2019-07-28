@@ -35,13 +35,15 @@
                    defer-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
             </div>
         </div>
-        <div class="col-md-6">
-            <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
-            <div ng-include="'story.table.multiple.sum.html'"></div>
-        </div>
-        <entry:point id="backlog-details-chart-before"/>
-        <div class="col-md-6 backlogCharts chart" ng-controller="backlogChartCtrl">
-            <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+        <div class="row">
+            <div class="col-md-6">
+                <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
+                <div ng-include="'story.table.multiple.sum.html'"></div>
+            </div>
+            <entry:point id="backlog-details-chart-before"/>
+            <div class="col-md-6 backlogCharts chart" ng-controller="backlogChartCtrl">
+                <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+            </div>
         </div>
     </div>
     <ul class="nav nav-tabs nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">

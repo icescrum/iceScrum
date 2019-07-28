@@ -139,6 +139,11 @@ $is-state-colors: (
   @include rectangle-background($side, $side);
 }
 
+@mixin square-background-2($side, $side2) {
+  @include rectangle-background($side, $side2);
+}
+
+
 ////////////////////
 // Override bootstrap variables
 ////////////////////
@@ -208,8 +213,8 @@ $dropdown-link-hover-bg: $is-bg-color;
 $dropdown-link-active-bg: $is-bg-color;
 $dropdown-header-color: $is-text-color-alt;
 $dropdown-link-color: $is-text-color-alt;
-$dropdown-link-hover-color: $is-text-color-alt;
-$dropdown-link-active-color: $is-text-color-alt;
+$dropdown-link-hover-color: $is-blue;
+$dropdown-link-active-color: $is-blue;
 $dropdown-font-size: $is-font-size-sm;
 $dropdown-divider-bg: $is-border-color-alt;
 $dropdown-border-radius: 0;

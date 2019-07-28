@@ -144,14 +144,21 @@ $acceptance-test-states: tocheck, success, failed;
 ////////////////////
 
 .list-group {
-
   &.sticky-notes {
-    margin: 0 $is-spacer-x;
-    margin-top: 3px;
     position: relative;
-
     .sticky-note-container {
+      padding: 0 $is-spacer-x;
       border-bottom: solid 1px $is-border-color-alt;
+      &.is-selected, &:hover {
+        z-index: 2;
+        background: $is-bg-color;
+        &:first-of-type {
+          border-top: solid 1px $is-border-color;
+        }
+      }
+      &:first-of-type {
+        border-top: solid 1px transparent;
+      }
     }
   }
 
@@ -374,6 +381,18 @@ $acceptance-test-states: tocheck, success, failed;
     .sticky-note-container, .as-sortable-placeholder {
       margin: $is-sticky-note-spacer;
     }
+
+    .sticky-note-container {
+      &.is-selected {
+        z-index: 2;
+      }
+      &:not(.is-selected) {
+        &:hover {
+          z-index: 2;
+          opacity: 0.9; //Maybe / Maybe not
+        }
+      }
+    }
   }
 
   &.sticky-notes.as-sortable-drag {
@@ -382,10 +401,6 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   .sticky-note {
-    &:not(:hover) {
-      box-shadow: none !important; // Override js style
-    }
-
     position: relative;
 
     .sticky-note-state-progress {
@@ -776,8 +791,4 @@ $acceptance-test-states: tocheck, success, failed;
       }
     }
   }
-}
-
-.grid-group.has-selected > .sticky-note-container:not(.is-selected), .list-group.has-selected > .sticky-note-container:not(.is-selected) {
-  opacity: 0.37;
 }

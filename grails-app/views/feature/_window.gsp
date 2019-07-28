@@ -23,54 +23,48 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view">
-        <div class="card-header">
-            <div class="card-header-left">
+        <div class="card-header row">
+            <div class="card-header-left order-0 col-auto flex-grow-1">
                 <span class="card-title">${message(code: 'is.ui.feature')} ({{ features.length}})</span>
             </div>
-            <div class="btn-toolbar">
-                <div class="btn-group">
-                    <div class="btn-group"
-                         uib-dropdown>
-                        <button class="btn btn-secondary btn-sm"
-                                uib-dropdown-toggle type="button">
-                            <span>{{ orderBy.current.name }}</span>
-                        </button>
-                        <div uib-dropdown-menu role="menu">
-                            <a role="menuitem"
-                               class="dropdown-item"
-                               ng-repeat="order in orderBy.values"
-                               ng-click="orderBy.current = order"
-                               href>
-                                {{ order.name }}
-                            </a>
-                        </div>
-                    </div>
-                    <button type="button"
-                            class="btn btn-secondary btn-sm"
-                            ng-click="orderBy.reverse = !orderBy.reverse"
-                            defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
-                        <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
-                    </button>
-                    <button type="button"
-                            ng-if="isSortableFeature() && !isSortingFeature()"
-                            class="btn btn-secondary btn-sm hidden-sm hidden-xs"
-                            ng-click="enableSortable()"
-                            uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
-                        <i class="fa fa-hand-pointer-o text-danger forbidden-stack"></i>
-                    </button>
+            <div class="mt-2 mt-sm-0 order-3 order-sm-1 col-auto pr-0" uib-dropdown>
+                <button class="btn btn-secondary btn-sm"
+                        uib-dropdown-toggle
+                        ng-disabled="!features.length"
+                        type="button"><strong>${message(code:'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
+                </button>
+                <div uib-dropdown-menu role="menu">
+                    <div class="dropdown-header">${message(code:'todo.is.ui.order')}</div>
+                    <div role="menuitem"
+                         class="dropdown-item"
+                         ng-click="orderBy.reverse = !orderBy.reverse"
+                         ng-class="{'active': orderBy.reverse}">${message(code:'todo.is.ui.order.sort.asc')}</div>
+                    <div role="menuitem"
+                         class="dropdown-item"
+                         ng-click="orderBy.reverse = !orderBy.reverse"
+                         ng-class="{'active': !orderBy.reverse}">${message(code:'todo.is.ui.order.sort.desc')}</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-header">${message(code:'todo.is.ui.order.sort')}</div>
+                    <div role="menuitem"
+                         class="dropdown-item"
+                         ng-repeat="order in orderBy.values"
+                         ng-click="orderBy.current = order"
+                         ng-class="{'active': orderBy.current == order}">{{:: order.name }}</div>
                 </div>
-                <div class="btn-group hidden-sm hidden-xs"
+            </div>
+            <div class="w-100 order-2 d-block d-sm-none"></div>
+            <div class="btn-toolbar pl-1 mt-2 mt-sm-0 order-4 order-sm-3 col-auto">
+                <div class="btn-group"
                      uib-dropdown
-                     ng-if="authenticated()"
-                     defer-tooltip="${message(code: 'todo.is.ui.export')}">
+                     ng-if="authenticated()">
                     <button class="btn btn-secondary btn-sm"
                             uib-dropdown-toggle
                             ng-disabled="!features.length"
                             type="button">
                         <i class="fa fa-download"></i>
                     </button>
-                    <div uib-dropdown-menu
-                         role="menu">
+                    <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
                         <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                             <a role="menuitem"
                                class="dropdown-item"
@@ -79,14 +73,29 @@
                         </g:each>
                     </div>
                 </div>
-                <button type="button"
-                        class="btn btn-secondary btn-sm hidden-xs hidden-sm"
-                        defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                        ng-click="setStickyNoteSize(viewName, true)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
-                </button>
-                <a ng-if="authorizedFeature('create')"
-                   href="#/{{ ::viewName }}/new"
-                   class="btn btn-primary">${message(code: "todo.is.ui.feature.new")}</a>
+                <div class="btn-group d-none d-lg-block sticky-note-size" uib-dropdown>
+                    <button class="btn btn-secondary btn-sm with-icon"
+                            uib-dropdown-toggle
+                            type="button">
+                        <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
+                    </button>
+                    <div uib-dropdown-menu role="menu">
+                        <div class="dropdown-header">${message(code:'todo.is.ui.stickynote.display')}</div>
+                        <div role="menuitem"
+                             class="dropdown-item clearfix"
+                             ng-click="setStickyNoteSize(viewName,'list-group')"
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code:'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
+                        <div role="menuitem"
+                             class="dropdown-item clearfix"
+                             ng-click="setStickyNoteSize(viewName,'grid-group')"
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code:'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 order-sm-4 col-auto">
+                <a class="btn btn-primary"
+                   ng-if="authorizedFeature('create')"
+                   href="#/{{ ::viewName }}/new">${message(code: "todo.is.ui.feature.new")}</a>
             </div>
         </div>
         <div class="window-alert bg-warning"
@@ -98,7 +107,7 @@
             <i class="fa fa-warning"></i> ${message(code: 'is.ui.feature.rank.disabled')}
         </div>
         <div class="card-body scrollable-selectable-container"
-             selectable="selectableOptions">
+             selectable="selectableOptions" ng-class="{'has-selected': hasSelected()}">
             <div ng-if="features.length == 0"
                  class="empty-view">
                 <p class="form-text">${message(code: 'is.ui.feature.help')}<p>
@@ -122,7 +131,7 @@
                 </a>
             </div>
             <div class="sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group') }}"
-                 ng-class="{'has-selected': hasSelected(), 'sortable-multiple': application.sortableMultiple }"
+                 ng-class="{'sortable-multiple': application.sortableMultiple }"
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!isSortingFeature()"

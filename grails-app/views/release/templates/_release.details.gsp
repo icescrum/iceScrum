@@ -32,22 +32,24 @@
      ng-class="authorizedRelease('upload', release) && dropClass">
     <div class="details-header">
         <a ng-if="previousRelease"
-           class="btn btn-icon btn-caret-left"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
            ui-sref=".({releaseId: previousRelease.id})">
+            <span class="icon icon-caret-left"></span>
         </a>
         <a ng-if="nextRelease"
-           class="btn btn-icon btn-caret-right"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
            ui-sref=".({releaseId: nextRelease.id})">
+            <span class="icon icon-caret-right"></span>
         </a>
         <details-layout-buttons ng-if="!isModal" remove-ancestor="removeReleaseAncestorOnClose"/>
     </div>
@@ -59,7 +61,7 @@
             <div class="btn-toolbar">
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
                 <g:if test="${formats}">
-                    <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
+                    <div class="btn-group" uib-dropdown ng-if="authenticated()">
                         <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle type="button">
                             <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>

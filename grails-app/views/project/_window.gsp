@@ -48,12 +48,12 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex justify-content-end mb-2">
-                        <button class="btn btn-action btn-secondary btn-sm hover-visible-visibility text-nowrap"
+                    <div class="float-right">
+                        <button class="btn btn-icon btn-secondary btn-sm hover-visible-visibility text-nowrap"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
                                 type="button">
-                            <i class="action action-edit"></i>
+                            <i class="icon icon-edit"></i>
                         </button>
                     </div>
                     <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
@@ -98,11 +98,11 @@
                     </span>
                 </div>
                 <div class="card-body rich-content">
-                    <div class="d-flex justify-content-end mb-2">
-                        <a class="btn btn-action btn-secondary btn-sm float-right hover-visible-visibility btn-icon btn-edit"
+                    <div class="float-right">
+                        <a class="btn btn-icon btn-secondary btn-sm float-right hover-visible-visibility"
                            href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                            ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
-                            <i class="action action-edit"></i>
+                            <i class="icon icon-edit"></i>
                         </a>
                     </div>
                     <div ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
@@ -115,11 +115,11 @@
                     </span>
                 </div>
                 <div class="card-body rich-content">
-                    <div class="d-flex justify-content-end mb-2">
-                        <a class="btn btn-action btn-secondary btn-sm float-right hover-visible-visibility"
+                    <div class="float-right">
+                        <a class="btn btn-icon btn-secondary btn-sm float-right hover-visible-visibility"
                            href="#/taskBoard/{{ lastSprint.id }}/details"
                            ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
-                            <i class="action action-edit"></i>
+                            <i class="icon icon-edit"></i>
                         </a>
                     </div>
                     <div ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
@@ -147,7 +147,7 @@
                     </div>
                     <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
                         <div class="upload-file col-6">
-                            <span class="attachment-icon"></span><span flow-btn class="link">Add file</span>&nbsp;<span class="d-none d-md-inline">or drop file</span>
+                            <span class="attachment-icon"></span><span flow-btn class="link">${message(code:'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code:'todo.is.ui.attachment.drop')}</span>
                         </div>
                         <div class="upload-apps col-6">
                             <entry:point id="attachment-add-buttons"/>
@@ -208,15 +208,15 @@
                         <div class="float-right">
                             <div class="btn-group">
                                 <entry:point id="dashboard-chart-toolbar"/>
-                                <button class="btn-action btn btn-secondary btn-sm"
+                                <button class="btn-icon btn btn-secondary btn-sm"
                                         ng-click="saveChart(chartParams)"
                                         type="button">
-                                    <i class="action action-save"></i>
+                                    <i class="icon icon-save"></i>
                                 </button>
-                                <button class="btn-action btn btn-secondary btn-sm"
+                                <button class="btn-icon btn btn-secondary btn-sm"
                                         ng-click="openChartInModal(chartParams)"
                                         type="button">
-                                    <i class="action action-expand"></i>
+                                    <i class="icon icon-expand"></i>
                                 </button>
                             </div>
                         </div>
@@ -235,15 +235,12 @@
                     <span class="card-title">
                         ${message(code: 'todo.is.ui.history')}
                     </span>
+                    <a class="btn btn-icon btn-secondary btn-sm float-right"
+                       href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
+                        <i class="icon icon-rss"></i>
+                    </a>
                 </div>
                 <div class="card-body activities">
-                    <div class="d-flex justify-content-end mb-2">
-                        <a class="btn btn-action btn-secondary btn-sm btn-icon"
-                           href="{{ openWorkspaceUrl(project) + 'project/feed' }}"
-                           defer-tooltip="${message(code: 'todo.is.ui.feed')}">
-                            <i class="action action-rss"></i>
-                        </a>
-                    </div>
                     <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">
                         <div class="activity media">
                             <div class="{{ activity.poster | userColorRoles }} avatar mr-3">
@@ -272,7 +269,7 @@
                         <hr ng-if="!$last">
                     </div>
                     <div ng-if="activities.length > 5 && !pref.showMore['activities']" class="text-center">
-                        <span ng-click="showMore('activities')" class="toggle-more">See more</span>
+                        <span ng-click="showMore('activities')" class="toggle-more">${message(code:'todo.is.ui.history.more')}</span>
                     </div>
                     <div ng-if="activities != undefined && activities.length == 0">
                         <div style="text-align: center; padding:5px; font-size:14px;">

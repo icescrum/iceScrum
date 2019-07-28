@@ -109,4 +109,17 @@
       height: 1.25rem;
     }
   }
+  .view.flex.with-details {
+    > .content {
+      width: 100%;
+    }
+    [ui-view='details'] {
+      position: absolute;
+      bottom: 0;
+      top: calc(4rem - 1px);
+      left: 40px;
+      right: 0;
+      width: auto !important;
+    }
+  }
 }

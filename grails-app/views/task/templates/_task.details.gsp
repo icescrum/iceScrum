@@ -32,22 +32,24 @@
     <div class="details-header">
         <entry:point id="task-details-right-title"/>
         <a ng-if="previousTask"
-           class="btn btn-icon btn-caret-left"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
            href="{{:: currentStateUrl(previousTask.id) }}">
+            <span class="icon icon-caret-left"></span>
         </a>
         <a ng-if="nextTask"
-           class="btn btn-icon btn-caret-right"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
            href="{{:: currentStateUrl(nextTask.id) }}">
+            <span class="icon icon-caret-right"></span>
         </a>
         <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
     </div>

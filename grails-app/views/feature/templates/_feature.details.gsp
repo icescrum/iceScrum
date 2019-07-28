@@ -32,22 +32,24 @@
     <div class="details-header">
         <entry:point id="feature-details-right-title"/>
         <a ng-if="previousFeature && !isModal"
-           class="btn btn-icon btn-caret-left"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
            ui-sref=".({featureId: previousFeature.id})">
+            <span class="icon icon-caret-left"></span>
         </a>
         <a ng-if="nextFeature && !isModal"
-           class="btn btn-icon btn-caret-right"
+           class="btn btn-icon"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
            ui-sref=".({featureId: nextFeature.id})">
+            <span class="icon icon-caret-right"></span>
         </a>
         <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
     </div>

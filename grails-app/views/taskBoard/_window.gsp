@@ -72,7 +72,7 @@
                                 type="button">
                             {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
                         </button>
-                        <div uib-dropdown-menu role="menu">
+                        <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
                             <div role="menuitem"
                                  ng-repeat="sprintFilter in sprintFilters"
                                  ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">
@@ -87,14 +87,15 @@
                     </div>
                     <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                     <g:if test="${formats}">
-                        <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
+                        <div class="btn-group" uib-dropdown ng-if="authenticated()">
                             <button class="btn btn-secondary btn-sm"
                                     uib-dropdown-toggle type="button">
-                                <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
+                                <i class="fa fa-download"></i>
                             </button>
                             <div uib-dropdown-menu
                                  class="dropdown-menu-right"
                                  role="menu">
+                                <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
                                 <g:each in="${formats}" var="format">
                                     <a role="menuitem"
                                        class="dropdown-item"
@@ -104,14 +105,17 @@
                             </div>
                         </div>
                     </g:if>
+                    <div>
+                        <a class="btn btn-icon btn-sm ml-1 mr-1"
+                           href="{{ openSprintUrl(sprint) }}">
+                            <span class="icon icon-details"></span>
+                        </a>
+                    </div>
                     <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
                         <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                         <div uib-dropdown-toggle></div>
                         <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                     </div>
-                    <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
-                        <i class="fa fa-pencil"></i>
-                    </a>
                 </div>
             </div>
         </div>
@@ -127,8 +131,8 @@
                 {{ currentSprintFilter.name }}
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
-            <div selectable="selectableOptions" class="kanban">
-                <div class="kanban-states">
+            <div selectable="selectableOptions" class="kanban" ng-class="{'has-selected' : hasSelected()}">
+                <div class="kanban-states sticky-top">
                     <div ng-if="sprint.state != sprintStatesByName.DONE" ng-bind-html="taskCountByState[taskStatesByName.TODO].label"></div>
                     <div ng-if="sprint.state == sprintStatesByName.IN_PROGRESS" ng-bind-html="taskCountByState[taskStatesByName.IN_PROGRESS].label"></div>
                     <div ng-if="sprint.state != sprintStatesByName.TODO" ng-bind-html="taskCountByState[taskStatesByName.DONE].label"></div>
@@ -146,7 +150,7 @@
                         <div class="kanban-column col"
                              ng-repeat="taskState in sprintTaskStates">
                             <div class="sticky-notes grid-group"
-                                 ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
+                                 ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT)}"
                                  ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-init="taskType = taskTypesByName.URGENT"
                                  as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"

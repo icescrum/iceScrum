@@ -1007,32 +1007,20 @@ services.service('stickyNoteSize', ['screenSize', '$localStorage', function(scre
         var icon;
         switch (this.currentStickyNoteSize(viewName)) {
             case 'list-group':
-                icon = 'fa-list';
+                icon = 'list-group';
                 break;
             case 'grid-group size-sm':
-                icon = 'fa-sticky-note';
+                icon = 'grid-group-sm';
                 break;
             default:
-                icon = 'fa-sticky-note fa-lg';
+                icon = 'grid-group';
                 break;
         }
         return icon;
     };
-    this.setStickyNoteSize = function(viewName, skipSm) {
-        var next;
-        switch (this.currentStickyNoteSize(viewName)) {
-            case 'grid-group':
-                next = skipSm ? 'list-group' : 'grid-group size-sm';
-                break;
-            case 'grid-group size-sm':
-                next = 'list-group';
-                break;
-            default:
-                next = 'grid-group';
-                break;
-        }
+    this.setStickyNoteSize = function(viewName, postitSize) {
         var contextSizeName = viewName + 'PostitSize';
-        $localStorage[contextSizeName] = next;
+        $localStorage[contextSizeName] = postitSize;
     };
 }]);
 

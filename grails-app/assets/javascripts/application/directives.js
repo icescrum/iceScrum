@@ -935,11 +935,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     var name = $filter('i18n')(state, newModel.class + 'States');
                     return {
                         name: name,
-                        width: 100 / allStates.length,
                         completed: newState >= state,
                         current: newState == state,
                         tooltip: name + (date ? ': ' + ($filter('dateTime')(date)) : ''),
-                        class: 'color-state-' + code
+                        class: 'color-state-' + code + ' width-for-' + allStates.length
                     };
                 });
             });

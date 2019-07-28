@@ -102,6 +102,15 @@ strong {
   }
 }
 
+.dropdown:not(.open) {
+  .btn.dropdown-toggle {
+    border: 1px solid transparent !important;
+    &:hover, &:not(:disabled):not(.disabled):active {
+      border: 1px solid $is-outline-color !important;
+    }
+  }
+}
+
 .btn-sm {
   font-size: $is-font-size-sm;
   line-height: 1.6;
@@ -113,12 +122,12 @@ strong {
 
 // Emulating bootstrap 3 toolbar (TODO check if good approach)
 .btn-toolbar {
-  margin-left: -0.625rem; // Offset the first child's margin
+  margin-left: -0.25rem; // Offset the first child's margin
   > .btn,
   > .btn-group,
   > .btn-menu,
   > .input-group {
-    margin-left: 0.625rem;
+    margin-left: 0.25rem;
   }
 }
 
@@ -259,6 +268,34 @@ form label {
   }
 }
 
+.select2-container {
+  .select2-arrow {
+    border-left: 1px solid transparent !important;
+  }
+  .select2-arrow::after {
+    display: inline-block;
+    content: "";
+    margin-left: 0.4em;
+    vertical-align: 0.2em;
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+    position: absolute;
+    top: 10px;
+  }
+  .select2-arrow b {
+    background: none !important;
+  }
+  &.select2-dropdown-open {
+    .select2-arrow::after {
+      transform: rotate(-135deg);
+      top: 13px;
+    }
+  }
+}
+
 ////////////////////
 // Other
 ////////////////////
@@ -282,6 +319,10 @@ form label {
 //https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
 .dropdown.open .dropdown-menu {
   display: block;
+}
+
+.dropdown-toggle, .dropdown-toggle:hover {
+  color: $is-text-color;
 }
 
 .dropdown-toggle:not(.no-caret) {

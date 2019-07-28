@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="20px" viewBox="0 0 21 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Group 10</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Responsive_backlog" transform="translate(-329.000000, -137.000000)" stroke="#f4f4f9" stroke-width="1.8">
+            <g id="Group-9" transform="translate(321.000000, 129.000000)">
+                <g id="Group-10" transform="translate(9.600000, 9.600000)">
+                    <rect id="Rectangle" x="0" y="0" width="18" height="16.8" rx="2.4"></rect>
+                    <polyline id="Line-3" points="12 6 9.6 8.4 12 10.8"></polyline>
+                    <path d="M5.4,0 L5.4,16.8" id="Line-18"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

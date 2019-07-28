@@ -23,8 +23,8 @@
 <is:window windowDefinition="${windowDefinition}">
     <div ng-if="releases.length > 0"
          class="card card-view">
-        <div class="card-header">
-            <div class="card-header-left">
+        <div class="card-header row">
+            <div class="card-header-left order-0 col-auto flex-grow-1">
                 <a class="card-title" ng-href="{{ openReleaseUrl(release) }}">
                     {{ release.name }}
                 </a>
@@ -33,31 +33,58 @@
                     <span>{{ (release.state | i18n: 'ReleaseStates') }}</span>
                 </span>
             </div>
-            <div class="btn-toolbar align-items-center">
-                <button class="btn btn-icon btn-caret-left"
-                        ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
-                        ng-click="visibleSprintsPrevious()">
-                </button>
-                <button class="btn btn-icon btn-caret-right"
-                        ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
-                        ng-click="visibleSprintsNext()">
-                </button>
-                <button type="button"
-                        class="btn btn-secondary btn-sm hidden-xs hidden-sm"
-                        defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                        ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
-                </button>
+            <div class="w-100 order-2 d-block d-sm-none col-auto"></div>
+            <div class="btn-toolbar align-items-center order-3 order-sm-1 col-12 col-sm-auto justify-content-between">
+                <div>
+                    <button class="btn btn-icon"
+                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'd-none' : 'd-inline-block'}"
+                            ng-click="visibleSprintsPrevious()">
+                        <span class="icon icon-caret-left"></span>
+                    </button>
+                    <button class="btn btn-icon"
+                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'd-none' : 'd-inline-block'}"
+                            ng-click="visibleSprintsNext()">
+                        <span class="icon icon-caret-right"></span>
+                    </button>
+                </div>
+                <div class="btn-group d-none d-lg-block sticky-note-size" uib-dropdown>
+                    <button class="btn btn-secondary btn-sm with-icon"
+                            uib-dropdown-toggle
+                            type="button">
+                        <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
+                    </button>
+                    <div uib-dropdown-menu role="menu">
+                        <div class="dropdown-header">${message(code:'todo.is.ui.stickynote.display')}</div>
+                        <div role="menuitem"
+                             class="dropdown-item clearfix"
+                             ng-click="setStickyNoteSize(viewName,'list-group')"
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code:'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
+                        <div role="menuitem"
+                             class="dropdown-item clearfix"
+                             ng-click="setStickyNoteSize(viewName,'grid-group size-sm')"
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group size-sm'}">${message(code:'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span></div>
+                        <div role="menuitem"
+                             class="dropdown-item clearfix"
+                             ng-click="setStickyNoteSize(viewName,'grid-group')"
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code:'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
+                    </div>
+                </div>
+                <div>
+                    <a class="btn btn-icon btn-sm ml-1 mr-1"
+                       ng-href="{{ openReleaseUrl(release) }}">
+                        <span class="icon icon-details"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="order-1 order-sm-3 col-auto">
                 <div class="btn-menu" ng-controller="releaseCtrl" uib-dropdown>
                     <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
                     <div uib-dropdown-toggle></div>
                     <div uib-dropdown-menu ng-init="itemType = 'release'" template-url="item.menu.html"></div>
                 </div>
-                <a class="btn btn-secondary btn-sm" ng-href="{{ openReleaseUrl(release) }}">
-                    <i class="fa fa-pencil"></i>
-                </a>
             </div>
         </div>
-        <div class="card-body release-plan"
+        <div class="card-body release-plan" ng-class="{'has-selected': hasSelected()}"
              selectable="selectableOptions">
             <div class="sprint col"
                  ng-repeat="sprint in visibleSprints"
@@ -92,7 +119,7 @@
                     </div>
                 </div>
                 <div class="sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }} scrollable-selectable-container"
-                     ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
+                     s ng-class="{'sortable-moving':application.sortableMoving}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingSprint(sprint)"
