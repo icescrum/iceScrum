@@ -63,7 +63,7 @@
                             type="button">
                         <i class="fa fa-download"></i>
                     </button>
-                    <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                    <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
                         <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
                         <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                             <a role="menuitem"

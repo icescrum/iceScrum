@@ -74,7 +74,7 @@
                                 uib-dropdown-toggle
                                 type="button"><strong>${message(code: 'todo.is.ui.order.sort')}</strong>&nbsp;{{ backlogContainers[0].orderBy.current.name }}<span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
                         </button>
-                        <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
                             <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>
                             <div role="menuitem"
                                  class="dropdown-item"
@@ -108,7 +108,7 @@
                                 ng-disabled="!backlogContainers[0].backlog.stories.length"
                                 uib-dropdown-toggle type="button"><i class="fa fa-download"></i>
                         </button>
-                        <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
                             <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
                             <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                                 <a role="menuitem"

@@ -72,7 +72,7 @@
                                 type="button">
                             {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
                         </button>
-                        <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
                             <div role="menuitem"
                                  ng-repeat="sprintFilter in sprintFilters"
                                  ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">
