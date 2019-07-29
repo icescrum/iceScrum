@@ -25,7 +25,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="31" height="30" viewBox="0 0 31 30">
     <defs>
         <linearGradient id="story-{{:: story | storyColor }}" x1="50%" x2="50%" y1="0%" y2="100%">
-            <stop offset="0%" stop-color="{{:: getGradientColor(story | storyColor) }}"/>
+            <stop offset="0%" stop-color="{{:: story | storyColor | gradientColor }}"/>
             <stop offset="100%" stop-color="{{:: story | storyColor }}"/>
         </linearGradient>
         <path id="c" d="M22.358 0l6.498 6.48h-6.498z"/>

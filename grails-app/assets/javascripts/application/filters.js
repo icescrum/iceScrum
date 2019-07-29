@@ -22,7 +22,7 @@
  *
  */
 
-var contrastColorCache = {}, gradientBackgroundCache = {}, gradientCache = {}, userVisualRolesCache = {};
+var contrastColorCache = {}, gradientCache = {}, userVisualRolesCache = {};
 var filters = angular.module('filters', []);
 
 filters
@@ -155,21 +155,21 @@ filters
             }
         };
     }])
-    .filter('createGradientBackground', ['ColorService', function(ColorService) {
+    .filter('gradientColor', ['ColorService', function(ColorService) {
         return function(originalHex) {
-            var originalRgb = ColorService.hexToRgb(originalHex);
-            // Shift the color hue by hOffset in one direction and if the color is darker try hOffset in the other direction
-            var shiftH = function(originalH, targetS, targetL, hOffset) {
-                var targetH = originalH + hOffset;
-                targetH = ColorService.normalizeH(targetH);
-                var tempRgb = ColorService.hslToRgb(targetH, targetS, targetL);
-                if (ColorService.brightness(tempRgb) < ColorService.brightness(originalRgb)) {
-                    targetH = originalH - hOffset;
+            if (!gradientCache[originalHex]) {
+                // Shift the color hue by hOffset in one direction and if the color is darker try hOffset in the other direction
+                var originalRgb = ColorService.hexToRgb(originalHex);
+                var shiftH = function(originalH, targetS, targetL, hOffset) {
+                    var targetH = originalH + hOffset;
                     targetH = ColorService.normalizeH(targetH);
-                }
-                return targetH;
-            };
-            if (!gradientBackgroundCache[originalHex]) {
+                    var tempRgb = ColorService.hslToRgb(targetH, targetS, targetL);
+                    if (ColorService.brightness(tempRgb) < ColorService.brightness(originalRgb)) {
+                        targetH = originalH - hOffset;
+                        targetH = ColorService.normalizeH(targetH);
+                    }
+                    return targetH;
+                };
                 var lCoef = originalHex === '#ffcc01' ? 0.01 : 0.05; // Hack to preserve task yellow
                 var originalHsl = ColorService.rgbToHsl(originalRgb);
                 var targetS = originalHsl[1];
@@ -177,10 +177,16 @@ filters
                 var targetH = shiftH(originalHsl[0], targetS, targetL, 7);
                 var targetRgb = ColorService.hslToRgb(targetH, targetS, targetL);
                 gradientCache[originalHex] = ColorService.rgbToHex(targetRgb);
-                gradientBackgroundCache[originalHex] = 'linear-gradient(to top, rgb(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ') 0%, rgb(' + targetRgb[0] + ',' + targetRgb[1] + ',' + targetRgb[2] + ') 100%)';
             }
+            return gradientCache[originalHex];
+        };
+    }])
+    .filter('createGradientBackground', ['ColorService', 'gradientColorFilter', function(ColorService, gradientColorFilter) {
+        return function(originalHex) {
+            var originalRgb = ColorService.hexToRgb(originalHex);
+            var targetHex = gradientColorFilter(originalHex);
             return {
-                'background-image': gradientBackgroundCache[originalHex],
+                'background-image': 'linear-gradient(to top, ' + originalHex + ' 0%, ' + targetHex + ' 100%)',
                 'box-shadow': '0 42px 48px 0 rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ', 0.2)'
             };
         };

@@ -858,9 +858,6 @@ var isApplication = angular.module('isApplication', [
                 menuElement.action(item);
             }
         };
-        $rootScope.getGradientColor = function(colorHex) {
-            return gradientCache[colorHex];
-        };
         $rootScope.integerSuite = _.range(100);
         $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
