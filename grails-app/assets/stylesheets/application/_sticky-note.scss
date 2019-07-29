@@ -396,6 +396,10 @@ $acceptance-test-states: tocheck, success, failed;
           z-index: 2;
           opacity: 0.9; //Maybe / Maybe not
         }
+
+        .sticky-note:not(:hover) {
+          box-shadow: none !important; // Override js style
+        }
       }
     }
   }
