@@ -79,7 +79,7 @@
                             type="button">
                         <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
                     </button>
-                    <div uib-dropdown-menu role="menu">
+                    <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
                         <div class="dropdown-header">${message(code: 'todo.is.ui.stickynote.display')}</div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
