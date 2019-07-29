@@ -147,7 +147,7 @@
                     </div>
                     <div ng-if="authorizedProject('upload', project)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
                         <div class="upload-file col-6">
-                            <span class="attachment-icon"></span><span flow-btn class="link">${message(code:'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code:'todo.is.ui.attachment.drop')}</span>
+                            <span class="attachment-icon"></span><span flow-btn class="link">${message(code: 'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code: 'todo.is.ui.attachment.drop')}</span>
                         </div>
                         <div class="upload-apps col-6">
                             <entry:point id="attachment-add-buttons"/>
@@ -269,7 +269,7 @@
                         <hr ng-if="!$last">
                     </div>
                     <div ng-if="activities.length > 5 && !pref.showMore['activities']" class="text-center">
-                        <span ng-click="showMore('activities')" class="toggle-more">${message(code:'todo.is.ui.history.more')}</span>
+                        <span ng-click="showMore('activities')" class="toggle-more">${message(code: 'todo.is.ui.history.more')}</span>
                     </div>
                     <div ng-if="activities != undefined && activities.length == 0">
                         <div style="text-align: center; padding:5px; font-size:14px;">

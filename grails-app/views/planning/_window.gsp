@@ -54,19 +54,20 @@
                         <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
                     </button>
                     <div uib-dropdown-menu role="menu">
-                        <div class="dropdown-header">${message(code:'todo.is.ui.stickynote.display')}</div>
+                        <div class="dropdown-header">${message(code: 'todo.is.ui.stickynote.display')}</div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
                              ng-click="setStickyNoteSize(viewName,'list-group')"
-                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code:'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code: 'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
                              ng-click="setStickyNoteSize(viewName,'grid-group size-sm')"
-                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group size-sm'}">${message(code:'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span></div>
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group size-sm'}">${message(code: 'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span>
+                        </div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
                              ng-click="setStickyNoteSize(viewName,'grid-group')"
-                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code:'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code: 'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
                     </div>
                 </div>
                 <div>

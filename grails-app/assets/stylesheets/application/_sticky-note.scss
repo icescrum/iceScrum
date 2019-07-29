@@ -146,16 +146,20 @@ $acceptance-test-states: tocheck, success, failed;
 .list-group {
   &.sticky-notes {
     position: relative;
+
     .sticky-note-container {
       padding: 0 $is-spacer-x;
       border-bottom: solid 1px $is-border-color-alt;
+
       &.is-selected, &:hover {
         z-index: 2;
         background: $is-bg-color;
+
         &:first-of-type {
           border-top: solid 1px $is-border-color;
         }
       }
+
       &:first-of-type {
         border-top: solid 1px transparent;
       }
@@ -386,6 +390,7 @@ $acceptance-test-states: tocheck, success, failed;
       &.is-selected {
         z-index: 2;
       }
+
       &:not(.is-selected) {
         &:hover {
           z-index: 2;

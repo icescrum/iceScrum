@@ -408,6 +408,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     background: $is-bg-color;
     border-color: transparent;
     box-shadow: 0 2px 9px 0 rgba(156, 164, 171, 0.5);
+
     .plus-icon {
       @include square-background(1.875rem);
       background-image: url("plus-highlight.svg");

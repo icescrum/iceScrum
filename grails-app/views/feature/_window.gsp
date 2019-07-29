@@ -31,20 +31,20 @@
                 <button class="btn btn-secondary btn-sm"
                         uib-dropdown-toggle
                         ng-disabled="!features.length"
-                        type="button"><strong>${message(code:'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
+                        type="button"><strong>${message(code: 'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
                 </button>
                 <div uib-dropdown-menu role="menu">
-                    <div class="dropdown-header">${message(code:'todo.is.ui.order')}</div>
+                    <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>
                     <div role="menuitem"
                          class="dropdown-item"
                          ng-click="orderBy.reverse = !orderBy.reverse"
-                         ng-class="{'active': orderBy.reverse}">${message(code:'todo.is.ui.order.sort.asc')}</div>
+                         ng-class="{'active': orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.asc')}</div>
                     <div role="menuitem"
                          class="dropdown-item"
                          ng-click="orderBy.reverse = !orderBy.reverse"
-                         ng-class="{'active': !orderBy.reverse}">${message(code:'todo.is.ui.order.sort.desc')}</div>
+                         ng-class="{'active': !orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.desc')}</div>
                     <div class="dropdown-divider"></div>
-                    <div class="dropdown-header">${message(code:'todo.is.ui.order.sort')}</div>
+                    <div class="dropdown-header">${message(code: 'todo.is.ui.order.sort')}</div>
                     <div role="menuitem"
                          class="dropdown-item"
                          ng-repeat="order in orderBy.values"
@@ -80,15 +80,15 @@
                         <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
                     </button>
                     <div uib-dropdown-menu role="menu">
-                        <div class="dropdown-header">${message(code:'todo.is.ui.stickynote.display')}</div>
+                        <div class="dropdown-header">${message(code: 'todo.is.ui.stickynote.display')}</div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
                              ng-click="setStickyNoteSize(viewName,'list-group')"
-                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code:'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code: 'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
                              ng-click="setStickyNoteSize(viewName,'grid-group')"
-                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code:'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code: 'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
                     </div>
                 </div>
             </div>

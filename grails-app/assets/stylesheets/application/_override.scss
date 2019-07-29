@@ -105,6 +105,7 @@ strong {
 .dropdown:not(.open) {
   .btn.dropdown-toggle {
     border: 1px solid transparent !important;
+
     &:hover, &:not(:disabled):not(.disabled):active {
       border: 1px solid $is-outline-color !important;
     }
@@ -272,6 +273,7 @@ form label {
   .select2-arrow {
     border-left: 1px solid transparent !important;
   }
+
   .select2-arrow::after {
     display: inline-block;
     content: "";
@@ -285,9 +287,11 @@ form label {
     position: absolute;
     top: 10px;
   }
+
   .select2-arrow b {
     background: none !important;
   }
+
   &.select2-dropdown-open {
     .select2-arrow::after {
       transform: rotate(-135deg);

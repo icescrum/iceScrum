@@ -72,20 +72,20 @@
                     <div uib-dropdown>
                         <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle
-                                type="button"><strong>${message(code:'todo.is.ui.order.sort')}</strong>&nbsp;{{ backlogContainers[0].orderBy.current.name }}<span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
+                                type="button"><strong>${message(code: 'todo.is.ui.order.sort')}</strong>&nbsp;{{ backlogContainers[0].orderBy.current.name }}<span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
                         </button>
                         <div uib-dropdown-menu class="dropdown-menu dropdown-menu-right" role="menu">
-                            <div class="dropdown-header">${message(code:'todo.is.ui.order')}</div>
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>
                             <div role="menuitem"
                                  class="dropdown-item"
                                  ng-click="backlogContainers[0].orderBy.reverse = !backlogContainers[0].orderBy.reverse"
-                                 ng-class="{'active': backlogContainers[0].orderBy.reverse}">${message(code:'todo.is.ui.order.sort.asc')}</div>
+                                 ng-class="{'active': backlogContainers[0].orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.asc')}</div>
                             <div role="menuitem"
                                  class="dropdown-item"
                                  ng-click="backlogContainers[0].orderBy.reverse = !backlogContainers[0].orderBy.reverse"
-                                 ng-class="{'active': !backlogContainers[0].orderBy.reverse}">${message(code:'todo.is.ui.order.sort.desc')}</div>
+                                 ng-class="{'active': !backlogContainers[0].orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.desc')}</div>
                             <div class="dropdown-divider"></div>
-                            <div class="dropdown-header">${message(code:'todo.is.ui.order.sort')}</div>
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.order.sort')}</div>
                             <div role="menuitem"
                                  class="dropdown-item"
                                  ng-repeat="order in backlogContainers[0].orderBy.values"
@@ -127,19 +127,20 @@
                             <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
                         </button>
                         <div uib-dropdown-menu role="menu">
-                            <div class="dropdown-header">${message(code:'todo.is.ui.stickynote.display')}</div>
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.stickynote.display')}</div>
                             <div role="menuitem"
                                  class="dropdown-item clearfix"
                                  ng-click="setStickyNoteSize(viewName,'list-group')"
-                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code:'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
+                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'list-group'}">${message(code: 'todo.is.ui.stickynote.display.list')}&nbsp;<span class="float-right icon icon-list-group icon-highlight"></span></div>
                             <div role="menuitem"
                                  class="dropdown-item clearfix"
                                  ng-click="setStickyNoteSize(viewName,'grid-group size-sm')"
-                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group-sm'}">${message(code:'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span></div>
+                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group-sm'}">${message(code: 'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span>
+                            </div>
                             <div role="menuitem"
                                  class="dropdown-item clearfix"
                                  ng-click="setStickyNoteSize(viewName,'grid-group')"
-                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code:'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
+                                 ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code: 'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
                         </div>
                     </div>
                     <a class="btn btn-icon btn-sm ml-1 mr-1"

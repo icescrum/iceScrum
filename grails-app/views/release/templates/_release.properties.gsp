@@ -174,7 +174,7 @@
         <div class="attachments attachments-bordered">
             <div ng-if="authorizedRelease('upload', release)" class="upload-and-apps row">
                 <div class="upload-file col-6">
-                    <span class="attachment-icon"></span><span flow-btn class="link">${message(code:'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code:'todo.is.ui.attachment.drop')}</span>
+                    <span class="attachment-icon"></span><span flow-btn class="link">${message(code: 'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code: 'todo.is.ui.attachment.drop')}</span>
                 </div>
                 <div class="upload-apps col-6">
                     <entry:point id="attachment-add-buttons"/>
