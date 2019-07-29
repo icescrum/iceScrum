@@ -24,7 +24,7 @@
 <div class="card">
     <div class="details-header">
         <a class="btn btn-icon" href="#/{{ ::viewName }}">
-            <span class="icon icon-close">s</span>
+            <span class="icon icon-close"></span>
         </a>
     </div>
     <div class="card-header">
