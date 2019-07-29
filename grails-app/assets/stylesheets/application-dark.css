@@ -32,5 +32,5 @@
 
 Plugins probably need to come after all to override standard style
 (by default plugins are scanned AFTER the application)
-*= require_full_tree plugins
+*= require_full_tree plugins-dark
 */
