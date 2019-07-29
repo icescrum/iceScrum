@@ -102,13 +102,11 @@ strong {
   }
 }
 
-.dropdown:not(.open) {
-  .btn.dropdown-toggle {
-    border: 1px solid transparent !important;
+.dropdown:not(.open) .btn.dropdown-toggle {
+  border: 1px solid transparent !important;
 
-    &:hover, &:not(:disabled):not(.disabled):active {
-      border: 1px solid $is-outline-color !important;
-    }
+  &:hover, &:not(:disabled):not(.disabled):active {
+    border: 1px solid $is-outline-color !important;
   }
 }
 
@@ -256,68 +254,15 @@ form label {
 }
 
 ////////////////////
-// Other
+// Dropdown
 ////////////////////
 
 .dropdown-menu {
   box-shadow: $is-dropmenu-shadow;
 
-  .dropdown-item {
-    &.active {
-      font-family: $is-font-family-bold;
-    }
+  .dropdown-item &.active {
+    font-family: $is-font-family-bold;
   }
-}
-
-.select2-container {
-  .select2-arrow {
-    border-left: 1px solid transparent !important;
-  }
-
-  .select2-arrow::after {
-    display: inline-block;
-    content: "";
-    margin-left: 0.4em;
-    vertical-align: 0.2em;
-    width: 6px;
-    height: 6px;
-    transform: rotate(45deg);
-    border-right: 2px solid;
-    border-bottom: 2px solid;
-    position: absolute;
-    top: 10px;
-  }
-
-  .select2-arrow b {
-    background: none !important;
-  }
-
-  &.select2-dropdown-open {
-    .select2-arrow::after {
-      transform: rotate(-135deg);
-      top: 13px;
-    }
-  }
-}
-
-////////////////////
-// Other
-////////////////////
-
-.nav-link.active, .navbar-nav .active .nav-link {
-  font-family: $is-font-family-bold;
-}
-
-.nav-fill .nav-item {
-  text-align: left;
-}
-
-.nav-link.disabled {
-  pointer-events: none;
-}
-
-.navbar-toggler {
-  border: none !important;
 }
 
 //https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
@@ -350,6 +295,63 @@ form label {
 .dropdown-header {
   font-family: $is-font-family-bold;
 }
+
+////////////////////
+// Select 2
+////////////////////
+
+.select2-container {
+  .select2-arrow {
+    border-left: 1px solid transparent !important;
+  }
+
+  .select2-arrow::after {
+    display: inline-block;
+    content: "";
+    margin-left: 0.4em;
+    vertical-align: 0.2em;
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+    position: absolute;
+    top: 10px;
+  }
+
+  .select2-arrow b {
+    background: none !important;
+  }
+
+  &.select2-dropdown-open .select2-arrow::after {
+    transform: rotate(-135deg);
+    top: 13px;
+  }
+}
+
+////////////////////
+// Nav
+////////////////////
+
+.nav-link.active, .navbar-nav .active .nav-link {
+  font-family: $is-font-family-bold;
+}
+
+.nav-fill .nav-item {
+  text-align: left;
+}
+
+.nav-link.disabled {
+  pointer-events: none;
+}
+
+.navbar-toggler {
+  border: none !important;
+}
+
+////////////////////
+// Tooltip
+////////////////////
 
 .tooltip-inner {
   box-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15);

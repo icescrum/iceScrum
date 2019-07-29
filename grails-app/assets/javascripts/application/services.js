@@ -1019,8 +1019,7 @@ services.service('stickyNoteSize', ['screenSize', '$localStorage', function(scre
         return icon;
     };
     this.setStickyNoteSize = function(viewName, postitSize) {
-        var contextSizeName = viewName + 'PostitSize';
-        $localStorage[contextSizeName] = postitSize;
+        $localStorage[viewName + 'PostitSize'] = postitSize;
     };
 }]);
 

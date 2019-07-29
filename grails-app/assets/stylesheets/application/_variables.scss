@@ -139,11 +139,6 @@ $is-state-colors: (
   @include rectangle-background($side, $side);
 }
 
-@mixin square-background-2($side, $side2) {
-  @include rectangle-background($side, $side2);
-}
-
-
 ////////////////////
 // Override bootstrap variables
 ////////////////////

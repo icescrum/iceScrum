@@ -432,18 +432,14 @@ nav.navbar {
       &.btn-secondary {
         height: 2.25rem;
 
-        &:not(.dropdown-toggle) {
-          .icon {
-            background-size: 1.25rem;
-          }
+        &:not(.dropdown-toggle) .icon {
+          background-size: 1.25rem;
         }
       }
     }
 
-    .dropdown.open {
-      .btn.dropdown-toggle {
-        border: 1px solid $is-outline-color !important;
-      }
+    .dropdown.open .btn.dropdown-toggle {
+      border: 1px solid $is-outline-color !important;
     }
   }
 }
@@ -830,12 +826,8 @@ a.link-documentation {
   color: $is-text-color-shortcut;
 }
 
-////////////////////
-// order by
-////////////////////
-
 .order-by {
-  font-size: 14px;
+  font-size: $is-font-size-sm;
 }
 
 ////////////////////
