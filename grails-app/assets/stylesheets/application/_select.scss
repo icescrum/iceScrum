@@ -22,14 +22,67 @@
 **/
 
 .select2-container {
+  .select2-arrow {
+    border-left: 1px solid transparent !important;
+
+    &::after {
+      display: inline-block;
+      content: "";
+      margin-left: 0.4em;
+      vertical-align: 0.2em;
+      width: 6px;
+      height: 6px;
+      transform: rotate(45deg);
+      border-right: 2px solid;
+      border-bottom: 2px solid;
+      position: absolute;
+      top: 10px;
+    }
+
+    b {
+      background: none !important;
+    }
+  }
+
+  &.select2-dropdown-open .select2-arrow::after {
+    transform: rotate(-135deg);
+    top: 13px;
+  }
+
   .select2-choice {
     height: $input-height;
     line-height: 1rem;
     box-shadow: none;
 
+    abbr {
+      @include square-background(0.625rem);
+      @include background-image-retina('remove-dark');
+      background-position: right top !important;
+      top: 16px;
+    }
+
+    > .select2-chosen {
+      margin-right: 22px;
+    }
+
+    .select2-arrow {
+      right: 4px;
+    }
+
     .select2-chosen {
       padding: $input-padding-y $input-padding-x;
     }
+  }
+}
+
+.select2-results {
+
+  .select2-highlighted {
+    background: $is-primary-color;
+  }
+
+  li {
+    border-radius: 4px;
   }
 }
 
@@ -41,6 +94,16 @@
   font-family: $font-family-base;
 }
 
+.select2-search input {
+  color: $input-color;
+  box-shadow: none;
+  height: $input-height !important;
+  padding: $input-padding-y $input-padding-x $input-padding-y ($input-padding-x + 1.375rem);
+  margin-bottom: 2px;
+  background: url("search.svg") no-repeat $input-padding-x center;
+  background-size: 15px;
+}
+
 .select2-container-multi {
   .select2-choices {
     box-shadow: none;
@@ -48,7 +111,7 @@
     .select2-search-choice {
       margin: 0.125rem;
       padding: 0.4375rem 1.3125rem 0.375rem 0.375rem;
-      color: $is-text-color-alt;
+      color: $input-color;
       border: none;
       box-shadow: 0 1px 0.1875rem 0 $is-shadow-color-2;
 
@@ -92,4 +155,37 @@ form.form-editable:not(:hover):not(.form-editing) {
 .select2-container.select2-container-disabled .select2-choice, .select2-container.select2-container-disabled .select2-choices {
   border-color: transparent;
   background-color: $input-disabled-bg;
+}
+
+.select2-drop.select2-drop-active {
+  margin-top: 4px;
+  padding-top: 6px;
+}
+
+.select2-drop {
+  box-shadow: $is-dropmenu-shadow;
+}
+
+.select2-container-active .select2-choice,
+.select2-container-active .select2-choices,
+.select2-container-active .select2-choice,
+.select2-container-multi.select2-container-active .select2-choices {
+  border-color: $input-border-color;
+  box-shadow: none;
+}
+
+.select2-drop-active,
+.select2-drop.select2-drop-above.select2-drop-active,
+.select2-dropdown-open.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choices {
+  border-color: transparent;
+}
+
+.select2-dropdown-open [class^="select2-choice"] {
+  border-bottom-right-radius: $input-border-radius !important;
+  border-bottom-left-radius: $input-border-radius !important;
+}
+
+.select2-default {
+  color: $input-placeholder-color !important;
 }

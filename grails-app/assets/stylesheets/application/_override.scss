@@ -297,39 +297,6 @@ form label {
 }
 
 ////////////////////
-// Select 2
-////////////////////
-
-.select2-container {
-  .select2-arrow {
-    border-left: 1px solid transparent !important;
-  }
-
-  .select2-arrow::after {
-    display: inline-block;
-    content: "";
-    margin-left: 0.4em;
-    vertical-align: 0.2em;
-    width: 6px;
-    height: 6px;
-    transform: rotate(45deg);
-    border-right: 2px solid;
-    border-bottom: 2px solid;
-    position: absolute;
-    top: 10px;
-  }
-
-  .select2-arrow b {
-    background: none !important;
-  }
-
-  &.select2-dropdown-open .select2-arrow::after {
-    transform: rotate(-135deg);
-    top: 13px;
-  }
-}
-
-////////////////////
 // Nav
 ////////////////////
 
@@ -354,7 +321,7 @@ form label {
 ////////////////////
 
 .tooltip-inner {
-  box-shadow: 0 9px 24px 0 rgba(35, 41, 48, 0.15);
+  box-shadow: $is-dropmenu-shadow;
 }
 
 .tooltip {
