@@ -53,6 +53,7 @@
     height: $input-height;
     line-height: 1rem;
     box-shadow: none;
+    background-color: $is-bg-color;
 
     abbr {
       @include square-background(0.625rem);
@@ -90,6 +91,8 @@
 .select2-container .select2-choice,
 .select2-container .select2-choices,
 .select2-search input {
+  border-color: $input-border-color;
+  color: $is-text-color-alt;
   background-color: $is-bg-color;
   font-family: $font-family-base;
 }
@@ -164,6 +167,8 @@ form.form-editable:not(:hover):not(.form-editing) {
 
 .select2-drop {
   box-shadow: $is-dropmenu-shadow;
+  background-color: $is-bg-color;
+  color: $is-text-color-alt;
 }
 
 .select2-container-active .select2-choice,
