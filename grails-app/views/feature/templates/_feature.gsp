@@ -64,6 +64,12 @@
                             href="{{:: openFeatureUrl(feature) }}"
                             icon="fa-paperclip"
                             count="{{:: feature.attachments_count }}"/>
+                <icon-badge classes="comments"
+                            tooltip="${message(code: 'todo.is.ui.comments')}"
+                            href="{{:: openFeatureUrl(feature.id) }}/comments"
+                            icon="fa-comment"
+                            icon-empty="fa-comment-o"
+                            count="{{:: feature.comments_count }}"/>
                 <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                             href="{{:: openFeatureUrl(feature) }}/stories"
                             icon="fa-sticky-note"

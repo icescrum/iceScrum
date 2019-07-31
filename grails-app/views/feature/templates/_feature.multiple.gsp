@@ -70,6 +70,13 @@
                                                 <i class="fa fa-paperclip"></i>
                                             </a>
                                         </span>
+                                        <span class="action" ng-class="{'active':topFeature.comments_count}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                                <i class="fa"
+                                                   ng-class="topFeature.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                                                <span class="badge">{{ topFeature.comments_count || '' }}</span>
+                                            </a>
+                                        </span>
                                         <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
                                             <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
                                                 <i class="fa fa-tasks"></i>

@@ -25,6 +25,7 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.grails.comments.Comment
+import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
@@ -43,7 +44,13 @@ class CommentController implements ControllerErrorHandler {
         if (commentable) {
             comments = commentable.comments
         } else {
-            comments = params.type == 'story' ? Story.recentCommentsInProject(params.project) : Task.recentCommentsInProject(params.project)
+            if (params.type == 'feature') {
+                comments = Feature.recentCommentsInProject(params.project)
+            } else if (params.type == 'task') {
+                comments = Task.recentCommentsInProject(params.project)
+            } else {
+                comments = Story.recentCommentsInProject(params.project)
+            }
         }
         render(status: 200, contentType: 'application/json', text: comments.collect { Comment comment ->
             ApplicationSupport.getRenderableComment(comment, commentable)
@@ -148,6 +155,9 @@ class CommentController implements ControllerErrorHandler {
                 break
             case 'task':
                 commentable = Task.getInProject(project, commentableId)
+                break
+            case 'feature':
+                commentable = Feature.getInProject(project, commentableId).list()
                 break
             default:
                 commentable = null

@@ -150,7 +150,7 @@ class RestUrlMappings {
             action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'feature'])
             }
         }
         "/ws/project/$project/comment/$type/$commentable" {
@@ -158,7 +158,7 @@ class RestUrlMappings {
             action = [GET: 'index', POST: 'save']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'feature'])
                 commentable(matches: /\d*/)
             }
         }
@@ -167,7 +167,7 @@ class RestUrlMappings {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'feature'])
                 id(matches: /\d*/)
                 commentable(matches: /\d*/)
             }

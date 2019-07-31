@@ -210,6 +210,14 @@ angular.module('isCore', ['ui.router'])
                     }],
                     templateUrl: 'nested.stories.html'
                 },
+                comments: {
+                    resolve: ['$stateParams', 'CommentService', 'detailsFeature', 'project', function($stateParams, CommentService, detailsFeature, project) {
+                        if ($stateParams.featureTabId == 'comments') {
+                            return CommentService.list(detailsFeature, project.id);
+                        }
+                    }],
+                    templateUrl: 'comment.list.html'
+                },
                 activities: {
                     resolve: ['$stateParams', 'ActivityService', 'detailsFeature', 'project', function($stateParams, ActivityService, detailsFeature, project) {
                         if ($stateParams.featureTabId == 'activities') {

@@ -249,7 +249,7 @@ class ProjectUrlMappings {
             action = [GET: "index", POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'feature'])
                 commentable(matches: /\d*/)
             }
         }
@@ -258,7 +258,7 @@ class ProjectUrlMappings {
             action = [GET: "show", PUT: "update", DELETE: "delete", POST: 'update']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'feature'])
                 id(matches: /\d*/)
                 commentable(matches: /\d*/)
             }
