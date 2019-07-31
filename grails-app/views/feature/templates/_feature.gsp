@@ -59,6 +59,11 @@
                         href="{{:: openFeatureUrl(feature) }}"
                         icon="attach"
                         count="{{:: feature.attachments_count }}"/>
+            <icon-badge classes="comments"
+                        tooltip="${message(code: 'todo.is.ui.comments')}"
+                        href="{{:: openFeatureUrl(feature.id) }}/comments"
+                        icon="comment"
+                        count="{{:: feature.comments_count }}"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                         href="{{:: openFeatureUrl(feature) }}/stories"
                         icon="story"

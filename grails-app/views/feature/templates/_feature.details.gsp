@@ -79,6 +79,14 @@
         </li>
         <li role="presentation"
             class="nav-item">
+            <a href="{{ tabUrl('comments') }}"
+               class="nav-link"
+               ng-class="{'active':$state.params.featureTabId == 'comments'}">
+                ${message(code: 'todo.is.ui.comments')} {{ feature.comments_count | parens }}
+            </a>
+        </li>
+        <li role="presentation"
+            class="nav-item">
             <a href="{{ tabUrl('stories') }}"
                class="nav-link"
                ng-class="{'active':$state.params.featureTabId == 'stories'}">

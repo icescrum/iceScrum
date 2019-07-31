@@ -64,6 +64,12 @@
                                         <span class="action-icon action-icon-attach"></span>
                                     </a>
                                 </span>
+                                <span class="action" ng-class="{'active':topFeature.comments_count}">
+                                    <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                        <span class="action-icon action-icon-comment"></span>
+                                        <span class="badge">{{ topFeature.comments_count || '' }}</span>
+                                    </a>
+                                </span>
                                 <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
                                     <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.stories')}">
                                         <span class="action-icon action-icon-story"></span>
