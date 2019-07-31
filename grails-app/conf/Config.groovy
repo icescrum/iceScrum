@@ -149,7 +149,7 @@ icescrum {
                     enabled     : { application -> true },
                     hooks       : [
                             events       : [
-                                    "feature.create", "feature.update", "feature.delete",
+                                    "feature.create", "feature.update", "feature.delete", "feature.addedComment", "feature.updatedComment", "feature.removedComment",
                                     "story.create", "story.update", "story.delete", "story.state", "story.addedComment", "story.updatedComment", "story.removedComment",
                                     "task.create", "task.update", "task.delete", "task.state", "task.addedComment", "task.updatedComment", "task.removedComment",
                                     "release.create", "release.update", "release.delete", "release.state",
