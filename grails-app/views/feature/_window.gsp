@@ -38,11 +38,11 @@
                     <div role="menuitem"
                          class="dropdown-item"
                          ng-click="orderBy.reverse = !orderBy.reverse"
-                         ng-class="{'active': orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.asc')}</div>
+                         ng-class="{'active': !orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.asc')}</div>
                     <div role="menuitem"
                          class="dropdown-item"
                          ng-click="orderBy.reverse = !orderBy.reverse"
-                         ng-class="{'active': !orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.desc')}</div>
+                         ng-class="{'active': orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.desc')}</div>
                     <div class="dropdown-divider"></div>
                     <div class="dropdown-header">${message(code: 'todo.is.ui.order.sort')}</div>
                     <div role="menuitem"
