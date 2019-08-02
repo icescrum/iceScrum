@@ -22,42 +22,42 @@
  *
  */
 services.factory('Comment', ['Resource', function($resource) {
-    return $resource('/p/:projectId/comment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
+    return $resource('/p/:projectId/comment/:type/:typeId/:id');
 }]);
 
-services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Comment, Session) {
+services.service("CommentService", ['$q', 'Comment', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', function($q, Comment, Session, IceScrumEventType, CacheService, PushService) {
+    var self = this;
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(comment) {
+        CacheService.addOrUpdate('comment', comment);
+    };
+    crudMethods[IceScrumEventType.UPDATE] = function(comment) {
+        CacheService.addOrUpdate('comment', comment);
+    };
+    crudMethods[IceScrumEventType.DELETE] = function(comment) {
+        CacheService.remove('comment', comment.id);
+    };
+    _.each(crudMethods, function(crudMethod, eventType) {
+        PushService.registerListener('comment', eventType, crudMethod);
+    });
+    this.mergeComments = function(comment) {
+        _.each(comment, crudMethods[IceScrumEventType.UPDATE]);
+    };
     this.save = function(comment, commentable, projectId) {
         comment.class = 'comment';
-        comment.type = commentable.class.toLowerCase();
-        comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return Comment.save({projectId: projectId}, comment, function(comment) {
-            commentable.comments.push(comment);
-            commentable.comments_count = commentable.comments.length;
-        }).$promise;
+        return Comment.save({projectId: projectId, type: commentable.class.toLowerCase(), typeId: commentable.id}, comment, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(comment, commentable, projectId) {
-        comment.type = commentable.class.toLowerCase();
-        comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return Comment.delete({projectId: projectId}, comment, function() {
-            _.remove(commentable.comments, {id: comment.id});
-            commentable.comments_count = commentable.comments.length;
-        }).$promise;
+        return Comment.delete({projectId: projectId, type: commentable.class.toLowerCase(), typeId: commentable.id}, comment, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.update = function(comment, commentable, projectId) {
-        comment.type = commentable.class.toLowerCase();
-        comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return Comment.update({projectId: projectId}, comment, function(returnedComment) {
-            angular.extend(_.find(commentable.comments, {id: comment.id}), returnedComment);
-        }).$promise;
+        return Comment.update({projectId: projectId, type: commentable.class.toLowerCase(), typeId: commentable.id}, comment, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.list = function(commentable, projectId) {
-        var promise = Comment.query({projectId: projectId, typeId: commentable.id, type: commentable.class.toLowerCase()}, function(data) {
-            commentable.comments = data;
-            commentable.comments_count = commentable.comments.length;
-        }).$promise;
+        var promise = Comment.query({projectId: projectId, typeId: commentable.id, type: commentable.class.toLowerCase()}, self.mergeComments).$promise;
         return _.isEmpty(commentable.comments) ? promise : $q.when(commentable.comments);
     };
     this.authorizedComment = function(action, comment) {
