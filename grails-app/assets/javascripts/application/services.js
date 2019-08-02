@@ -701,6 +701,22 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     _.remove(cachedStory.acceptanceTests, {id: oldAcceptanceTest.id});
                 }
             }
+        },
+        comment: function(oldComment, newComment) {
+            if (!oldComment && newComment) {
+                var cachedCommentable = CacheService.get(newComment.commentable.class.toLowerCase(), newComment.commentable.id);
+                if (cachedCommentable && !_.find(cachedCommentable.comments, {id: newComment.id})) {
+                    if (!_.isArray(cachedCommentable.comments)) {
+                        cachedCommentable.comments = [];
+                    }
+                    cachedCommentable.comments.push(newComment);
+                }
+            } else if (oldComment && !newComment) {
+                var cachedCommentable = CacheService.get(oldComment.commentable.class.toLowerCase(), oldComment.commentable.id);
+                if (cachedCommentable) {
+                    _.remove(cachedCommentable.comments, {id: oldComment.id});
+                }
+            }
         }
     };
     this.sync = function(itemType, oldItem, newItem) {
