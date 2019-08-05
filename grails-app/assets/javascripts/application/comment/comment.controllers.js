@@ -24,7 +24,7 @@
 controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', function($scope, CommentService, hotkeys) {
     // Functions
     $scope.resetCommentForm = function() {
-        $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
+        $scope.editableComment = $scope.comment ? $scope.comment : {};
         $scope.formHolder.editing = false;
         $scope.formHolder.expandedForm = false;
         $scope.resetFormValidation($scope.formHolder.commentForm);
@@ -50,6 +50,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
     $scope.editForm = function(value) {
         $scope.formHolder.editing = $scope.formEditable() && value;
         if (value) {
+            $scope.editableComment = angular.copy($scope.comment);
             hotkeys.bindTo($scope).add({
                 combo: 'esc',
                 allowIn: ['TEXTAREA'],

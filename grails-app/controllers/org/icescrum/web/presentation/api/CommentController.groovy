@@ -24,6 +24,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
@@ -44,9 +45,9 @@ class CommentController implements ControllerErrorHandler {
             _commentable = commentService.withCommentable(project, commentable, type)
             comments = _commentable.comments
         } else {
-            if (params.type == 'feature') {
+            if (type == 'feature') {
                 comments = Feature.recentCommentsInProject(project)
-            } else if (params.type == 'task') {
+            } else if (type == 'task') {
                 comments = Task.recentCommentsInProject(project)
             } else {
                 comments = Story.recentCommentsInProject(project)
@@ -58,44 +59,44 @@ class CommentController implements ControllerErrorHandler {
     }
 
     @Secured('stakeHolder() or inProject()')
-    def show(long id, long project) { // Unused commentable & type
+    def show(long id, long project) {
         Comment comment = commentService.withComment(project, id)
         render(status: 200, contentType: 'application/json', text: commentService.getRenderableComment(comment) as JSON)
     }
 
     @Secured('((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()')
-    def save(long project, long commentable, String type) {
+    def save(long project) {
         Comment.withTransaction {
-            def _commentable = commentService.withCommentable(project, commentable, type)
+            long commentableId = params.long('comment.commentable.id')
+            String commentableType = GrailsNameUtils.getPropertyName(params.comment.commentable.class)
+            def _commentable = commentService.withCommentable(project, commentableId, commentableType)
             Comment comment = commentService.save(_commentable, ((User) springSecurityService.currentUser), [body: params.comment.body])
             render(status: 201, contentType: 'application/json', text: commentService.getRenderableComment(comment, _commentable) as JSON)
         }
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
-    def update(long id, long project, long commentable, String type) {
+    def update(long id, long project) {
         Comment.withTransaction {
             def comment = commentService.withComment(project, id)
             if (comment.posterId != springSecurityService.currentUser.id) {
                 render(status: 403)
                 return
             }
-            def _commentable = commentService.withCommentable(project, commentable, type)
-            commentService.update(comment, _commentable, [body: params.comment.body])
+            commentService.update(comment, [body: params.comment.body])
             render(status: 200, contentType: 'application/json', text: commentService.getRenderableComment(comment) as JSON)
         }
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
-    def delete(long id, long project, long commentable, String type) {
+    def delete(long id, long project) {
         Comment.withTransaction {
             def comment = commentService.withComment(project, id)
             if (!request.productOwner && !request.scrumMaster && comment.posterId != springSecurityService.currentUser.id) {
                 render(status: 403)
                 return
             }
-            def _commentable = commentService.withCommentable(project, commentable, type)
-            commentService.delete(comment, _commentable)
+            commentService.delete(comment)
             render(status: 204)
         }
     }

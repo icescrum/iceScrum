@@ -45,16 +45,14 @@ services.service("CommentService", ['$q', 'Comment', 'Session', 'IceScrumEventTy
     };
     this.save = function(comment, commentable, projectId) {
         comment.class = 'comment';
-        comment.commentable = {id: commentable.id};
-        return Comment.save({projectId: projectId, type: commentable.class.toLowerCase(), typeId: commentable.id}, comment, crudMethods[IceScrumEventType.CREATE]).$promise;
+        comment.commentable = _.pick(commentable, ['id', 'class']);
+        return Comment.save({projectId: projectId}, comment, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(comment, commentable, projectId) {
-        comment.commentable = {id: commentable.id};
-        return Comment.delete({projectId: projectId, type: commentable.class.toLowerCase(), typeId: commentable.id}, comment, crudMethods[IceScrumEventType.DELETE]).$promise;
+        return Comment.delete({projectId: projectId}, comment, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.update = function(comment, commentable, projectId) {
-        comment.commentable = {id: commentable.id};
-        return Comment.update({projectId: projectId, type: commentable.class.toLowerCase(), typeId: commentable.id}, comment, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Comment.update({projectId: projectId}, comment, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.list = function(commentable, projectId) {
         var promise = Comment.query({projectId: projectId, typeId: commentable.id, type: commentable.class.toLowerCase()}, self.mergeComments).$promise;
