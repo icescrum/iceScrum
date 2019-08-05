@@ -162,14 +162,14 @@ class RestUrlMappings {
         }
         "/ws/project/$project/comment/$type/$commentable" {
             controller = 'comment'
-            action = [GET: 'index', POST: 'save']
+            action = [GET: 'index', POST: 'save'] // "save" is here for legacy support, commentable params are unused a more REST option is available below
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task', 'feature'])
                 commentable(matches: /\d*/)
             }
         }
-        "/ws/project/$project/comment/$type/$commentable/$id" {
+        "/ws/project/$project/comment/$type/$commentable/$id" { // For legacy support, commentable params are unused, more REST options are available below
             controller = 'comment'
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
@@ -177,6 +177,21 @@ class RestUrlMappings {
                 type(inList: ['story', 'task', 'feature'])
                 id(matches: /\d*/)
                 commentable(matches: /\d*/)
+            }
+        }
+        "/ws/project/$project/comment" {
+            controller = 'comment'
+            action = [POST: 'save']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/ws/project/$project/comment/$id" {
+            controller = 'comment'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
             }
         }
         // Story nested actions

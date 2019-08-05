@@ -237,7 +237,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
                 query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(encodedDate) + '&';
             } else if (value instanceof Object) {
                 for (subName in value) {
-                    if (subName != 'class' && !_.startsWith(subName, '$')) {
+                    if ((subName !== 'class' || name === 'commentable') && !_.startsWith(subName, '$')) { // Commentable special case instead of removing  "!= 'class'" by fear of breaking everything
                         subValue = value[subName];
                         fullSubName = name + '.' + subName;
                         innerObj = {};

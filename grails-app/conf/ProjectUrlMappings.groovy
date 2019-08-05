@@ -262,21 +262,26 @@ class ProjectUrlMappings {
         // Comment
         "/p/$project/comment/$type/$commentable" {
             controller = 'comment'
-            action = [GET: "index", POST: "save"]
+            action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task', 'feature'])
                 commentable(matches: /\d*/)
             }
         }
-        "/p/$project/comment/$type/$commentable/$id" {
+        "/p/$project/comment" {
             controller = 'comment'
-            action = [GET: "show", PUT: "update", DELETE: "delete", POST: 'update']
+            action = [POST: 'save']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task', 'feature'])
+            }
+        }
+        "/p/$project/comment/$id" {
+            controller = 'comment'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                commentable(matches: /\d*/)
             }
         }
         // Acceptance test
