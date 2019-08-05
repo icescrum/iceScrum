@@ -571,6 +571,8 @@ $acceptance-test-states: tocheck, success, failed;
       padding: 0.5625rem;
       width: $is-story-width;
       height: $is-story-heigth;
+      -webkit-clip-path:polygon(0 0,calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
+      clip-path: polygon(0 0,calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
 
       &.sticky-note-type .sticky-note-type-icon {
         position: absolute;
@@ -585,7 +587,7 @@ $acceptance-test-states: tocheck, success, failed;
         top: 0;
         right: 0;
         border: 15px solid;
-        border-color: $is-bg-color $is-bg-color rgba(255, 255, 255, 0.97) rgba(255, 255, 255, 0.97);
+        border-color: transparent transparent rgba(255, 255, 255, 0.97) rgba(255, 255, 255, 0.97);
         z-index: 1;
       }
 
@@ -721,11 +723,8 @@ $acceptance-test-states: tocheck, success, failed;
 }
 
 .grid-group.grey-sticky-notes .sticky-note-story .sticky-note:after {
-  border-color: $is-bg-color-ter $is-bg-color-ter white white; // Better than white...
-}
-
-.grid-group.grey-sticky-notes-alt .sticky-note-story .sticky-note:after {
-  border-color: $is-bg-color-alt $is-bg-color-alt white white; // Better than white...
+  border-bottom-color: white;
+  border-left-color: white;
 }
 
 ////////////////////

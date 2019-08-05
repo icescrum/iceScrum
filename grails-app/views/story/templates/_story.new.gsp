@@ -35,7 +35,7 @@
                     ${message(code: 'is.ui.sandbox.help')}
                     <documentation doc-url="features-stories-tasks#stories"/>
         </div>
-        <div class="sticky-notes sticky-notes-standalone grey-sticky-notes-alt grid-group">
+        <div class="sticky-notes sticky-notes-standalone grey-sticky-notes grid-group">
             <div class="sticky-note-container sticky-note-story">
                 <div ng-style="(storyPreview | storyColor) | createGradientBackground"
                      class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
