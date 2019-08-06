@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.light.html">
-<div ng-style="(story | storyColor) | createGradientBackground"
+<div sticky-note-color="{{ story | storyColor }}"
      class="sticky-note story {{ ((story | storyColor) | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="sticky-note-head">

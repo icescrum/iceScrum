@@ -35,7 +35,7 @@
             <div class="col-md-6">
                 <div class="sticky-notes grey-sticky-notes grid-group">
                     <div class="sticky-note-container sticky-note-story stack twisted">
-                        <div ng-style="(storyPreview | storyColor) | createGradientBackground"
+                        <div sticky-note-color="{{ storyPreview | storyColor }}"
                              class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                             <div class="sticky-note-head">
                                 <span class="id">{{ topStory.uid }}</span>
