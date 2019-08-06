@@ -633,11 +633,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}]).directive('stickyNoteColor', ['$filter', '$rootScope', function($filter, $rootScope) {
+}]).directive('stickyNoteColor', ['$filter', function($filter) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            element.css($filter('createGradientBackground')(attrs.stickyNoteColor ? attrs.stickyNoteColor : '#f9f157'));
+            element.css($filter('createGradientBackground')(attrs.stickyNoteColor));
+            element.closest('.sticky-note-container').css($filter('createShadow')(attrs.stickyNoteColor));
         }
     }
 }]).directive('deferTooltip', ['$compile', '$rootScope', function($compile, $rootScope) {

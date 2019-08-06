@@ -181,13 +181,18 @@ filters
             return gradientCache[originalHex];
         };
     }])
-    .filter('createGradientBackground', ['ColorService', 'gradientColorFilter', function(ColorService, gradientColorFilter) {
+    .filter('createGradientBackground', ['gradientColorFilter', function(gradientColorFilter) {
+        return function(originalHex) {
+            return {
+                'background-image': 'linear-gradient(to top, ' + originalHex + ' 0%, ' + gradientColorFilter(originalHex) + ' 100%)'
+            };
+        };
+    }])
+    .filter('createShadow', ['ColorService', function(ColorService) {
         return function(originalHex) {
             var originalRgb = ColorService.hexToRgb(originalHex);
-            var targetHex = gradientColorFilter(originalHex);
             return {
-                'background-image': 'linear-gradient(to top, ' + originalHex + ' 0%, ' + targetHex + ' 100%)',
-                'box-shadow': '0 42px 48px 0 rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ', 0.2)'
+                'filter': 'drop-shadow(0 42px 48px rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ', 0.2))'
             };
         };
     }])

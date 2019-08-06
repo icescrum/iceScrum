@@ -154,6 +154,7 @@ $acceptance-test-states: tocheck, success, failed;
   .sticky-note-container {
     padding: 0 $is-spacer-x;
     border-bottom: solid 1px $is-border-color-alt;
+    filter: none !important; // Override js style
 
     &.is-selected, &:hover {
       z-index: 2;
@@ -170,7 +171,6 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   .sticky-note {
-    box-shadow: none !important; // Override js style
     background: none !important; // Override js style
     padding: 0.3125rem 0;
     color: $is_text-color;
@@ -390,6 +390,10 @@ $acceptance-test-states: tocheck, success, failed;
     }
   }
 
+  .sticky-note-container:not(.is-selected):not(:hover) {
+    filter: none !important; // Override js style
+  }
+
   .sticky-note {
     position: relative;
 
@@ -546,7 +550,10 @@ $acceptance-test-states: tocheck, success, failed;
   .sticky-note-story {
     width: $is-story-width;
     height: $is-story-heigth;
-    box-shadow: -1px 1px 2px -1px rgba(156, 164, 171, 0.2); // TODO put the real thing
+
+    &.sticky-note-container:not(.is-selected):not(:hover) {
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.05)) !important; // Override js style
+    }
 
     .sticky-note {
       padding: 0.5625rem;
@@ -712,15 +719,9 @@ $acceptance-test-states: tocheck, success, failed;
     z-index: 2;
   }
 
-  &:not(.is-selected) {
-    &:hover {
-      z-index: 2;
-      opacity: 0.9;
-    }
-
-    .sticky-note:not(:hover) {
-      box-shadow: none !important; // Override js style
-    }
+  &:not(.is-selected):hover {
+    z-index: 2;
+    opacity: 0.9;
   }
 }
 
