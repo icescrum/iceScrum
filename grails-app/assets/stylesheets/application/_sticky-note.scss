@@ -33,6 +33,13 @@ $acceptance-test-states: tocheck, success, failed;
   display: block !important;
 }
 
+.sticky-notes-disabled .sticky-note-container {
+  button, a {
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
 .sticky-note {
   color: $is-sticky-note-text;
 
