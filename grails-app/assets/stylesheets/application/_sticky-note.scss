@@ -568,7 +568,7 @@ $acceptance-test-states: tocheck, success, failed;
         top: 0;
         right: 0;
         border: 15px solid;
-        border-color: transparent transparent rgba(255, 255, 255, 0.97) rgba(255, 255, 255, 0.97);
+        border-color: rgba(255, 255, 255, 0.97);
         z-index: 1;
       }
 
@@ -638,8 +638,7 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   &.grey-sticky-notes .sticky-note-story .sticky-note:after {
-    border-bottom-color: white;
-    border-left-color: white;
+    border-color: white;
   }
 
   .sticky-note-task {
