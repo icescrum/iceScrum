@@ -151,18 +151,30 @@ $acceptance-test-states: tocheck, success, failed;
 .sticky-notes.list-group {
   position: relative;
 
+  &.as-sortable-drag {
+    border-top: solid 1px $is-border-color;
+    background: $is-bg-color;
+  }
+
   .sticky-note-container {
     padding: 0 $is-spacer-x;
-    border-bottom: solid 1px $is-border-color-alt;
+    border-bottom: solid 1px $is-border-color;
     filter: none !important; // Override js style
 
     &.is-selected, &:hover {
       z-index: 2;
-      background: $is-bg-color;
 
       &:first-of-type {
         border-top: solid 1px $is-border-color;
       }
+    }
+
+    &:hover {
+      background: $is-bg-color-ter;
+    }
+
+    &.is-selected {
+      background: $is-bg-color;
     }
 
     &:first-of-type {
@@ -309,6 +321,10 @@ $acceptance-test-states: tocheck, success, failed;
       fill: $is-sticky-note-text-invert;
     }
   }
+
+  &.grey-sticky-notes .sticky-note-container:hover {
+    background-color: $is-bg-color;
+  }
 }
 
 .list-group-small {
@@ -364,6 +380,10 @@ $acceptance-test-states: tocheck, success, failed;
       @include rectangle-background(0.75rem, 0.8125rem);
     }
   }
+}
+
+.has-selected .sticky-notes.list-group .sticky-note-container:not(.is-selected):hover {
+  background-color: $is-bg-color-ter;
 }
 
 ////////////////////
