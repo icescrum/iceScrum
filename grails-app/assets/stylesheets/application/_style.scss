@@ -759,17 +759,26 @@ $state-dot-size-sm: 0.5rem;
   position: relative;
 }
 
-.scrollable-selectable-container.has-selected:after, .backlog.has-selected:after, .release-plan.has-selected:after, .kanban.has-selected:after {
-  background: #000;
-  content: " ";
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.5;
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
+.scrollable-selectable-container, .backlog, .release-plan, .kanban {
+  &.has-selected:after {
+    background: #000;
+    content: " ";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.sticky-note-selector > .sticky-note-container:not(.is-selected) {
+  opacity: 0.37;
+  &:hover {
+    opacity: 0.68;
+  }
 }
 
 .empty-content, .empty-view {

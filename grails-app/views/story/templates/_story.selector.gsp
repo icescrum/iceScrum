@@ -50,7 +50,7 @@
     </div>
     <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
         <div class="loading-logo" ng-include="'loading.html'"></div>
-        <div class="sticky-notes list-group has-selected sticky-notes-disabled"
+        <div class="sticky-notes list-group sticky-notes-disabled sticky-note-selector"
              ng-controller="storyBacklogCtrl"
              ng-model="backlog.stories"
              as-sortable
