@@ -1109,9 +1109,13 @@ body.simple-without-ng-layout {
 // Wizard & Split modal
 ////////////////////
 
-.modal-split .modal-body {
+.modal-no-padding .modal-body {
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.modal-split {
+  @extend .modal-no-padding;
 
   .modal-split-left, .modal-split-right {
     padding-top: 1rem;

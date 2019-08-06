@@ -146,7 +146,6 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
         $scope.openStorySelectorModal({
             code: 'plan',
             order: 'rank',
-            inputFilterEnabled: true,
             filter: {
                 state: StoryStatesByName.ESTIMATED,
                 type: [StoryTypesByName.USER_STORY, StoryTypesByName.DEFECT, StoryTypesByName.TECHNICAL_STORY]

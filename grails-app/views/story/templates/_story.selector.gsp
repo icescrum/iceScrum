@@ -26,37 +26,28 @@
           submitButton="{{ message('todo.is.ui.story.selector.' + backlog.code + '.button') }}"
           submitButtonColor="{{ buttonColor }}"
           closeButton="${message(code: 'is.button.cancel')}"
+          class="modal-no-padding"
           title="{{ message('todo.is.ui.story.selector.' + backlog.code + '.title') }}">
-    <p class="form-text"
-       ng-bind-html="message('todo.is.ui.story.selector.' + backlog.code + '.description')">
-    </p>
-    <div class="form-group" ng-if="selectorOptions.inputFilterEnabled">
-        <div class="input-group">
+    <div class="row">
+        <div class="modal-search text-center">
             <input type="text"
-                   class="form-control"
+                   class="form-control search-input"
                    autofocus
                    ng-model="selectorOptions.filter.term"
                    ng-model-options="{debounce: 400}"
                    ng-change="filterStories()"
-                   placeholder="${message(code: 'todo.is.ui.story.selector.filter.action')}">
-            <span class="input-group-append">
-                <button type="button"
-                        class="btn btn-secondary btn-sm"
-                        ng-click="selectorOptions.filter.term = ''; filterStories()">
-                    <i class="fa" ng-class="selectorOptions.filter.term ? 'fa-times' : 'fa-filter'"></i>
-                </button>
-            </span>
+                   placeholder="{{ message('todo.is.ui.story.selector.' + backlog.code + '.search') }}">
         </div>
-    </div>
-    <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
-        <div class="loading-logo" ng-include="'loading.html'"></div>
-        <div class="sticky-notes list-group sticky-notes-disabled sticky-note-selector"
-             ng-controller="storyBacklogCtrl"
-             ng-model="backlog.stories"
-             as-sortable
-             is-disabled="true"
-             ng-init="emptyBacklogTemplate = 'story.backlog.' + backlog.code + '.empty.html'"
-             ng-include="'story.backlog.html'">
+        <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
+            <div class="loading-logo" ng-include="'loading.html'"></div>
+            <div class="sticky-notes list-group sticky-notes-disabled sticky-note-selector"
+                 ng-controller="storyBacklogCtrl"
+                 ng-model="backlog.stories"
+                 as-sortable
+                 is-disabled="true"
+                 ng-init="emptyBacklogTemplate = 'story.backlog.' + backlog.code + '.empty.html'"
+                 ng-include="'story.backlog.html'">
+            </div>
         </div>
     </div>
 </is:modal>
