@@ -23,7 +23,7 @@
  *
  */
 
-extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', function($scope, $controller, $filter, FormService, FeatureService) {
+extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'FeatureStatesByName', function($scope, $controller, $filter, FormService, FeatureService, FeatureStatesByName) {
     $controller('tagCtrl', {$scope: $scope, type: 'feature'});
     // Functions
     $scope.authorizedFeature = FeatureService.authorizedFeature;
@@ -55,6 +55,13 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
             action: function(feature) { $scope.confirmDelete({callback: $scope.delete, args: [feature]}); }
         }
     ];
+    $scope.showFeatureProgress = function(feature) {
+        return feature.state === FeatureStatesByName.IN_PROGRESS;
+    };
+    $scope.stateHoverProgress = function(feature) {
+        var progress = $filter('percentProgress')(feature.countDoneStories, feature.stories_ids.length);
+        return $scope.showFeatureProgress(feature) && progress > 50;
+    }
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features, project) {

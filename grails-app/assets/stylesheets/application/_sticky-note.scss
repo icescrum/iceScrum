@@ -66,7 +66,7 @@ $acceptance-test-states: tocheck, success, failed;
 
     .progress {
       height: 15px;
-      background-color: rgba(255, 255, 255, 0.31);
+      background-color: rgba(255, 255, 255, 0.35);
     }
 
     .progress-bar {
@@ -433,6 +433,10 @@ $acceptance-test-states: tocheck, success, failed;
 
       .state {
         right: 0.5rem;
+
+        &.state-hover-progress {
+          color: $is-sticky-note-text;
+        }
       }
 
       .status {

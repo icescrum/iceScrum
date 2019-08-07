@@ -95,7 +95,7 @@
                 </div>
             </div>
             <div class="state"
-                 ng-class="::{'hover-progress':showStoryProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
+                 ng-class="::{'state-hover-progress':stateHoverProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
             </div>
         </div>
     </div>

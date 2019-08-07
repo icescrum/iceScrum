@@ -71,13 +71,14 @@
             <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
         </div>
         <div class="sticky-note-state-progress">
-            <div class="progress">
+            <div ng-if="::showFeatureProgress(feature)" class="progress">
                 <span class="status">{{:: feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
                 <div class="progress-bar"
                      ng-style="::{width: (feature.countDoneStories | percentProgress:feature.stories_ids.length) + '%'}">
                 </div>
             </div>
-            <div class="state hover-progress">{{:: feature.state | i18n:'FeatureStates' }}</div>
+            <div class="state"
+                 ng-class="::{'state-hover-progress':stateHoverProgress(feature)}">{{:: feature.state | i18n:'FeatureStates' }}</div>
         </div>
     </div>
 </div>

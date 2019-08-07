@@ -182,7 +182,11 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
         }
     ];
     $scope.showStoryProgress = function(story) {
-        return story.tasks_count > 0 && story.state >= StoryStatesByName.PLANNED;
+        return story.tasks_count > 0 && story.state > StoryStatesByName.PLANNED && story.state < StoryStatesByName.DONE;
+    };
+    $scope.stateHoverProgress = function(story) {
+        var progress = $filter('percentProgress')(story.countDoneTasks, story.tasks_count);
+        return $scope.showStoryProgress(story) && progress > 50;
     };
     $scope.isEffortCustom = function() {
         return $scope.getProjectFromState().planningPokerGameType == 2;
