@@ -641,6 +641,18 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             element.closest('.sticky-note-container').css($filter('createShadow')(attrs.stickyNoteColor));
         }
     }
+}]).directive('stickyNoteColorWatch', ['$filter', function($filter) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            scope.$watch(function() {
+                return attrs.stickyNoteColorWatch;
+            }, function(newColor) {
+                element.css($filter('createGradientBackground')(newColor));
+                element.closest('.sticky-note-container').css($filter('createShadow')(newColor));
+            });
+        }
+    }
 }]).directive('deferTooltip', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: 'A',

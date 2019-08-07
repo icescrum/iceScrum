@@ -37,7 +37,7 @@
         </div>
         <div class="sticky-notes sticky-notes-standalone grid-group">
             <div class="sticky-note-container sticky-note-task">
-                <div sticky-note-color="#ffcc01"
+                <div sticky-note-color-watch="#ffcc01"
                      class="sticky-note">
                     <div class="sticky-note-head">
                         <span class="id">42</span>

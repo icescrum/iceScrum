@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.light.html">
-<div sticky-note-color="{{ story | storyColor }}"
+<div sticky-note-color-watch="{{ story | storyColor }}"
      class="sticky-note story {{ ((story | storyColor) | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="sticky-note-head">

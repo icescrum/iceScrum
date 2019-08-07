@@ -35,7 +35,7 @@
             <div class="col-md-6">
                 <div class="sticky-notes sticky-notes-standalone grid-group">
                     <div class="sticky-note-container sticky-note-feature stack twisted">
-                        <div sticky-note-color="{{ topFeature.color }}"
+                        <div sticky-note-color-watch="{{ topFeature.color }}"
                              class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                             <div class="sticky-note-head">
                                 <span class="id">{{ topFeature.uid }}</span>

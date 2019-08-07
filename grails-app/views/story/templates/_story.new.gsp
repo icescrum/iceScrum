@@ -37,7 +37,7 @@
         </div>
         <div class="sticky-notes sticky-notes-standalone grey-sticky-notes grid-group">
             <div class="sticky-note-container sticky-note-story">
-                <div sticky-note-color="{{ storyPreview | storyColor }}"
+                <div sticky-note-color-watch="{{ storyPreview | storyColor }}"
                      class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                     <div class="sticky-note-head">
                         <span class="id">42</span>
