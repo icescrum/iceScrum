@@ -163,7 +163,7 @@ $acceptance-test-states: tocheck, success, failed;
     background: $is-bg-color;
   }
 
-  .sticky-note-container {
+  &:not(.list-group-small) .sticky-note-container {
     padding: 0 $is-spacer-x;
     border-bottom: solid 1px $is-border-color;
     filter: none !important; // Override js style
