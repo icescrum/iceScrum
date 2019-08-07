@@ -30,23 +30,23 @@
     </p>
     <div class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
         <div class="loading-logo" ng-include="'loading.html'"></div>
-        <div class="list-group"
+        <div class="sticky-notes list-group"
              ng-controller="storyBacklogCtrl"
              ng-model="backlog.stories">
             <div ng-if="backlog.stories.length == 0"
                  class="empty-view">
                 <div ng-include="'story.backlog.close.empty.html'"></div>
             </div>
-            <table class="table table-bordered table-striped table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
+            <table class="table table-bordered table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
                 <tr>
                     <th class="text-center">${message(code: 'is.story')}</th>
                     <th class="text-center">{{:: storyStatesByName.DONE | i18n: 'StoryStates' }}</th>
                 </tr>
                 <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state">
-                    <td is-watch="story">
+                    <td is-watch="story" class="pt-0 pb-0">
                         <div ng-include="'story.html'"></div>
                     </td>
-                    <td>
+                    <td class="align-middle">
                         <div class="text-center story-checkbox">
                             <input type="checkbox"
                                    ng-model="newDone[story.id]">
