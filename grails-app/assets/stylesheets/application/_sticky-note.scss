@@ -252,6 +252,7 @@ $acceptance-test-states: tocheck, success, failed;
         color: $is-text-color;
 
         .acceptance-test-icon {
+          margin-bottom: -2px; // Hack
           display: inline-block;
           @include rectangle-background(0.8125rem, 0.875rem);
         }
@@ -625,6 +626,7 @@ $acceptance-test-states: tocheck, success, failed;
 
           .acceptance-test-icon {
             display: inline-block;
+            margin-bottom: -2px; // Hack
             @include square-background(0.75rem);
           }
 
