@@ -248,7 +248,7 @@
                 <div class="kanban-swimlane"
                      ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'"
                      ng-class="{'story-done': story.state == storyStatesByName.DONE }">
-                    <div class="list-group list-group-small">
+                    <div class="sticky-notes list-group list-group-small">
                         <div class="sticky-note-container sticky-note-story"
                              ng-controller="storyCtrl"
                              ng-click="selectStory($event, story.id)"
@@ -300,7 +300,7 @@
                 </div>
                 <div class="kanban-swimlane story-ghost"
                      ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'">
-                    <div class="list-group list-group-small">
+                    <div class="sticky-notes list-group list-group-small">
                         <div class="sticky-note-container sticky-note-story" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.light.html'"></div>
                         </div>
