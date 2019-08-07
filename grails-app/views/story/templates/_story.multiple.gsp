@@ -285,20 +285,20 @@
                     </ui-select>
                 </div>
             </div>
-        </form>
-        <div class="card-footer">
-            <div class="btn-toolbar">
-                <a class="btn btn-secondary"
-                   ui-sref="^.^">
-                    ${message(code: 'is.button.cancel')}
-                </a>
-                <button class="btn btn-primary"
-                        type="submit"
-                        ng-disabled="!storyForm.$dirty || storyForm.$invalid || application.submitting">
-                    ${message(code: 'default.button.update.label')}
-                </button>
+            <div class="card-footer">
+                <div class="btn-toolbar">
+                    <a class="btn btn-secondary"
+                       ui-sref="^.^">
+                        ${message(code: 'is.button.cancel')}
+                    </a>
+                    <button class="btn btn-primary"
+                            type="submit"
+                            ng-disabled="!storyForm.$dirty || storyForm.$invalid || application.submitting">
+                        ${message(code: 'default.button.update.label')}
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 </script>
