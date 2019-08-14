@@ -35,7 +35,7 @@
             <documentation doc-url="roles-teams-projects"/>
         </p>
     </div>
-    <div class="col-sm-4" style="margin-top: 11px;">
+    <div class="col-sm-4" style="margin-top: 11px;" ng-class="{'has-error': noTeamAvailable}">
         <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
         <p class="input-group">
             <input autocomplete="off"
@@ -47,6 +47,7 @@
                    uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                    typeahead-loading="searching"
                    typeahead-wait-ms="150"
+                   typeahead-no-results="noTeamAvailable"
                    typeahead-on-select="selectTeam($item, $model, $label)"
                    typeahead-template-url="select.or.create.team.html"
                    typeahead-select-on-blur="true"
@@ -60,6 +61,7 @@
                 </i>
             </span>
         </p>
+        <div ng-if="noTeamAvailable" class="help-block bg-danger spaced-help-block ng-scope">${message(code:'todo.is.ui.select.team.taken')}</div>
         <div class="form-group" ng-if="type == 'editProject' && team.owner">
             <label>
                 ${message(code: 'is.role.owner')}
