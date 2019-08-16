@@ -545,24 +545,17 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-.width-for-3 {
-  width: calc(100% / 3);
-}
-
-.width-for-6 {
-  width: calc(100% / 6);
-}
-
-.width-for-8 {
-  width: calc(100% / 8);
+@each $count in (3, 6, 7) {
+  .width-for-#{$count} {
+    width: calc(100% / #{$count});
+  }
 }
 
 @include media-breakpoint-down(md) {
-  .width-for-6 {
-    width: calc(100% / 3);
-  }
-  .width-for-8 {
-    width: calc(100% / 4);
+  @each $count in (6, 7) {
+    .width-for-#{$count} {
+      width: calc(100% / (#{$count } / 2));
+    }
   }
 }
 
