@@ -32,7 +32,7 @@
                name="name"
                type="text"
                autocomplete="off"
-               autocomplete="off"class="form-control"
+               class="form-control"
                placeholder="${message(code: 'todo.is.ui.project.noname')}"
                ng-model="project.name"
                ng-change="nameChanged()"
