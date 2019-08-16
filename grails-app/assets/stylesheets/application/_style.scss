@@ -612,14 +612,6 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-.btn-sm.text-danger {
-  border-color: $is-red;
-
-  &:hover {
-    box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-4;
-  }
-}
-
 *[ng-click] {
   cursor: pointer;
 }

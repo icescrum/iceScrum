@@ -102,6 +102,36 @@ strong {
   }
 }
 
+$btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), danger: rgba(255, 61, 51, 0.2));
+
+@each $btn-color in (success warning danger) {
+  .btn-#{$btn-color} {
+
+    &:hover, &:active, &:not(:disabled):not(.disabled):active:focus {
+      background-color: theme-color($btn-color);
+      box-shadow: 0 0.5rem 1.75rem 0 map-get($btn-shadow, $btn-color);
+    }
+
+    &:not(:disabled):not(.disabled):active {
+      background-color: theme-color($btn-color);
+    }
+
+    &.btn-sm {
+      color: theme-color($btn-color);
+      border: 1px solid theme-color($btn-color);
+      padding: ($btn-padding-y-sm - 0.0625rem) ($btn-padding-x-sm - 0.0625rem); // Cancel out the border
+      font-family: $font-family-base;
+      background: none;
+
+      &:hover, &:focus, &:not(:disabled):not(.disabled):active:focus {
+        color: theme-color($btn-color);
+        box-shadow: 0 0.5rem 1.75rem 0 map-get($btn-shadow, $btn-color);
+        background: none;
+      }
+    }
+  }
+}
+
 .dropdown:not(.open) .btn.dropdown-toggle {
   border: 1px solid transparent !important;
 

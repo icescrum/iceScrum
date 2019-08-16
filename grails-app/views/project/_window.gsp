@@ -31,7 +31,7 @@
                     </div>
                     <div class="btn-toolbar ml-1 mt-1 mt-lg-0 align-items-end d-block d-md-flex flex-nowrap">
                         <button ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
-                                class="btn btn-secondary btn-sm hover-visible text-danger text-nowrap"
+                                class="btn btn-sm btn-danger hover-visible text-nowrap"
                                 ng-click="showProjectEditModal('administration')"
                                 type="button">
                             ${message(code: 'is.ui.project.sample.delete')}
