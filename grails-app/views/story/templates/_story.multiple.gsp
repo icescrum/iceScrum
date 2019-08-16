@@ -181,7 +181,6 @@
                         <label for="feature">${message(code: 'is.feature')}</label>
                         <div ng-class="{'input-group':storyPreview.feature.id}">
                             <ui-select class="form-control"
-                                       input-group-fix-width="38"
                                        name="feature"
                                        search-enabled="true"
                                        ng-model="storyPreview.feature">

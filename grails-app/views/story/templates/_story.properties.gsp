@@ -89,8 +89,7 @@
             <div class="form-half">
                 <label for="feature">${message(code: 'is.feature')}</label>
                 <div ng-class="{'input-group': editableStory.feature.id && !isModal}">
-                    <ui-select input-group-fix-width="38"
-                               ng-click="editForm(true)"
+                    <ui-select ng-click="editForm(true)"
                                uis-open-close="isOpen && listFeatures()"
                                ng-change="editForm(true)"
                                ng-disabled="!formEditable()"
@@ -121,8 +120,7 @@
                     <span class="text-muted small float-right" ng-if="project.portfolio.id"><i class="fa fa-question-circle"></i> ${message(code: 'is.ui.story.dependsOn.help')}</span>
                 </label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
-                    <ui-select input-group-fix-width="38"
-                               class="form-control"
+                    <ui-select class="form-control"
                                ng-click="editForm(true); searchDependenceEntries(editableStory, $select)"
                                ng-change="editForm(true)"
                                ng-disabled="!formEditable()"

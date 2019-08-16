@@ -371,22 +371,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}).directive('inputGroupFixWidth', ['$window', '$timeout', function($window, $timeout) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var resizer = function() {
-                element.css('width', element.parent().parent().width() - attrs.inputGroupFixWidth + 'px');
-            };
-            var windowElement = angular.element($window);
-            windowElement.on('resize.inputGroupFixWidth', _.throttle(resizer, 200));
-            scope.$on('$destroy', function() {
-                windowElement.off("resize.inputGroupFixWidth");
-            });
-            $timeout(resizer);
-        }
-    };
-}]).directive('timeline', ['ReleaseService', 'SprintStatesByName', '$timeout', function(ReleaseService, SprintStatesByName, $timeout) {
+}).directive('timeline', ['ReleaseService', 'SprintStatesByName', '$timeout', function(ReleaseService, SprintStatesByName, $timeout) {
     return {
         restrict: 'A',
         scope: {
