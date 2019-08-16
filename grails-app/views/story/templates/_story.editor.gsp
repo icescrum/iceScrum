@@ -37,6 +37,7 @@
                        ng-focus="formHolder.formExpanded = true;"
                        autocomplete="off"
                        class="form-control"
+                       autocomplete="off"
                        placeholder="${message(code: 'is.story')}">
                 <span class="input-group-append visible-hidden">
                     <button class="btn btn-primary btn-sm"

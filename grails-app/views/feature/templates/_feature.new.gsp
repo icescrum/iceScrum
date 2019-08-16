@@ -72,7 +72,7 @@
                                autocomplete="off"
                                type="text"
                                class="form-control"
-                               ng-disabled="!authorizedFeature('create')"
+                               autocomplete="off"ng-disabled="!authorizedFeature('create')"
                                placeholder="${message(code: 'is.ui.feature.noname')}"/>
                         <span class="input-group-append">
                             <button colorpicker

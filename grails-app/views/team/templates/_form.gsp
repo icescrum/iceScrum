@@ -64,6 +64,7 @@
             </span>
             <span ng-if="noTeamAvailable" class="validation-error text-danger">${message(code:'todo.is.ui.select.team.taken')}</span>
         </p>
+        <div ng-if="noTeamAvailable" class="help-block bg-danger spaced-help-block ng-scope">${message(code:'todo.is.ui.select.team.taken')}</div>
         <div class="form-group" ng-if="type == 'editProject' && team.owner">
             <label>
                 ${message(code: 'is.role.owner')}
