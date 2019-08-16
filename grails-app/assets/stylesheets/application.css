@@ -28,6 +28,7 @@
 *= require_full_tree vendors/angular
 *= require_full_tree vendors/vanilla
 *= require application/theme
+*= require application/shims
 *= require_full_tree application/fonts
 
 Plugins probably need to come after all to override standard style
