@@ -23,7 +23,6 @@
 <script type="text/ng-template" id="backlog.details.html">
 <div class="card">
     <div class="details-header">
-        <entry:point id="backlog-details-right-title"/>
         <details-layout-buttons ng-if="!isModal"/>
     </div>
     <div class="card-header">
@@ -34,14 +33,17 @@
                    ng-if="backlog.shared && !backlog.isDefault"
                    defer-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
             </div>
+            <div class="btn-toolbar">
+                <entry:point id="backlog-details-right-title"/>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
                 <div ng-include="'story.table.multiple.sum.html'"></div>
             </div>
-            <entry:point id="backlog-details-chart-before"/>
             <div class="col-md-6 backlogCharts chart" ng-controller="backlogChartCtrl">
+                <entry:point id="backlog-details-chart-before"/>
                 <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
             </div>
         </div>
