@@ -34,7 +34,7 @@
         <button ng-if="authorizedPortfolio('delete', portfolio)"
                 type="button"
                 role="button"
-                class="btn btn-danger"
+                class="btn btn-danger btn-sm"
                 ng-click="delete(portfolio)">
             ${message(code: 'is.ui.portfolio.delete')}
         </button>
@@ -42,7 +42,7 @@
     <div class="btn-toolbar float-right">
         <button type="button"
                 role="button"
-                class="btn btn-secondary"
+                class="btn btn-secondary btn-sm"
                 ng-click="$close()">
             ${message(code: 'is.button.cancel')}
         </button>

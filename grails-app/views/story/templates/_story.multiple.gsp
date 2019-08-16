@@ -105,7 +105,7 @@
                 <div class="btn-toolbar">
                     <button type="button"
                             ng-if="authorizedStories('accept', stories)"
-                            class="btn btn-secondary btn-sm"
+                            class="btn btn-primary btn-sm"
                             ng-click="acceptToBacklogMultiple()">
                         ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.ACCEPTED | i18n:'StoryStates' }}
                     </button>
@@ -123,7 +123,7 @@
                     </button>
                     <button type="button"
                             ng-if="authorizedStories('delete', stories)"
-                            class="btn btn-secondary btn-sm"
+                            class="btn btn-danger btn-sm"
                             ng-click="confirmDelete({ callback: deleteMultiple })">
                         ${message(code: 'is.ui.backlog.menu.delete')}
                     </button>

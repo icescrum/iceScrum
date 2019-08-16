@@ -28,7 +28,7 @@
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.timeBoxNotesTemplate.edit')}">
     <div class="details-header">
-        <button class="btn btn-danger"
+        <button class="btn btn-danger btn-sm"
                 tabindex="-1"
                 type="button"
                 name="delete"

@@ -95,7 +95,7 @@
                     <div ng-if="authorizedFeature('delete')"
                          class="btn-group">
                         <button type="button"
-                                class="btn btn-secondary btn-sm"
+                                class="btn btn-danger btn-sm"
                                 ng-click="confirmDelete({ callback: deleteMultiple })">
                             ${message(code: 'default.button.delete.label')}
                         </button>

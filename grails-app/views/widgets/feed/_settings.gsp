@@ -50,7 +50,7 @@
     </div>
     <button ng-disabled="disableDeleteButton"
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-danger"
             ng-click="deleteFeed(holder.selected)">
         ${message(code: 'default.button.delete.label')}
     </button>
