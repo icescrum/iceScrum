@@ -331,10 +331,6 @@ form label {
   display: block;
 }
 
-.dropdown-toggle, .dropdown-toggle:hover {
-  color: $is-text-color;
-}
-
 .dropdown-toggle:not(.no-caret) {
   &::after {
     display: inline-block;
