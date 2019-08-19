@@ -161,6 +161,7 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
 
 // Emulating bootstrap 3 toolbar (TODO check if good approach)
 .btn-toolbar {
+  align-items: center;
   margin-left: -0.25rem; // Offset the first child's margin
   > .btn,
   > .btn-group,

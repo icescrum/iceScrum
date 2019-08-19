@@ -34,7 +34,7 @@
                 </span>
             </div>
             <div class="w-100 order-2 d-block d-sm-none col-auto"></div>
-            <div class="btn-toolbar align-items-center order-3 order-sm-1 col-12 col-sm-auto justify-content-between">
+            <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto justify-content-between">
                 <div>
                     <button class="btn btn-icon"
                             ng-if="hasPreviousVisibleSprints()"
