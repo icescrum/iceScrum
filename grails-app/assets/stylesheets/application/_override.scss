@@ -166,6 +166,10 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
   height: 1.25rem;
   padding: 0 !important;
 
+  &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
+    box-shadow: none;
+  }
+
   .icon {
     width: 100%;
     height: 100%;
