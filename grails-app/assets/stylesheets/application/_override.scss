@@ -146,15 +146,6 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
   }
 }
 
-.btn-sm {
-  font-size: $is-font-size-sm;
-  line-height: 1.6;
-
-  &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
-    box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
-  }
-}
-
 // Emulating bootstrap 3 toolbar (TODO check if good approach)
 .btn-toolbar {
   margin-left: -0.25rem; // Offset the first child's margin
