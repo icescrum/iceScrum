@@ -50,6 +50,12 @@ strong {
   border: none;
 }
 
+.btn-sm {
+  font-size: $is-font-size-sm;
+  font-family: $font-family-base;
+  line-height: 1.6;
+}
+
 .btn-primary {
   text-shadow: 0 0.125rem 0.25rem #054ca6;
 
@@ -64,6 +70,7 @@ strong {
 
   &.btn-sm {
     color: $primary;
+    font-family: $is-font-family-bold;
     text-shadow: none;
     background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
     box-shadow: 0 1px 0.1875rem 0 $is-shadow-color-2;
@@ -72,8 +79,9 @@ strong {
       background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
     }
 
-    &:not(:disabled):not(.disabled):active {
+    &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
       color: $primary;
+      box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
     }
   }
 }
@@ -92,11 +100,10 @@ strong {
     box-shadow: none;
     border: 1px solid $is-outline-color;
     padding: ($btn-padding-y-sm - 0.0625rem) ($btn-padding-x-sm - 0.0625rem); // Cancel out the border
-    font-family: $font-family-base;
     text-shadow: none;
     background: none;
 
-    &:hover, &:not(:disabled):not(.disabled):active {
+    &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
       box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
     }
   }
@@ -120,10 +127,9 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
       color: theme-color($btn-color);
       border: 1px solid theme-color($btn-color);
       padding: ($btn-padding-y-sm - 0.0625rem) ($btn-padding-x-sm - 0.0625rem); // Cancel out the border
-      font-family: $font-family-base;
       background: none;
 
-      &:hover, &:focus, &:not(:disabled):not(.disabled):active:focus {
+      &:hover, &:focus, &:active, &:not(:disabled):not(.disabled):active:focus {
         color: theme-color($btn-color);
         box-shadow: 0 0.5rem 1.75rem 0 map-get($btn-shadow, $btn-color);
         background: none;
