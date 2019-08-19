@@ -37,12 +37,12 @@
             <div class="btn-toolbar align-items-center order-3 order-sm-1 col-12 col-sm-auto justify-content-between">
                 <div>
                     <button class="btn btn-icon"
-                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'd-none' : 'd-inline-block'}"
+                            ng-if="hasPreviousVisibleSprints()"
                             ng-click="visibleSprintsPrevious()">
                         <span class="icon icon-caret-left"></span>
                     </button>
                     <button class="btn btn-icon"
-                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'd-none' : 'd-inline-block'}"
+                            ng-class="hasNextVisibleSprints() ? 'visible' : 'invisible'"
                             ng-click="visibleSprintsNext()">
                         <span class="icon icon-caret-right"></span>
                     </button>

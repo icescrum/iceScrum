@@ -41,14 +41,14 @@
            href="{{ currentStateUrl(previousStory().id) }}">
             <span class="icon icon-caret-left"></span>
         </a>
-        <a ng-if="nextStory()"
-           class="btn btn-icon"
+        <a class="btn btn-icon"
+           ng-class="nextStory() ? 'visible' : 'invisible'"
            role="button"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-           href="{{ currentStateUrl(nextStory().id) }}">
+           href="{{ currentStateUrl(nextStory() ? nextStory().id : story.id) }}">
             <span class="icon icon-caret-right"></span>
         </a>
         <a class="btn btn-icon expandable"

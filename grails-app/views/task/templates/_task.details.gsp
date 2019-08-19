@@ -41,14 +41,14 @@
            href="{{:: currentStateUrl(previousTask.id) }}">
             <span class="icon icon-caret-left"></span>
         </a>
-        <a ng-if="nextTask"
-           class="btn btn-icon"
+        <a class="btn btn-icon"
+           ng-class="nextTask ? 'visible' : 'invisible'"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-           href="{{:: currentStateUrl(nextTask.id) }}">
+           href="{{:: currentStateUrl(nextTask ? nextTask.id : task.id) }}">
             <span class="icon icon-caret-right"></span>
         </a>
         <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>

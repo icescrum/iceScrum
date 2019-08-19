@@ -41,8 +41,8 @@
            ui-sref=".({sprintId: previousSprint.id})">
             <span class="icon icon-caret-left"></span>
         </a>
-        <a ng-if="nextSprint"
-           class="btn btn-icon"
+        <a class="btn btn-icon"
+           ng-class="nextSprint ? 'visible' : 'invisible'"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"

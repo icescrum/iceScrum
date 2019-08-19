@@ -41,8 +41,8 @@
            ui-sref=".({releaseId: previousRelease.id})">
             <span class="icon icon-caret-left"></span>
         </a>
-        <a ng-if="nextRelease"
-           class="btn btn-icon"
+        <a class="btn btn-icon"
+           ng-class="nextRelease ? 'visible' : 'invisible'"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"

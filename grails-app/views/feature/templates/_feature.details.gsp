@@ -41,8 +41,9 @@
            ui-sref=".({featureId: previousFeature.id})">
             <span class="icon icon-caret-left"></span>
         </a>
-        <a ng-if="nextFeature && !isModal"
+        <a ng-if="!isModal"
            class="btn btn-icon"
+           ng-class="nextFeature ? 'visible' : 'invisible'"
            role="button"
            tabindex="0"
            hotkey="{'right': hotkeyClick}"
