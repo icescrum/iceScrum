@@ -509,7 +509,6 @@ $state-dot-size-sm: 0.5rem;
   align-items: center;
   color: $is-text-color-alt;
   font-size: $is-font-size-sm;
-  font-weight: 600;
 
   .state-dot {
     margin-right: 7px;
@@ -522,7 +521,6 @@ $state-dot-size-sm: 0.5rem;
 
   &.state-title-small {
     font-size: 0.75rem;
-    font-weight: $font-weight-normal;
 
     .state-dot {
       margin-right: 4px;
@@ -839,7 +837,6 @@ a.link-documentation {
       line-height: 2; // Some random values here allow vertical alignment
       opacity: 1.0;
       font-size: 0.5625rem;
-      font-weight: 600;
     }
 
     &.state-completed, &.state-current {
@@ -865,7 +862,6 @@ a.link-documentation {
   .card-title {
     font-size: 1rem;
     font-family: $font-family-base;
-    font-weight: 600;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1084,7 +1080,6 @@ body.simple-without-ng-layout {
 
   .form-group label {
     font-family: $is-font-family-bold;
-    font-weight: normal;
     font-size: 0.875rem;
     margin-bottom: 0.8125rem;
   }

@@ -148,7 +148,6 @@
         .backlog-title {
           display: inline-block;
           font-size: $is-font-size-sm;
-          font-weight: 600;
           color: $is-text-color-alt;
         }
       }
@@ -354,12 +353,10 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   .swimlane-title {
     padding-left: $is-kanban-spacer-x;
     font-size: $is-font-size-sm;
-    font-weight: 600;
 
     .swimlane-subtitle {
       font-size: 0.75rem;
       padding-left: 0.5rem;
-      font-weight: 400;
     }
   }
 }
