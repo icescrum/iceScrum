@@ -63,9 +63,9 @@
                     <span>${message(code: 'is.task.estimation')} <strong>{{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }}</strong></span>
                 </span>
             </div>
-            <div class="btn-toolbar col-auto justify-content-between">
+            <div class="btn-toolbar pl-1 mt-2 mt-sm-0 col-auto justify-content-between">
                 <entry:point id="taskBoard-window-toolbar-right"/>
-                <div class="btn-group ml-sm-0" uib-dropdown>
+                <div uib-dropdown>
                     <button class="btn btn-link"
                             uib-dropdown-toggle
                             type="button">

@@ -67,8 +67,8 @@
                 </ul>
             </div>
             <div class="w-100 order-2 d-block d-sm-none col-auto"></div>
-            <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto mt-2 mt-sm-0 pl-0 pr-0 justify-content-between">
-                <div class="btn-group ml-sm-0" ng-if="backlogContainers.length == 1">
+            <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto mt-2 mt-sm-0 pl-1 pr-0 justify-content-between">
+                <div class="btn-group ml-0" ng-if="backlogContainers.length == 1">
                     <div uib-dropdown>
                         <button class="btn btn-link"
                                 uib-dropdown-toggle

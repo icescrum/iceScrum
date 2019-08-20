@@ -27,33 +27,42 @@
             <div class="card-header-left order-0 col-auto flex-grow-1">
                 <span class="card-title">${message(code: 'is.ui.feature')} ({{ features.length}})</span>
             </div>
-            <div class="mt-2 mt-sm-0 order-3 order-sm-1 col-auto pr-0" uib-dropdown>
-                <button class="btn btn-link"
-                        uib-dropdown-toggle
-                        ng-disabled="!features.length"
-                        type="button"><strong>${message(code: 'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
-                </button>
-                <div uib-dropdown-menu role="menu">
-                    <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>
-                    <div role="menuitem"
-                         class="dropdown-item"
-                         ng-click="orderBy.reverse = !orderBy.reverse"
-                         ng-class="{'active': !orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.asc')}</div>
-                    <div role="menuitem"
-                         class="dropdown-item"
-                         ng-click="orderBy.reverse = !orderBy.reverse"
-                         ng-class="{'active': orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.desc')}</div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-header">${message(code: 'todo.is.ui.order.sort')}</div>
-                    <div role="menuitem"
-                         class="dropdown-item"
-                         ng-repeat="order in orderBy.values"
-                         ng-click="orderBy.current = order"
-                         ng-class="{'active': orderBy.current == order}">{{:: order.name }}</div>
-                </div>
-            </div>
             <div class="w-100 order-2 d-block d-sm-none"></div>
-            <div class="btn-toolbar pl-1 mt-2 mt-sm-0 order-4 order-sm-3 col-auto">
+            <div class="btn-toolbar pl-1 mt-2 mt-sm-0 order-3 order-sm-1 col-auto">
+                <div class="btn-group ml-0">
+                    <div uib-dropdown>
+                        <button class="btn btn-link"
+                                uib-dropdown-toggle
+                                ng-disabled="!features.length"
+                                type="button"><strong>${message(code: 'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
+                        </button>
+                        <div uib-dropdown-menu role="menu">
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item"
+                                 ng-click="orderBy.reverse = !orderBy.reverse"
+                                 ng-class="{'active': !orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.asc')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item"
+                                 ng-click="orderBy.reverse = !orderBy.reverse"
+                                 ng-class="{'active': orderBy.reverse}">${message(code: 'todo.is.ui.order.sort.desc')}</div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.order.sort')}</div>
+                            <div role="menuitem"
+                                 class="dropdown-item"
+                                 ng-repeat="order in orderBy.values"
+                                 ng-click="orderBy.current = order"
+                                 ng-class="{'active': orderBy.current == order}">{{:: order.name }}</div>
+                        </div>
+                    </div>
+                    <button type="button"
+                            ng-if="isSortableFeature() && !isSortingFeature()"
+                            class="btn btn-link"
+                            ng-click="enableSortable()"
+                            uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
+                        <i class="fa fa-hand-stop-o text-danger"></i>
+                    </button>
+                </div>
                 <div class="btn-group"
                      uib-dropdown
                      ng-if="authenticated()">
@@ -92,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <div class="order-1 order-sm-4 col-auto">
+            <div class="order-1 order-sm-3 col-auto">
                 <a class="btn btn-primary"
                    ng-if="authorizedFeature('create')"
                    href="#/{{ ::viewName }}/new">${message(code: "todo.is.ui.feature.new")}</a>
