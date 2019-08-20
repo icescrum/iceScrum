@@ -65,8 +65,8 @@
             </div>
             <div class="btn-toolbar col-auto justify-content-between">
                 <entry:point id="taskBoard-window-toolbar-right"/>
-                <div class="btn-group" uib-dropdown>
-                    <button class="btn btn-secondary btn-sm"
+                <div class="btn-group ml-sm-0" uib-dropdown>
+                    <button class="btn btn-link"
                             uib-dropdown-toggle
                             type="button">
                         {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
@@ -87,7 +87,7 @@
                 <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                 <g:if test="${formats}">
                     <div class="btn-group" uib-dropdown ng-if="authenticated()">
-                        <button class="btn btn-secondary btn-sm"
+                        <button class="btn btn-link"
                                 uib-dropdown-toggle type="button">
                             <i class="fa fa-download"></i>
                         </button>
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </g:if>
-                <a class="btn btn-icon btn-sm ml-1 mr-1"
+                <a class="btn btn-icon ml-1 mr-1"
                    href="{{ openSprintUrl(sprint) }}">
                     <span class="icon icon-details"></span>
                 </a>

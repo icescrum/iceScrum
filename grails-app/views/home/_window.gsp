@@ -26,7 +26,7 @@
             <div class="home-header-title">
                 <h1>${message(code: 'is.ui.your')} <span class="sharpie-highlight">${message(code: 'is.ui.projects').toLowerCase()}</span></h1>
                 <div uib-dropdown>
-                    <button class="btn btn-secondary btn-sm"
+                    <button class="btn btn-link"
                             uib-dropdown-toggle
                             type="button">
                         Mon compte

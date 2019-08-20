@@ -151,14 +151,6 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
   }
 }
 
-.dropdown:not(.open) .btn.dropdown-toggle {
-  border: 1px solid transparent !important;
-
-  &:hover, &:not(:disabled):not(.disabled):active {
-    border: 1px solid $is-outline-color !important;
-  }
-}
-
 // Emulating bootstrap 3 toolbar (TODO check if good approach)
 .btn-toolbar {
   align-items: center;
@@ -171,8 +163,9 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
   }
 }
 
-// New button type
-.btn.btn-icon {
+// New button types
+
+.btn-icon {
   width: 1.25rem;
   height: 1.25rem;
   padding: 0 !important;
@@ -190,6 +183,16 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
     .icon {
       background-size: 0.75rem 0.8125rem;
     }
+  }
+}
+
+.btn-dropdown-icon {
+  padding: 9px 9px !important;
+  padding-bottom: 5px !important;
+  line-height: 1.3rem !important;
+
+  &:after {
+    vertical-align: 0.33rem !important;
   }
 }
 

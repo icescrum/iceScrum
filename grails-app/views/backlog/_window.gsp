@@ -70,7 +70,7 @@
             <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto mt-2 mt-sm-0 pl-0 pr-0 justify-content-between">
                 <div class="btn-group ml-sm-0" ng-if="backlogContainers.length == 1">
                     <div uib-dropdown>
-                        <button class="btn btn-secondary btn-sm"
+                        <button class="btn btn-link"
                                 uib-dropdown-toggle
                                 type="button"><strong>${message(code: 'todo.is.ui.order.sort')}</strong>&nbsp;{{ backlogContainers[0].orderBy.current.name }}<span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
                         </button>
@@ -95,7 +95,7 @@
                     </div>
                     <button type="button"
                             ng-if="backlogContainers[0].sortable && !isSortingBacklog(backlogContainers[0])"
-                            class="btn btn-secondary btn-sm"
+                            class="btn btn-link"
                             ng-click="enableSortable(backlogContainers[0])"
                             uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
                         <i class="fa fa-hand-stop-o text-danger"></i>
@@ -104,7 +104,7 @@
                 <div>
                     <entry:point id="backlog-window-toolbar-right"/>
                     <div class="btn-group" uib-dropdown ng-if="authenticated() && backlogContainers.length == 1">
-                        <button class="btn btn-secondary btn-sm"
+                        <button class="btn btn-link"
                                 ng-disabled="!backlogContainers[0].backlog.stories.length"
                                 uib-dropdown-toggle type="button"><i class="fa fa-download"></i>
                         </button>
@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <div class="btn-group d-none d-lg-inline-block sticky-note-size dropdown" uib-dropdown>
-                        <button class="btn btn-secondary btn-sm with-icon"
+                        <button class="btn btn-dropdown-icon"
                                 uib-dropdown-toggle
                                 type="button">
                             <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>

@@ -48,7 +48,7 @@
                     </button>
                 </div>
                 <div class="btn-group d-none d-lg-block sticky-note-size" uib-dropdown>
-                    <button class="btn btn-secondary btn-sm with-icon"
+                    <button class="btn btn-dropdown-icon"
                             uib-dropdown-toggle
                             type="button">
                         <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div>
-                    <a class="btn btn-icon btn-sm ml-1 mr-1"
+                    <a class="btn btn-icon ml-1 mr-1"
                        ng-href="{{ openReleaseUrl(release) }}">
                         <span class="icon icon-details"></span>
                     </a>

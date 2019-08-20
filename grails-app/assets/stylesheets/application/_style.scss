@@ -423,23 +423,6 @@ nav.navbar {
       font-size: $is-font-size-sm;
       line-height: 1.29;
       padding: 0.5625rem 1rem;
-      border: 1px solid transparent !important;
-
-      &.btn-sm {
-        padding: (0.5625rem - 0.0625rem) (1rem - 0.0625rem); // Cancel out the border
-      }
-
-      &.btn-secondary {
-        height: 2.25rem;
-
-        &:not(.dropdown-toggle) .icon {
-          background-size: 1.25rem;
-        }
-      }
-    }
-
-    .dropdown.open .btn.dropdown-toggle {
-      border: 1px solid $is-outline-color !important;
     }
   }
 }
@@ -467,16 +450,6 @@ nav.navbar {
 
 .dropdown-toggle {
   cursor: pointer;
-}
-
-.dropdown-toggle.with-icon {
-  padding: 9px 9px !important;
-  padding-bottom: 5px !important;
-  line-height: 1.3rem !important;
-
-  &:after {
-    vertical-align: 0.33rem;
-  }
 }
 
 .dropdown-button {
@@ -738,6 +711,7 @@ $state-dot-size-sm: 0.5rem;
 
 .sticky-note-selector > .sticky-note-container:not(.is-selected) {
   opacity: 0.37;
+
   &:hover {
     opacity: 0.68;
   }
@@ -875,7 +849,7 @@ a.link-documentation {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 55px;
+  height: 53px;
   padding-left: $is-spacer-x;
   padding-right: $is-spacer-x;
 

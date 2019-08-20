@@ -28,7 +28,7 @@
                 <span class="card-title">${message(code: 'is.ui.feature')} ({{ features.length}})</span>
             </div>
             <div class="mt-2 mt-sm-0 order-3 order-sm-1 col-auto pr-0" uib-dropdown>
-                <button class="btn btn-secondary btn-sm"
+                <button class="btn btn-link"
                         uib-dropdown-toggle
                         ng-disabled="!features.length"
                         type="button"><strong>${message(code: 'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
@@ -57,7 +57,7 @@
                 <div class="btn-group"
                      uib-dropdown
                      ng-if="authenticated()">
-                    <button class="btn btn-secondary btn-sm"
+                    <button class="btn btn-link"
                             uib-dropdown-toggle
                             ng-disabled="!features.length"
                             type="button">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="btn-group d-none d-lg-block sticky-note-size" uib-dropdown>
-                    <button class="btn btn-secondary btn-sm with-icon"
+                    <button class="btn btn-dropdown-icon"
                             uib-dropdown-toggle
                             type="button">
                         <span class="icon icon-{{ iconCurrentStickyNoteSize(viewName) }}"></span>
@@ -120,7 +120,7 @@
             <div ng-if="application.search && features.length != 0 && (features | search).length == 0"
                  class="empty-view">
                 <p class="form-text">${message(code: 'is.ui.feature.search.empty')} <strong>{{ application.search }}</strong></p>
-                <button class="btn btn-secondary btn-sm"
+                <button class="btn btn-link"
                         ng-click="application.search = null">
                     ${message(code: 'todo.is.ui.search.clear')}
                 </button>
