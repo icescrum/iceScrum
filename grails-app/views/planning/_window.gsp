@@ -62,7 +62,7 @@
                         <div role="menuitem"
                              class="dropdown-item clearfix"
                              ng-click="setStickyNoteSize(viewName,'grid-group size-sm')"
-                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group size-sm'}">${message(code: 'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span>
+                             ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group-sm'}">${message(code: 'todo.is.ui.stickynote.display.grid.sm')}&nbsp;<span class="float-right icon icon-grid-group-sm icon-highlight"></span>
                         </div>
                         <div role="menuitem"
                              class="dropdown-item clearfix"
