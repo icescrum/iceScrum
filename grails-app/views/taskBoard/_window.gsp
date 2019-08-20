@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </g:if>
-                <a class="btn btn-icon ml-1 mr-1"
+                <a class="btn btn-icon mr-1"
                    href="{{ openSprintUrl(sprint) }}">
                     <span class="icon icon-details"></span>
                 </a>

@@ -35,7 +35,7 @@
             </div>
             <div class="w-100 order-2 d-block d-sm-none col-auto"></div>
             <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto justify-content-between">
-                <div>
+                <div class="d-flex align-items-center">
                     <button class="btn btn-icon"
                             ng-if="hasPreviousVisibleSprints()"
                             ng-click="visibleSprintsPrevious()">
@@ -70,12 +70,10 @@
                              ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code: 'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
                     </div>
                 </div>
-                <div>
-                    <a class="btn btn-icon ml-1 mr-1"
-                       ng-href="{{ openReleaseUrl(release) }}">
-                        <span class="icon icon-details"></span>
-                    </a>
-                </div>
+                <a class="btn btn-icon mr-1"
+                   ng-href="{{ openReleaseUrl(release) }}">
+                    <span class="icon icon-details"></span>
+                </a>
             </div>
             <div class="order-1 order-sm-3 col-auto">
                 <div class="btn-menu" ng-controller="releaseCtrl" uib-dropdown>

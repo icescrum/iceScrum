@@ -143,7 +143,7 @@
                                  ng-class="{'active': iconCurrentStickyNoteSize(viewName) == 'grid-group'}">${message(code: 'todo.is.ui.stickynote.display.grid')}&nbsp;<span class="float-right icon icon-grid-group icon-highlight"></span></div>
                         </div>
                     </div>
-                    <a class="btn btn-icon btn-sm ml-1 mr-1"
+                    <a class="btn btn-icon btn-sm mr-1"
                        ng-if="backlogContainers.length == 1"
                        ng-href="{{ openBacklogUrl(backlogContainers[0].backlog) }}">
                         <span class="icon icon-details"></span>
