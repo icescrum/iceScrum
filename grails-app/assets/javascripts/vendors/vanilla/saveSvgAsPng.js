@@ -212,13 +212,10 @@
                 context.fillStyle = 'rgba(255,255,255,1)';
                 context.fillRect(0, 0, image.width, image.height + offsetForTitle);
                 context.drawImage(image, 0, offsetForTitle);
-                var getCss = function(element, property) {
-                    return window.getComputedStyle(element).getPropertyValue(property);
-                };
-                context.font = [getCss(title, 'font-style'), getCss(title, 'font-size'), getCss(title, 'font-family')].join(' ');
-                context.fillStyle = getCss(title, 'color');
+                context.font = 'normal 16px averta-bold, Helvetica, Arial, sans-serif';
+                context.fillStyle = '#111111';
                 context.textAlign = 'center';
-                context.fillText(title.textContent, canvas.width / 2, offsetForTitle);
+                context.fillText(title, canvas.width / 2, offsetForTitle);
                 var imageBase64 = canvas.toDataURL('image/png');
                 callback(imageBase64);
             };
