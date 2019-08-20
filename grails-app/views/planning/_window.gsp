@@ -30,7 +30,7 @@
                 </a>
                 <span class="state-title">
                     <span class="state-dot" ng-class="'state-dot-' + release.state"></span>
-                    <span>{{ (release.state | i18n: 'ReleaseStates') }}</span>
+                    <span class="d-none d-sm-block">{{ (release.state | i18n: 'ReleaseStates') }}</span>
                 </span>
             </div>
             <div class="w-100 order-2 d-block d-sm-none col-auto"></div>

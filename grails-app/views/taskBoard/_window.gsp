@@ -24,8 +24,8 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view sprint-state-{{ sprint.state }}"
          ng-if="sprint">
-        <div class="card-header kanban-header">
-            <div class="card-header-left">
+        <div class="card-header row kanban-header">
+            <div class="card-header-left col-auto flex-grow-1">
                 <span uib-dropdown on-toggle="scrollToActiveSprint(open)">
                     <span uib-dropdown-toggle class="card-title">{{ (sprint | sprintName) }}</span>
                     <div uib-dropdown-menu role="menu">
@@ -48,7 +48,7 @@
                 </span>
                 <span class="state-title">
                     <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
-                    <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                    <span class="d-none d-sm-block">{{ (sprint.state | i18n: 'SprintStates') }}</span>
                 </span>
                 <span class="timebox-dates">
                     <span class="start-date" title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span><span class="end-date" title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
@@ -63,59 +63,57 @@
                     <span>${message(code: 'is.task.estimation')} <strong>{{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }}</strong></span>
                 </span>
             </div>
-            <div>
-                <div class="btn-toolbar">
-                    <entry:point id="taskBoard-window-toolbar-right"/>
-                    <div class="btn-group" uib-dropdown>
+            <div class="btn-toolbar col-auto justify-content-between">
+                <entry:point id="taskBoard-window-toolbar-right"/>
+                <div class="btn-group" uib-dropdown>
+                    <button class="btn btn-secondary btn-sm"
+                            uib-dropdown-toggle
+                            type="button">
+                        {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
+                    </button>
+                    <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
+                        <div role="menuitem"
+                             ng-repeat="sprintFilter in sprintFilters"
+                             ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">
+                            <a ng-if="sprintFilter.id != 'divider'"
+                               class="dropdown-item"
+                               ng-click="changeSprintFilter(sprintFilter)"
+                               href>
+                                {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
+                <g:if test="${formats}">
+                    <div class="btn-group" uib-dropdown ng-if="authenticated()">
                         <button class="btn btn-secondary btn-sm"
-                                uib-dropdown-toggle
-                                type="button">
-                            {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
+                                uib-dropdown-toggle type="button">
+                            <i class="fa fa-download"></i>
                         </button>
-                        <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
-                            <div role="menuitem"
-                                 ng-repeat="sprintFilter in sprintFilters"
-                                 ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">
-                                <a ng-if="sprintFilter.id != 'divider'"
+                        <div uib-dropdown-menu
+                             class="dropdown-menu-right"
+                             role="menu">
+                            <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
+                            <g:each in="${formats}" var="format">
+                                <a role="menuitem"
                                    class="dropdown-item"
-                                   ng-click="changeSprintFilter(sprintFilter)"
-                                   href>
-                                    {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}
-                                </a>
-                            </div>
+                                   href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                   ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                            </g:each>
                         </div>
                     </div>
-                    <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
-                    <g:if test="${formats}">
-                        <div class="btn-group" uib-dropdown ng-if="authenticated()">
-                            <button class="btn btn-secondary btn-sm"
-                                    uib-dropdown-toggle type="button">
-                                <i class="fa fa-download"></i>
-                            </button>
-                            <div uib-dropdown-menu
-                                 class="dropdown-menu-right"
-                                 role="menu">
-                                <div class="dropdown-header">${message(code: 'todo.is.ui.export')}</div>
-                                <g:each in="${formats}" var="format">
-                                    <a role="menuitem"
-                                       class="dropdown-item"
-                                       href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                                </g:each>
-                            </div>
-                        </div>
-                    </g:if>
-                    <div>
-                        <a class="btn btn-icon btn-sm ml-1 mr-1"
-                           href="{{ openSprintUrl(sprint) }}">
-                            <span class="icon icon-details"></span>
-                        </a>
-                    </div>
-                    <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
-                        <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
-                        <div uib-dropdown-toggle></div>
-                        <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
-                    </div>
+                </g:if>
+                <a class="btn btn-icon btn-sm ml-1 mr-1"
+                   href="{{ openSprintUrl(sprint) }}">
+                    <span class="icon icon-details"></span>
+                </a>
+            </div>
+            <div class="col-auto">
+                <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
+                    <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
+                    <div uib-dropdown-toggle></div>
+                    <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                 </div>
             </div>
         </div>
