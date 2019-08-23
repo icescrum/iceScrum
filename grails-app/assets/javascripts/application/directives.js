@@ -371,7 +371,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}).directive('timeline', ['ReleaseService', 'SprintStatesByName', '$timeout', function(ReleaseService, SprintStatesByName, $timeout) {
+}).directive('timeline', ['$timeout', 'ReleaseService', 'SprintStatesByName', 'DateService', function($timeout, ReleaseService, SprintStatesByName, DateService) {
     return {
         restrict: 'A',
         scope: {
@@ -388,7 +388,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 releaseHeight = height - releaseYMargin * 2,
                 selectedSprintOffset = -15,
                 sprintRadius = 2,
-                todaySpread = 7;
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
                 y = d3.scale.linear().domain([elementHeight - releaseYMargin, 0 - releaseYMargin]).range([elementHeight, 0]),
@@ -432,7 +431,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var brush = d3.svg.brush().x(x).y(y).on('brush', onBrush).on('brushend', onBrushEnd);
             var brushSelector = svg.append('g').attr('class', 'brush').call(brush);
             var versions = svg.append('g').attr('class', 'versions');
-            svg.append('line').attr('class', 'today-line').attr('y1', 0 - todaySpread).attr('y2', releaseHeight + todaySpread);
+            svg.append('line').attr('class', 'today-line').attr('y1', releaseYMargin - 7).attr('y2', releaseYMargin + releaseHeight + 7);
             var getEffectiveEndDate = function(sprint) { return sprint.state == SprintStatesByName.DONE ? sprint.doneDate : sprint.endDate; };
 
             // Main rendering
@@ -453,7 +452,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var sprintTextsSelector = sprintTexts.selectAll('text').data(_sprints);
                 var versionSelector = versions.selectAll('.version').data(_.filter(_sprints, 'deliveredVersion'));
                 var versionTextSelector = versionSelector.select('text');
-                var todaySelector = svg.select('.today-line').data([new Date()]);
+                var todaySelector = svg.select('.today-line').data([DateService.getMidnightTodayUTC()]);
                 // Remove
                 releaseSelector.exit().remove();
                 sprintSelector.exit().remove();
@@ -523,7 +522,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .text(function(sprint) { return sprint.deliveredVersion; })
                     .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
                 todaySelector
-                    .attr('transform', function(date) { return 'translate(' + x(date) + ',' + releaseYMargin + ')'; });
+                    .attr('x1', function(date) { return x(date) })
+                    .attr('x2', function(date) { return x(date) });
             }
 
             // Brush management
