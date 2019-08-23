@@ -167,7 +167,7 @@
                     </span>
                     <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
                        class="btn btn-icon">
-                        <span class="icon-close action"></span>
+                        <span class="icon icon-close"></span>
                     </a>
                 </div>
                 <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
