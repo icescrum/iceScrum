@@ -176,7 +176,16 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
     background-size: 1.25rem;
   }
 
-  &.btn-sm {
+  &.btn-sm:not(.btn-secondary) {
+    width: 0.875rem;
+    height: 0.875rem;
+
+    .icon {
+      background-size: 0.875rem;
+    }
+  }
+
+  &.btn-secondary {
     width: 1.875rem;
     height: 1.875rem;
 
