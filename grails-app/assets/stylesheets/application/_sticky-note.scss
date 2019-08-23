@@ -163,10 +163,13 @@ $acceptance-test-states: tocheck, success, failed;
     background: $is-bg-color;
   }
 
+  .sticky-note-container {
+    filter: none !important; // Override js style
+  }
+
   &:not(.list-group-small) .sticky-note-container {
     padding: 0 $is-spacer-x;
     border-bottom: solid 1px $is-border-color;
-    filter: none !important; // Override js style
 
     &.is-selected, &:hover {
       z-index: 2;
