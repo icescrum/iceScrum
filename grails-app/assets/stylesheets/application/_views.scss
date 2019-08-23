@@ -271,8 +271,9 @@
     fill: $is-text-color;
   }
 
-  .today {
-    fill: #1180e7;
+  .today-line {
+    stroke: $is-yellow;
+    stroke-width: 3px;
   }
 
   .sprint-text {

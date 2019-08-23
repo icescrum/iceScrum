@@ -388,6 +388,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 releaseHeight = height - releaseYMargin * 2,
                 selectedSprintOffset = -15,
                 sprintRadius = 2,
+                todaySpread = 7;
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
                 y = d3.scale.linear().domain([elementHeight - releaseYMargin, 0 - releaseYMargin]).range([elementHeight, 0]),
@@ -431,7 +432,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var brush = d3.svg.brush().x(x).y(y).on('brush', onBrush).on('brushend', onBrushEnd);
             var brushSelector = svg.append('g').attr('class', 'brush').call(brush);
             var versions = svg.append('g').attr('class', 'versions');
-            var today = svg.append("path").attr("d", d3.svg.symbol().size(21).type("triangle-up")).attr('class', 'today');
+            svg.append('line').attr('class', 'today-line').attr('y1', 0 - todaySpread).attr('y2', releaseHeight + todaySpread);
             var getEffectiveEndDate = function(sprint) { return sprint.state == SprintStatesByName.DONE ? sprint.doneDate : sprint.endDate; };
 
             // Main rendering
@@ -452,7 +453,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var sprintTextsSelector = sprintTexts.selectAll('text').data(_sprints);
                 var versionSelector = versions.selectAll('.version').data(_.filter(_sprints, 'deliveredVersion'));
                 var versionTextSelector = versionSelector.select('text');
-                var todaySelector = svg.select('.today').data([new Date()]);
+                var todaySelector = svg.select('.today-line').data([new Date()]);
                 // Remove
                 releaseSelector.exit().remove();
                 sprintSelector.exit().remove();
@@ -522,7 +523,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .text(function(sprint) { return sprint.deliveredVersion; })
                     .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
                 todaySelector
-                    .attr('transform', function(date) { return 'translate(' + x(date) + ',' + (height - 9) + ')'; }); // Offset to align border rather than center
+                    .attr('transform', function(date) { return 'translate(' + x(date) + ',' + releaseYMargin + ')'; });
             }
 
             // Brush management
