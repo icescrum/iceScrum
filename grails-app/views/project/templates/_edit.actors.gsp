@@ -86,10 +86,10 @@
                 </td>
                 <td class="btn-toolbar"
                     ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
-                    <a class="btn btn-primary btn-sm float-right"
+                    <a class="btn btn-icon btn-primary btn-sm float-right"
                        ng-if="authorizedActor('update')"
                        ng-click="edit(actor)">
-                        <i class="fa fa-pencil"></i>
+                        <i class="icon icon-edit"></i>
                     </a>
                     <a class="btn btn-danger btn-sm float-right"
                        href

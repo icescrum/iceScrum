@@ -60,10 +60,10 @@
                         ${message(code: 'todo.is.ui.timeBoxNotesTemplate.section')} {{($index+1) + (config.header ? " - "+config.header : "")}}
                     </div>
                     <button type="button"
-                            class="btn btn-secondary btn-sm float-right"
+                            class="btn btn-icon btn-secondary btn-sm float-right"
                             name="expand"
                             ng-click="expandSection($index)">
-                        <i class="fa fa-pencil"></i>
+                        <i class="icon icon-edit"></i>
                     </button>
                 </div>
                 <div class="card-body" uib-collapse="collapseSectionStatus[$index]">

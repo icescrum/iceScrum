@@ -215,11 +215,11 @@
                            min="0"
                            ng-model="editableStory.effort"/>
                     <span class="input-group-append">
-                        <button class="btn btn-secondary btn-sm"
+                        <button class="btn btn-icon btn-secondary btn-sm"
                                 ng-if="authorizedStory('updateEstimate', editableStory)"
                                 type="button"
                                 name="edit-effort"
-                                ng-click="showEditEffortModal(story)"><i class="fa fa-pencil"></i></button>
+                                ng-click="showEditEffortModal(story)"><i class="icon icon-edit"></i></button>
                     </span>
                 </div>
             </div>
@@ -257,10 +257,10 @@
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-append" ng-if="authorizedStory('update', editableStory)">
-                        <button class="btn btn-secondary btn-sm"
+                        <button class="btn btn-icon btn-secondary btn-sm"
                                 type="button"
                                 name="edit-value"
-                                ng-click="showEditValueModal(story)"><i class="fa fa-pencil"></i></button>
+                                ng-click="showEditValueModal(story)"><i class="icon icon-edit"></i></button>
                     </span>
                 </div>
             </div>
