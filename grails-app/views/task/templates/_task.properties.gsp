@@ -56,7 +56,7 @@
                                 value="#bf3d3d"
                                 name="color"
                                 colors="mostUsedColors"
-                                ng-model="editableTask.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
+                                ng-model="editableTask.color">${message(code: 'todo.is.ui.color')}</button>
                     </span>
                 </div>
             </div>

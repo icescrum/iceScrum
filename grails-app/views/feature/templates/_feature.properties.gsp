@@ -55,7 +55,7 @@
                             value="#bf3d3d"
                             name="color"
                             colors="availableColors"
-                            ng-model="editableFeature.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
+                            ng-model="editableFeature.color">${message(code: 'todo.is.ui.color')}</button>
                 </span>
             </div>
         </div>
