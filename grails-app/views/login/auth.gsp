@@ -36,7 +36,7 @@
                     <div class="text-center">
                         <a href="https://www.icescrum.com" target="_blank">
                             <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
-                            <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-responsive">
+                            <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-fluid">
                         </a>
                     </div>
                     <h1 class="text-center">Great to see you again!</h1>

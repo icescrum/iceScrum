@@ -966,11 +966,22 @@ form.form-editable:not(:hover):not(.form-editing) {
   }
 }
 
-.markitup-preview:not(.no-fixed-height) {
+.markitup-preview {
   min-height: 150px;
   max-height: 250px;
   height: auto;
   overflow: auto;
+
+  &.no-fixed-height {
+    min-height: inherit;
+    max-height: inherit;
+  }
+}
+
+.markitup-preview, .rich-content {
+  img {
+    @include img-fluid;
+  }
 }
 
 .search-input {
