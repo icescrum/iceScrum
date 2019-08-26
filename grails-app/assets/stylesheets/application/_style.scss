@@ -955,9 +955,15 @@ textarea:not(.fixedRow):not(.handsontableInput), .atwho-preview {
   overflow: auto;
 }
 
-form.form-editable:not(:hover):not(.form-editing) .form-control {
-  border-color: transparent;
-  background-color: $input-disabled-bg;
+form.form-editable:not(:hover):not(.form-editing) {
+  .form-control {
+    border-color: transparent;
+    background-color: $input-disabled-bg;
+  }
+
+  .input-group .btn {
+    visibility: hidden
+  }
 }
 
 .markitup-preview:not(.no-fixed-height) {
