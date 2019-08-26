@@ -72,7 +72,7 @@
                     <div uib-dropdown>
                         <button class="btn btn-link"
                                 uib-dropdown-toggle
-                                type="button"><strong>${message(code: 'todo.is.ui.order.sort')}</strong>&nbsp;{{ backlogContainers[0].orderBy.current.name }}<span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
+                                type="button">${message(code: 'todo.is.ui.order.sort')}&nbsp;<strong>{{ backlogContainers[0].orderBy.current.name }}</strong><span class="sort" ng-class="{'reverse':backlogContainers[0].orderBy.reverse}"></span>
                         </button>
                         <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
                             <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>

@@ -34,7 +34,7 @@
                         <button class="btn btn-link"
                                 uib-dropdown-toggle
                                 ng-disabled="!features.length"
-                                type="button"><strong>${message(code: 'todo.is.ui.order.sort')}&nbsp;</strong>{{ orderBy.current.name }}<span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
+                                type="button">${message(code: 'todo.is.ui.order.sort')}&nbsp;<strong>{{ orderBy.current.name }}</strong><span class="sort" ng-class="{'reverse':orderBy.reverse}"></span>
                         </button>
                         <div uib-dropdown-menu role="menu">
                             <div class="dropdown-header">${message(code: 'todo.is.ui.order')}</div>
