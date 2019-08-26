@@ -357,6 +357,11 @@ form label {
     border-bottom: 2px solid;
   }
 
+  &.caret-reverse::after {
+    transform: rotate(225deg);
+    margin-top: 0.825rem;
+  }
+
   &:empty::after {
     margin-left: 0;
   }
