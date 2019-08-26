@@ -261,13 +261,13 @@
     </script>
 
     <script type="text/ng-template" id="project.digest.html">
-    <h4 class="col-md-12 clearfix">
+    <h4 class="col-12 clearfix">
         <div class="float-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
         <div class="float-right">
             <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
         </div>
     </h4>
-    <div class="col-lg-9 col-xs-9">
+    <div class="col-9">
         <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 195 : null)"></div>
         <div ng-if="project.currentOrNextRelease.currentOrNextSprint.goal" style="margin-top:8px;">
             <p><strong>{{:: message('todo.is.ui.sprint.goal.label', [project.currentOrNextRelease.currentOrNextSprint.index]) }}</strong>
@@ -275,13 +275,13 @@
             </p>
         </div>
     </div>
-    <div class="col-lg-3 col-xs-3">
+    <div class="col-3">
         <div class="backlogCharts chart float-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
         <div class="team-name text-ellipsis" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
     </div>
-    <div class="col-lg-9 col-xs-9" style="margin-top:2px">
+    <div class="col-9" style="margin-top:2px">
         <div class="row">
             <ul class="list-inline text-muted col-md-12">
                 <li class="release" ng-if=":: project.currentOrNextRelease">
@@ -312,7 +312,7 @@
             </ul>
         </div>
     </div>
-    <div class="col-lg-3 col-xs-3 users" style="margin-top:2px">
+    <div class="col-3 users" style="margin-top:2px">
         <img ng-src="{{:: user | userAvatar }}"
              ng-repeat="user in ::project.allUsers | limitTo:2"
              height="20" width="20" style="margin-left:5px;"
