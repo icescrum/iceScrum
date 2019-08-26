@@ -45,7 +45,7 @@
 					onShiftEnter:			{},
 					onCtrlEnter:			{},
 					onTab:					{},
-					markupSet:			[	{ /* set */ } ]
+					markupSets:			[[	{ /* set */ } ]]
 				};
 		$.extend(options, settings, extraSettings);
 
@@ -97,8 +97,11 @@
 				$$.addClass("markItUpEditor");
 
 				// add the header before the textarea
-				header = $('<div class="btn-toolbar" role="toolbar"></div>').insertBefore($$);
-				$(dropMenus(options.markupSet)).appendTo(header);
+				header = $('<div class="btn-toolbar mb-1 justify-content-between" role="toolbar"></div>').insertBefore($$);
+				$.each(options.markupSets, function() {
+					var markupSet = this;
+					$(dropMenus(markupSet)).appendTo(header);
+				});
 
 				// add the footer after the textarea
 				footer = $('<div class="markItUpFooter"></div>').insertAfter($$);
@@ -145,10 +148,10 @@
 			function dropMenus(markupSet) {
 				var btnGroup = $('<div class="btn-group"></div>');
 
-                var createButton = function(button, sub){
+                var createLink = function(button, sub){
                     var title = (button.key) ? (button.name||'')+' [Ctrl+'+button.key+']' : (button.name||'');
                     var key   = (button.key) ? 'accesskey="'+button.key+'"' : '';
-                    var btn = $('<a data-toggle="tooltip" data-container="body" data-placement="bottom" class="'+( sub ? '' : 'btn btn-secondary btn-sm' )+' '+(button.className||'')+'" '+key+' title="'+title+'" '+(sub ? 'role="menuitem" tabindex="-1"' : 'type="button"')+'>'+(button.icon ? '<i class="'+button.icon+'"></i>' : button.name)+'</a>')
+                    var btn = $('<a data-toggle="tooltip" data-container="body" data-placement="bottom" href class="'+( sub ? 'dropdown-item' : 'btn btn-secondary btn-sm' )+' '+(button.className||'')+'" '+key+' title="'+title+'" '+(sub ? 'role="menuitem" tabindex="-1"' : '')+'>'+(button.icon ? '<i class="'+button.icon+'"></i>' : button.name)+'</a>')
                     .bind("contextmenu", function() { // prevent contextmenu on mac and allow ctrl+click
                         return false;
                     }).click(function() {
@@ -174,12 +177,10 @@
                                 $$.focus();
                             });
                         btn.appendTo(btnGroup);
-                        var sub = $('<ul role="menu" class="dropdown-menu"></ul>').appendTo(btn);
+                        var sub = $('<div role="menu" class="dropdown-menu"></div>').appendTo(btn);
                         $.each(button.dropMenu, function(){
                             var button = this;
-                            var li = $('<li role="presentation"></li>');
-                            createButton(button, true).appendTo(li);
-                            li.appendTo(sub);
+                            createLink(button, true).appendTo(sub);
                         });
                         btn.find('.dropdown-toggle').dropdown().mousedown(function(){
                             $$.focus();
@@ -187,9 +188,9 @@
                         });
                     }
                     else {
-                        createButton(button).appendTo(btnGroup);
+                        createLink(button).appendTo(btnGroup);
 					}
-				}); 
+				});
 				return btnGroup;
 			}
 
