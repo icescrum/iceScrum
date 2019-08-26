@@ -26,7 +26,7 @@
 <p class="form-text">${message(code: 'is.dialog.wizard.section.project.description')}</p>
 <entry:point id="project-form-general-before"/>
 <div class="row">
-    <div class="col-sm-6 col-xs-6 form-group">
+    <div class="form-half">
         <label for="name">${message(code: 'is.project.name')}</label>
         <input autofocus
                name="name"
@@ -38,20 +38,7 @@
                ng-change="nameChanged()"
                ng-required="isCurrentStep(1, 'project')">
     </div>
-    <div class="col-sm-3 col-xs-3 form-group">
-        <label for="hidden">${message(code: 'is.ui.project.visibility')}</label>
-        <div>
-            <button class="btn btn-model btn-sm"
-                    type="button"
-                    ng-disabled="!enableVisibilityChange()"
-                    ng-model="project.preferences.hidden"
-                    ng-click="project.preferences.hidden = !project.preferences.hidden;"
-                    ng-class="project.preferences.hidden ? 'btn-success' : 'btn-danger'">
-                {{ message(project.preferences.hidden  ? 'is.ui.workspace.hidden' : 'is.ui.workspace.public') }}
-            </button>
-        </div>
-    </div>
-    <div class="col-sm-3 col-xs-3 form-group">
+    <div class="form-1-quarter">
         <label for="pkey">${message(code: 'is.project.pkey')}</label>
         <input name="pkey"
                type="text"
@@ -67,9 +54,22 @@
                ng-remote-validate-code="project.pkey.unique"
                ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">
     </div>
+    <div class="form-1-quarter">
+        <label for="hidden">${message(code: 'is.ui.project.visibility')}</label>
+        <div>
+            <button class="btn btn-model btn-sm"
+                    type="button"
+                    ng-disabled="!enableVisibilityChange()"
+                    ng-model="project.preferences.hidden"
+                    ng-click="project.preferences.hidden = !project.preferences.hidden;"
+                    ng-class="project.preferences.hidden ? 'btn-success' : 'btn-danger'">
+                {{ message(project.preferences.hidden  ? 'is.ui.workspace.hidden' : 'is.ui.workspace.public') }}
+            </button>
+        </div>
+    </div>
 </div>
 <div class="row">
-    <div class="col-sm-12 form-group">
+    <div class="col form-group">
         <label for="description">${message(code: 'is.project.description')}</label>
         <textarea at
                   is-markitup

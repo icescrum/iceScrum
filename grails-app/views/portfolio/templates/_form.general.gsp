@@ -26,7 +26,7 @@
 <p class="form-text">${message(code: 'is.ui.portfolio.help.general')}</p>
 <entry:point id="portfolio-form-general-before"/>
 <div class="row">
-    <div class="col-sm-8 col-xs-8 form-group">
+    <div class="form-2-tiers">
         <label for="name">${message(code: 'is.portfolio.name')}</label>
         <div class="input-group">
             <input autofocus
@@ -48,7 +48,7 @@
             </span>
         </div>
     </div>
-    <div class="col-sm-4 col-xs-4 form-group">
+    <div class="form-1-tier">
         <label for="fkey">${message(code: 'is.portfolio.fkey')}</label>
         <input name="fkey"
                type="text"
@@ -66,7 +66,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-12 form-group">
+    <div class="col form-group">
         <label for="description">${message(code: 'is.portfolio.description')}</label>
         <textarea at
                   is-markitup
