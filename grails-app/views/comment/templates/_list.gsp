@@ -31,9 +31,10 @@
                       show-validation
                       novalidate>
                     <div class="row is-form-row">
-                        <div class="col-sm-1">
+                        <div class="col-sm-1 d-flex">
                             <div class="avatar {{ comment.poster | userColorRoles }}">
-                                <img height="30px"
+                                <img width="30"
+                                     height="30"
                                      ng-src="{{comment.poster | userAvatar}}"
                                      alt="{{comment.poster | userFullName}}"/>
                             </div>
