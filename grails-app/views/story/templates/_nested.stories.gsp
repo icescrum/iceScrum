@@ -33,8 +33,8 @@
             <div ng-repeat="story in storyEntry.stories">
                 <div class="row">
                     <div class="col-sm-8">
-                        <a ng-href="{{ openStoryUrl(story.id) }}" class="link">
-                            <strong class="text-accent">{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                        <a ng-href="{{ openStoryUrl(story.id) }}">
+                            {{:: story.uid }}&nbsp;&nbsp;<span class="text-accent">{{ story.name }}</span>
                         </a>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="storyCtrl">
