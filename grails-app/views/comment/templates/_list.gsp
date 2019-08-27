@@ -22,88 +22,85 @@
 --}%
 <script type="text/ng-template" id="comment.list.html">
 <div class="comments card-body">
-    <table class="table">
-        <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
-            <td class="content">
-                <form name="formHolder.commentForm"
-                      ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
-                      ng-submit="update(editableComment, selected)"
-                      show-validation
-                      novalidate>
-                    <div class="row is-form-row">
-                        <div class="col-sm-1 d-flex">
-                            <div class="avatar {{ comment.poster | userColorRoles }}">
-                                <img width="30"
-                                     height="30"
-                                     ng-src="{{comment.poster | userAvatar}}"
-                                     alt="{{comment.poster | userFullName}}"/>
-                            </div>
-                        </div>
-                        <div class="form-half">
-                            <span class="poster form-control-plaintext">{{comment.poster | userFullName}}</span>
-                        </div>
-                        <div class="col-sm-5 form-group text-right">
-                            <span class="time-stamp">
-                                <time timeago datetime="{{ comment.dateCreated }}">
-                                    {{ comment.dateCreated | dateTime }}
-                                </time>
-                                <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
-                            </span>
-                            <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
-                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle></button>
-                                <div uib-dropdown-menu
-                                     class="dropdown-menu-right">
-                                    <a href
-                                       class="dropdown-item"
-                                       ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
-                                        ${message(code: 'default.button.delete.label')}
-                                    </a>
-                                </div>
-                            </div>
+    <div ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
+        <form name="formHolder.commentForm"
+              ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
+              ng-submit="update(editableComment, selected)"
+              show-validation
+              novalidate>
+            <div class="row is-form-row">
+                <div class="col-sm-1 d-flex">
+                    <div class="avatar {{ comment.poster | userColorRoles }}">
+                        <img width="30"
+                             height="30"
+                             ng-src="{{comment.poster | userAvatar}}"
+                             alt="{{comment.poster | userFullName}}"/>
+                    </div>
+                </div>
+                <div class="form-half">
+                    <span class="poster form-control-plaintext">{{comment.poster | userFullName}}</span>
+                </div>
+                <div class="col-sm-5 form-group text-right">
+                    <span class="time-stamp">
+                        <time timeago datetime="{{ comment.dateCreated }}">
+                            {{ comment.dateCreated | dateTime }}
+                        </time>
+                        <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
+                    </span>
+                    <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
+                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle></button>
+                        <div uib-dropdown-menu
+                             class="dropdown-menu-right">
+                            <a href
+                               class="dropdown-item"
+                               ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
+                                ${message(code: 'default.button.delete.label')}
+                            </a>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <textarea at
-                                  required
-                                  ng-maxlength="5000"
-                                  ng-blur="delayCall(blurComment)"
-                                  is-markitup
-                                  name="body"
-                                  ng-model="editableComment.body"
-                                  is-model-html="editableComment.body_html"
-                                  ng-show="showCommentBodyTextarea"
-                                  class="form-control"></textarea>
-                        <div class="markitup-preview form-control no-fixed-height"
-                             ng-show="!showCommentBodyTextarea"
-                             ng-click="editCommentBody()"
-                             ng-focus="editCommentBody()"
-                             tabindex="0"
-                             ng-bind-html="editableComment.body_html"></div>
-                    </div>
-                    <div class="btn-toolbar"
-                         ng-if="formHolder.editing">
-                        <button class="btn btn-primary float-right"
-                                ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid || application.submitting"
-                                ng-click="update(editableComment, selected)"
-                                type="submit">
-                            ${message(code: 'default.button.update.label')}
-                        </button>
-                        <button class="btn btn-secondary float-right"
-                                ng-click="resetCommentForm()"
-                                type="button">
-                            ${message(code: 'is.button.cancel')}
-                        </button>
-                    </div>
-                </form>
-                <hr ng-if="!$last"/>
-            </td>
-        </tr>
-        <tr ng-show="selected.comments !== undefined && selected.comments.length == 0">
-            <td class="empty-content">
-                <small>${message(code: 'todo.is.ui.comment.empty')}</small>
-            </td>
-        </tr>
-    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <textarea at
+                          required
+                          ng-maxlength="5000"
+                          ng-blur="delayCall(blurComment)"
+                          is-markitup
+                          name="body"
+                          ng-model="editableComment.body"
+                          is-model-html="editableComment.body_html"
+                          ng-show="showCommentBodyTextarea"
+                          class="form-control"></textarea>
+                <div class="markitup-preview form-control no-fixed-height"
+                     ng-show="!showCommentBodyTextarea"
+                     ng-click="editCommentBody()"
+                     ng-focus="editCommentBody()"
+                     tabindex="0"
+                     ng-bind-html="editableComment.body_html"></div>
+            </div>
+            <div class="btn-toolbar"
+                 ng-if="formHolder.editing">
+                <button class="btn btn-primary float-right"
+                        ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid || application.submitting"
+                        ng-click="update(editableComment, selected)"
+                        type="submit">
+                    ${message(code: 'default.button.update.label')}
+                </button>
+                <button class="btn btn-secondary float-right"
+                        ng-click="resetCommentForm()"
+                        type="button">
+                    ${message(code: 'is.button.cancel')}
+                </button>
+            </div>
+        </form>
+        <hr ng-if="!$last"/>
+    </div>
+    <div ng-show="selected.comments_count === 0"
+         class="empty-content">
+        <div class="form-text">
+            ${message(code: 'todo.is.ui.comment.empty')}
+        </div>
+    </div>
 </div>
 <div class="card-footer" ng-controller="commentCtrl">
     <div ng-include="'comment.editor.html'"></div>
