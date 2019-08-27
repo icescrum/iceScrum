@@ -45,13 +45,13 @@ strong {
 ////////////////////
 
 .btn {
-  font-size: 0.9375rem;
+  font-size: $is-font-size-sm;
   font-family: $is-font-family-bold;
+  line-height: 1.29;
   border: none;
 }
 
 .btn-sm {
-  font-size: $is-font-size-sm;
   font-family: $font-family-base;
   line-height: 1.6;
 }
