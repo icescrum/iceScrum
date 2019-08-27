@@ -31,11 +31,10 @@
                      alt="{{ groupedActivity.poster | userFullName}}"/>
             </div>
             <div class="media-body">
-                <div class="text-muted float-right">
+                <div class="time-stamp float-right">
                     <time timeago datetime="{{ groupedActivity.dateCreated }}">
                         {{ groupedActivity.dateCreated | dateTime }}
                     </time>
-                    <i class="fa fa-clock-o"></i>
                 </div>
                 <div>{{groupedActivity.poster | userFullName}}</div>
                 <ul>

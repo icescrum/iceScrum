@@ -164,11 +164,10 @@
                  class="{{ activity.poster | userColorRoles }}"
                  alt="{{activity.poster | userFullName}}"/>
             <div class="media-body">
-                <div class="text-muted float-right">
+                <div class="time-stamp float-right">
                     <time timeago datetime="{{ activity.dateCreated }}">
                         {{ activity.dateCreated | dateTime }}
                     </time>
-                    <i class="fa fa-clock-o"></i>
                 </div>
                 <div>
                     {{activity.poster | userFullName}}
@@ -263,8 +262,8 @@
     <script type="text/ng-template" id="project.digest.html">
     <h4 class="col-12 clearfix">
         <div class="float-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
-        <div class="float-right">
-            <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
+        <div class="time-stamp float-right">
+            <time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time>
         </div>
     </h4>
     <div class="col-9">
@@ -302,12 +301,12 @@
                              aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
                              style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
                     </div></a>
-                    <small ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 2"><i class="fa fa-clock-o"></i> <time timeago
-                                                                                                                                   datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.endDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.endDate | dateTime }}</time>
-                    </small>
-                    <small ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 1"><i class="fa fa-clock-o"></i> <time timeago
-                                                                                                                                   datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.startDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.startDate | dateTime }}</time>
-                    </small>
+                    <span class="time-stamp" ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 2">
+                        <time timeago datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.endDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.endDate | dateTime }}</time>
+                    </span>
+                    <span class="time-stamp" ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 1">
+                        <time timeago datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.startDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.startDate | dateTime }}</time>
+                    </span>
                 </li>
             </ul>
         </div>

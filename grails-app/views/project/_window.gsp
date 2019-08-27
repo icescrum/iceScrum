@@ -251,7 +251,7 @@
                                      alt="{{:: activity.poster | userFullName}}"/>
                             </div>
                             <div class="media-body">
-                                <div class="text-muted float-right">
+                                <div class="time-stamp float-right">
                                     <time timeago datetime="{{ activity.dateCreated }}">
                                         {{ activity.dateCreated | dateTime }}
                                     </time>

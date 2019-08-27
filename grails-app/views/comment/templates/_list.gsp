@@ -43,10 +43,11 @@
                             <span class="poster form-control-plaintext">{{comment.poster | userFullName}}</span>
                         </div>
                         <div class="col-sm-5 form-group text-right">
-                            <span class="dateCreated text-muted">
+                            <span class="time-stamp">
                                 <time timeago datetime="{{ comment.dateCreated }}">
                                     {{ comment.dateCreated | dateTime }}
-                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
+                                </time>
+                                <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
                             <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle></button>
