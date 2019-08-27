@@ -36,7 +36,7 @@
                 <div class="row is-form-row form-group align-items-center">
                     <div class="col-sm-1">
                         <i class="fa fa-drag-handle" ng-if="authorizedAcceptanceTest('rank', selected)" as-sortable-item-handle></i>
-                        <strong class="text-accent">{{:: editableAcceptanceTest.uid }}</strong>
+                        {{:: editableAcceptanceTest.uid }}
                     </div>
                     <div class="col-sm-6">
                         <input required
@@ -65,10 +65,10 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="col-sm-1 text-right">
-                        <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
+                    <div class="col-sm-1">
+                        <div class="btn-group" ng-show="formDeletable() || formEditable()" uib-dropdown>
                             <button type="button"
-                                    class="btn btn-secondary"
+                                    class="btn btn-link btn-sm"
                                     uib-dropdown-toggle>
                             </button>
                             <div uib-dropdown-menu class="dropdown-menu-right">
@@ -78,7 +78,7 @@
                                     ${message(code: 'is.ui.copy')}
                                 </a>
                                 <a href
-                                   class="dropdown-item"
+                                   class="dropdown-item text-danger"
                                    ng-click="confirmDelete({ callback: delete, args: [acceptanceTest, selected] })">
                                     ${message(code: 'default.button.delete.label')}
                                 </a>

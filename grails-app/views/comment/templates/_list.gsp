@@ -28,8 +28,8 @@
               ng-submit="update(editableComment, selected)"
               show-validation
               novalidate>
-            <div class="row is-form-row">
-                <div class="col-sm-1 d-flex">
+            <div class="row align-items-center mb-2">
+                <div class="col-1 d-flex">
                     <div class="avatar {{ comment.poster | userColorRoles }}">
                         <img width="30"
                              height="30"
@@ -37,22 +37,24 @@
                              alt="{{comment.poster | userFullName}}"/>
                     </div>
                 </div>
-                <div class="form-half">
-                    <span class="poster form-control-plaintext">{{comment.poster | userFullName}}</span>
+                <div class="col-6">
+                    <span class="form-control-plaintext">{{comment.poster | userFullName}}</span>
                 </div>
-                <div class="col-sm-5 form-group text-right">
+                <div class="col-4 text-right">
                     <span class="time-stamp">
                         <time timeago datetime="{{ comment.dateCreated }}">
                             {{ comment.dateCreated | dateTime }}
                         </time>
                         <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
                     </span>
-                    <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
-                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle></button>
+                </div>
+                <div class="col-1">
+                    <div class="btn-group" ng-show="formDeletable() || formEditable()" uib-dropdown>
+                        <button type="button" class="btn btn-link btn-sm" uib-dropdown-toggle></button>
                         <div uib-dropdown-menu
                              class="dropdown-menu-right">
                             <a href
-                               class="dropdown-item"
+                               class="dropdown-item text-danger"
                                ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
                                 ${message(code: 'default.button.delete.label')}
                             </a>
