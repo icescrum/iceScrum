@@ -277,6 +277,7 @@ form label {
   padding: 0.9375rem;
   padding-bottom: 1.5rem;
   padding-top: 0;
+  backdrop-filter: none;
 
   &:not(:last-child) {
     margin-bottom: 0;
