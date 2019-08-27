@@ -77,29 +77,12 @@ strong {
   &:not(:disabled):not(.disabled):active {
     background-color: $primary;
   }
-
-  &.btn-sm {
-    color: $primary;
-    font-family: $is-font-family-bold;
-    text-shadow: none;
-    background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
-    box-shadow: 0 1px 0.1875rem 0 $is-shadow-color-2;
-
-    &:hover, &:focus {
-      background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
-    }
-
-    &:hover, &:active, &:focus, &:not(:disabled):not(.disabled):active:focus {
-      color: $primary;
-      box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
-    }
-  }
 }
 
 .btn-secondary {
   color: $is-text-color-alt;
   box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-1;
-  background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
+  background-color: $is-bg-color;
 
   &:hover, &:active, &:focus, &:not(:disabled):not(.disabled):active:focus {
     background-color: $is-bg-color;
