@@ -172,7 +172,7 @@
 				$.each(markupSet, function() {
 					var button = this, btn;
                     if (button.dropMenu) {
-                        btn = $('<div class="btn-group btn-group-sm"><button data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+'</button></div>')
+                        btn = $('<div class="btn-group"><button data-toggle="dropdown" class="btn btn-secondary btn-sm dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+'</button></div>')
                             .focusin(function(){
                                 $$.focus();
                             });

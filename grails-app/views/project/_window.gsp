@@ -165,8 +165,8 @@
                     </span>
                     <div class="btn-toolbar float-right">
                         <div uib-dropdown
-                             class="btn-group btn-group-sm">
-                            <button class="btn btn-link"
+                             class="btn-group">
+                            <button class="btn btn-link btn-sm"
                                     type="button"
                                     aria-label="${message(code: 'todo.is.ui.charts')}"
                                     uib-dropdown-toggle>
