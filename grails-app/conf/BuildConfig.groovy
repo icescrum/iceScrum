@@ -46,7 +46,7 @@ def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
 
 grails.project.fork = [
         test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon: true],
-        run : [maxMemory: 1024, minMemory: 512, debug: false, maxPerm: 256, forkReserve: false, jvmArgs: jvmArgs],
+        run : [maxMemory: 2048, minMemory: 512, debug: false, maxPerm: 256, forkReserve: false, jvmArgs: jvmArgs],
         war : [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve: false]
 ]
 
