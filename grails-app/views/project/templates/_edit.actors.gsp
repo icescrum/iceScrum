@@ -29,7 +29,7 @@
       name="formHolder.actorForm">
     <h4>${message(code: "is.ui.actor.actors")}</h4>
     <p class="form-text">${message(code: 'is.ui.actor.help')}</p>
-    <div ng-if="authorizedActor('create') || authorizedActor('update')">
+    <div class="form-group" ng-if="authorizedActor('create') || authorizedActor('update')">
         <label for="actor.name">${message(code: 'is.actor.name')}</label>
         <div class="input-group">
             <input autofocus
@@ -41,7 +41,7 @@
                    placeholder="{{ actor.id ? '' : message('is.ui.actor.noname') }}"
                    ng-model="actor.name"/>
             <span class="input-group-append">
-                <button class="btn btn-secondary btn-sm"
+                <button class="btn btn-primary btn-sm"
                         ng-if="!actor.id"
                         ng-disabled="formHolder.actorForm.$invalid || application.submitting"
                         type="submit"
@@ -65,7 +65,7 @@
             </span>
         </div>
     </div>
-    <table ng-if="actors.length" class="table table-striped table-responsive">
+    <table ng-if="actors.length" class="table table-striped table-sm">
         <thead>
             <tr>
                 <th></th>
@@ -84,9 +84,8 @@
                 <td ng-if="!actor.stories_count">
                     {{ actor.stories_count }}
                 </td>
-                <td class="btn-toolbar"
-                    ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
-                    <a class="btn btn-icon btn-primary btn-sm float-right"
+                <td ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
+                    <a class="btn btn-icon btn-sm float-right"
                        ng-if="authorizedActor('update')"
                        ng-click="edit(actor)">
                         <i class="icon icon-edit"></i>
