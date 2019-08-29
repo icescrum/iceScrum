@@ -830,3 +830,16 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     background: $is-red;
   }
 }
+
+.user-entry {
+  display: flex;
+  align-items: center;
+  font-size: $is-font-size-sm;
+
+  img {
+    width: 24px;
+    height: 24px;
+    @extend .rounded-circle;
+    margin-right: 6px;
+  }
+}

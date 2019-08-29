@@ -30,7 +30,7 @@
       name="formHolder.editProjectForm">
     <entry:point id="project-edit-administration"/>
     <h4>${message(code: "is.project.preferences.project.stakeHolderAccess")}</h4>
-    <table class="table table-striped table-responsive" ng-class="{'disabled': !stakeHolderViewsFormEnabled}">
+    <table class="table table-striped table-sm" ng-class="{'disabled': !stakeHolderViewsFormEnabled}">
         <tr>
             <th ng-class="{'text-muted': !stakeHolderViewsFormEnabled}">${message(code: 'is.project.preferences.project.stakeHolderRestrictedViews')}</th>
             <th></th>
