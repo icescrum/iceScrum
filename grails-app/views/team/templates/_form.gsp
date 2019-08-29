@@ -35,7 +35,7 @@
             <documentation doc-url="roles-teams-projects"/>
         </p>
     </div>
-    <div class="col-sm-4" style="margin-top: 11px;" ng-class="{'has-error': noTeamAvailable}">
+    <div class="col-sm-6 form-group" ng-class="{'has-error': noTeamAvailable}">
         <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
         <p class="input-group">
             <input autocomplete="off"
@@ -62,27 +62,23 @@
                     </i>
                 </span>
             </span>
-            <span ng-if="noTeamAvailable" class="validation-error text-danger">${message(code:'todo.is.ui.select.team.taken')}</span>
+            <span ng-if="noTeamAvailable" class="validation-error text-danger">${message(code: 'todo.is.ui.select.team.taken')}</span>
         </p>
-        <div class="form-group" ng-if="type == 'editProject' && team.owner">
-            <label>
-                ${message(code: 'is.role.owner')}
-                <entry:point id="project-team-list-owner"/>
-            </label>
-            <div class="user-entry">
-                <img ng-src="{{ team.owner | userAvatar }}" title="{{ team.owner.username }}">
-                {{ team.owner | userFullName }}
-            </div>
-        </div>
-        <button ng-if="teamManageable(team)"
-                type="button"
-                class="btn btn-primary btn-sm"
-                ng-click="manageTeam(team)">
-            ${message(code: 'todo.is.ui.team.manage')}
-        </button>
     </div>
-    <div class="col-sm-8" ng-show="team.selected">
-        <div ng-show="teamMembersEditable(team)">
+    <div class="col-sm-6 form-group"
+         ng-if="type == 'editProject' && team.owner">
+        <label>
+            ${message(code: 'is.role.owner')}
+            <entry:point id="project-team-list-owner"/>
+        </label>
+        <div class="user-entry">
+            <img ng-src="{{ team.owner | userAvatar }}" title="{{ team.owner.username }}">
+            {{ team.owner | userFullName }}
+        </div>
+    </div>
+    <div ng-if="team.selected"
+         class="col-sm-12">
+        <div ng-if="teamMembersEditable(team)">
             <label for="member.search">${message(code: 'todo.is.ui.select.member')}</label>
             <p class="input-group">
                 <input autocomplete="off"
@@ -117,9 +113,24 @@
                    ng-include="'wizard.members.list.html'">
             </tbody>
         </table>
-        <div ng-if="team.members.length == 0">
+        <div ng-if="team.members.length == 0" class="form-text">
             ${message(code: 'todo.is.ui.team.no.members')}
         </div>
+    </div>
+    <div ng-if="team.selected"
+         class="col-12 btn-toolbar">
+        <button ng-if="teamManageable(team)"
+                type="button"
+                class="btn btn-primary btn-sm"
+                ng-click="manageTeam(team)">
+            ${message(code: 'todo.is.ui.team.manage')}
+        </button>
+        <button ng-if="teamLeavable(team)"
+                type="button"
+                class="btn btn-danger btn-sm"
+                ng-click="confirm({ message: message('is.dialog.members.leave.team.confirm'), callback: leaveTeam, args: [project] })">
+            ${message(code: 'is.dialog.members.leave.team')}
+        </button>
     </div>
 </div>
 </script>

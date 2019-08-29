@@ -189,6 +189,9 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
     $scope.teamRemovable = function(team) {
         return true;
     };
+    $scope.teamLeavable = function(team) {
+        return false;
+    };
     $scope.projectMembersEditable = function() {
         return true;
     };
@@ -323,6 +326,9 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     };
     $scope.teamRemovable = function(team) {
         return Session.owner(team);
+    };
+    $scope.teamLeavable = function(team) {
+        return team.selected && team.members.length > 0;
     };
     $scope.projectMembersEditable = function(project) {
         return ProjectService.authorizedProject('updateProjectMembers', project);

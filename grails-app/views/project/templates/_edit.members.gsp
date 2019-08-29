@@ -30,13 +30,6 @@
       ng-submit='updateProjectTeam(project)'
       name="formHolder.editMembersForm">
     <ng-include ng-controller="teamCtrl" src="'form.team.html'"></ng-include>
-    <div class="btn-toolbar float-right">
-        <button type="button"
-                class="btn btn-danger btn-sm"
-                ng-click="confirm({ message: message('is.dialog.members.leave.team.confirm'), callback: leaveTeam, args: [project] })">
-            <i class="fa fa-times"></i> ${message(code: 'is.dialog.members.leave.team')}
-        </button>
-    </div>
     <br/>
     <ng-include src="'form.members.project.html'"></ng-include>
     <div class="btn-toolbar float-right">

@@ -178,7 +178,7 @@
                                ng-include="'wizard.members.list.html'">
                         </tbody>
                     </table>
-                    <div ng-if="team.members.length == 0">
+                    <div ng-if="team.members.length == 0" class="form-text">
                         ${message(code: 'todo.is.ui.team.no.members')}
                     </div>
                     <div class="btn-toolbar float-right">
