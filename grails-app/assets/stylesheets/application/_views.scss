@@ -831,15 +831,35 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
+.list-users {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -4px;
+
+  .user-entry {
+    margin: 4px;
+  }
+}
+
 .user-entry {
   display: flex;
   align-items: center;
   font-size: $is-font-size-sm;
+  color: $is-text-color-alt;
+  height: 30px;
+  border: 1px solid $is-outline-color;
+  border-radius: 4px;
+  padding: 0 $input-padding-x;
 
   img {
-    width: 24px;
-    height: 24px;
+    width: 19px;
+    height: 19px;
     @extend .rounded-circle;
-    margin-right: 6px;
+    margin-right: 0.5rem;
+  }
+
+  .btn {
+    padding-left: 0.5rem;
+    padding-right: 0;
   }
 }

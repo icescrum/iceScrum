@@ -71,9 +71,11 @@
             ${message(code: 'is.role.owner')}
             <entry:point id="project-team-list-owner"/>
         </label>
-        <div class="user-entry">
-            <img ng-src="{{ team.owner | userAvatar }}" title="{{ team.owner.username }}">
-            {{ team.owner | userFullName }}
+        <div class="d-flex">
+            <div class="user-entry">
+                <img ng-src="{{ team.owner | userAvatar }}" title="{{ team.owner.username }}">
+                {{ team.owner | userFullName }}
+            </div>
         </div>
     </div>
     <div ng-if="team.selected"
