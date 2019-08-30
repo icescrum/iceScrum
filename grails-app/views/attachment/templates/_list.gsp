@@ -34,23 +34,23 @@
                    ng-click="showPreview(attachment, attachmentable, clazz)"
                    href>{{ attachment.filename }}</a>
                 <a ng-if=":: isAttachmentEditable(attachment)"
-                   class="btn btn-secondary btn-sm hover-visible"
+                   class="btn btn-secondary btn-sm hover-display"
                    ng-click=":: editAttachment(attachment, attachmentable, clazz)"
                    href>Edit</a>
                 <a ng-if=":: authorizedAttachment('update', attachment)"
-                   class="btn btn-secondary btn-sm hover-visible"
+                   class="btn btn-secondary btn-sm hover-display"
                    ng-click="showEditAttachmentName(attachment, attachmentable)"
                    href>${message(code: 'todo.is.ui.attachment.edit')}</a>
                 <a ng-if=":: isAttachmentDownloadable(attachment)"
-                   class="btn btn-secondary btn-sm hover-visible"
+                   class="btn btn-secondary btn-sm hover-display"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">Download</a>
                 <a ng-if=":: !isAttachmentDownloadable(attachment)"
-                   class="btn btn-secondary btn-sm hover-visible"
+                   class="btn btn-secondary btn-sm hover-display"
                    target="_blank"
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">View</a>
                 <div ng-if=":: attachment.length > 0" class="size">{{:: attachment.length | filesize }}</div>
                 <a ng-if=":: authorizedAttachment('delete', attachment)"
-                   class="attachment-action attachment-remove-grey hover-visible"
+                   class="attachment-action attachment-remove-grey hover-display"
                    ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
                    href></a>
             </div>

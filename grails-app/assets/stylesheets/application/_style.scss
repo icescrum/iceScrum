@@ -1270,11 +1270,11 @@ th {
     overflow: hidden;
   }
   .hover-container:not(:hover) {
-    .hover-visible {
+    .hover-display {
       display: none;
     }
 
-    .hover-visible-visibility {
+    .hover-visible {
       visibility: hidden;
     }
   }

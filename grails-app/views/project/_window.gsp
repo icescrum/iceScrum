@@ -31,7 +31,7 @@
                     </div>
                     <div class="btn-toolbar ml-1 mt-1 mt-lg-0 align-items-end d-block d-md-flex flex-nowrap">
                         <button ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
-                                class="btn btn-danger btn-sm hover-visible text-nowrap"
+                                class="btn btn-danger btn-sm hover-display text-nowrap"
                                 ng-click="showProjectEditModal('administration')"
                                 type="button">
                             ${message(code: 'is.ui.project.sample.delete')}
@@ -49,7 +49,7 @@
                 </div>
                 <div class="card-body">
                     <div class="float-right">
-                        <button class="btn btn-icon btn-secondary btn-sm hover-visible-visibility text-nowrap"
+                        <button class="btn btn-icon btn-secondary btn-sm hover-visible text-nowrap"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
                                 type="button">
@@ -99,7 +99,7 @@
                 </div>
                 <div class="card-body rich-content">
                     <div class="float-right">
-                        <a class="btn btn-icon btn-secondary btn-sm float-right hover-visible-visibility"
+                        <a class="btn btn-icon btn-secondary btn-sm float-right hover-visible"
                            href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                            ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
                             <i class="icon icon-edit"></i>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="card-body rich-content">
                     <div class="float-right">
-                        <a class="btn btn-icon btn-secondary btn-sm float-right hover-visible-visibility"
+                        <a class="btn btn-icon btn-secondary btn-sm float-right hover-visible"
                            href="#/taskBoard/{{ lastSprint.id }}/details"
                            ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
                             <i class="icon icon-edit"></i>
