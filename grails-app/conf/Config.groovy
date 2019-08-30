@@ -517,6 +517,7 @@ log4j = {
     }
 
     if (ApplicationSupport.booleanValue(config.icescrum.securitydebug.enable)) {
+        debug 'org.springframework.security.saml'
         debug 'org.springframework.security'
         debug 'org.icescrum.core.security'
         debug 'com.kagilum.plugin.saml'
