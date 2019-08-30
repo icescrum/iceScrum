@@ -47,7 +47,7 @@
                            class="form-control">
                     <span class="input-group-append" ng-if="formEditable()">
                         <button colorpicker
-                                class="btn btn-sm {{ editableTask.color | contrastColor }}"
+                                class="btn btn-sm btn-colorpicker {{ editableTask.color | contrastColor }}"
                                 type="button"
                                 ng-style="{'background-color': editableTask.color}"
                                 colorpicker-position="left"

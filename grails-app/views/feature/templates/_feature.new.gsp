@@ -76,7 +76,7 @@
                                placeholder="${message(code: 'is.ui.feature.noname')}"/>
                         <span class="input-group-append">
                             <button colorpicker
-                                    class="btn btn-sm {{ feature.color | contrastColor }}"
+                                    class="btn btn-sm btn-colorpicker {{ feature.color | contrastColor }}"
                                     type="button"
                                     ng-style="{'background-color': feature.color}"
                                     colorpicker-position="left"
