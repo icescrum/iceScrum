@@ -62,7 +62,7 @@
             <label for="description" class="d-flex align-items-center justify-content-between">
                 <div>${message(code: 'is.backlogelement.description')}</div>
                 <div ng-if="formHolder.editing"
-                     class="text-muted small"
+                     class="small"
                      ng-click="showProjectEditModal('actors')">
                     <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
                 </div>
@@ -170,10 +170,11 @@
                 </span>
             </div>
         </div>
-        <div class="form-group" ng-if="showTags">
-            <label for="tags">
+        <div class="form-group"
+             ng-if="showTags">
+            <label for="tags" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.backlogelement.tags')}</div>
                 <entry:point id="item-properties-inside-tag"/>
-                ${message(code: 'is.backlogelement.tags')}
             </label>
             <ui-select ng-click="retrieveTags(); editForm(true)"
                        ng-disabled="!formEditable()"
