@@ -59,12 +59,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="description">
-                <span class="text-muted small float-right"
-                      ng-click="showProjectEditModal('actors')">
-                    <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
-                </span>
+            <label for="description" class="d-flex align-items-center justify-content-between">
                 <div>${message(code: 'is.backlogelement.description')}</div>
+                <div ng-if="formHolder.editing"
+                     class="text-muted small"
+                     ng-click="showProjectEditModal('actors')">
+                    <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
+                </div>
             </label>
             <textarea class="form-control"
                       ng-maxlength="3000"
