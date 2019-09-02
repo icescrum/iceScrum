@@ -117,7 +117,6 @@
             <div class="form-half">
                 <label for="dependsOn">
                     ${message(code: 'is.story.dependsOn')}
-                    <span class="text-muted small float-right" ng-if="project.portfolio.id"><i class="fa fa-question-circle"></i> ${message(code: 'is.ui.story.dependsOn.help')}</span>
                 </label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <ui-select class="form-control"

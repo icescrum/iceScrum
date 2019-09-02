@@ -43,7 +43,7 @@
 <div class="alert alert-warning" role="alert" style="margin-bottom: 15px;" ng-if="portfolio.projects.length >= 10">
     ${message(code: 'is.ui.portfolio.limit.projects')}
 </div>
-<table class="table table-striped table-bordered" ng-if="portfolio.projects.length > 0">
+<table class="table table-striped table-sm" ng-if="portfolio.projects.length > 0">
     <thead>
         <th>${message(code: 'is.project.name')}</th>
         <th>${message(code: 'is.project.startDate')}</th>
@@ -66,12 +66,12 @@
             <td>{{:: project.productOwners | displayNames }}</td>
             <td>{{:: project.team.name }} ({{:: (project.team.scrumMasters.length + project.team.members.length) }})</td>
             <td>
-                <button class="btn btn-secondary btn-sm btn-model"
-                        ng-model="foo" %{-- Hack to make form dirty --}%
-                        ng-click="removeProject(project)"
-                        type="button">
+                <a class="text-danger btn-model"
+                   href
+                   ng-model="foo" %{-- Hack to make form dirty --}%
+                   ng-click="removeProject(project)">
                     <i class="fa fa-times"></i>
-                </button>
+                </a>
             </td>
         </tr>
     </tbody>

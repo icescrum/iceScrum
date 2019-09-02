@@ -39,12 +39,9 @@
                    ng-change="nameChanged()"
                    ng-required="isCurrentStep(1, 'portfolio')">
             <span class="input-group-append">
-                <button class="btn btn-hidden btn-sm"
-                        type="button"
-                        disabled="disabled">
-                    <i class="fa fa-eye-slash"></i>
-                    ${g.message(code: 'is.ui.workspace.hidden')}
-                </button>
+                <span class="input-group-text">
+                    ${message(code: 'is.ui.workspace.hidden')}
+                </span>
             </span>
         </div>
     </div>
