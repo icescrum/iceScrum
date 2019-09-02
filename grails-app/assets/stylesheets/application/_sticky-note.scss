@@ -789,10 +789,9 @@ $acceptance-test-states: tocheck, success, failed;
         }
       }
 
-      &:hover .sticky-note-content.has-description {
-        .title {
-          display: inline-block;
-        }
+      &:hover .sticky-note-content.has-description .title {
+        vertical-align: top;
+        display: inline-block;
       }
     }
 
