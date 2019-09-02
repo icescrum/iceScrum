@@ -102,8 +102,8 @@
                                    class="form-control">
                         </div>
                         <div class="form-half">
-                            <label for="team.owner">
-                                ${message(code: 'is.role.owner')}
+                            <label for="team.owner" class="d-flex align-items-center">
+                                <div>${message(code: 'is.role.owner')}</div>
                                 <entry:point id="team-list-owner"/>
                             </label>
                             <span class="form-control-plaintext"

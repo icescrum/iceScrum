@@ -5,7 +5,7 @@
         {{ user | userFullName }}
         <small ng-if="!user.id" title="${message(code: 'is.ui.user.will.be.invited')}"><i class="fa fa-envelope text-muted"></i></small>
     </span>
-    <a class="btn btn-danger btn-sm btn-model"
+    <a class="btn btn-link text-danger btn-sm btn-model"
        href
        ng-model="foo" %{-- Hack to make form dirty --}%
        ng-if="projectMembersEditable(project)"
@@ -21,7 +21,7 @@
         {{ user | userFullName }}
         <small ng-if="!user.id" title="${message(code: 'is.ui.user.will.be.invited')}"><i class="fa fa-envelope text-muted"></i></small>
     </span>
-    <a class="btn btn-danger btn-sm btn-model"
+    <a class="btn btn-link text-danger btn-sm btn-model"
        href
        ng-model="foo" %{-- Hack to make form dirty --}%
        ng-if="portfolioMembersEditable(portfolio) && portfolioMembersDeletable(portfolio, role)"

@@ -35,7 +35,7 @@
             <documentation doc-url="roles-teams-projects"/>
         </p>
     </div>
-    <div class="col-sm-6 form-group" ng-class="{'has-error': noTeamAvailable}">
+    <div class="col-sm-6 form-group" ng-class="{'has-error': teamCreatable() && team.name && formHolder.noTeamAvailable}">
         <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
         <p class="input-group">
             <input autocomplete="off"
@@ -47,7 +47,7 @@
                    uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                    typeahead-loading="searching"
                    typeahead-wait-ms="150"
-                   typeahead-no-results="noTeamAvailable"
+                   typeahead-no-results="formHolder.noTeamAvailable"
                    typeahead-on-select="selectTeam($item, $model, $label)"
                    typeahead-template-url="select.or.create.team.html"
                    typeahead-select-on-blur="true"
@@ -62,18 +62,20 @@
                     </i>
                 </span>
             </span>
-            <span ng-if="noTeamAvailable" class="validation-error text-danger">${message(code: 'todo.is.ui.select.team.taken')}</span>
         </p>
+        <div ng-if="teamCreatable() && team.name && formHolder.noTeamAvailable" class="validation-error text-danger">${message(code: 'todo.is.ui.select.team.taken')}</div>
     </div>
     <div class="col-sm-6 form-group"
          ng-if="type == 'editProject' && team.owner">
-        <label>
-            ${message(code: 'is.role.owner')}
+        <label class="d-flex align-items-center">
+            <div>${message(code: 'is.role.owner')}</div>
             <entry:point id="project-team-list-owner"/>
         </label>
-        <div class="user-entry">
-            <img ng-src="{{ team.owner | userAvatar }}" title="{{ team.owner.username }}">
-            {{ team.owner | userFullName }}
+        <div class="d-flex">
+            <div class="user-entry">
+                <img ng-src="{{ team.owner | userAvatar }}" title="{{ team.owner.username }}">
+                {{ team.owner | userFullName }}
+            </div>
         </div>
     </div>
     <div ng-if="team.selected"

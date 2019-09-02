@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="apps.modal.html">
 <is:modal title="${message(code: 'is.ui.apps')}"
           footer="${false}"
-          class="modal-split">
+          class="modal-split app-modal">
     <div class="row" ng-if="appDefinition">
         <div class="col-sm-3 modal-split-left">
             <div class="modal-split-search">
@@ -38,18 +38,15 @@
                 <div class="text-center more-results" ng-hide="filteredApps.length">
                     <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
                 </div>
-                <li class="nav-item"
+                <li class="nav-item app-nav-item"
                     ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
                     <a ng-click="openAppDefinition(currentAppDefinition)"
                        ng-class="{'active': currentAppDefinition == appDefinition}"
                        href
                        class="nav-link text-ellipsis">
+                        <div class="app-enabled" ng-if="currentAppDefinition != appDefinition && isEnabledApp(currentAppDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></div>
                         {{:: currentAppDefinition.name }}
-                        <i ng-if="isEnabledApp(currentAppDefinition)" class="fa fa-check text-success"></i>
-                        <div class="app-state">
-                            <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
-                            <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
-                        </div>
+                        <div class="app-new" ng-if="currentAppDefinition != appDefinition && currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
                     </a>
                 </li>
             </ul>

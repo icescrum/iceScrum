@@ -47,7 +47,7 @@
                            class="form-control">
                     <span class="input-group-append" ng-if="formEditable()">
                         <button colorpicker
-                                class="btn btn-sm {{ editableTask.color | contrastColor }}"
+                                class="btn btn-sm btn-colorpicker {{ editableTask.color | contrastColor }}"
                                 type="button"
                                 ng-style="{'background-color': editableTask.color}"
                                 colorpicker-position="left"
@@ -81,10 +81,11 @@
                       ng-model="editableTask.description"></textarea>
         </div>
         <entry:point id="task-properties-middle"/>
-        <div class="form-group" ng-if="showTags">
-            <label for="tags">
+        <div class="form-group"
+             ng-if="showTags">
+            <label for="tags" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.backlogelement.tags')}</div>
                 <entry:point id="item-properties-inside-tag"/>
-                ${message(code: 'is.backlogelement.tags')}
             </label>
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"
@@ -104,8 +105,8 @@
         <entry:point id="task-properties-after-tag"/>
         <div class="row is-form-row">
             <div class="form-half">
-                <label for="estimation">
-                    ${message(code: 'is.task.estimation')}
+                <label for="estimation" class="d-flex align-items-center justify-content-between">
+                    <div>${message(code: 'is.task.estimation')}</div>
                     <entry:point id="task-estimation-after-label"/>
                 </label>
                 <div class="input-group">

@@ -46,7 +46,7 @@
                        class="form-control">
                 <span class="input-group-append" ng-if="formEditable()">
                     <button colorpicker
-                            class="btn btn-sm {{ editableFeature.color | contrastColor }}"
+                            class="btn btn-sm btn-colorpicker {{ editableFeature.color | contrastColor }}"
                             type="button"
                             ng-style="{'background-color': editableFeature.color}"
                             colorpicker-position="left"
@@ -97,10 +97,11 @@
                       name="description"
                       ng-model="editableFeature.description"></textarea>
         </div>
-        <div class="form-group" ng-if="showTags">
-            <label for="tags">
+        <div class="form-group"
+             ng-if="showTags">
+            <label for="tags" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.backlogelement.tags')}</div>
                 <entry:point id="item-properties-inside-tag"/>
-                ${message(code: 'is.backlogelement.tags')}
             </label>
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"

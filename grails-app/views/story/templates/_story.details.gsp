@@ -80,7 +80,9 @@
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i>
                 </span>
-                <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
+                <div class="text-muted">
+                    <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
+                </div>
                 <div>
                     <entry:point id="story-details-left-title"/>
                 </div>

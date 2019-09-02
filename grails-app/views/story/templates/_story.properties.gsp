@@ -33,7 +33,6 @@
             </div>
         </div>
         <div class="row">
-            <entry:point id="story-properties-before-properties"/>
             <div class="form-2-tiers">
                 <label for="name">${message(code: 'is.story.name')}</label>
                 <input required
@@ -59,12 +58,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="description">
-                <span class="text-muted small float-right"
-                      ng-click="showProjectEditModal('actors')">
-                    <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
-                </span>
+            <label for="description" class="d-flex align-items-center justify-content-between">
                 <div>${message(code: 'is.backlogelement.description')}</div>
+                <div ng-if="formHolder.editing"
+                     class="small"
+                     ng-click="showProjectEditModal('actors')">
+                    <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
+                </div>
             </label>
             <textarea class="form-control"
                       ng-maxlength="3000"
@@ -117,7 +117,6 @@
             <div class="form-half">
                 <label for="dependsOn">
                     ${message(code: 'is.story.dependsOn')}
-                    <span class="text-muted small float-right" ng-if="project.portfolio.id"><i class="fa fa-question-circle"></i> ${message(code: 'is.ui.story.dependsOn.help')}</span>
                 </label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <ui-select class="form-control"
@@ -169,10 +168,11 @@
                 </span>
             </div>
         </div>
-        <div class="form-group" ng-if="showTags">
-            <label for="tags">
+        <div class="form-group"
+             ng-if="showTags">
+            <label for="tags" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.backlogelement.tags')}</div>
                 <entry:point id="item-properties-inside-tag"/>
-                ${message(code: 'is.backlogelement.tags')}
             </label>
             <ui-select ng-click="retrieveTags(); editForm(true)"
                        ng-disabled="!formEditable()"

@@ -57,7 +57,6 @@
                 </button>
                 <button class="btn btn-secondary btn-sm"
                         ng-if="actor.id"
-                        ng-disabled="!formHolder.actorForm.$dirty"
                         type="submit"
                         ng-click="resetActorForm()">
                     ${message(code: 'is.button.cancel')}
@@ -90,7 +89,7 @@
                        ng-click="edit(actor)">
                         <i class="icon icon-edit"></i>
                     </a>
-                    <a class="btn btn-danger btn-sm float-right"
+                    <a class="text-danger float-right mr-3"
                        href
                        ng-if="authorizedActor('delete', actor)"
                        ng-click="confirmDelete({ callback: delete, args: [actor] })">

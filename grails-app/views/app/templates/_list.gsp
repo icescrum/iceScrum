@@ -32,10 +32,8 @@
     <div ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
         <div ng-click="openAppDefinition(currentAppDefinition)"
              class="app-logo">
-            <div class="app-state">
-                <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
-                <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
-            </div>
+            <div class="app-enabled" ng-if="isEnabledApp(currentAppDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></div>
+            <div class="app-new" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
             <img ng-src="{{:: currentAppDefinition.logo }}"
                  class="img-fluid"
                  alt="{{:: currentAppDefinition.name }}">
