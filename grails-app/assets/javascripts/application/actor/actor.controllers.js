@@ -42,6 +42,7 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
         });
     };
     $scope.edit = function(actor) {
+        $scope.resetActorForm();
         $scope.actor = angular.copy(actor);
     };
     $scope.resetActorForm = function() {
