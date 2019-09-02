@@ -67,8 +67,8 @@
     </div>
     <div class="col-sm-6 form-group"
          ng-if="type == 'editProject' && team.owner">
-        <label>
-            ${message(code: 'is.role.owner')}
+        <label class="d-flex align-items-center">
+            <div>${message(code: 'is.role.owner')}</div>
             <entry:point id="project-team-list-owner"/>
         </label>
         <div class="d-flex">
