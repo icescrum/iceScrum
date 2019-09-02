@@ -459,7 +459,6 @@ nav.navbar {
   padding-bottom: 0.1875rem;
   font-family: $font-family-base;
   font-size: 0.875rem;
-  box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
 }
 
 nav.navbar .menu-header-hidden .nav-link {
@@ -617,6 +616,7 @@ $state-dot-size-sm: 0.5rem;
   background-size: 100% 65%;
   padding-right: 5px;
   padding-left: 5px;
+  text-shadow: 0 0 2px rgba(35, 35, 35, 0.17); // Small contour to improve readability on dark
 }
 
 .as-sortable-disabled .as-sortable-item-handle, .as-sortable-item-handle-disabled {
