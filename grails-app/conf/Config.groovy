@@ -523,6 +523,10 @@ log4j = {
         debug 'com.kagilum.plugin.saml'
         debug 'com.kagilum.plugin.ldap'
         debug 'com.kagilum.plugin.preauth'
+        //saml plugin
+        debug 'org.springframework.security.saml'
+        debug 'org.opensaml'
+        debug 'logger.PROTOCOL_MESSAGE'
     }
 
     // Useless warning because are registered twice since it's based on controllerClazz.getMethods() which return the same method twice (1 with & 1 without params)
