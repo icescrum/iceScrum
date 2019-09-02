@@ -33,7 +33,6 @@
             </div>
         </div>
         <div class="row">
-            <entry:point id="story-properties-before-properties"/>
             <div class="form-2-tiers">
                 <label for="name">${message(code: 'is.story.name')}</label>
                 <input required

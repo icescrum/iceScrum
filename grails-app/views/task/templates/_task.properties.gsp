@@ -105,8 +105,8 @@
         <entry:point id="task-properties-after-tag"/>
         <div class="row is-form-row">
             <div class="form-half">
-                <label for="estimation">
-                    ${message(code: 'is.task.estimation')}
+                <label for="estimation" class="d-flex align-items-center justify-content-between">
+                    <div>${message(code: 'is.task.estimation')}</div>
                     <entry:point id="task-estimation-after-label"/>
                 </label>
                 <div class="input-group">
