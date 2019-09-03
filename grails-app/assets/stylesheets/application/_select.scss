@@ -166,7 +166,7 @@ form.form-editable:not(:hover):not(.form-editing) {
 }
 
 .select2-drop {
-  box-shadow: $is-dropmenu-shadow;
+  box-shadow: $is-shadow;
   background-color: $is-bg-color;
   color: $is-text-color-alt;
 }
