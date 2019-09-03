@@ -73,6 +73,7 @@ $is-yellow: #ffcc01;
 $is-green: #27d285;
 $is-blue: #0067e8;
 $is-grey: #acb5c0;
+$is-black: #111111;
 
 $is-primary-color: $is-blue;
 
@@ -80,7 +81,7 @@ $is-spacer-x: 1.25rem;
 $is-sticky-note-spacer: 0.5rem;
 
 $is-font-size-sm: 0.875rem;
-$is-sticky-note-text: #111111; // Should not change in dark mode
+$is-sticky-note-text: $is-black;
 $is-sticky-note-text-invert: white;
 $is-task-width: 129px;
 $is-task-height: $is-task-width;
