@@ -501,6 +501,14 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       }
     }
   }
+
+  .app-details {
+    font-size: $is-font-size-sm;
+  }
+
+  .app-screenshot {
+    box-shadow: $is-shadow;
+  }
 }
 
 ////////////////////

@@ -51,7 +51,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-sm-9 modal-split-right">
+        <div class="col-sm-9 modal-split-right app-details">
             <div ng-include="'app.details.html'"></div>
         </div>
     </div>

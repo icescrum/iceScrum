@@ -23,134 +23,117 @@
 --}%
 
 <script type="text/ng-template" id="app.details.html">
-<h3>
-    <button ng-click="openAppDefinition()"
-            class="btn btn-secondary btn-sm">
-        <i class="fa fa-arrow-left"></i>
-    </button>
-    {{ appDefinition.name }}
-    <i ng-if="isEnabledApp(appDefinition)"
-       class="fa fa-check text-success float-right"></i>
-</h3>
-<div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer">
-    <div class="alert alert-warning" role="alert">
-        ${message(code: 'is.ui.apps.server.disabled')}
-    </div>
-    <hr/>
+<div class="mb-4">
+    <a ng-click="openAppDefinition()"
+       href
+       class="link ">
+        <i class="fa fa-arrow-left"></i> ${message(code: 'is.ui.back')}
+    </a>
 </div>
-<div ng-if="appDefinition.id == holder.displaySettingsWarning">
-    <div class="alert alert-warning" role="alert">
-        ${message(code: 'is.ui.apps.settings.warning')}
-    </div>
-    <hr/>
+<h3 class="d-flex align-items-center mb-4">
+    <img ng-src="{{ appDefinition.logo }}"
+         height="35"
+         class="mr-1"
+         alt="{{ appDefinition.name }}">
+    <span class="mr-3">{{ appDefinition.name }}</span>
+    <span class="app-enabled" ng-if="isEnabledApp(appDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></span>
+    <span class="app-new" ng-if="appDefinition.isNew && !isEnabledApp(appDefinition)">${message(code: 'is.ui.apps.new')}</span>
+</h3>
+<div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer"
+     class="alert alert-warning"
+     role="alert">
+    ${message(code: 'is.ui.apps.server.disabled')}
+</div>
+<div ng-if="appDefinition.id == holder.displaySettingsWarning"
+     class="alert alert-warning"
+     role="alert">
+    ${message(code: 'is.ui.apps.settings.warning')}
 </div>
 <entry:point id="app-details-before"/>
 <div class="row">
-    <div class="col-md-8">
-        <div class="col-md-{{ 12 / appDefinition.screenshots.length }} thumbnail"
+    <div class="col-md-5 d-flex flex-column justify-content-between">
+        <div>
+            <strong>{{ appDefinition.baseline }}</strong>
+            <div ng-bind-html="appDefinition.description"></div>
+        </div>
+        <div>
+            <a href
+               class="link"
+               ng-repeat="tag in appDefinition.tags track by $index"
+               ng-click="searchApp(tag)">{{ tag + ($last ? '' : ', ') }}</a>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="col-md-{{ 12 / appDefinition.screenshots.length }} app-screenshot"
              ng-repeat="screenshot in appDefinition.screenshots">
             <a href
                ng-click="showScreenshot(appDefinition, screenshot)">
                 <img ng-src="{{ screenshot }}"
-                     width="406"
-                     height="255"/>
+                     class="img-fluid"/>
             </a>
         </div>
+    </div>
+    <div class="col-md-12 mt-5 mb-5 d-flex justify-content-between flex-wrap">
         <div>
-            <p><em>{{ appDefinition.baseline }}</em></p>
-            <p class="description" ng-bind-html="appDefinition.description"></p>
+            <div>${message(code: 'is.app.author')}</div>
+            <div><strong><a href="mailto:support@kagilum.com">{{ appDefinition.author }}</a></strong></div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="text-center actions">
-            <img ng-src="{{ appDefinition.logo }}"
-                 class="img-fluid"
-                 alt="{{ appDefinition.name }}">
+        <div>
+            <div>${message(code: 'is.app.version')}</div>
+            <div><strong>{{ appDefinition.version }}</strong></div>
         </div>
-        <div class="text-center actions"
-             ng-if="authorizedApp('enableForProject', appDefinition)">
-            <p ng-switch="isEnabledForProject(appDefinition)">
-                <button ng-switch-when="false"
-                        type="button"
-                        class="btn btn-primary btn-sm"
-                        ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
-                <button ng-switch-default
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
-            </p>
+        <div>
+            <div>${message(code: 'is.app.widgets')}</div>
+            <div><strong>{{ appDefinition.hasWidgets ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</strong></div>
         </div>
-        <div class="text-center actions"
-             ng-if="authorizedApp('askToEnableForProject', appDefinition)">
-            <p ng-switch="isEnabledForProject(appDefinition)">
-                <a href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?"
-                   ng-switch-when="false"
-                   type="button"
-                   class="btn btn-primary btn-sm">${message(code: 'is.ui.apps.enable')}</a>
-                <button ng-switch-default
-                        type="button"
-                        class="btn btn-success btn-sm"
-                        disabled="disabled"
-                        ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.enabled')}</button>
-            </p>
+        <div>
+            <div>${message(code: 'is.app.windows')}</div>
+            <div><strong>{{ appDefinition.hasWindows ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</strong></div>
         </div>
-        <div class="text-center actions"
-             ng-if="authorizedApp('updateProjectSettings', appDefinition, project)">
-            <p>
-                <button type="button"
-                        ng-click="openAppProjectSettings(appDefinition)"
-                        class="btn btn-primary btn-sm">
-                    ${message(code: 'is.ui.apps.configure')}
-                </button>
-            </p>
-        </div>
-        <div class="text-center actions">
-            <p>
-                <a href="{{ appDefinition.docUrl }}"
-                   target="_blank"
-                   class="btn btn-secondary btn-sm">
-                    ${message(code: 'is.app.documentation')}
+        <entry:point id="app-infos-after"/>
+        <div ng-if="appDefinition.websiteUrl">
+            <div>${message(code: 'is.app.website')}</div>
+            <div>
+                <a href="{{ appDefinition.websiteUrl }}"
+                   class="link"
+                   target="_blank">
+                    {{ appDefinition.websiteUrl }}
                 </a>
-            </p>
-        </div>
-        <div class="col-md-12">
-            <h4>${message(code: 'is.ui.apps.information')}</h4>
-            <table class="table information">
-                <tr>
-                    <td class="text-right">${message(code: 'is.app.author')}</td>
-                    <td><a href="mailto:support@kagilum.com">{{ appDefinition.author }}</a></td>
-                </tr>
-                <tr>
-                    <td class="text-right">${message(code: 'is.app.version')}</td>
-                    <td>{{ appDefinition.version }}</td>
-                </tr>
-                <tr>
-                    <td class="text-right">${message(code: 'is.app.widgets')}</td>
-                    <td>{{ appDefinition.hasWidgets ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</td>
-                </tr>
-                <tr>
-                    <td class="text-right">${message(code: 'is.app.windows')}</td>
-                    <td>{{ appDefinition.hasWindows ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</td>
-                </tr>
-                <entry:point id="app-infos-after"/>
-                <tr ng-if="appDefinition.websiteUrl">
-                    <td class="text-right"></td>
-                    <td>
-                        <a href="{{ appDefinition.websiteUrl }}"
-                           target="_blank">
-                            ${message(code: 'is.app.website')}
-                        </a>
-                    </td>
-                </tr>
-            </table>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <span class="text-muted" ng-repeat="tag in appDefinition.tags track by $index">
-            <a href ng-click="searchApp(tag)">{{ tag }}</a>{{$last ? '' : ', '}}
-        </span>
+    <div class="col-12">
+        <div class="btn-toolbar pull-right">
+            <a href="{{ appDefinition.docUrl }}"
+               target="_blank"
+               class="btn btn-secondary">
+                ${message(code: 'is.app.documentation')}
+            </a>
+            <button ng-if="authorizedApp('updateProjectSettings', appDefinition, project)"
+                    type="button"
+                    ng-click="openAppProjectSettings(appDefinition)"
+                    class="btn btn-primary">
+                ${message(code: 'is.ui.apps.configure')}
+            </button>
+            <button ng-if="authorizedApp('enableForProject', appDefinition) && !isEnabledForProject(appDefinition)"
+                    type="button"
+                    class="btn btn-primary"
+                    ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
+            <button ng-if="authorizedApp('enableForProject', appDefinition) && isEnabledForProject(appDefinition)"
+                    type="button"
+                    class="btn btn-danger"
+                    ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
+            <a ng-if="authorizedApp('askToEnableForProject', appDefinition) && !isEnabledForProject(appDefinition)"
+               href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?"
+               ng-switch-when="false"
+               type="button"
+               class="btn btn-primary">${message(code: 'is.ui.apps.enable')}</a>
+            <button ng-if="authorizedApp('askToEnableForProject', appDefinition) && !isEnabledForProject(appDefinition)"
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    disabled="disabled"
+                    ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.enabled')}</button>
+        </div>
     </div>
 </div>
 </script>
