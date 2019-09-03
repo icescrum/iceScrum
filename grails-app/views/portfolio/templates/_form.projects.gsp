@@ -40,7 +40,7 @@
         <span class="input-group-text"><i class="fa fa-search"></i></span>
     </span>
 </div>
-<div class="alert alert-warning" role="alert" style="margin-bottom: 15px;" ng-if="portfolio.projects.length >= 10">
+<div class="alert bg-warning mb-3" role="alert" ng-if="portfolio.projects.length >= 10">
     ${message(code: 'is.ui.portfolio.limit.projects')}
 </div>
 <table class="table table-striped table-sm" ng-if="portfolio.projects.length > 0">
@@ -76,7 +76,7 @@
         </tr>
     </tbody>
 </table>
-<div class="alert alert-{{ synchronizationHolder.status }}" role="alert" style="margin-bottom: 15px;" ng-if="synchronizationHolder.text">
+<div class="alert bg-{{ synchronizationHolder.status }} mb-3" role="alert" ng-if="synchronizationHolder.text">
     {{ synchronizationHolder.text }}
 </div>
 </script>

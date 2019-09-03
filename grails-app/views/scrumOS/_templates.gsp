@@ -63,7 +63,7 @@
               submitButton="${message(code: 'is.ui.portfolio.confirm.cancel.confirm')}"
               closeButton="${message(code: 'is.ui.portfolio.confirm.cancel.back')}"
               title="${message(code: 'todo.is.ui.confirm.title')}">
-        <div class="alert alert-warning" role="alert" style="margin-bottom: 15px;">
+        <div class="alert bg-warning mb-3">
             <i class="fa fa-warning"></i> ${message(code: 'is.ui.portfolio.confirm.cancel.description')}
         </div>
         <table class="table table-bordered table-striped">

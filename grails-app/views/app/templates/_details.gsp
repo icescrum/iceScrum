@@ -40,12 +40,12 @@
     <span class="app-new" ng-if="appDefinition.isNew && !isEnabledApp(appDefinition)">${message(code: 'is.ui.apps.new')}</span>
 </h3>
 <div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer"
-     class="alert alert-warning"
+     class="alert bg-warning mb-3"
      role="alert">
     ${message(code: 'is.ui.apps.server.disabled')}
 </div>
 <div ng-if="appDefinition.id == holder.displaySettingsWarning"
-     class="alert alert-warning"
+     class="alert bg-warning mb-3"
      role="alert">
     ${message(code: 'is.ui.apps.settings.warning')}
 </div>

@@ -423,3 +423,15 @@ form label {
     margin-left: -$tooltip-arrow-width/2;
   }
 }
+
+////////////////////
+// Other
+////////////////////
+
+.alert {
+  color: $is-black;
+
+  &.bg-primary, &.bg-info, &.bg-danger {
+    color: white;
+  }
+}
