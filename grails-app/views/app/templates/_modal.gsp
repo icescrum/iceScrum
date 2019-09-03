@@ -25,7 +25,7 @@
 <is:modal title="${message(code: 'is.ui.apps')}"
           footer="${false}"
           class="modal-split app-modal">
-    <div class="row" ng-if="appDefinition">
+    <div class="row app-split" ng-if="appDefinition">
         <div class="col-sm-3 modal-split-left">
             <div class="modal-split-search">
                 <input type="text"
@@ -55,6 +55,6 @@
             <div ng-include="'app.details.html'"></div>
         </div>
     </div>
-    <div class="row" ng-if="!appDefinition" ng-include="'app.list.html'"></div>
+    <div class="row app-full" ng-if="!appDefinition" ng-include="'app.list.html'"></div>
 </is:modal>
 </script>

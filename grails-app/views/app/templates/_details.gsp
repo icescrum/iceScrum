@@ -30,15 +30,6 @@
         <i class="fa fa-arrow-left"></i> ${message(code: 'is.ui.back')}
     </a>
 </div>
-<h3 class="d-flex align-items-center mb-4">
-    <img ng-src="{{ appDefinition.logo }}"
-         height="35"
-         class="mr-1"
-         alt="{{ appDefinition.name }}">
-    <span class="mr-3">{{ appDefinition.name }}</span>
-    <span class="app-enabled" ng-if="isEnabledApp(appDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></span>
-    <span class="app-new" ng-if="appDefinition.isNew && !isEnabledApp(appDefinition)">${message(code: 'is.ui.apps.new')}</span>
-</h3>
 <div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer"
      class="alert bg-warning mb-3"
      role="alert">
@@ -49,6 +40,15 @@
      role="alert">
     ${message(code: 'is.ui.apps.settings.warning')}
 </div>
+<h3 class="d-flex align-items-center mb-4">
+    <img ng-src="{{ appDefinition.logo }}"
+         height="35"
+         class="mr-1"
+         alt="{{ appDefinition.name }}">
+    <span class="mr-3">{{ appDefinition.name }}</span>
+    <span class="app-enabled" ng-if="isEnabledApp(appDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></span>
+    <span class="app-new" ng-if="appDefinition.isNew && !isEnabledApp(appDefinition)">${message(code: 'is.ui.apps.new')}</span>
+</h3>
 <entry:point id="app-details-before"/>
 <div class="row">
     <div class="col-md-5 d-flex flex-column justify-content-between">

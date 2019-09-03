@@ -424,6 +424,42 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
 .app-modal {
 
+  .modal-body {
+    .app-split {
+      height: 610px;
+      overflow: auto;
+    }
+
+    .modal-split-left {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+
+      .nav {
+        flex-wrap: nowrap;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        height: 1px;
+      }
+    }
+
+    .app-full {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: 610px;
+
+      .app-list {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        height: 1px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 15px;
+      }
+    }
+  }
+
   .app-new {
     padding: 2px 10px;
     font-size: 0.625rem;
@@ -459,46 +495,39 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     }
   }
 
-  .app-list {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 15px;
+  .app-logo {
+    position: relative;
+    margin: 11px;
+    width: 154px;
+    height: 154px;
+    border-radius: 3px;
+    border: solid 1px $is-outline-color;
 
-    .app-logo {
-      position: relative;
-      margin: 11px;
-      width: 154px;
-      height: 154px;
-      border-radius: 3px;
-      border: solid 1px $is-outline-color;
+    &:hover {
+      box-shadow: 0 29px 34px 0 rgba(8, 12, 29, 0.21);
+    }
 
-      &:hover {
-        box-shadow: 0 29px 34px 0 rgba(8, 12, 29, 0.21);
-      }
+    .app-enabled {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+    }
 
-      .app-enabled {
-        position: absolute;
-        top: 12px;
-        left: 12px;
-      }
+    .app-new {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
 
-      .app-new {
-        position: absolute;
-        top: 7px;
-        right: 7px;
-      }
+    img {
+      margin-top: 30px;
+      margin-bottom: 20px;
+      width: 82px;
+      height: 62px;
+    }
 
-      img {
-        margin-top: 30px;
-        margin-bottom: 20px;
-        width: 82px;
-        height: 62px;
-      }
-
-      .app-name {
-        font-size: 12px;
-      }
+    .app-name {
+      font-size: 12px;
     }
   }
 
