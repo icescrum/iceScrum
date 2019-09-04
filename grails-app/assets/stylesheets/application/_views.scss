@@ -50,6 +50,7 @@
 
   .home-projects {
     display: flex;
+    overflow: auto;
 
     .btn {
       width: 126px;
@@ -60,6 +61,7 @@
     }
 
     .home-project, .home-project-add {
+      flex-shrink: 0;
       border-radius: 6px;
       padding: 1.25rem;
       width: 350px;
