@@ -52,7 +52,7 @@
             </ul>
         </div>
         <div class="col-sm-9 modal-split-right app-details">
-            <div ng-include="'app.details.html'"></div>
+            <div ng-include="'app.details.html'" class="d-flex flex-column justify-content-between h-100"></div>
         </div>
     </div>
     <div class="row app-full" ng-if="!appDefinition" ng-include="'app.list.html'"></div>

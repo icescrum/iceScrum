@@ -426,7 +426,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   .modal-body {
     .app-split {
-      height: 610px;
+      height: 615px;
       overflow: auto;
     }
 
@@ -434,6 +434,13 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       flex: 1 0 auto;
       display: flex;
       flex-direction: column;
+      padding-right: 0; // Cancel grid gutter to put it on children to have the scroll correctly positionned
+      padding-left: 0;
+
+      .modal-split-search, .nav {
+        padding-right: $grid-gutter-width / 2;
+        padding-left: $grid-gutter-width / 2;
+      }
 
       .nav {
         flex-wrap: nowrap;
@@ -447,7 +454,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       flex: 1 0 auto;
       display: flex;
       flex-direction: column;
-      height: 610px;
+      height: 615px;
 
       .app-list {
         flex: 1 1 auto;
@@ -455,7 +462,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         height: 1px;
         display: flex;
         flex-wrap: wrap;
-        margin: 15px;
+        padding: 16px;
       }
     }
   }
@@ -497,14 +504,14 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   .app-logo {
     position: relative;
-    margin: 11px;
+    margin: 9px;
     width: 154px;
     height: 154px;
     border-radius: 3px;
     border: solid 1px $is-outline-color;
 
     &:hover {
-      box-shadow: 0 29px 34px 0 rgba(8, 12, 29, 0.21);
+      box-shadow: 0 20px 34px 0 rgba(8, 12, 29, 0.21);
     }
 
     .app-enabled {
