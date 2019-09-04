@@ -137,7 +137,7 @@
                     </div>
                 </div>
                 <div ng-if="messageDuplicate"
-                     class="form-text bg-warning spaced-form-block warning-message"
+                     class="form-text alert bg-warning"
                      ng-bind-html="messageDuplicate"></div>
             </div>
             <div class="card-footer">

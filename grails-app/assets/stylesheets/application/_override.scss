@@ -77,6 +77,10 @@ strong {
   &:not(:disabled):not(.disabled):active {
     background-color: $primary;
   }
+
+  &.btn-sm {
+    font-family: $is-font-family-bold;
+  }
 }
 
 .btn-secondary {
@@ -428,10 +432,18 @@ form label {
 // Other
 ////////////////////
 
-.alert {
+.alert, .window-alert {
   color: $is-black;
+
+  a {
+    color: $is-black;
+  }
 
   &.bg-primary, &.bg-info, &.bg-danger {
     color: white;
+
+    a {
+      color: white;
+    }
   }
 }

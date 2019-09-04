@@ -665,18 +665,10 @@ $state-dot-size-sm: 0.5rem;
   align-items: baseline;
 }
 
-.warning-message, .window-alert {
+.window-alert {
   margin-top: 0;
   padding: 5px;
-  color: $is-text-color-alt;
   font-size: $is-font-size-sm;
-
-  a {
-    color: $is-text-color-alt;
-  }
-}
-
-.window-alert {
   text-align: center;
 }
 
