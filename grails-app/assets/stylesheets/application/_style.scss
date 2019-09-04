@@ -1219,8 +1219,8 @@ th {
   }
 }
 
-$panel-height: 250px;
-$panel-head-height: 48px;
+$widget-card-height: 270px;
+$widget-card-header-height: 42px;
 
 .widgets {
   padding: $is-spacer-x;
@@ -1236,6 +1236,7 @@ $panel-head-height: 48px;
       background-color: $is-bg-color;
 
       .card-header {
+        height: $widget-card-header-height;
         background: none;
       }
 
@@ -1247,15 +1248,15 @@ $panel-head-height: 48px;
     }
 
     &.widget-height-1 .card-body {
-      height: $panel-height - $panel-head-height;
+      height: $widget-card-height - $widget-card-header-height;
     }
 
     &.widget-height-2 .card-body {
-      height: $panel-height*2 - $panel-head-height;
+      height: $widget-card-height*2 - $widget-card-header-height;
     }
 
     &.widget-height-3 .card-body {
-      height: $panel-height*3 - $panel-head-height;
+      height: $widget-card-height*3 - $widget-card-header-height;
     }
 
     &.widget-width-1 {
@@ -1278,7 +1279,11 @@ $panel-head-height: 48px;
 
   &.as-sortable-drag .widget {
     width: 100% !important;
+    // Cancel row stuff
+    max-width: 100%;
     flex: 1 1 auto;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
