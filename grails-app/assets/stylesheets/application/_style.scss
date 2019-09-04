@@ -1219,12 +1219,19 @@ th {
   }
 }
 
+$panel-height: 250px;
+$panel-head-height: 48px;
+
 .widgets {
-  display: flex;
+  padding: $is-spacer-x;
+
+  .widget .card, .as-sortable-placeholder {
+    border-radius: 0.375rem;
+    margin-bottom: $grid-gutter-width;
+  }
 
   .widget {
     .card {
-      margin: $is-spacer-x;
       border-radius: 0.375rem;
       background-color: $is-bg-color;
 
@@ -1239,29 +1246,39 @@ th {
       }
     }
 
-    &.widget-height-1 .card {
-      height: 250px;
+    &.widget-height-1 .card-body {
+      height: $panel-height - $panel-head-height;
     }
 
-    &.widget-height-2 .card {
-      height: 500px;
+    &.widget-height-2 .card-body {
+      height: $panel-height*2 - $panel-head-height;
     }
 
-    &.widget-height-3 .card {
-      height: 750px;
+    &.widget-height-3 .card-body {
+      height: $panel-height*3 - $panel-head-height;
     }
 
-    &.widget-width-1 .card {
-      width: 250px;
+    &.widget-width-1 {
+      @extend .col-md-2;
     }
 
-    &.widget-width-2 .card {
-      width: 500px;
+    &.widget-width-2 {
+      @extend .col-md-4;
     }
 
-    &.widget-width-3 .card {
-      width: 750px;
+    &.widget-width-3 {
+      @extend .col-md-6;
     }
+  }
+
+  .as-sortable-placeholder {
+    margin-left: $grid-gutter-width / 2;
+    margin-right: $grid-gutter-width / 2;
+  }
+
+  &.as-sortable-drag .widget {
+    width: 100% !important;
+    flex: 1 1 auto;
   }
 }
 

@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div class="widgets"
+        <div class="row widgets"
              as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
              is-disabled="!authorizedWidget('move')"
              ng-model="widgets">
