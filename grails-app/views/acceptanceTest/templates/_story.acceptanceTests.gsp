@@ -104,18 +104,18 @@
                          tabindex="0"
                          ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>
                 </div>
-                <div class="btn-toolbar"
+                <div class="btn-toolbar justify-content-end"
                      ng-if="formHolder.editing">
-                    <button class="btn btn-primary float-right"
+                    <button class="btn btn-secondary"
+                            ng-click="resetAcceptanceTestForm()"
+                            type="button">
+                        ${message(code: 'is.button.cancel')}
+                    </button>
+                    <button class="btn btn-primary"
                             ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid || application.submitting"
                             ng-click="update(editableAcceptanceTest, selected)"
                             type="submit">
                         ${message(code: 'default.button.update.label')}
-                    </button>
-                    <button class="btn btn-secondary float-right"
-                            ng-click="resetAcceptanceTestForm()"
-                            type="button">
-                        ${message(code: 'is.button.cancel')}
                     </button>
                 </div>
             </form>

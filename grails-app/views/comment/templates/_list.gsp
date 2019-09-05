@@ -80,18 +80,18 @@
                      tabindex="0"
                      ng-bind-html="editableComment.body_html"></div>
             </div>
-            <div class="btn-toolbar"
+            <div class="btn-toolbar justify-content-end"
                  ng-if="formHolder.editing">
-                <button class="btn btn-primary float-right"
+                <button class="btn btn-secondary"
+                        ng-click="resetCommentForm()"
+                        type="button">
+                    ${message(code: 'is.button.cancel')}
+                </button>
+                <button class="btn btn-primary"
                         ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid || application.submitting"
                         ng-click="update(editableComment, selected)"
                         type="submit">
                     ${message(code: 'default.button.update.label')}
-                </button>
-                <button class="btn btn-secondary float-right"
-                        ng-click="resetCommentForm()"
-                        type="button">
-                    ${message(code: 'is.button.cancel')}
                 </button>
             </div>
         </form>
