@@ -87,7 +87,25 @@
 
 .task-widget .sticky-notes.grid-group {
   padding: 0;
-  margin: 0 (-$is-sticky-note-spacer) (-$is-sticky-note-spacer) (-$is-sticky-note-spacer);
+  margin: 0 (-$is-sticky-note-spacer) 0.3125rem (-$is-sticky-note-spacer);
+}
+
+.widget-backlogChart {
+  svg {
+    margin-top: -14px;
+  }
+
+  .caption {
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    position: absolute;
+    text-align: center;
+  }
+}
+
+.widget-notes .markitup-preview {
+  max-height: 184px;
 }
 
 ////////////////////

@@ -1227,20 +1227,6 @@ $widget-card-header-height: 42px;
 .widgets {
   padding: $is-spacer-x;
 
-  .widget-backlogChart {
-    svg {
-      margin-top: -18px;
-    }
-
-    .caption {
-      left: 0;
-      right: 0;
-      bottom: 10px;
-      position: absolute;
-      text-align: center;
-    }
-  }
-
   .widget .card, .as-sortable-placeholder {
     border-radius: 0.375rem;
     margin-bottom: $grid-gutter-width;
@@ -1257,6 +1243,7 @@ $widget-card-header-height: 42px;
       }
 
       .card-body {
+        padding-top: 0.5rem;
         overflow: auto;
         border-radius: 0;
         box-shadow: none;
