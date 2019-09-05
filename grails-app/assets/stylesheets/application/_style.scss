@@ -1104,9 +1104,9 @@ body.simple-without-ng-layout {
     stroke-width: 3px;
   }
 
-  text {
+  text, &.nv-noData {
     font-family: $font-family-base;
-    fill: $is-text-color-alt;
+    fill: $is-text-color-alt !important;
 
     &.nv-axislabel, &.nv-legend-text {
       fill: $is-text-color;
@@ -1117,6 +1117,16 @@ body.simple-without-ng-layout {
   .nv-axis path, .nv-axis line {
     fill: $is-chart-lines-axis;
     stroke: $is-chart-lines-axis;
+  }
+
+  &.nv-pie {
+    path {
+      stroke: $is-bg-color;
+    }
+
+    .nv-pie-title {
+      fill: $is-text-color-alt;
+    }
   }
 }
 
@@ -1216,6 +1226,20 @@ $widget-card-header-height: 42px;
 
 .widgets {
   padding: $is-spacer-x;
+
+  .widget-backlogChart {
+    svg {
+      margin-top: -18px;
+    }
+
+    .caption {
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      position: absolute;
+      text-align: center;
+    }
+  }
 
   .widget .card, .as-sortable-placeholder {
     border-radius: 0.375rem;
