@@ -75,6 +75,10 @@
 
     .home-project {
       box-shadow: $is-shadow;
+
+      .project-stats {
+        font-size: $is-font-size-sm;
+      }
     }
 
     .home-project-add {

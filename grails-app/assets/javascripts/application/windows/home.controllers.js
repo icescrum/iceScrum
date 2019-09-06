@@ -32,7 +32,7 @@ controllers.controller('homeCtrl', ['$scope', '$controller', 'PushService', 'Ses
     $scope.projectCreationEnabled = isSettings.projectCreationEnabled || Session.admin();
     $scope.projectsLoaded = false;
     $scope.projects = [];
-    ProjectService.listByUser({count: 9, light: true}).then(function(projectsAndCount) {
+    ProjectService.listByUser({light: true}).then(function(projectsAndCount) {
         $scope.projectsLoaded = true;
         $scope.projects = projectsAndCount.projects;
     });

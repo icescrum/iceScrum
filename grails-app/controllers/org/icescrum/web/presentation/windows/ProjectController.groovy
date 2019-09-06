@@ -636,8 +636,8 @@ class ProjectController implements ControllerErrorHandler {
 
     private void lightProjectMarshaller(def options) {
         request.marshaller = [
-                project  : [excludeAll: true, overrideInclude: true, include: ['pkey', 'name', 'portfolio']],
-                portfolio: [excludeAll: true, overrideInclude: true,]
+                project  : [excludeAll: true, dontExclude: ['pkey', 'name', 'portfolio', 'stories', 'releases'], overrideInclude: true, include: ['team']],
+                portfolio: [excludeAll: true, overrideInclude: true]
         ]
         if (options != true && options != "true") {
             request.marshaller.project.include.addAll(options.tokenize(','))

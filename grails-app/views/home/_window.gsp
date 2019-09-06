@@ -64,9 +64,16 @@
             </div>
             <div class="home-projects">
                 <div class="home-project d-flex justify-content-between"
-                     ng-repeat="project in projects">
-                    <div>
-                        <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
+                     ng-repeat="project in projects | search">
+                    <div class="d-flex flex-column justify-content-between w-100">
+                        <div>
+                            <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
+                            {{ ::project.team.name }}
+                        </div>
+                        <div class="project-stats d-flex">
+                            <div class="mr-3"><strong>{{ ::project.stories_count }}</strong> ${message(code: 'todo.is.ui.stories')}</div>
+                            <div><strong>{{ ::project.releases_count }}</strong> ${message(code: 'todo.is.ui.releases')}</div>
+                        </div>
                     </div>
                     <div>
                         <a href="{{:: getProjectUrl(project, 'backlog') }}"
