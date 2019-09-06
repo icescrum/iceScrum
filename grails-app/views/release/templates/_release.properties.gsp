@@ -172,7 +172,7 @@
         </div>
         <label>${message(code: 'is.backlogelement.attachment')} {{ release.attachments_count > 0 ? '(' + release.attachments_count + ')' : '' }}</label>
         <div class="attachments attachments-bordered">
-            <div ng-if="authorizedRelease('upload', release)" class="upload-and-apps row">
+            <div ng-if="authorizedRelease('upload', release)" ng-controller="attachmentNestedCtrl" class="upload-and-apps row">
                 <div class="upload-file col-6">
                     <span class="attachment-icon"></span><span flow-btn class="link">${message(code: 'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code: 'todo.is.ui.attachment.drop')}</span>
                 </div>
