@@ -20,51 +20,49 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="col-md-12">
-    <div class="form-group">
-        <label>${message(code: 'is.project')}</label>
-        <ui-select class="form-control"
-                   search-enabled="true"
-                   append-to-body="true"
-                   ng-change="projectChanged()"
-                   ng-model="holder.project">
-            <ui-select-match placeholder="${message(code: 'is.ui.widget.project.no')}">{{ $select.selected.name }}</ui-select-match>
-            <ui-select-choices repeat="proj in projects track by $index"
-                               refresh="refreshProjects($select.search)"
-                               refresh-delay="150">{{proj.name}}</ui-select-choices>
-        </ui-select>
-    </div>
-    <div ng-if="holder.project"
-         ng-controller="projectChartCtrl"
-         class="form-group">
-        <label>${message(code: 'is.ui.widget.chart.chart')}</label>
-        <ui-select class="form-control"
-                   search-enabled="true"
-                   append-to-body="true"
-                   ng-change="chartChanged()"
-                   ng-model="holder.chart">
-            <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
-            <ui-select-choices group-by="'group'"
-                               refresh="initChartTypeSelected(projectChartEntries)"
-                               repeat="chart in projectChartEntries">{{chart.name}}</ui-select-choices>
-        </ui-select>
-    </div>
-    <div class="form-group">
-        <label>${message(code: 'is.ui.widget.height')}</label>
-        <ui-select class="form-control"
-                   append-to-body="true"
-                   ng-model="widget.settings.height">
-            <ui-select-match>{{ $select.selected }}</ui-select-match>
-            <ui-select-choices repeat="height in heights">{{ height }}</ui-select-choices>
-        </ui-select>
-    </div>
-    <div class="form-group">
-        <label>${message(code: 'is.ui.widget.width')}</label>
-        <ui-select class="form-control"
-                   append-to-body="true"
-                   ng-model="widget.settings.width">
-            <ui-select-match>{{ $select.selected }}</ui-select-match>
-            <ui-select-choices repeat="width in widths">{{ width }}</ui-select-choices>
-        </ui-select>
-    </div>
+<div class="form-group">
+    <label>${message(code: 'is.project')}</label>
+    <ui-select class="form-control"
+               search-enabled="true"
+               append-to-body="true"
+               ng-change="projectChanged()"
+               ng-model="holder.project">
+        <ui-select-match placeholder="${message(code: 'is.ui.widget.project.no')}">{{ $select.selected.name }}</ui-select-match>
+        <ui-select-choices repeat="proj in projects track by $index"
+                           refresh="refreshProjects($select.search)"
+                           refresh-delay="150">{{proj.name}}</ui-select-choices>
+    </ui-select>
+</div>
+<div ng-if="holder.project"
+     ng-controller="projectChartCtrl"
+     class="form-group">
+    <label>${message(code: 'is.ui.widget.chart.chart')}</label>
+    <ui-select class="form-control"
+               search-enabled="true"
+               append-to-body="true"
+               ng-change="chartChanged()"
+               ng-model="holder.chart">
+        <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
+        <ui-select-choices group-by="'group'"
+                           refresh="initChartTypeSelected(projectChartEntries)"
+                           repeat="chart in projectChartEntries">{{chart.name}}</ui-select-choices>
+    </ui-select>
+</div>
+<div class="form-group">
+    <label>${message(code: 'is.ui.widget.height')}</label>
+    <ui-select class="form-control"
+               append-to-body="true"
+               ng-model="widget.settings.height">
+        <ui-select-match>{{ $select.selected }}</ui-select-match>
+        <ui-select-choices repeat="height in heights">{{ height }}</ui-select-choices>
+    </ui-select>
+</div>
+<div class="form-group">
+    <label>${message(code: 'is.ui.widget.width')}</label>
+    <ui-select class="form-control"
+               append-to-body="true"
+               ng-model="widget.settings.width">
+        <ui-select-match>{{ $select.selected }}</ui-select-match>
+        <ui-select-choices repeat="width in widths">{{ width }}</ui-select-choices>
+    </ui-select>
 </div>

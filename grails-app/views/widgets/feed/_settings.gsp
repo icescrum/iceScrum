@@ -39,7 +39,7 @@
         </span>
     </div>
 </div>
-<div ng-show="widget.settings.feeds" class="form-group">
+<div ng-show="widget.settings.feeds.length" class="form-group">
     <label>${message(code: 'is.ui.widget.feed.list')}</label>
     <div class="input-group">
         <ui-select class="form-control"

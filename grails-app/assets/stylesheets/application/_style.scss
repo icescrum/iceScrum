@@ -1240,6 +1240,10 @@ $widget-card-header-height: 42px;
       .card-header {
         height: $widget-card-header-height;
         background: none;
+
+        a {
+          color: $is-text-color-alt;
+        }
       }
 
       .card-body {

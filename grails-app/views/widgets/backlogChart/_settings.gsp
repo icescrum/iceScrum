@@ -20,51 +20,49 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="col-md-12">
-    <div class="form-group">
-        <label for="chartUnit">${message(code: 'is.ui.widget.chart.unit')}</label>
-        <ui-select class="form-control"
-                   name="chartUnit"
-                   append-to-body="true"
-                   ng-model="widget.settings.chartUnit">
-            <ui-select-match>{{ $select.selected | i18n:'BacklogChartUnits' }}</ui-select-match>
-            <ui-select-choices repeat="chartUnit in backlogChartUnits">{{ ::chartUnit | i18n:'BacklogChartUnits' }}</ui-select-choices>
-        </ui-select>
-    </div>
-    <div class="form-group">
-        <label for="chartType">${message(code: 'is.ui.widget.chart.type')}</label>
-        <ui-select class="form-control"
-                   name="chartType"
-                   append-to-body="true"
-                   ng-model="widget.settings.chartType">
-            <ui-select-match>{{ $select.selected | i18n:'BacklogChartTypes' }}</ui-select-match>
-            <ui-select-choices repeat="chartType in backlogChartTypes">{{ ::chartType | i18n:'BacklogChartTypes' }}</ui-select-choices>
-        </ui-select>
-    </div>
-    <div class="form-group">
-        <label>${message(code: 'is.project')}</label>
-        <ui-select class="form-control"
-                   search-enabled="true"
-                   ng-change="projectChanged()"
-                   append-to-body="true"
-                   ng-model="holder.project">
-            <ui-select-match placeholder="${message(code: 'is.ui.widget.project.no')}">{{ $select.selected.name }}</ui-select-match>
-            <ui-select-choices repeat="proj in projects track by $index"
-                               refresh="refreshProjects($select.search)"
-                               refresh-delay="150">{{proj.name}}</ui-select-choices>
-        </ui-select>
-    </div>
-    <div ng-if="holder.project"
-         class="form-group">
-        <label>${message(code: 'is.ui.backlog')}</label>
-        <ui-select class="form-control"
-                   search-enabled="true"
-                   append-to-body="true"
-                   ng-change="backlogChanged()"
-                   ng-model="holder.backlog">
-            <ui-select-match placeholder="${message(code: 'is.ui.widget.backlogChart.no.backlog')}">{{ message($select.selected.name) }}</ui-select-match>
-            <ui-select-choices refresh="refreshBacklogs()"
-                               repeat="backlog in holder.backlogs | filter: {name: $select.search}">{{ message(backlog.name) }}</ui-select-choices>
-        </ui-select>
-    </div>
+<div class="form-group">
+    <label for="chartUnit">${message(code: 'is.ui.widget.chart.unit')}</label>
+    <ui-select class="form-control"
+               name="chartUnit"
+               append-to-body="true"
+               ng-model="widget.settings.chartUnit">
+        <ui-select-match>{{ $select.selected | i18n:'BacklogChartUnits' }}</ui-select-match>
+        <ui-select-choices repeat="chartUnit in backlogChartUnits">{{ ::chartUnit | i18n:'BacklogChartUnits' }}</ui-select-choices>
+    </ui-select>
+</div>
+<div class="form-group">
+    <label for="chartType">${message(code: 'is.ui.widget.chart.type')}</label>
+    <ui-select class="form-control"
+               name="chartType"
+               append-to-body="true"
+               ng-model="widget.settings.chartType">
+        <ui-select-match>{{ $select.selected | i18n:'BacklogChartTypes' }}</ui-select-match>
+        <ui-select-choices repeat="chartType in backlogChartTypes">{{ ::chartType | i18n:'BacklogChartTypes' }}</ui-select-choices>
+    </ui-select>
+</div>
+<div class="form-group">
+    <label>${message(code: 'is.project')}</label>
+    <ui-select class="form-control"
+               search-enabled="true"
+               ng-change="projectChanged()"
+               append-to-body="true"
+               ng-model="holder.project">
+        <ui-select-match placeholder="${message(code: 'is.ui.widget.project.no')}">{{ $select.selected.name }}</ui-select-match>
+        <ui-select-choices repeat="proj in projects track by $index"
+                           refresh="refreshProjects($select.search)"
+                           refresh-delay="150">{{proj.name}}</ui-select-choices>
+    </ui-select>
+</div>
+<div ng-if="holder.project"
+     class="form-group">
+    <label>${message(code: 'is.ui.backlog')}</label>
+    <ui-select class="form-control"
+               search-enabled="true"
+               append-to-body="true"
+               ng-change="backlogChanged()"
+               ng-model="holder.backlog">
+        <ui-select-match placeholder="${message(code: 'is.ui.widget.backlogChart.no.backlog')}">{{ message($select.selected.name) }}</ui-select-match>
+        <ui-select-choices refresh="refreshBacklogs()"
+                           repeat="backlog in holder.backlogs | filter: {name: $select.search}">{{ message(backlog.name) }}</ui-select-choices>
+    </ui-select>
 </div>
