@@ -36,14 +36,14 @@
                 <a ng-if=":: isAttachmentEditable(attachment)"
                    class="btn btn-secondary btn-sm hover-display"
                    ng-click=":: editAttachment(attachment, attachmentable, clazz)"
-                   href>Edit</a>
+                   href>${message(code: 'default.button.edit.label')}</a>
                 <a ng-if=":: authorizedAttachment('update', attachment)"
                    class="btn btn-secondary btn-sm hover-display"
                    ng-click="showEditAttachmentName(attachment, attachmentable)"
                    href>${message(code: 'todo.is.ui.attachment.edit')}</a>
                 <a ng-if=":: isAttachmentDownloadable(attachment)"
                    class="btn btn-secondary btn-sm hover-display"
-                   href="{{:: getUrl(clazz, attachmentable, attachment) }}">Download</a>
+                   href="{{:: getUrl(clazz, attachmentable, attachment) }}">${message(code: 'todo.is.ui.attachment.download')}</a>
                 <a ng-if=":: !isAttachmentDownloadable(attachment)"
                    class="btn btn-secondary btn-sm hover-display"
                    target="_blank"

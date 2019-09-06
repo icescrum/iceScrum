@@ -29,7 +29,7 @@
             <button class="btn btn-secondary btn-sm" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
             <button class="btn btn-secondary btn-sm" ng-click="zoomIn()"><i class="fa fa-search-plus"></i></button>
             <button class="btn btn-secondary btn-sm" ng-click="zoomOut()"><i class="fa fa-search-minus"></i></button>
-            <a href="{{ pdfURL }}" class="btn btn-secondary btn-sm ml-3">download</a>
+            <a href="{{ pdfURL }}" class="btn btn-secondary btn-sm ml-3">${message(code: 'todo.is.ui.attachment.download')}</a>
         </div>
     </div>
     <div class="pdf-viewer mt-2">
@@ -40,7 +40,7 @@
 <script type="text/ng-template" id="attachment.preview.picture.html">
 <is:modal title="{{ title }}">
     <div class="text-right">
-        <a href="{{ srcURL }}" class="btn btn-secondary btn-sm mb-3">Download</a>
+        <a href="{{ srcURL }}" class="btn btn-secondary btn-sm mb-3">${message(code: 'todo.is.ui.attachment.download')}</a>
     </div>
     <div class="text-center mt-2">
         <img ng-src="{{ srcURL }}" style="max-width:100%" title="{{ title }}"/>
