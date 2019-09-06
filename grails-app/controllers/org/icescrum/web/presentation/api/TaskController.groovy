@@ -227,7 +227,7 @@ class TaskController implements ControllerErrorHandler {
         }.sort { -it.state }.take(8).groupBy {
             it.parentProject
         }.collect { project, tasks ->
-            [project: project, tasks: tasks]
+            [project: [class: 'Project', id: project.id, pkey: project.pkey, name: project.name], tasks: tasks]
         }
         render(status: 200, contentType: 'application/json', text: tasksByProject as JSON)
     }
