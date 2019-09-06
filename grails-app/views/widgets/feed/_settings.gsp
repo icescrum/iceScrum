@@ -21,25 +21,27 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="form-group">
-    <label class="col-sm-2">${message(code: 'is.ui.widget.feed.input')}</label>
-    <div class="col-sm-7">
+    <label>${message(code: 'is.ui.widget.feed.input')}</label>
+    <div class="input-group">
         <input autofocus
                name="name"
                class="form-control"
                type="text"
                placeholder="${message(code: 'is.ui.widget.feed.input.add')}"
                ng-model="holder.feedUrl"/>
+        <span class="input-group-append">
+            <button ng-click="add(holder.feedUrl)"
+                    type="button"
+                    ng-disabled="!holder.feedUrl"
+                    class="btn btn-primary btn-sm">
+                ${message(code: 'is.button.add')}
+            </button>
+        </span>
     </div>
-    <button ng-click="add(holder.feedUrl)"
-            type="button"
-            ng-disabled="!holder.feedUrl"
-            class="btn btn-secondary">
-        ${message(code: 'is.button.add')}
-    </button>
 </div>
 <div ng-show="widget.settings.feeds" class="form-group">
-    <label class="col-sm-2">${message(code: 'is.ui.widget.feed.list')}</label>
-    <div class="col-sm-7">
+    <label>${message(code: 'is.ui.widget.feed.list')}</label>
+    <div class="input-group">
         <ui-select class="form-control"
                    ng-model="holder.selected"
                    on-select="onSelect($item, $model)"
@@ -47,11 +49,13 @@
             <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.widget.feed.title.allFeed')}">{{ $select.selected.title }}</ui-select-match>
             <ui-select-choices repeat="feed in widget.settings.feeds">{{feed.title}}</ui-select-choices>
         </ui-select>
+        <span class="input-group-append">
+            <button ng-disabled="disableDeleteButton"
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    ng-click="deleteFeed(holder.selected)">
+                ${message(code: 'default.button.delete.label')}
+            </button>
+        </span>
     </div>
-    <button ng-disabled="disableDeleteButton"
-            type="button"
-            class="btn btn-danger"
-            ng-click="deleteFeed(holder.selected)">
-        ${message(code: 'default.button.delete.label')}
-    </button>
 </div>
