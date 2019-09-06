@@ -59,14 +59,6 @@ controllers.controller('projectDigestChartCtrl', ['$scope', function($scope) {
     };
 }]);
 
-controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
-    $controller('abstractProjectListCtrl', {$scope: $scope});
-    // Init
-    ProjectService.listPublicWidget().then(function(projects) {
-        $scope.projects = projects;
-    });
-}]);
-
 controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {
     $scope.searchUsers = function(val, isPo) {
         return UserService.search(val, true).then(function(users) {

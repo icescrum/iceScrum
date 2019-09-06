@@ -467,36 +467,6 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['permitAll()'])
-    def listPublicWidget() {
-        def publicProjects = Project.withCriteria() {
-            preferences {
-                eq('hidden', false)
-            }
-            not {
-                like("name", "Peetic %")
-            }
-            order("dateCreated", "desc")
-            maxResults(9)
-        }
-        request.marshaller = [
-                project: [
-                        include: ['currentOrNextRelease', 'backlogs', 'allUsers']
-                ],
-                user   : [
-                        excludeAll : true,
-                        overrideAll: true,
-                        include    : ['firstName', 'lastName']
-                ],
-                backlog: [
-                        excludeAll : true,
-                        overrideAll: true,
-                        include    : ['code', 'chartType']
-                ]
-        ]
-        render(status: 200, contentType: 'application/json', text: publicProjects as JSON)
-    }
-
     @Secured(['isAuthenticated()'])
     def listByUser(String term, Boolean paginate, Integer page, Integer count) {
         User user

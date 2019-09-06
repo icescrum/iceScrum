@@ -139,9 +139,6 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
             return data;
         });
     };
-    this.listPublicWidget = function() {
-        return Project.query({action: 'listPublicWidget'}).$promise;
-    };
     this.listByUser = function(params) {
         if (!params) {
             params = {};

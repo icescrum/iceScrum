@@ -185,12 +185,6 @@ widgets = {
             settings.text_html = ServicesUtils.textileToHtml(settings.text)
         }
     }
-    'publicProjects' {
-        height 2
-        width 3
-        secured 'isAuthenticated()'
-        allowDuplicate false
-    }
     'tasks' {
         height 2
         width 2
