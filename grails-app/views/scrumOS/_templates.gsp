@@ -184,7 +184,7 @@
     </script>
 
     <script type="text/ng-template" id="search.context.html">
-    <a class="text-ellipsis">
+    <a class="text-truncate">
         <i class="fa" ng-class="match.model.type | contextIcon" style="color: {{ match.model.color }}"></i> {{ match.model.term }}
     </a>
     </script>
@@ -278,14 +278,14 @@
         <div class="backlogCharts chart float-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
-        <div class="team-name text-ellipsis" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
+        <div class="team-name text-truncate" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
     </div>
     <div class="col-9" style="margin-top:2px">
         <div class="row">
             <ul class="list-inline text-muted col-md-12">
                 <li class="release" ng-if=":: project.currentOrNextRelease">
                     <a href="{{:: project.pkey | projectUrl }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
-                            class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
+                            class="text-truncate">{{:: project.currentOrNextRelease.name }}</span></a>
                 </li>
                 <li class="features" ng-if=":: project.features_count">
                     <a href="{{:: project.pkey | projectUrl }}#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>

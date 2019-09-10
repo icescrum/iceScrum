@@ -55,7 +55,7 @@
                  as-sortable-item>
                 <div class="card-header" as-sortable-item-handle ng-class="{'open': !collapseSectionStatus[$index]}">
                     <div as-sortable-item-handle
-                         class="text-ellipsis"
+                         class="text-truncate"
                          style="display: inline-block; width: 200px">
                         ${message(code: 'todo.is.ui.timeBoxNotesTemplate.section')} {{($index+1) + (config.header ? " - "+config.header : "")}}
                     </div>

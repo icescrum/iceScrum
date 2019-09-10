@@ -113,11 +113,6 @@ $is-state-colors: (
   color: $is-text-color-alt;
 }
 
-%ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 @mixin background-image-retina($file-1x) {
   background-image: url("#{$file-1x}.png");
   @media only screen and (min-resolution: 97dpi), // IE11 & just above my screen density (96dpi) so it is triggered as soon as the view is zoomed in

@@ -33,7 +33,7 @@
         <img ng-src="{{ member | userAvatar }}" height="24" width="24" class="rounded-circle" title="{{ member.username }}">
     </td>
     <td>
-        <span title="{{ member.username + ' (' + member.email + ')' }}" class="text-overflow">{{ member | userFullName }}</span>
+        <span title="{{ member.username + ' (' + member.email + ')' }}" class="text-truncate">{{ member | userFullName }}</span>
         <span ng-show="!member.id"><small>${message(code: 'is.ui.user.will.be.invited')} <i class="fa fa-envelope text-muted"></i></small></span>
     </td>
     <td class="text-right">

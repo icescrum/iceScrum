@@ -38,7 +38,7 @@
                  class="img-fluid"
                  alt="{{:: currentAppDefinition.name }}">
             <div ng-click="openAppDefinition(currentAppDefinition)"
-                 class="text-ellipsis app-name">
+                 class="text-truncate app-name">
                 {{:: currentAppDefinition.name }}
             </div>
         </div>

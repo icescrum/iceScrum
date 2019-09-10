@@ -43,7 +43,7 @@
                     <a ng-click="openAppDefinition(currentAppDefinition)"
                        ng-class="{'active': currentAppDefinition == appDefinition}"
                        href
-                       class="nav-link text-ellipsis">
+                       class="nav-link text-truncate">
                         <div class="app-enabled" ng-if="currentAppDefinition != appDefinition && isEnabledApp(currentAppDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></div>
                         {{:: currentAppDefinition.name }}
                         <div class="app-new" ng-if="currentAppDefinition != appDefinition && currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
