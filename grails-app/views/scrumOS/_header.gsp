@@ -31,6 +31,10 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
+    <div class="announcement announcement-{{:: application.announcement.type }}" ng-if="application.announcement">
+        <strong ng-bind-html="application.announcement.text" class="announcement-text"></strong>
+        <a href class="announcement-hide" ng-click="hideAnnouncement()"><small>${message(code: 'is.ui.announcement.hide')}</small></a>
+    </div>
     <entry:point id="header-before-menu"/>
     <nav id="menu-header"
          class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}"

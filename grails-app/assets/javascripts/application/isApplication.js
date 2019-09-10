@@ -914,6 +914,9 @@ var isApplication = angular.module('isApplication', [
             $rootScope.warning = isSettings.warning;
             $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
             $rootScope.workspaceType = Session.workspaceType;
+            if (isSettings.announcement && isSettings.announcement.code && !$localStorage['hideAnnouncement-' + isSettings.announcement.code]) {
+                $rootScope.application.announcement = isSettings.announcement;
+            }
             if ($rootScope.workspaceType == 'project') {
                 $controller('contextCtrl', {$scope: $rootScope});
             }
@@ -928,6 +931,10 @@ var isApplication = angular.module('isApplication', [
         }
         $rootScope.authenticated = Session.authenticated;
         $rootScope.authorizedApp = AppService.authorizedApp;
+        $rootScope.hideAnnouncement = function() {
+            $localStorage['hideAnnouncement-' + $rootScope.application.announcement.code] = true;
+            $rootScope.application.announcement = null;
+        };
         $rootScope.getProjectFromState = function() {
             return $state.$current.locals.globals.project;
         };

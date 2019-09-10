@@ -1363,3 +1363,40 @@ li.text-danger > a {
   left: 32px;
   font-size: 6px
 }*/
+
+
+.announcement {
+  color: #FFF;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+
+  .announcement-hide {
+    position: absolute;
+    right: 20px;
+  }
+
+  a {
+    color: #FFF;
+  }
+
+  .announcement-text a {
+    text-decoration: underline;
+  }
+
+  &.announcement-warning {
+    background: #FFCC04;
+  }
+
+  &.announcement-info {
+    background: #42A9E0;
+  }
+
+  &.announcement-danger {
+    background: #CC3300;
+  }
+
+  &.announcement-success {
+    background: #009900;
+  }
+}
