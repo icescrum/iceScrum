@@ -65,10 +65,12 @@
             <div class="home-projects">
                 <div class="home-project d-flex justify-content-between"
                      ng-repeat="project in projects | search">
-                    <div class="d-flex flex-column justify-content-between w-100">
+                    <div class="d-flex flex-column justify-content-between w-100 text-truncate-fix2">
                         <div>
-                            <a ng-href="{{:: getProjectUrl(project) }}"><h3>{{ ::project.name }}</h3></a>
-                            {{ ::project.team.name }}
+                            <a ng-href="{{:: getProjectUrl(project) }}">
+                                <h3 class="text-truncate">{{ ::project.name }}</h3>
+                                <div class="text-truncate">{{ ::project.team.name }}</div>
+                            </a>
                         </div>
                         <div class="project-stats d-flex">
                             <div class="mr-3"><strong>{{ ::project.stories_count }}</strong> ${message(code: 'todo.is.ui.stories')}</div>

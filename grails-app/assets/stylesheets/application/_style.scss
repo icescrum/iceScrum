@@ -163,6 +163,10 @@ body {
   width: 1px;
 }
 
+.text-truncate-fix2 {
+  min-width: 0;
+}
+
 .link, .link:hover, .link:visited {
   color: $is-primary-color;
   cursor: pointer;
