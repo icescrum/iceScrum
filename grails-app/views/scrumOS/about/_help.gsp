@@ -1,25 +1,35 @@
 <%@ page import="grails.util.Environment" %>
 <div>
     <g:set var="analytics" value="?utm_source=about&utm_medium=link&utm_campaign=icescrum"/>
-    <p>
-        <strong>${message(code: 'is.dialog.about.version.link')}</strong> : <a href="${version.link.toString() + analytics}" target="_blank">${version.link}</a>
-    </p>
-    <p>
-        <strong>${message(code: 'is.dialog.about.version.pro')}</strong> : <a href="${version.pro.toString() + analytics}" target="_blank">${version.pro}</a>
-    </p>
-    <p>
-        <strong>${message(code: 'is.ui.documentation')}</strong> : <a href="${version.documentation.toString() + analytics}" target="_blank">${version.documentation}</a>
-    </p>
-    <p>
-        <strong>${message(code: 'is.ui.documentation.getting.started')}</strong> : <a href="${version.gettingStarted.toString() + analytics}" target="_blank">${version.gettingStarted}</a>
-    </p>
-    <p>
-        <strong>${message(code: 'is.dialog.about.version.forum.link')}</strong> : <a href="${version.forum.toString() + analytics}" target="_blank">${version.forum}</a>
-    </p>
-    <br/>
-    <h4>${message(code: 'is.dialog.about.version.build.title')}</h4>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <td>${message(code: 'is.dialog.about.version.link')}</td>
+                    <td><a href="${version.link.toString() + analytics}" target="_blank">${version.link}</a></td>
+                </tr>
+                <tr>
+                    <td>${message(code: 'is.dialog.about.version.pro')}</td>
+                    <td><a href="${version.pro.toString() + analytics}" target="_blank">${version.pro}</a></td>
+                </tr>
+                <tr>
+                    <td>${message(code: 'is.ui.documentation')}</td>
+                    <td><a href="${version.documentation.toString() + analytics}" target="_blank">${version.documentation}</a></td>
+                </tr>
+                <tr>
+                    <td>${message(code: 'is.ui.documentation.getting.started')}</td>
+                    <td><a href="${version.gettingStarted.toString() + analytics}" target="_blank">${version.gettingStarted}</a></td>
+                </tr>
+                <tr>
+                    <td>${message(code: 'is.dialog.about.version.forum.link')}</td>
+                    <td><a href="${version.forum.toString() + analytics}" target="_blank">${version.forum}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h4 class="mb-2">${message(code: 'is.dialog.about.version.build.title')}</h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm">
             <tbody>
                 <tr>
                     <td><strong>${message(code: 'is.dialog.about.version.appVersion')}</strong></td>
