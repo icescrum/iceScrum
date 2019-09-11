@@ -38,9 +38,9 @@
                                      ng-src="{{ currentUser | userAvatar }}"
                                      height="37px"
                                      width="37px"/>
-                                <div class="media-body">
-                                    <div>{{ (currentUser | userFullName) }}</div>
-                                    <div class="text-muted profile-subtitle">
+                                <div class="media-body text-truncate-fix2">
+                                    <div class="text-truncate">{{ (currentUser | userFullName) }}</div>
+                                    <div class="text-muted profile-subtitle text-truncate">
                                         <div>{{currentUser.email}}</div>
                                         <entry:point id="user-profile-panel"/>
                                     </div>
