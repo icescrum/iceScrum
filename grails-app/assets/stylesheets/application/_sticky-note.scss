@@ -797,8 +797,9 @@ $acceptance-test-states: tocheck, success, failed;
 
     .sticky-note-tags {
       height: 1.5rem;
-      line-height: 1.17;
+      line-height: 1.4;
       margin-bottom: 0;
+      margin-top: -2px;
     }
 
     .sticky-note-state-progress {
