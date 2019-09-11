@@ -43,7 +43,7 @@
 <div class="alert bg-warning mb-3" role="alert" ng-if="portfolio.projects.length >= 10">
     ${message(code: 'is.ui.portfolio.limit.projects')}
 </div>
-<table class="table table-striped table-sm" ng-if="portfolio.projects.length > 0">
+<table class="table table-striped" ng-if="portfolio.projects.length > 0">
     <thead>
         <th>${message(code: 'is.project.name')}</th>
         <th>${message(code: 'is.project.startDate')}</th>

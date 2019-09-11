@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.table.multiple.sum.html">
-<div class="table-responsive table-sm">
+<div class="table-responsive">
     <table class="table">
         <thead>
             <th colspan="2">${message(code: 'todo.is.ui.story.multiple.table.title')}</th>

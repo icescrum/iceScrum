@@ -2,7 +2,7 @@
 <div>
     <g:set var="analytics" value="?utm_source=about&utm_medium=link&utm_campaign=icescrum"/>
     <div class="table-responsive">
-        <table class="table table-sm">
+        <table class="table">
             <tbody>
                 <tr>
                     <td>${message(code: 'is.dialog.about.version.link')}</td>
@@ -29,7 +29,7 @@
     </div>
     <h4 class="mb-2">${message(code: 'is.dialog.about.version.build.title')}</h4>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm">
+        <table class="table table-bordered table-striped">
             <tbody>
                 <tr>
                     <td><strong>${message(code: 'is.dialog.about.version.appVersion')}</strong></td>

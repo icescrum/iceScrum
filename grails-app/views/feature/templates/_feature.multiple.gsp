@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <br/>
-                <div class="table-responsive table-sm">
+                <div class="table-responsive">
                     <table class="table">
                         <tr><td>${message(code: 'is.feature.value')}</td><td>{{ sumValues(features) }}</td></tr>
                         <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ sumStories(features) }}</td></tr>

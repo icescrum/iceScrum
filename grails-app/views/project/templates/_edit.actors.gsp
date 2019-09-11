@@ -64,7 +64,7 @@
             </span>
         </div>
     </div>
-    <table ng-if="actors.length" class="table table-striped table-sm">
+    <table ng-if="actors.length" class="table table-striped">
         <thead>
             <tr>
                 <th></th>

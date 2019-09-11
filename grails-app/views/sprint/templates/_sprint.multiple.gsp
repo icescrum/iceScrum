@@ -52,7 +52,7 @@
     </div>
     <div class="details-no-tab">
         <div class="card-body">
-            <div class="table-responsive table-sm">
+            <div class="table-responsive">
                 <table class="table">
                     <tr><td>${message(code: 'is.release')}</td><td>{{ release.name }}</td></tr>
                     <tr><td>${message(code: 'todo.is.ui.sprint.multiple.startDate')}</td><td>{{ startDate | dayShort }}</td></tr>
