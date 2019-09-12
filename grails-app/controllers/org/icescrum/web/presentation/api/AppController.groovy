@@ -39,7 +39,7 @@ class AppController implements ControllerErrorHandler {
     def definitions() {
         def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
             Map marshalledAppDefinition = appDefinition.properties.clone()
-            ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer', 'isAvailableForServer'].each { k ->
+            ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer', 'isAvailableForServer', 'reportUsageData'].each { k ->
                 marshalledAppDefinition.remove(k)
             }
             ['name', 'baseline', 'description'].each { k ->
