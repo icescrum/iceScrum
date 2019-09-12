@@ -923,6 +923,18 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
+// User profile
+////////////////////
+
+.user-avatars img {
+  @extend .rounded-circle;
+  width: 36px;
+  height: 36px;
+  margin: 4px;
+
+}
+
+////////////////////
 // Other
 ////////////////////
 

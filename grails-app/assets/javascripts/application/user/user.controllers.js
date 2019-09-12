@@ -48,7 +48,7 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
     $scope.refreshAvatar = function(user) {
         var url;
         var avatar = user.avatar;
-        var avatarImg = angular.element('#user-avatar').find('img');
+        var avatarImg = angular.element('.user-avatars').find('img');
         if (avatar == 'gravatar') {
             url = user.email ? "https://secure.gravatar.com/avatar/" + $.md5(user.email) : null;
         } else if (avatar == 'custom') {

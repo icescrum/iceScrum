@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-half">
                         <label for="userAvatar">${message(code: 'is.user.avatar')}</label>
-                        <div id="user-avatar" class="form-control-plaintext">
+                        <div class="user-avatars form-control-plaintext">
                             <div class="col-md-12">
                                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
                                     <img ng-click="editableUser.avatar = 'gravatar'"
@@ -69,10 +69,11 @@
                                      ng-class="{'selected': editableUser.avatar == 'admin-ico.png' }"
                                      src="${asset.assetPath(src: 'avatars/admin-ico.png')}"/>
                                 <div class="choose-file">
-                                    <span ng-class="{'hide': editableUser.avatar == 'custom' }"
-                                          flow-btn class="btn btn-secondary"><i class="fa fa-photo"></i></span>
+                                    <span ng-hide="editableUser.avatar == 'custom'"
+                                          flow-btn class="btn btn-secondary btn-sm"><i class="fa fa-photo"></i></span>
                                     <img flow-btn
-                                         ng-class="{'selected': editableUser.avatar == 'custom', 'hide': editableUser.avatar != 'custom' }"
+                                         ng-hide="editableUser.avatar != 'custom'"
+                                         ng-class="{'selected': editableUser.avatar == 'custom'}"
                                          flow-img="$flow.files[0] ? $flow.files[0] : null"/>
                                 </div>
                             </div>
