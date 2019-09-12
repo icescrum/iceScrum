@@ -114,13 +114,13 @@ body {
 ////////////////////
 .avatar {
   position: relative;
-  border-radius: 50% !important;
+  @extend .rounded-circle;
   line-height: 0;
 
   &.user-online::after {
     background-color: $is-green;
     border: 2px solid $is-bg-color;
-    border-radius: 50%;
+    @extend .rounded-circle;
     height: 9px;
     left: 72%;
     position: absolute;
@@ -131,11 +131,11 @@ body {
   }
 
   img {
-    border-radius: 50% !important;
+    @extend .rounded-circle;
   }
 
   &.role-sm:before, &.role-po:before, &.role-po-sm:before {
-    border-radius: 50%;
+    @extend .rounded-circle;
     z-index: 1;
     content: " ";
     width: 18px;
