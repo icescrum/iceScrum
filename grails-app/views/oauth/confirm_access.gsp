@@ -34,7 +34,7 @@
                     </div>
                     <h2 class="text-center">${message(code: 'is.ui.oauth.authorize', args: [client.additionalInformation.clientName])}</h2>
                     <div class="d-flex pt-3 pbs-3 justify-content-start">
-                        <img src="${ApplicationSupport.serverURL() + '/user/avatar/' + user.id}" class="user-avatar mr-2"/>
+                        <img src="${ApplicationSupport.serverURL() + '/user/avatar/' + user.id}" class="oauth-avatar mr-2"/>
                         <div>
                             ${message(code: 'is.ui.oauth.by', args: [client.additionalInformation.clientName, client.additionalInformation.clientOwnerUrl, client.additionalInformation.clientOwner])}<br/>
                             ${message(code: 'is.ui.oauth.want.access', args: [user.username])}

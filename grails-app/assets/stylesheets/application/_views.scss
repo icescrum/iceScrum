@@ -634,7 +634,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     max-width: 500px;
   }
 
-  .user-avatar {
+  .oauth-avatar {
     height: 44px;
   }
 }
@@ -976,4 +976,10 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     padding-left: 0.5rem;
     padding-right: 0;
   }
+}
+
+.about-legal {
+  font-size: $is-font-size-sm;
+  max-height: 450px;
+  overflow: auto;
 }
