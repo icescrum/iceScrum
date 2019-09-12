@@ -32,7 +32,9 @@
             <g:render template="/${controllerName}/about/help" model="[version: about.version, versionNumber: versionNumber, server: server, configLocation: configLocation]"/>
         </uib-tab>
         <uib-tab index="12" heading="${message(code: 'is.dialog.about.legal')}">
-            ${about.license.text().encodeAsNL2BR()}
+            <div class="about-legal">
+                ${about.license.text().encodeAsNL2BR()}
+            </div>
         </uib-tab>
         <entry:point id="about-last-tab"/>
     </uib-tabset>
