@@ -80,6 +80,22 @@
                       name="description"
                       ng-model="editableTask.description"></textarea>
         </div>
+        <div class="form-group"
+             ng-if="showResponsible()">
+            <label for="responsible" class="d-flex align-items-center justify-content-between">
+                ${message(code: 'is.task.responsible')}
+                <entry:point id="task-properties-inside-responsible"/>
+            </label>
+            <div class="d-flex">
+                <div class="avatar {{ editableTask.responsible | userColorRoles }} mr-2">
+                    <img ng-src="{{ editableTask.responsible | userAvatar }}" height="32px"/>
+                </div>
+                <input class="form-control"
+                       disabled="disabled"
+                       type="text"
+                       value="{{ editableTask.responsible | userFullName }}"/>
+            </div>
+        </div>
         <entry:point id="task-properties-middle"/>
         <div class="form-group"
              ng-if="showTags">
@@ -107,7 +123,7 @@
             <div class="form-half">
                 <label for="estimation" class="d-flex align-items-center justify-content-between">
                     <div>${message(code: 'is.task.estimation')}</div>
-                    <entry:point id="task-estimation-after-label"/>
+                    <entry:point id="task-properties-inside-estimation"/>
                 </label>
                 <div class="input-group">
                     <span class="input-group-prepend">
