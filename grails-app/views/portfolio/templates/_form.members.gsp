@@ -23,9 +23,9 @@
 <script type="text/ng-template" id="form.members.portfolio.html">
 <p class="form-text">${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}</p>
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-4 mb-3">
         <label for="businessOwners.search">${message(code: 'todo.is.ui.select.portfolio.businessOwner')}</label>
-        <p class="input-group">
+        <div class="input-group">
             <input autocomplete="off"
                    type="text"
                    name="businessOwners.search"
@@ -44,7 +44,7 @@
                     <i class="fa" ng-class="{ 'fa-search': !searchingBo, 'fa-refresh':searchingBo }"></i>
                 </span>
             </span>
-        </p>
+        </div>
     </div>
     <div class="col-sm-8">
         <label ng-if="portfolio.businessOwners.length">${message(code: 'is.ui.portfolio.businessOwners')}</label>
@@ -54,9 +54,9 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-4 mb-3">
         <label for="stakeHolders.search">${message(code: 'todo.is.ui.select.portfolio.stakeholder')}</label>
-        <p class="input-group">
+        <div class="input-group">
             <input autocomplete="off"
                    type="text"
                    name="stakeHolder.search"
@@ -75,7 +75,7 @@
                     <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
                 </span>
             </span>
-        </p>
+        </div>
     </div>
     <div class="col-sm-8">
         <label ng-if="portfolio.stakeHolders.length">${message(code: 'is.ui.portfolio.stakeholders')}</label>

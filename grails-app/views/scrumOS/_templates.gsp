@@ -178,8 +178,8 @@
             </div>
         </div>
     </div>
-    <div class="empty-content" ng-show="groupedUserActivities != undefined && groupedUserActivities.length == 0">
-        <small>${message(code: 'todo.is.ui.history.empty')}</small>
+    <div class="empty-content form-text" ng-show="groupedUserActivities != undefined && groupedUserActivities.length == 0">
+        ${message(code: 'todo.is.ui.history.empty')}
     </div>
     </script>
 

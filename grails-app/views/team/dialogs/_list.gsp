@@ -57,10 +57,10 @@
         </div>
         <div class="col-sm-9 modal-split-right" ng-switch="teamSelected()">
             <div ng-switch-default>
-                <div class="form-text">
+                <p class="form-text">
                     ${message(code: 'is.ui.team.help')}
                     <documentation doc-url="roles-teams-projects"/>
-                </div>
+                </p>
                 <form ng-submit="save(newTeam)"
                       name="formHolder.newTeamForm"
                       show-validation

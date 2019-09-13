@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="wizard.members.list.html">
 <tr>
     <td>
-        <a class="btn btn-danger btn-sm btn-model"
+        <a class="btn btn-link text-danger btn-sm btn-model"
            href
            ng-model="foo" %{-- Hack to make form dirty --}%
            ng-click="removeTeamMember(member)"
@@ -32,7 +32,7 @@
         </a>
         <img ng-src="{{ member | userAvatar }}" height="24" width="24" class="rounded-circle" title="{{ member.username }}">
     </td>
-    <td>
+    <td class="align-middle">
         <span title="{{ member.username + ' (' + member.email + ')' }}" class="text-truncate">{{ member | userFullName }}</span>
         <span ng-show="!member.id"><small>${message(code: 'is.ui.user.will.be.invited')} <i class="fa fa-envelope text-muted"></i></small></span>
     </td>

@@ -29,7 +29,7 @@
       ng-submit='update(project)'
       name="formHolder.editProjectForm">
     <entry:point id="project-edit-administration"/>
-    <h4>${message(code: "is.project.preferences.project.stakeHolderAccess")}</h4>
+    <h4 class="mb-2">${message(code: "is.project.preferences.project.stakeHolderAccess")}</h4>
     <table class="table table-striped" ng-class="{'disabled': !stakeHolderViewsFormEnabled}">
         <tr>
             <th ng-class="{'text-muted': !stakeHolderViewsFormEnabled}">${message(code: 'is.project.preferences.project.stakeHolderRestrictedViews')}</th>
@@ -40,7 +40,7 @@
             <td class="text-right"><input type="checkbox" name="view.hidden" ng-model="view.hidden" ng-disabled="!stakeHolderViewsFormEnabled"></td>
         </tr>
     </table>
-    <h4>${message(code: "is.ui.danger.zone")}</h4>
+    <h4 class="mb-2">${message(code: "is.ui.danger.zone")}</h4>
     <div class="btn-toolbar">
         <button ng-if="authorizedProject('delete', project)"
                 type="button"

@@ -22,12 +22,12 @@
 --}%
 
 <script type="text/ng-template" id="form.members.project.html">
-<h4>${message(code: "todo.is.ui.project.members")}</h4>
+<h4 class="mt-2">${message(code: "todo.is.ui.project.members")}</h4>
 <p class="form-text">${message(code: 'todo.is.ui.project.members.help')}</p>
 <div class="row">
-    <div class="col-sm-4" ng-if="projectMembersEditable(project)">
+    <div class="col-sm-4 mb-3" ng-if="projectMembersEditable(project)">
         <label for="productOwners.search">${message(code: 'todo.is.ui.select.productowner')}</label>
-        <p class="input-group">
+        <div class="input-group">
             <input autocomplete="off"
                    type="text"
                    name="productOwner.search"
@@ -46,7 +46,7 @@
                     <i class="fa" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo }"></i>
                 </span>
             </span>
-        </p>
+        </div>
     </div>
     <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
         <label ng-if="project.productOwners.length">${message(code: 'todo.is.ui.project.productOwners')} ({{ project.productOwners.length }})</label>
@@ -56,9 +56,9 @@
     </div>
 </div>
 <div class="row" ng-show="project.preferences.hidden">
-    <div class="col-sm-4" ng-if="projectMembersEditable(project)">
+    <div class="col-sm-4 mb-3" ng-if="projectMembersEditable(project)">
         <label for="stakeHolders.search">${message(code: 'todo.is.ui.select.stakeholder')}</label>
-        <p class="input-group">
+        <div class="input-group">
             <input autocomplete="off"
                    type="text"
                    name="stakeHolder.search"
@@ -77,7 +77,7 @@
                     <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
                 </span>
             </span>
-        </p>
+        </div>
     </div>
     <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
         <label ng-if="project.stakeHolders.length">${message(code: 'todo.is.ui.project.stakeholders')} ({{ project.stakeHolders.length }})</label>

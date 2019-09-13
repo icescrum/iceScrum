@@ -37,7 +37,7 @@
     </div>
     <div class="col-sm-6 form-group" ng-class="{'has-error': teamCreatable() && team.name && formHolder.noTeamAvailable}">
         <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
-        <p class="input-group">
+        <div class="input-group">
             <input autocomplete="off"
                    type="text"
                    name="team.name"
@@ -62,7 +62,7 @@
                     </i>
                 </span>
             </span>
-        </p>
+        </div>
         <div ng-if="teamCreatable() && team.name && formHolder.noTeamAvailable" class="validation-error text-danger">${message(code: 'todo.is.ui.select.team.taken')}</div>
     </div>
     <div class="col-sm-6 form-group"

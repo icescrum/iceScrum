@@ -99,8 +99,5 @@
             </tr>
         </tbody>
     </table>
-    <div class="empty-content" ng-if="actors.length == 0">
-        ${message(code: 'is.ui.actor.placeholder')}
-    </div>
 </form>
 </script>

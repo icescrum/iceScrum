@@ -21,8 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.practices.project.html">
-<h4>${message(code: "is.dialog.wizard.section.options")}</h4>
-<h5>${message(code: "is.dialog.wizard.section.practices.backlog")}</h5>
+<h4 class="mb-1">${message(code: "is.dialog.wizard.section.practices.backlog")}</h4>
 <div class="row">
     <div class="form-group" ng-class="project.preferences.noEstimation ? 'col-sm-12' : 'col-sm-6'">
         <label for="noEstimation">
@@ -44,7 +43,7 @@
         </ui-select>
     </div>
 </div>
-<h5>${message(code: "is.dialog.wizard.section.practices.sprint")}</h5>
+<h4 class="mb-1">${message(code: "is.dialog.wizard.section.practices.sprint")}</h4>
 <div class="row">
     <div class="form-half">
         <label for="autoDoneStory">
