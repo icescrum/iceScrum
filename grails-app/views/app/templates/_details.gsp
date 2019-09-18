@@ -64,7 +64,7 @@
                    ng-click="searchApp(tag)">{{ tag + ($last ? '' : ', ') }}</a>
             </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-7 row">
             <div class="col-md-{{ 12 / appDefinition.screenshots.length }} app-screenshot"
                  ng-repeat="screenshot in appDefinition.screenshots">
                 <a href
