@@ -934,6 +934,26 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
+// Announcement
+////////////////////
+
+.announcement {
+  text-align: center;
+  padding: 6px;
+  position: relative;
+
+  .announcement-hide {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+  }
+
+  .announcement-text a {
+    text-decoration: underline;
+  }
+}
+
+////////////////////
 // Other
 ////////////////////
 
