@@ -24,6 +24,10 @@
 <g:if test="${workspace && workspace.name == 'project' && workspace.object.preferences.archived}">
     <div class="bg-danger text-center text-danger archived-message"><i class="fa fa-archive"></i> <g:message code="is.ui.${workspace.name}.archived"/></div>
 </g:if>
+<div class="announcement announcement-{{:: application.announcement.type }}" ng-if="application.announcement">
+    <strong ng-bind-html="application.announcement.text" class="announcement-text"></strong>
+    <a href class="announcement-hide" ng-click="hideAnnouncement()"><small>${message(code: 'is.ui.announcement.hide')}</small></a>
+</div>
 <entry:point id="header-before-menu"/>
 <nav class="navbar navbar-light navbar-expand-lg"
      role="navigation">

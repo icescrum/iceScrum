@@ -26,6 +26,7 @@ package org.icescrum.web.presentation
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import grails.util.Metadata
 import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
@@ -135,6 +136,10 @@ class ScrumOSController implements ControllerErrorHandler {
         if (workspace?.name == 'project') {
             onlineMembers = pushService.getOnlineUsers('/stream/app/project-' + workspace.object.id)
         }
+        def announcement = [:]
+        ['code', 'text', 'type'].each {
+            announcement[it] = Metadata.current['app.announcement.' + it]
+        }
         try {
             render(status: 200, template: 'isSettings', model: [workspace      : workspace?.object,
                                                                 user           : springSecurityService.currentUser,
@@ -142,6 +147,7 @@ class ScrumOSController implements ControllerErrorHandler {
                                                                 i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
                                                                 resourceBundles: grailsApplication.config.icescrum.resourceBundles,
                                                                 menus          : menus,
+                                                                announcement   : announcement,
                                                                 defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
                                                                 serverURL      : ApplicationSupport.serverURL(),
                                                                 onlineMembers  : onlineMembers,
