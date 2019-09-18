@@ -144,10 +144,8 @@ $acceptance-test-states: tocheck, success, failed;
     }
   }
 
-  &.sticky-note-type {
-    .sticky-note-type-icon {
-      @include rectangle-background(0.8125rem, 0.875rem);
-    }
+  &.sticky-note-type .sticky-note-type-icon {
+    @include rectangle-background(0.8125rem, 0.875rem);
   }
 }
 
