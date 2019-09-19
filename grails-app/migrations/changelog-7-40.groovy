@@ -22,10 +22,9 @@
 *
 */
 databaseChangeLog = {
-    changeSet(author: "vbarrier", id: "update_task_feature_color") {
+    changeSet(author: "vbarrier", id: "update_task_color") {
         grailsChange {
             change {
-                sql.execute("UPDATE is_feature SET color = '#0067e8' WHERE color = '#2d8ccc'")
                 sql.execute("UPDATE is_task SET color = '#ffcc01' WHERE color = '#f9f157'")
             }
         }
