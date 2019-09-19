@@ -186,7 +186,7 @@
                 <li role="presentation"
                     class="nav-item">
                     <a href
-                       class="nav-link">
+                       class="nav-link active">
                         ${message(code: 'todo.is.ui.tasks')} <span ng-bind-html="story | countAndRemaining"></span>
                     </a>
                 </li>

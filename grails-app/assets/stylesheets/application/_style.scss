@@ -845,6 +845,40 @@ a.link-documentation {
   }
 }
 
+.view.with-details.focused > [ui-view='details'] {
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  top: 0 !important;
+  width: inherit !important;
+  position: absolute;
+
+  .details-header {
+    border-top: 0;
+  }
+
+  .details-content-container {
+    display: flex;
+    flex-direction: row !important;
+
+    .details-content {
+      width: 33%;
+      display: flex !important;
+      flex: 1 1 auto !important;
+
+      > div[ui-view] {
+        border-right: 1px solid $is-border-color;
+      }
+
+      > div[ui-view="details-tab-right"] {
+        border-right: none;
+      }
+    }
+  }
+}
+
 .details-header {
   line-height: 1;
   border-top: solid 1px $is-border-color;
