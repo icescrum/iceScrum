@@ -192,7 +192,7 @@ filters
         return function(originalHex) {
             var originalRgb = ColorService.hexToRgb(originalHex);
             return {
-                'filter': 'drop-shadow(0 42px 48px rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ', 0.2))'
+                'box-shadow': '0px 42px 48px 0px rgba(' + originalRgb[0] + ',' + originalRgb[1] + ',' + originalRgb[2] + ', 0.2)'
             };
         };
     }])

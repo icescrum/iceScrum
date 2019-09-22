@@ -162,7 +162,7 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   .sticky-note-container {
-    filter: none !important; // Override js style
+    box-shadow: none !important; // Override js style
   }
 
   &:not(.list-group-small) .sticky-note-container {
@@ -420,7 +420,7 @@ $acceptance-test-states: tocheck, success, failed;
   }
 
   .sticky-note-container:not(.is-selected):not(:hover) {
-    filter: none !important; // Override js style
+    box-shadow: none !important; // Override js style
   }
 
   .sticky-note {
@@ -584,7 +584,7 @@ $acceptance-test-states: tocheck, success, failed;
     height: $is-story-heigth;
 
     &.sticky-note-container:not(.is-selected):not(:hover) {
-      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.05)) !important; // Override js style
+      box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.05) !important; // Override js style
     }
 
     .sticky-note {
