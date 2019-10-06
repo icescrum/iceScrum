@@ -105,7 +105,7 @@
                  ng-include src="templateWidgetUrl(widget)"
                  id="{{ widget.id }}"
                  ng-controller="widgetCtrl"
-                 class="widget widget-{{ widget.widgetDefinitionId }} widget-height-{{ widget.height }} widget-width-{{ widget.width }}"
+                 class="widget widget-{{ widget.widgetDefinitionId }} widget-height-{{ widget.height? widget.height :'auto' }} widget-width-{{ widget.width }}"
                  ng-repeat="widget in widgets"></div>
         </div>
         <div class="add-widget" ng-if="authorizedWidget('create')">

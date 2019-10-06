@@ -25,6 +25,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.apache.commons.lang.time.DateUtils
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.utils.ServicesUtils
@@ -212,6 +213,33 @@ class TaskController implements ControllerErrorHandler {
         User user = (User) springSecurityService.currentUser
         def copiedTask = taskService.copy(task, user)
         render(status: 200, contentType: 'application/json', text: copiedTask as JSON)
+    }
+
+    @Secured('inProject() and !archivedProject()')
+    def daily(long project, int days) {
+        days = days ?: 1
+
+        def allTasks = Task.where {
+            responsible.id == springSecurityService.currentUser.id &&
+            parentProject.id == project &&
+            backlog != null
+        }.list().findAll {
+            ((Sprint) it.backlog).state in [Sprint.STATE_INPROGRESS] // Doesn't work in the criteria because of the cast so it must be done after
+        }
+
+        def tasksByState = allTasks.groupBy { it.state }
+        def tasksInProgress = tasksByState[Task.STATE_BUSY].findAll { !it.blocked }.sort { it.lastUpdated }
+        def tasksDone = tasksByState[Task.STATE_DONE].findAll { it.doneDate > (new Date() - days) }
+        def tasksBlocked = allTasks.findAll { it.blocked }.sort { it.lastUpdated }
+        def tasksTodo = tasksByState[Task.STATE_WAIT].findAll { it.parentStory?.rank }
+        def dailyByProject = [
+                tasksInProgress: tasksInProgress,
+                tasksBlocked   : tasksBlocked,
+                tasksDone      : tasksDone,
+                tasksTodo      : tasksTodo
+        ]
+
+        render(status: 200, contentType: 'application/json', text: dailyByProject as JSON)
     }
 
     @Secured('isAuthenticated()')

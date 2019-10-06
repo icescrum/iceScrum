@@ -158,6 +158,7 @@
             </div>
         </div>
         <div class="panel-column col-md-6">
+            <entry:point id="project-dashboard-before-charts"/>
             <div class="card project-indicators" ng-controller="chartCtrl">
                 <div class="card-header" ng-controller="projectChartCtrl">
                     <span class="card-title">
@@ -229,7 +230,7 @@
                     </div>
                 </div>
             </div>
-            <entry:point id="project-dashboard-top-right"/>
+            <entry:point id="project-dashboard-before-history"/>
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">

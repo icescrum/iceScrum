@@ -101,6 +101,13 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
+        "/p/$project/task/daily" {
+            controller = 'task'
+            action = [GET: "daily"]
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
         "/p/$project/task/$id" {
             controller = 'task'
             action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
