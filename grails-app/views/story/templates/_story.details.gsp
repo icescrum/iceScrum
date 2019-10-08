@@ -36,6 +36,7 @@
            role="button"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+           tooltip-placement="bottom"
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            href="{{ currentStateUrl(previousStory().id) }}">
@@ -46,6 +47,7 @@
            role="button"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+           tooltip-placement="bottom"
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            href="{{ currentStateUrl(nextStory() ? nextStory().id : story.id) }}">
@@ -56,6 +58,7 @@
            href="{{ toggleFocusUrl() }}"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)"
+           tooltip-placement="bottom"
            hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.window.focus')}">
             <span class="icon icon-expand"></span>
@@ -65,6 +68,7 @@
            href="{{ toggleFocusUrl() }}"
            tabindex="0"
            uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"
+           tooltip-placement="bottom"
            hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.window.unfocus')}">
             <span class="icon icon-compress"></span>
@@ -138,6 +142,7 @@
                     role="presentation"
                     class="nav-item display-on-hover">
                     <a class="nav-link"
+                       ng-class="{'active': $state.params.storyTabId == 'activities'}"
                        uib-dropdown-toggle
                        role="button"
                        aria-haspopup="true"
