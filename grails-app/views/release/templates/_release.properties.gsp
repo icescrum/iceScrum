@@ -143,6 +143,7 @@
                 <div uib-dropdown-menu class="dropdown-menu-right">
                     <a href
                        class="dropdown-item"
+                       ng-class="{'active': chart.id == chartParams.chartName}"
                        ng-repeat="chart in projectCharts.release"
                        ng-click="openChart('release', chart.id, release)">{{ message(chart.name) }}</a>
                 </div>

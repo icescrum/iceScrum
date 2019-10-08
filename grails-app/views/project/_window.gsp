@@ -178,6 +178,7 @@
                                 <span role="presentation" class="dropdown-header">${message(code: 'is.project')}</span>
                                 <a class="dropdown-item"
                                    ng-repeat="chart in projectCharts.project"
+                                   ng-class="{'active': chart.id == chartParams.chartName && chartParams.itemType == 'project'}"
                                    href
                                    ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart', dashboardChartOptions)">
                                     {{ message(chart.name) }}
@@ -185,6 +186,7 @@
                                 <div ng-if="release.id" class="dropdown-divider"></div>
                                 <span ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</span>
                                 <a class="dropdown-item"
+                                   ng-class="{'active': chart.id == chartParams.chartName && chartParams.itemType == 'release'}"
                                    ng-if="release.id"
                                    ng-repeat="chart in projectCharts.release"
                                    href
@@ -194,6 +196,7 @@
                                 <div ng-if="currentOrLastSprint.id" class="dropdown-divider"></div>
                                 <span ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</span>
                                 <a class="dropdown-item"
+                                   ng-class="{'active': chart.id == chartParams.chartName && chartParams.itemType == 'sprint'}"
                                    ng-if="currentOrLastSprint.id"
                                    ng-repeat="chart in projectCharts.sprint"
                                    href

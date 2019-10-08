@@ -118,8 +118,9 @@
                     </button>
                     <div uib-dropdown-menu class="dropdown-menu-right">
                         <a href
-                           ng-repeat="chart in projectCharts.sprint"
                            class="dropdown-item"
+                           ng-class="{'active': chart.id == chartParams.chartName}"
+                           ng-repeat="chart in projectCharts.sprint"
                            ng-click="openChart('sprint', chart.id, sprint)">{{ message(chart.name) }}</a>
                     </div>
                 </div>
