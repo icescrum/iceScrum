@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="feature.new.html">
 <div class="card">
     <div class="details-header">
-        <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
+        <details-layout-buttons remove-ancestor="!$state.includes('feature.**')"/>
     </div>
     <div class="card-header">
         <div class="card-title">

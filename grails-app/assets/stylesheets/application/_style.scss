@@ -955,6 +955,16 @@ a.link-documentation {
   }
 }
 
+.modal-details {
+  .modal-body {
+    padding: 0;
+  }
+
+  .details-header {
+    border-top: none;
+  }
+}
+
 ////////////////////
 // Form
 ////////////////////

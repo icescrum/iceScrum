@@ -51,7 +51,7 @@
            ui-sref=".({sprintId: nextSprint.id})">
             <span class="icon icon-caret-right"></span>
         </a>
-        <details-layout-buttons ng-if="!isModal" remove-ancestor="removeSprintAncestorOnClose"/>
+        <details-layout-buttons remove-ancestor="removeSprintAncestorOnClose"/>
     </div>
     <div class="card-header">
         <div class="card-title">

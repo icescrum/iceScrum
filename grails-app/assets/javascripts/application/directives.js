@@ -971,27 +971,29 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('detailsLayoutButtons', ['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
+}]).directive('detailsLayoutButtons', ['$rootScope', '$state', function($rootScope, $state) {
     return {
         restrict: 'E',
-        scope: {
-            removeAncestor: '='
-        },
         replace: true,
         templateUrl: 'details.layout.buttons.html',
-        link: function(scope) {
+        link: function(scope, element, attrs) {
             // Functions
             scope.closeDetailsViewUrl = function() {
-                var stateName = '^';
-                if ($state.includes('**.tab')) {
-                    stateName += '.^'
+                if (scope.isModal) {
+                    scope.$close();
+                } else {
+                    var stateName = '^';
+                    if ($state.includes('**.tab')) {
+                        stateName += '.^'
+                    }
+                    var removeAncestor = scope.$eval(attrs.removeAncestor);
+                    if (removeAncestor) {
+                        _.times(_.isNumber(removeAncestor) ? parseInt(removeAncestor) : 1, function() {
+                            stateName += '.^';
+                        });
+                    }
+                    return $state.go(stateName);
                 }
-                if (scope.removeAncestor) {
-                    _.times(_.isNumber(scope.removeAncestor) ? parseInt(scope.removeAncestor) : 1, function() {
-                        stateName += '.^';
-                    });
-                }
-                return $state.href(stateName);
             };
         }
     };

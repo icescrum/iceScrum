@@ -73,7 +73,7 @@
            hotkey-description="${message(code: 'is.ui.window.unfocus')}">
             <span class="icon icon-compress"></span>
         </a>
-        <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+        <details-layout-buttons remove-ancestor="true"/>
     </div>
     <div class="card-header">
         <div class="card-title">

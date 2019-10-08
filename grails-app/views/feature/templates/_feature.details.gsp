@@ -52,7 +52,7 @@
            ui-sref=".({featureId: nextFeature.id})">
             <span class="icon icon-caret-right"></span>
         </a>
-        <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
+        <details-layout-buttons remove-ancestor="!$state.includes('feature.**')"/>
     </div>
     <div class="card-header">
         <div class="card-title">

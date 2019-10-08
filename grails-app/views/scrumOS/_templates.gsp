@@ -190,7 +190,7 @@
     </script>
 
     <script type="text/ng-template" id="details.modal.html">
-    <is:modal footer="${false}" title="{{ message('is.' + detailsType) }}" class="modal-details">
+    <is:modal header="${false}" footer="${false}" title="{{ message('is.' + detailsType) }}" class="modal-details">
         <div ui-view="details"></div>
     </is:modal>
     </script>
@@ -206,7 +206,7 @@
 
     <script type="text/ng-template" id="details.layout.buttons.html">
     <span>
-        <a class="btn btn-icon" href="{{ closeDetailsViewUrl() }}"><span class="icon icon-close"></span></a>
+        <a class="btn btn-icon" href ng-click="closeDetailsViewUrl()"><span class="icon icon-close"></span></a>
     </span>
     </script>
 

@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="backlog.details.html">
 <div class="card">
     <div class="details-header">
-        <details-layout-buttons ng-if="!isModal"/>
+        <details-layout-buttons/>
     </div>
     <div class="card-header">
         <div class="card-title">
