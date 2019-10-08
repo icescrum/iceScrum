@@ -435,6 +435,20 @@ form label {
 }
 
 ////////////////////
+// Table
+////////////////////
+
+.table {
+  font-size: $is-font-size-sm;
+
+  &:not(.table-bordered) {
+    thead th, th {
+      border: none;
+    }
+  }
+}
+
+////////////////////
 // Other
 ////////////////////
 
@@ -452,8 +466,4 @@ form label {
       color: white;
     }
   }
-}
-
-.table {
-  font-size: $is-font-size-sm;
 }
