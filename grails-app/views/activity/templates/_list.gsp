@@ -57,16 +57,16 @@
     <div ng-if="(selected.activities.length < selected.activities_total) || allActivities"
          ng-switch="allActivities"
          class="text-center">
-        <button ng-switch-default
-                class="btn btn-secondary"
-                ng-click="activities(selected, true)">
-            <i class="fa fa-plus-square"></i> ${message(code: 'todo.is.ui.history.more')}
-        </button>
-        <button ng-switch-when="true"
-                class="btn btn-secondary"
-                ng-click="activities(selected, false)">
-            <i class="fa fa-minus-square"></i> ${message(code: 'todo.is.ui.history.less')}
-        </button>
+        <span ng-switch-default
+              class="toggle-more"
+              ng-click="activities(selected, true)">
+            ${message(code: 'todo.is.ui.history.more')}
+        </span>
+        <span ng-switch-when="true"
+              class="toggle-more toggle-invert"
+              ng-click="activities(selected, false)">
+            ${message(code: 'todo.is.ui.history.less')}
+        </span>
     </div>
 </div>
 </script>

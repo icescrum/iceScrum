@@ -753,6 +753,11 @@ $state-dot-size-sm: 0.5rem;
     border-bottom: 2px solid;
   }
 
+  &.toggle-invert::after {
+    transform: rotate(225deg);
+    margin-bottom: -3px;
+  }
+
   &:empty::after {
     margin-left: 0;
   }
