@@ -144,15 +144,17 @@
         </div>
     </div>
     <div class="col-sm-12 form-group">
-        <uib-progress class="timeline-bar" max="totalDuration">
-            <uib-bar ng-repeat="sprint in sprints"
-                     class="{{ $last ? 'last-bar' : '' }}"
-                     uib-tooltip-template="'sprint.tooltip.html'"
-                     type="todo"
-                     value="project.preferences.estimatedSprintsDuration">
-                {{ sprint.index }}
-            </uib-bar>
-        </uib-progress>
+        <div class="timeline-bar-container">
+            <uib-progress class="timeline-bar" max="totalDuration">
+                <uib-bar ng-repeat="sprint in sprints"
+                         class="{{ $last ? 'last-bar' : '' }}"
+                         uib-tooltip-template="'sprint.tooltip.html'"
+                         type="todo"
+                         value="project.preferences.estimatedSprintsDuration">
+                    {{ sprint.index }}
+                </uib-bar>
+            </uib-progress>
+        </div>
     </div>
     <div class="col-sm-12 form-group">
         <label for="vision">${message(code: 'is.release.vision')}</label>
