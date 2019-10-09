@@ -458,13 +458,17 @@ form label {
   .btn {
     border: none;
 
+    .text-info {
+      color: $is-primary-color !important;
+    }
+
     &.btn-info {
       background-color: $is-primary-color !important;
-    }
-  }
 
-  .text-info {
-    color: $is-primary-color !important;
+      .text-info {
+        color: $is-text-color !important;
+      }
+    }
   }
 }
 
