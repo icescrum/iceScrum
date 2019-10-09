@@ -32,9 +32,8 @@
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">
-                <span ng-if=":: task.estimation != 0"
-                      ng-click="showEditEstimationModal(task, $event)">
-                    ${message(code: 'is.task.estimation')} <strong>{{:: task.estimation != undefined ? task.estimation : '?' }}</strong>
+                <span ng-if=":: task.estimation != 0">
+                    ${message(code: 'is.task.estimation')} <strong ng-click="showEditEstimationModal(task, $event)">{{:: task.estimation != undefined ? task.estimation : '?' }}</strong>
                 </span>
             </div>
             <a href="{{ link }}">

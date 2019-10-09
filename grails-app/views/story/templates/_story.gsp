@@ -39,14 +39,12 @@
                        href="{{:: openStoryUrl(story.id) }}/tests"></a>
                     |
                 </span>
-                <span ng-if=":: story.state > 1"
-                      ng-click="showEditEffortModal(story, $event)">
-                    ${message(code: 'is.story.effort')} <strong>{{:: story.effort != undefined ? story.effort : '?' }}</strong>
+                <span ng-if=":: story.state > 1">
+                    ${message(code: 'is.story.effort')} <strong ng-click="showEditEffortModal(story, $event)">{{:: story.effort != undefined ? story.effort : '?' }}</strong>
                 </span>
                 <span ng-if=":: story.state > storyStatesByName.SUGGESTED && story.value">|</span>
-                <span ng-click="showEditValueModal(story, $event)"
-                      ng-if=":: story.value">
-                    ${message(code: 'is.story.value')} <strong>{{:: story.value }}</strong>
+                <span ng-if=":: story.value">
+                    ${message(code: 'is.story.value')} <strong ng-click="showEditValueModal(story, $event)">{{:: story.value }}</strong>
                 </span>
             </div>
             <div class="title">{{:: story.name }}</div>
