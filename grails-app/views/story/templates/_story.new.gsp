@@ -35,7 +35,7 @@
             ${message(code: 'is.ui.sandbox.help')}
             <documentation doc-url="features-stories-tasks#stories"/>
         </div>
-        <div class="sticky-notes sticky-notes-standalone grey-sticky-notes grid-group">
+        <div class="sticky-notes size-sm sticky-notes-standalone grey-sticky-notes grid-group">
             <div class="sticky-note-container sticky-note-story">
                 <div sticky-note-color-watch="{{ storyPreview | storyColor }}"
                      class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
@@ -80,6 +80,10 @@
                         <span class="action">
                             <a class="action-link"><span class="action-icon action-icon-menu"></span></a>
                         </span>
+                    </div>
+                    <div class="sticky-note-state-progress">
+                        <div class="state">{{ story.state | i18n:'StoryStates' }}
+                        </div>
                     </div>
                 </div>
             </div>
