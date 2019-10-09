@@ -30,7 +30,7 @@
         <div is-disabled="!isTaskSortableByState(taskEntry.state)"
              as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
              ng-model="taskEntry.tasks">
-            <div ng-repeat="task in taskEntry.tasks" as-sortable-item>
+            <div class="story-task" ng-repeat="task in taskEntry.tasks" as-sortable-item>
                 <div class="row">
                     <div class="col-sm-8">
                         <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle></i>

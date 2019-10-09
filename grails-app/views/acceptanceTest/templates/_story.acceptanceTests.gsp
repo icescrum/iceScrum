@@ -27,6 +27,7 @@
          as-sortable="acceptanceTestSortableOptions | merge: sortableScrollOptions()"
          ng-model="selected.acceptanceTests">
         <div ng-repeat="acceptanceTest in selected.acceptanceTests"
+             class="story-acceptanceTest"
              as-sortable-item ng-controller="acceptanceTestCtrl">
             <form name="formHolder.acceptanceTestForm"
                   ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formEditable() }"

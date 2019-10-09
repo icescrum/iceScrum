@@ -922,6 +922,10 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
+.story-task, .story-acceptanceTest {
+  background: $is-bg-color;
+}
+
 ////////////////////
 // User profile
 ////////////////////
