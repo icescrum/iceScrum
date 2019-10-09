@@ -449,6 +449,26 @@ form label {
 }
 
 ////////////////////
+// Datepicker
+////////////////////
+
+.uib-datepicker-popup {
+  padding: 8px 4px;
+
+  .btn {
+    border: none;
+
+    &.btn-info {
+      background-color: $is-primary-color !important;
+    }
+  }
+
+  .text-info {
+    color: $is-primary-color !important;
+  }
+}
+
+////////////////////
 // Other
 ////////////////////
 
