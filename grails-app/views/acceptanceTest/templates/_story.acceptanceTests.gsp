@@ -35,11 +35,11 @@
                   show-validation
                   novalidate>
                 <div class="row is-form-row form-group align-items-center">
-                    <div class="col-sm-1">
-                        <i class="fa fa-drag-handle" ng-if="authorizedAcceptanceTest('rank', selected)" as-sortable-item-handle></i>
-                        {{:: editableAcceptanceTest.uid }}
+                    <div class="col-sm-1 pr-0 text-nowrap">
+                        <span ng-if="authorizedAcceptanceTest('rank', selected)" as-sortable-item-handle>{{:: editableAcceptanceTest.uid }}</span>
+                        <span ng-if="!authorizedAcceptanceTest('rank', selected)">{{:: editableAcceptanceTest.uid }}</span>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 pr-0">
                         <input required
                                ng-maxlength="255"
                                ng-focus="editForm(true)"
@@ -51,7 +51,7 @@
                                class="form-control"
                                placeholder="${message(code: 'is.ui.backlogelement.noname')}">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 pr-0">
                         <ui-select class="form-control"
                                    ng-click="authorizedAcceptanceTest('updateState', selected) && editForm(true)"
                                    on-select="selectAcceptanceTestState(editableAcceptanceTest, selected)"
@@ -66,7 +66,7 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-1 pr-0 pl-0">
                         <div class="btn-group" ng-show="formDeletable() || formEditable()" uib-dropdown>
                             <button type="button"
                                     class="btn btn-link btn-sm"

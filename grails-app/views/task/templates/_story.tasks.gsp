@@ -33,11 +33,9 @@
             <div class="story-task" ng-repeat="task in taskEntry.tasks" as-sortable-item>
                 <div class="row">
                     <div class="col-sm-8">
-                        <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle></i>
-                        {{:: task.uid }}
-                        <a class="text-accent" ui-sref=".task.details({taskId: task.id})">
-                            {{ task.name }}
-                        </a>
+                        <span ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle>{{:: task.uid }}</span>
+                        <span ng-if="!isTaskSortableByState(taskEntry.state)">{{:: task.uid }}</span>
+                        <a class="text-accent" ui-sref=".task.details({taskId: task.id})">{{ task.name }}</a>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">
                         <span class="small mr-2">{{ task.state | i18n: 'TaskStates' }}</span>
