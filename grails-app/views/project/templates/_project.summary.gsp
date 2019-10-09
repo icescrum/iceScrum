@@ -14,9 +14,9 @@
 </div>
 <div>
     <div class="row project-info">
-        <div class="col-md-4" style="text-align: left;"><i class="fa fa-user"></i> {{ projectMembersCount }} ${message(code: 'todo.is.ui.members')}</div>
-        <div class="col-md-4" style="text-align: center;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${message(code: 'todo.is.ui.stories')}</div>
-        <div class="col-md-4" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${message(code: 'todo.is.ui.releases')}</div>
+        <div class="col-md-4 text-left"><i class="fa fa-user"></i> {{ projectMembersCount }} ${message(code: 'todo.is.ui.members')}</div>
+        <div class="col-md-4 text-center"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${message(code: 'todo.is.ui.stories')}</div>
+        <div class="col-md-4 text-right"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${message(code: 'todo.is.ui.releases')}</div>
     </div>
     <ng-include src="'release.timeline.html'" ng-controller="releaseTimelineCtrl"></ng-include>
     <div class="row release-dates">

@@ -53,8 +53,8 @@
         <div ng-hide="$flow.files.length" class="form-text text-center">
             <g:message code="is.dialog.importProject.choose.description"/>
         </div>
-        <div ng-hide="$flow.files.length" style="text-align: center">
-            <button class="btn btn-primary" flow-btn><i class="fa fa-upload"></i> <g:message code="is.dialog.importProject.choose.file"/></button>
+        <div ng-hide="$flow.files.length" class="text-center">
+            <button class="btn btn-primary" flow-btn><i class="fa fa-upload"></i> ${message(code: 'is.dialog.importProject.choose.file')}</button>
         </div>
         <div ng-show="$flow.files[0].isUploading() && !progress">
             <uib-progressbar value="$flow.files[0].sizeUploaded()" max="$flow.files[0].size" type="primary">

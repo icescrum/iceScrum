@@ -276,7 +276,7 @@
                         <span ng-click="showMore('activities')" class="toggle-more">${message(code: 'todo.is.ui.history.more')}</span>
                     </div>
                     <div ng-if="activities != undefined && activities.length == 0">
-                        <div style="text-align: center; padding:5px; font-size:14px;">
+                        <div class="text-center" style="padding:5px; font-size:14px;">
                             <a target="_blank"
                                href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">
                                 <i class="fa fa-question-circle"></i>
