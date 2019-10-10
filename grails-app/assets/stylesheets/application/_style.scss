@@ -519,20 +519,6 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-@each $count in (3, 6, 7) {
-  .width-for-#{$count} {
-    width: calc(100% / #{$count});
-  }
-}
-
-@include media-breakpoint-down(md) {
-  @each $count in (6, 7) {
-    .width-for-#{$count} {
-      width: calc(100% / (#{$count } / 2));
-    }
-  }
-}
-
 .icon {
   display: inline-block;
   @include square-background(0.875rem);
@@ -785,11 +771,13 @@ a.link-documentation {
 // Details view
 ////////////////////
 
-.states {
+.states-progress {
   overflow: visible;
   background: white;
+  display: flex;
 
   .state {
+    flex: 1 0 0; // Equal width
     opacity: 0.2;
 
     .state-name {

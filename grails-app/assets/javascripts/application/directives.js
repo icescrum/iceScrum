@@ -937,7 +937,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         completed: newState >= state,
                         current: newState == state,
                         tooltip: name + (date ? ': ' + ($filter('dateTime')(date)) : ''),
-                        class: 'color-state-' + code + ' width-for-' + allStates.length
+                        class: 'color-state-' + code
                     };
                 });
             });

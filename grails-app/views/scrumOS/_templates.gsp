@@ -196,7 +196,7 @@
     </script>
 
     <script type="text/ng-template" id="states.html">
-    <div class="states d-flex flex-wrap">
+    <div class="states-progress">
         <div ng-repeat="state in states" class="progress-bar state {{ state.class }}"
              ng-class="{'state-completed': state.completed, 'state-current': state.current}">
             <span class="state-name" tooltip-placement="left" defer-tooltip="{{ state.tooltip  }}">{{ state.name }}</span>
