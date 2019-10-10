@@ -869,8 +869,7 @@ var isApplication = angular.module('isApplication', [
             submitting: false,
             isFullScreen: false,
             menus: Session.menus,
-            mobile: screenSize.is('xs, sm'),
-            mobilexs: screenSize.is('xs')
+            mediaBreakpoint: screenSize.get()
         };
         $rootScope.$state = $state; // To be able to track state in views
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
@@ -1019,10 +1018,7 @@ var isApplication = angular.module('isApplication', [
             }
             $rootScope.application.focusedDetailsView = toState.name.indexOf('.focus') > 0;
         });
-        screenSize.onChange($rootScope, 'xs, sm', function(isMatch) {
-            $rootScope.application.mobile = isMatch;
-        });
-        screenSize.onChange($rootScope, 'xs', function(isMatch) {
-            $rootScope.application.mobilexs = isMatch;
+        screenSize.onRuleChange($rootScope, function(breakPoint) {
+            $rootScope.application.mediaBreakpoint = breakPoint;
         });
     }]);

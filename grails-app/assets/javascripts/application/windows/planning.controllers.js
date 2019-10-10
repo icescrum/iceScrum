@@ -97,9 +97,19 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
     $scope.isMultipleSprint = function() {
         return _.startsWith($state.current.name, 'planning.release.sprint.multiple');
     };
+    $scope.getVisibleSprintMax = function() {
+        switch ($scope.application.mediaBreakpoint) {
+            case 'xl':
+                return 3;
+            case 'lg':
+                return 2;
+            default:
+                return 1;
+        }
+    };
     // Init
     $scope.viewName = 'planning';
-    $scope.visibleSprintMax = $scope.application.mobilexs ? 1 : ($scope.application.mobile ? 2 : 3);
+    $scope.visibleSprintMax = $scope.getVisibleSprintMax();
     $scope.visibleSprintOffset = 0;
     $scope.visibleSprints = [];
     $scope.project = project;
@@ -207,10 +217,10 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
         $scope.release = release;
         $scope.computeVisibleSprints();
     });
-    $scope.$watchGroup(['application.mobile', 'application.mobilexs'], function(n, o) {
+    $scope.$watch('application.mediaBreakpoint', function() {
         var oldVisible = $scope.visibleSprintMax;
-        $scope.visibleSprintMax = $scope.application.mobilexs ? 1 : ($scope.application.mobile ? 2 : 3);
-        if (oldVisible != $scope.visibleSprintMax) {
+        $scope.visibleSprintMax = $scope.getVisibleSprintMax();
+        if (oldVisible !== $scope.visibleSprintMax) {
             $state.reload();
         }
     });
