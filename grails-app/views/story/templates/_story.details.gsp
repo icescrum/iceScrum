@@ -97,6 +97,7 @@
                 <div uib-dropdown-menu ng-init="itemType = 'story'" template-url="item.menu.html"></div>
             </div>
         </div>
+        <entry:point id="story-details-before-states"/>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="story" model-states="storyStatesByName"/></a>
         <entry:point id="story-details-before-tabs"/>
     </div>
