@@ -159,11 +159,11 @@ body {
   }
 }
 
-.text-truncate-fix {
+.text-truncate-fix { // Fix when flex. Same level as text-truncate
   width: 1px;
 }
 
-.text-truncate-fix2 {
+.text-truncate-fix2 { // Alternative fix when flex. Put on parent of text-truncate
   min-width: 0;
 }
 

@@ -104,7 +104,7 @@
         <div class="details-content details-content-left">
             <ul class="nav nav-tabs nav-justified disable-active-link">
                 <li role="presentation"
-                    class="nav-item">
+                    class="nav-item text-nowrap">
                     <a href="{{ tabUrl() }}"
                        class="nav-link"
                        ng-class="{'active':!$state.params.storyTabId}">
@@ -112,7 +112,7 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    class="nav-item">
+                    class="nav-item text-nowrap">
                     <a href="{{ tabUrl('comments') }}"
                        class="nav-link"
                        ng-class="{'active':$state.params.storyTabId == 'comments'}">
@@ -120,7 +120,7 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    class="nav-item d-none d-md-block"
+                    class="nav-item text-nowrap d-none d-md-block"
                     ng-if="!application.focusedDetailsView"
                     uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                     <a href="{{ tabUrl('tests') }}"
@@ -130,7 +130,7 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    class="nav-item d-none d-lg-block"
+                    class="nav-item text-nowrap d-none d-lg-block"
                     ng-if="!application.focusedDetailsView">
                     <a href="{{ tabUrl('tasks') }}"
                        class="nav-link"

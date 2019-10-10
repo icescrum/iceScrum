@@ -71,7 +71,7 @@
     </div>
     <ul class="nav nav-tabs nav-justified disable-active-link">
         <li role="presentation"
-            class="nav-item">
+            class="nav-item text-nowrap">
             <a href="{{ tabUrl() }}"
                class="nav-link"
                ng-class="{'active':!$state.params.featureTabId}">
@@ -79,7 +79,7 @@
             </a>
         </li>
         <li role="presentation"
-            class="nav-item">
+            class="nav-item text-nowrap">
             <a href="{{ tabUrl('comments') }}"
                class="nav-link"
                ng-class="{'active':$state.params.featureTabId == 'comments'}">
@@ -87,7 +87,7 @@
             </a>
         </li>
         <li role="presentation"
-            class="nav-item">
+            class="nav-item text-nowrap">
             <a href="{{ tabUrl('stories') }}"
                class="nav-link"
                ng-class="{'active':$state.params.featureTabId == 'stories'}">
@@ -95,7 +95,7 @@
             </a>
         </li>
         <li role="presentation"
-            class="nav-item">
+            class="nav-item text-nowrap">
             <a href="{{ tabUrl('activities') }}"
                class="nav-link"
                ng-class="{'active':$state.params.featureTabId == 'activities'}">
