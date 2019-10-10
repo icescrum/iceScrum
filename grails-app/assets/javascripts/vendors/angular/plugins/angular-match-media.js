@@ -28,8 +28,8 @@
       // For those that don't support matchMedium
       if (!styleMedia) {
         var style = document.createElement('style'),
-          script = document.getElementsByTagName('script')[0],
-          info = null;
+            script = document.getElementsByTagName('script')[0],
+            info = null;
 
         style.type = 'text/css';
         style.id = 'matchmediajs-test';
@@ -82,8 +82,8 @@
     };
 
     this.isRetina = (
-    	window.devicePixelRatio > 1 ||
-    	(window.matchMedia && window.matchMedia('(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5),(min-resolution: 192dpi),(min-resolution: 2dppx)').matches)
+        window.devicePixelRatio > 1 ||
+        (window.matchMedia && window.matchMedia('(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5),(min-resolution: 192dpi),(min-resolution: 2dppx)').matches)
     );
 
     var that = this;
@@ -123,9 +123,14 @@
         }
       }
     };
-    
+
     // Return the actual size (it's string name defined in the rules)
     this.get = getCurrentMatch;
+
+    this.restoreDefaultRules = function () {
+      this.rules = angular.extend({}, defaultRules);
+    };
+    this.restoreDefaultRules();
 
     this.is = function (list) {
       list = assureList(list);
@@ -181,6 +186,33 @@
       }
     };
 
+    // Executes the callback function ONLY when the matched rule changes.
+    // Returns the current match rule name.
+    // The 'scope' parameter is required for cleanup reasons (destroy event).
+    this.onRuleChange = function (scope, callback) {
+      var currentMatch = getCurrentMatch();
+      if (!scope) {
+        throw 'scope has to be applied for cleanup reasons. (destroy)';
+      }
+
+      window.addEventListener('resize', listenerFunc);
+
+      scope.$on('$destroy', function () {
+        window.removeEventListener('resize', listenerFunc);
+      });
+
+      return currentMatch;
+
+      function listenerFunc() {
+        var previousMatch = currentMatch;
+        currentMatch = getCurrentMatch();
+
+        if (previousMatch !== currentMatch) {
+          safeApply(callback(currentMatch), scope);
+        }
+      }
+    };
+
     // Executes the callback only when inside of the particular screensize.
     // The 'scope' parameter is optional. If it's not passed in, '$rootScope' is used.
     this.when = function (list, callback, scope) {
@@ -193,7 +225,7 @@
       }
 
       return that.is(list);
-      
+
       function listenerFunc() {
         if (that.is(list) === true) {
           safeApply(callback(that.is(list)), scope);
