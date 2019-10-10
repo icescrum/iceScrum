@@ -476,6 +476,10 @@ form label {
 // Other
 ////////////////////
 
+.slider-track {
+  background: $is-bg-color;
+}
+
 :focus {
   outline: none; // Remove browser native outline which is ugly
 }
