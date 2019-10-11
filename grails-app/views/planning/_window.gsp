@@ -29,7 +29,7 @@
                     {{ release.name }}
                 </a>
                 <span class="state-title">
-                    <span class="state-dot" ng-class="'state-dot-' + release.state"></span>
+                    <span class="state-dot" ng-class="'timebox-state-dot-' + release.state"></span>
                     <span class="d-none d-sm-block">{{ (release.state | i18n: 'ReleaseStates') }}</span>
                 </span>
             </div>
@@ -95,7 +95,7 @@
                                 {{ (sprint | sprintName) }}
                             </a>
                             <span class="state-title state-title-small">
-                                <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
+                                <span class="state-dot" ng-class="'timebox-state-dot-' + sprint.state"></span>
                                 <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
                             </span>
                             <span class="timebox-dates timebox-dates-small">

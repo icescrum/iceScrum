@@ -34,11 +34,15 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <a ng-href="{{ openStoryUrl(story.id) }}">
-                            {{:: story.uid }}&nbsp;&nbsp;<span class="text-accent">{{ story.name }}</span>
+                            <span class="mr-1">{{:: story.uid }}</span>
+                            <span class="text-accent">{{ story.name }}</span>
                         </a>
                     </div>
-                    <div class="col-sm-4 text-right" ng-controller="storyCtrl">
-                        <span class="small mr-2">{{ story.state | i18n: 'StoryStates' }}</span>
+                    <div class="col-sm-4 d-flex justify-content-between align-items-baseline" ng-controller="storyCtrl">
+                        <span class="state-title state-title-small mr-2">
+                            <span class="state-dot" ng-class="'story-state-dot-' + story.state"></span>
+                            <span class="d-none d-sm-block">{{ (story.state | i18n: 'StoryStates') }}</span>
+                        </span>
                         <div class="btn-menu" uib-dropdown>
                             <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
                             <div uib-dropdown-toggle></div>

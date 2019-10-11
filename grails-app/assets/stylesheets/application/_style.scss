@@ -466,16 +466,36 @@ $state-dot-size-sm: 0.5rem;
     }
   }
 
-  .state-dot-1 {
+  .timebox-state-dot-1, .task-state-dot-0, .story-state-dot--1 {
     background-color: #e1e1e1;
   }
 
-  .state-dot-2 {
+  .timebox-state-dot-2, .task-state-dot-1, .story-state-dot-5 {
     background-image: linear-gradient(47deg, #63abeb, #d1e6f0);
   }
 
-  .state-dot-3 {
+  .timebox-state-dot-3, .task-state-dot-2, .story-state-dot-7 {
     background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
+  }
+
+  .story-state-dot-1 {
+    background-color: map-get($is-state-colors, 'suggested')
+  }
+
+  .story-state-dot-2 {
+    background-color: map-get($is-state-colors, 'accepted')
+  }
+
+  .story-state-dot-3 {
+    background-color: map-get($is-state-colors, 'estimated')
+  }
+
+  .story-state-dot-4 {
+    background-color: map-get($is-state-colors, 'planned')
+  }
+
+  .story-state-dot-6 {
+    background-color: map-get($is-state-colors, 'inReview')
   }
 }
 

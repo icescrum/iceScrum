@@ -47,7 +47,7 @@
                     </div>
                 </span>
                 <span class="state-title">
-                    <span class="state-dot" ng-class="'state-dot-' + sprint.state"></span>
+                    <span class="state-dot" ng-class="'timebox-state-dot-' + sprint.state"></span>
                     <span class="d-none d-sm-block">{{ (sprint.state | i18n: 'SprintStates') }}</span>
                 </span>
                 <span class="timebox-dates">
