@@ -101,7 +101,7 @@
     border-image-slice: 1;
   }
 
-  .icon-main-menu {
+  #primary-menu .icon-main-menu {
     margin-right: 4px;
     @include rectangle-background(30px, 30px);
   }
