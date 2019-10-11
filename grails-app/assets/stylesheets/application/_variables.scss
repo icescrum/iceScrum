@@ -95,6 +95,8 @@ $is-feature-height: 157px;
 $is-font-family: averta-regular, Helvetica, Arial, sans-serif;
 $is-font-family-bold: averta-bold, Helvetica, Arial, sans-serif;
 
+$acceptance-test-states: tocheck, success, failed;
+
 $is-state-colors: (
         "todo": #AAAAAA,
         "frozen": #AAAAAA,

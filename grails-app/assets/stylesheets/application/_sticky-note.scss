@@ -26,7 +26,6 @@
 ////////////////////
 
 $action-list: attach, comment, menu, story, take, task, test, unassign;
-$acceptance-test-states: tocheck, success, failed;
 
 .sticky-notes.as-sortable-drag {
   position: absolute !important;
@@ -254,18 +253,6 @@ $acceptance-test-states: tocheck, success, failed;
         height: 1.3125rem;
         font-size: $is-font-size-sm;
         color: $is-text-color;
-
-        .acceptance-test-icon {
-          margin-bottom: -2px; // Hack
-          display: inline-block;
-          @include rectangle-background(0.8125rem, 0.875rem);
-        }
-
-        @each $acceptance-test-state in $acceptance-test-states {
-          .acceptance-test-icon-#{$acceptance-test-state} {
-            background-image: url("acceptanceTest-#{$acceptance-test-state}-grey.svg");
-          }
-        }
       }
 
       .description {

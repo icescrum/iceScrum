@@ -127,6 +127,7 @@
                     <a href="{{ tabUrl('tests') }}"
                        class="nav-link"
                        ng-class="getAcceptanceTestClass(story)">
+                        <i class="{{ (story.testState | acceptanceTestIcon) }}"></i>
                         ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
                     </a>
                 </li>

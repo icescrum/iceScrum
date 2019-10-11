@@ -533,6 +533,18 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
+.acceptance-test-icon {
+  margin-bottom: -2px; // Hack
+  display: inline-block;
+  @include rectangle-background(0.8125rem, 0.875rem);
+}
+
+@each $acceptance-test-state in $acceptance-test-states {
+  .acceptance-test-icon-#{$acceptance-test-state} {
+    background-image: url("acceptanceTest-#{$acceptance-test-state}-grey.svg");
+  }
+}
+
 .active, .dropdown-item:hover {
   .icon {
     @each $icon in (grid-group, grid-group-sm, list-group) {
