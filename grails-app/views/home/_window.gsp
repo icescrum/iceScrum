@@ -81,12 +81,12 @@
                         <a href="{{:: getProjectUrl(project, 'backlog') }}"
                            class="btn btn-secondary btn-sm mb-2"
                            role="button">
-                            <span class="fi-main-menu fi-main-menu-backlog d-inline-block"></span> ${message(code: 'is.ui.backlogs')}
+                            <span class="icon-main-menu icon-main-menu-backlog d-inline-block"></span> ${message(code: 'is.ui.backlogs')}
                         </a>
                         <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
                            class="btn btn-secondary btn-sm"
                            role="button">
-                            <span class="fi-main-menu fi-main-menu-taskBoard d-inline-block"></span> ${message(code: 'todo.is.ui.taskBoard')}
+                            <span class="icon-main-menu icon-main-menu-taskBoard d-inline-block"></span> ${message(code: 'todo.is.ui.taskBoard')}
                         </a>
                     </div>
                 </div>

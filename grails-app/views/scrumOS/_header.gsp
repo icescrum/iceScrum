@@ -54,14 +54,14 @@
                    class="nav-link">
                     <g:if test="${workspace}">
                         <div class="workspace-icon"
-                             ng-class="'fi-' + (workspace.preferences.hidden ? 'private' : 'public')"
+                             ng-class="'icon-' + (workspace.preferences.hidden ? 'private' : 'public')"
                              ng-if="workspace.preferences"
                              tooltip-placement="bottom"
                              uib-tooltip="{{ message('is.ui.${workspace.name}.' + (workspace.preferences.hidden ? 'private' : 'public')) }}"
                              ng-click="authorized${workspace.name.capitalize()}('edit') && show${workspace.name.capitalize()}EditModal();">
                         </div>
                         <g:if test="${workspace.name}">
-                            <div class="workspace-icon fi-${workspace.name}"></div>
+                            <div class="workspace-icon icon-${workspace.name}"></div>
                             <span class="workspace-title text-truncate">{{ workspace.name }}</span>
                         </g:if>
                     </g:if>
@@ -254,7 +254,7 @@
         <div ng-if=":: currentUser.username" uib-dropdown class="header-notifications" on-toggle="notificationToggle(open)">
             <div uib-dropdown-toggle class="no-caret">
                 <div class="main-notifications" ng-class="{'has-notifications': getUnreadActivities() != 0}">
-                    <div class="fi-bell"></div>
+                    <div class="icon-bell"></div>
                     <span class="notification-count" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                 </div>
             </div>

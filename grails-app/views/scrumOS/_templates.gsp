@@ -147,7 +147,7 @@
        data-target="#primary-menu.show"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
        href="{{ getMenuUrl(menu) }}">
-        <span class="fi-main-menu" ng-class="'fi-main-menu-' + menu.id" as-sortable-item-handle></span>
+        <span class="icon-main-menu" ng-class="'icon-main-menu-' + menu.id" as-sortable-item-handle></span>
         <span class="nav-link-title">{{:: menu.title }}</span>
     </a>
     </script>
@@ -326,7 +326,7 @@
        ng-class="{small: !big}"
        class="link-documentation"
        href="https://www.icescrum.com/documentation/{{ docUrl }}?utm_source=tool&utm_medium=link&utm_campaign=icescrum">
-        <div class="fi-help"></div>
+        <div class="icon-help"></div>
         <span ng-bind-html="message(title != null ? title : 'is.ui.documentation')"></span>
     </a>
     </script>

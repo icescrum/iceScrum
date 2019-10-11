@@ -239,11 +239,11 @@ nav.navbar {
         max-width: 150px;
       }
 
-      .fi-private, .fi-public {
+      .icon-private, .icon-public {
         margin-right: 0.6875rem;
       }
 
-      .fi-project, .fi-portfolio {
+      .icon-project, .icon-portfolio {
         margin-right: 1rem;
       }
     }
@@ -299,7 +299,7 @@ nav.navbar {
       width: 18px;
       height: 35px;
 
-      .fi-bell {
+      .icon-bell {
         position: absolute;
         top: 8px;
         @include rectangle-background(18px, 20px);
@@ -309,7 +309,7 @@ nav.navbar {
       &.has-notifications {
         width: 31px;
 
-        .fi-bell {
+        .icon-bell {
           top: 14px;
         }
 
@@ -340,46 +340,6 @@ nav.navbar {
       border-top-right-radius: $input-border-radius;
       border-bottom-right-radius: $input-border-radius;
     }
-  }
-}
-
-.workspace-icon {
-  @include rectangle-background(1.125rem, 1rem);
-  display: inline-block;
-}
-
-.fi-private {
-  background-image: url("icon-private.svg");
-}
-
-.fi-public {
-  background-image: url("icon-public.svg");
-}
-
-.fi-project {
-  background-image: url("icon-project.svg");
-}
-
-.fi-portfolio {
-  background-image: url("icon-portfolio.svg");
-}
-
-.fi-main-menu {
-  margin-right: 4px;
-  @include rectangle-background(21px, 20px);
-}
-
-.fi-help {
-  display: inline-block;
-  margin-bottom: -4px;
-  @include square-background(20px);
-  background-image: url("help.svg");
-}
-
-// TODO make a loop that can be extended from plugin
-@each $menu in (project backlog planning taskBoard feature) {
-  .fi-main-menu-#{$menu} {
-    background-image: url("menu-#{$menu}.svg");
   }
 }
 
@@ -519,41 +479,6 @@ $state-dot-size-sm: 0.5rem;
   }
 }
 
-.icon {
-  display: inline-block;
-  @include square-background(0.875rem);
-  @each $icon in (caret-left, caret-right, compress, details, edit, expand, grid-group, grid-group-sm, list-group, rss, save, small-plus) {
-    &.icon-#{$icon} {
-      background-image: url("#{$icon}-#{$theme}.svg") !important;
-    }
-  }
-
-  &.icon-close {
-    @include background-image-retina('close'); // Use png at low res screen for beter rendering
-  }
-}
-
-.acceptance-test-icon {
-  margin-bottom: -2px; // Hack
-  display: inline-block;
-  @include rectangle-background(0.8125rem, 0.875rem);
-}
-
-@each $acceptance-test-state in $acceptance-test-states {
-  .acceptance-test-icon-#{$acceptance-test-state} {
-    background-image: url("acceptanceTest-#{$acceptance-test-state}-grey.svg");
-  }
-}
-
-.active, .dropdown-item:hover {
-  .icon {
-    @each $icon in (grid-group, grid-group-sm, list-group) {
-      &.icon-highlight.icon-#{$icon}, &.icon-highlight.icon-#{$icon} {
-        background-image: url("#{$icon}-active.svg") !important;
-      }
-    }
-  }
-}
 
 .btn.btn-color-lighter {
   color: $is-text-color !important;
@@ -781,6 +706,86 @@ a.link-documentation {
 
 .small-font-size {
   font-size: 0.875rem;
+}
+
+////////////////////
+// Icons
+////////////////////
+
+.workspace-icon {
+  @include rectangle-background(1.125rem, 1rem);
+  display: inline-block;
+}
+
+.icon-private {
+  background-image: url("icon-private.svg");
+}
+
+.icon-public {
+  background-image: url("icon-public.svg");
+}
+
+.icon-project {
+  background-image: url("icon-project.svg");
+}
+
+.icon-portfolio {
+  background-image: url("icon-portfolio.svg");
+}
+
+.icon-main-menu {
+  margin-right: 4px;
+  @include rectangle-background(21px, 20px);
+}
+
+.icon-help {
+  display: inline-block;
+  margin-bottom: -4px;
+  @include square-background(20px);
+  background-image: url("help.svg");
+}
+
+// TODO make a loop that can be extended from plugin
+@each $menu in (project backlog planning taskBoard feature) {
+  .icon-main-menu-#{$menu} {
+    background-image: url("menu-#{$menu}.svg");
+  }
+}
+
+.icon {
+  display: inline-block;
+  @include square-background(0.875rem);
+  @each $icon in (caret-left, caret-right, compress, details, edit, expand, grid-group, grid-group-sm, list-group, rss, save, small-plus) {
+    &.icon-#{$icon} {
+      background-image: url("#{$icon}-#{$theme}.svg") !important;
+    }
+  }
+
+  &.icon-close {
+    @include background-image-retina('close'); // Use png at low res screen for beter rendering
+  }
+}
+
+.acceptance-test-icon {
+  margin-bottom: -2px; // Hack
+  display: inline-block;
+  @include rectangle-background(0.8125rem, 0.875rem);
+}
+
+@each $acceptance-test-state in $acceptance-test-states {
+  .acceptance-test-icon-#{$acceptance-test-state} {
+    background-image: url("acceptanceTest-#{$acceptance-test-state}-grey.svg");
+  }
+}
+
+.active, .dropdown-item:hover {
+  .icon {
+    @each $icon in (grid-group, grid-group-sm, list-group) {
+      &.icon-highlight.icon-#{$icon}, &.icon-highlight.icon-#{$icon} {
+        background-image: url("#{$icon}-active.svg") !important;
+      }
+    }
+  }
 }
 
 ////////////////////
