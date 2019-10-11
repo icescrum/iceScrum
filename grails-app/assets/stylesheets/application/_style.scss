@@ -522,7 +522,7 @@ $state-dot-size-sm: 0.5rem;
 .icon {
   display: inline-block;
   @include square-background(0.875rem);
-  @each $icon in (edit, save, expand, rss, grid-group, caret-left, caret-right, compress, window, grid-group-sm, list-group, details, small-plus) {
+  @each $icon in (caret-left, caret-right, compress, details, edit, expand, grid-group, grid-group-sm, list-group, rss, save, small-plus) {
     &.icon-#{$icon} {
       background-image: url("#{$icon}-#{$theme}.svg") !important;
     }
