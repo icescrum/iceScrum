@@ -67,8 +67,8 @@
                            ng-disabled="!formEditable()"
                            name="type"
                            ng-model="editableFeature.type">
-                    <ui-select-match><i class="fa fa-{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
-                    <ui-select-choices repeat="featureType in featureTypes"><i class="fa fa-{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+                    <ui-select-match><i class="{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="featureType in featureTypes"><i class="{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
                 </ui-select>
             </div>
             <div class="form-half">

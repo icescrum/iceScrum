@@ -130,7 +130,7 @@ filters
     }])
     .filter('featureTypeIcon', ['FeatureTypesByName', function(FeatureTypesByName) {
         return function(type) {
-            return type == FeatureTypesByName.ARCHITECTURAL ? 'cogs' : '';
+            return type == FeatureTypesByName.ARCHITECTURAL ? 'item-type-icon item-type-icon-architectural' : '';
         };
     }])
     .filter('join', function() {
