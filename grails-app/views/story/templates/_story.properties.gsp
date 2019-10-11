@@ -52,8 +52,8 @@
                            ng-disabled="!formEditable() || !authorizedStory('updateType', editableStory)"
                            name="type"
                            ng-model="editableStory.type">
-                    <ui-select-match><i class="fa fa-{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
-                    <ui-select-choices repeat="storyType in storyTypes | newStoryTypes"><i class="fa fa-{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                    <ui-select-match><i class="{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="storyType in storyTypes | newStoryTypes"><i class="{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}</ui-select-choices>
                 </ui-select>
             </div>
         </div>

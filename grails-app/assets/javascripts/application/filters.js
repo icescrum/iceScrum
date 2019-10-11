@@ -117,9 +117,10 @@ filters
             return cssClass;
         };
     }])
-    .filter('storyTypeIcon', ['StoryTypesIcons', function(StoryTypesIcons) {
+    .filter('storyTypeIcon', ['StoryTypesClasses', function(StoryTypesClasses) {
         return function(type) {
-            return StoryTypesIcons[type];
+            var clazz = StoryTypesClasses[type];
+            return clazz ? ('item-type-icon item-type-icon-' +  clazz) : '';
         }
     }])
     .filter('featureType', ['FeatureTypesByName', function(FeatureTypesByName) {

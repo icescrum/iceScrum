@@ -1045,12 +1045,6 @@ services.service('StoryTypesClasses', ['StoryTypesByName', function(StoryTypesBy
     this[StoryTypesByName.TECHNICAL_STORY] = 'technical';
 }]);
 
-services.service('StoryTypesIcons', ['StoryTypesByName', function(StoryTypesByName) {
-    this[StoryTypesByName.USER_STORY] = '';
-    this[StoryTypesByName.DEFECT] = 'bug';
-    this[StoryTypesByName.TECHNICAL_STORY] = 'cogs';
-}]);
-
 services.service("ColorService", [function() {
     this.hexToRgb = function(hex) {
         var num = parseInt(hex.substring(1), 16);

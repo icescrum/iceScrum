@@ -116,10 +116,10 @@
                                        ng-model="config.storyType">
                                 <ui-select-match allow-clear="true"
                                                  placeholder="${message(code: 'todo.is.ui.timeBoxNotesTemplate.storyTypeAll')}"><i
-                                        class="fa fa-{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}
+                                        class="{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}
                                 </ui-select-match>
                                 <ui-select-choices repeat="storyType in storyTypes"><i
-                                        class="fa fa-{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}
+                                        class="{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}
                                 </ui-select-choices>
                             </ui-select>
                         </div>

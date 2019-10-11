@@ -313,9 +313,9 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         @include rectangle-background(1.0625rem, 1.125rem);
       }
 
-      @each $type in (defect, technical, architectural) {
-        &.#{$type} .sticky-note-type-icon {
-          background-image: url("type-#{$type}-grey.svg");
+      @each $item-type in (defect, technical, architectural) {
+        &.#{$item-type} .sticky-note-type-icon {
+          background-image: url("type-#{$item-type}-grey.svg");
         }
       }
     }
@@ -653,9 +653,9 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       &.sticky-note-type {
-        @each $type in (defect, technical) {
-          &.#{$type} .sticky-note-type-icon {
-            background-image: url("type-#{$type}-grey.svg");
+        @each $item-type in (defect, technical) {
+          &.#{$item-type} .sticky-note-type-icon {
+            background-image: url("type-#{$item-type}-grey.svg");
           }
         }
       }
