@@ -134,6 +134,8 @@ $acceptance-test-states: tocheck, success, failed;
     }
 
     .badge {
+      font-size: 0.625rem;
+
       > .full {
         display: none;
       }
@@ -313,6 +315,10 @@ $acceptance-test-states: tocheck, success, failed;
 
     .badge {
       font-size: 0.875rem;
+    }
+
+    .sticky-note-tags .badge {
+      font-size: 0.625rem;
     }
 
     &.sticky-note-type {
