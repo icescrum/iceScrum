@@ -131,13 +131,7 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
                 stateName = 'planning.release.sprint.multiple';
                 stateParams = {releaseId: selectedItems[0].parentRelease.id, sprintListId: _.map(selectedItems, 'id')};
             }
-            var currentStateName = $state.current.name;
-            var sameStateName = _.endsWith(currentStateName, '.details') && currentStateName == stateName + '.details' || currentStateName == stateName;
-            var sameStateParams = $state.params.sprintId == stateParams.sprintId && $state.params.releaseId == stateParams.releaseId;
-            var sameState = sameStateName && sameStateParams;
-            if (_.endsWith(currentStateName, '.details') && !sameState || !_.endsWith(currentStateName, '.details') && sameState) {
-                stateName += '.details';
-            }
+            stateName += '.details';
             $state.go(stateName, stateParams);
         }
     };
