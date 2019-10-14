@@ -118,7 +118,7 @@ class ScrumOSController implements ControllerErrorHandler {
             def menu = windowDefinition.menu
             if (menu) {
                 if (ApplicationSupport.isAllowed(windowDefinition, params)) {
-                    def menuPositions = ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos: menu.defaultPosition]
+                    def menuPositions = ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: true, pos: menu.defaultPosition]
                     menus << [title   : message(code: menu.title instanceof Closure ? menu.getTitle()(workspace?.object) : menu.title),
                               id      : windowDefinitionId,
                               position: menuPositions.pos.toInteger(),

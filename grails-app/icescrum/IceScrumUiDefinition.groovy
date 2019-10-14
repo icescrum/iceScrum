@@ -33,7 +33,6 @@ import org.icescrum.core.utils.ServicesUtils
         menu { => default: null
             title                   default: ''                   | String or Closure (i18n key)
             defaultPosition         default:null                  | Integer
-            defaultVisibility       default:null                  | true/false
         }
         flex =                      default: true                 | true/false
         details =                   default: false                | true/false
@@ -58,7 +57,6 @@ windows = {
         menu {
             title 'is.ui.backlogs'
             defaultPosition 2
-            defaultVisibility true
         }
         exportFormats = {
             [
@@ -78,7 +76,6 @@ windows = {
         menu {
             title 'is.ui.feature'
             defaultPosition 5
-            defaultVisibility true
         }
         exportFormats = {
             [
@@ -97,7 +94,6 @@ windows = {
         menu {
             title 'is.ui.project'
             defaultPosition 1
-            defaultVisibility true
         }
     }
     'planning' {
@@ -108,7 +104,6 @@ windows = {
         menu {
             title 'todo.is.ui.planning'
             defaultPosition 3
-            defaultVisibility true
         }
     }
     'taskBoard' {
@@ -119,7 +114,6 @@ windows = {
         menu {
             title 'todo.is.ui.taskBoard'
             defaultPosition 4
-            defaultVisibility true
         }
         exportFormats = {
             [
