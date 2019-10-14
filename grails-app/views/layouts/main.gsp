@@ -22,43 +22,44 @@
 --}%
 <!DOCTYPE html>
 <html lang="en" ng-app="isApplication" ng-strict-di>
-    <head>
-        <title>iceScrum - <g:layoutTitle/></title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-        <!-- iOS web app-->
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>
-        <asset:link rel="apple-touch-icon" href="iOS/icon-ipad.png" sizes="76x76"/>
-        <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
-        <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
-        <!-- end iOS web app-->
-        <asset:link rel="mask-icon" href="browser/safari-pinned-tab.svg" color="#FFCC04"/>
-        <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-        <meta name="theme-color" content="#ffffff">
-        <asset:javascript src="preload-header.js"/>
-        <g:if test="${darkMode}">
-            <asset:stylesheet href="application-dark.css"/>
-        </g:if><g:else>
-            <asset:stylesheet href="application.css"/>
-        </g:else>
-        <g:layoutHead/>
-    </head>
-    <body ng-controller="applicationCtrl"
-          flow-prevent-drop=""
-          fullscreen="application.isFullScreen"
-          ng-class="{'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)}"
-          class="splash-screen loading ${workspace?.name ? 'workspace-' + workspace.name : ''} ${bodyClasses}">
-        <g:include view="layouts/_splashScreen.gsp"/>
-        <is:header/>
-        <div class="is-container-fluid main" ui-view>
-            <g:layoutBody/>
-        </div>
-        <asset:javascript src="preload-footer.js"/>
-        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
-        <asset:javascript src="application.js"/>
-        <g:render template="/scrumOS/templates"/>
-        <entry:point id="icescrum-footer" model="[workspace: workspace, user: user]"/>
-    </body>
+<head>
+    <title>iceScrum - <g:layoutTitle/></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <!-- iOS web app-->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-ipad.png" sizes="76x76"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
+    <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
+    <!-- end iOS web app-->
+    <asset:link rel="mask-icon" href="browser/safari-pinned-tab.svg" color="#FFCC04"/>
+    <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <meta name="theme-color" content="#ffffff">
+    <asset:javascript src="preload-header.js"/>
+    <script type="text/javascript">
+        isSettings.darkMode = '${asset.stylesheet(href:"application-dark.css", id:"main-css", bundle:"true")}';
+        isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
+        darkOrLightMode();
+    </script>
+    <g:layoutHead/>
+</head>
+
+<body ng-controller="applicationCtrl"
+      flow-prevent-drop=""
+      fullscreen="application.isFullScreen"
+      ng-class="{'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)}"
+      class="splash-screen loading ${workspace?.name ? 'workspace-' + workspace.name : ''} ${bodyClasses}">
+<g:include view="layouts/_splashScreen.gsp"/>
+<is:header/>
+<div class="is-container-fluid main" ui-view>
+    <g:layoutBody/>
+</div>
+<asset:javascript src="preload-footer.js"/>
+<g:include controller="scrumOS" action="isSettings" params="${params}"/>
+<asset:javascript src="application.js"/>
+<g:render template="/scrumOS/templates"/>
+<entry:point id="icescrum-footer" model="[workspace: workspace, user: user]"/>
+</body>
 </html>

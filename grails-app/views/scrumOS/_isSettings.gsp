@@ -23,6 +23,8 @@
 <%@ page import="org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;grails.util.Holders;" %>
 <script type="text/javascript">
     var isSettings = {
+        darkMode: '${asset.assetPath(src:"application-dark.css")}',
+        lightMode: '${asset.assetPath(src:"application.css")}',
         lang: '${user ? user.preferences.language : lang}',
         user: ${user as JSON},
         userPreferences: ${user ? user.preferences as JSON : 'null'},
