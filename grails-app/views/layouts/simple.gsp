@@ -36,7 +36,11 @@
         <!-- end iOS web app-->
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <asset:javascript src="preload-header.js"/>
-        <asset:stylesheet href="application.css"/>
+        <script type="text/javascript">
+            isSettings.darkMode = '${asset.stylesheet(href:"application-dark.css", id:"main-css", bundle:"true")}';
+            isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
+            darkOrLightMode();
+        </script>
         <g:layoutHead/>
     </head>
     <body ng-controller="applicationCtrl"
