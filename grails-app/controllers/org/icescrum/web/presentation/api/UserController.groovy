@@ -325,15 +325,11 @@ class UserController implements ControllerErrorHandler {
             return
         }
         if (!menuId && !position) {
-            returnError(code: 'is.user.preferences.error.menu')
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
-        try {
-            userService.menu(user, menuId, position, hidden ?: false)
-            render(status: 200)
-        } catch (RuntimeException e) {
-            returnError(code: 'is.user.preferences.error.menu', exception: e)
-        }
+        userService.menu(user, menuId, position, hidden ?: false)
+        render(status: 200)
     }
 
     @Secured(['permitAll()'])
