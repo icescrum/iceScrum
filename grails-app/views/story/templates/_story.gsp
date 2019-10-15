@@ -52,17 +52,17 @@
                  ng-bind-html=":: story.description | lineReturns | actorTag"></div>
         </div>
         <div class="sticky-note-tags">
-            <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+            <a ng-repeat="tag in ::story.tags"
+               href="{{:: tagContextUrl(tag) }}" ng-if="$index < 3">
+                <span class="tag {{ getTagColor(tag) | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
+            </a>
+            <icon-badge class="pull-right" tooltip="${message(code: 'is.backlogelement.tags')}"
                         href="{{:: openStoryUrl(story.id)}}"
                         icon="fa-tags"
                         max="3"
                         hide="true"
                         count="{{:: story.tags.length }}"/>
-            <a ng-repeat="tag in ::story.tags"
-               href="{{:: tagContextUrl(tag) }}">
-                <span class="tag {{ getTagColor(tag) | contrastColor }}"
-                      ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
-            </a>
         </div>
         <div class="sticky-note-actions">
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
