@@ -52,17 +52,9 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.acceptInvitations = function(token) {
         return FormService.httpGet('user/acceptInvitations', {params: {token: token}}, true);
     };
-    this.updateMenuPreferences = function(info) {
+    this.updateMenuPreferences = function(menuPreferences) {
         var Session = $injector.get('Session');
-        return $http({
-            url: $rootScope.serverUrl + '/user/' + Session.user.id + '/menu',
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-            transformRequest: function(data) {
-                return FormService.formObjectData(data, '');
-            },
-            data: info
-        });
+        return FormService.httpPost('user/' + Session.user.id + '/menu', menuPreferences , true)
     };
     this.search = function(term, invite, project) {
         var params = {term: term};
