@@ -156,6 +156,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
 .sticky-notes.list-group {
   position: relative;
+  padding-top: ($is-spacer-x - $is-sticky-note-spacer);
 
   &.as-sortable-drag {
     border-top: solid 1px $is-border-color;
@@ -167,7 +168,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   }
 
   &:not(.list-group-small) .sticky-note-container {
-    padding: 0 $is-spacer-x;
+    padding: 0 ($is-spacer-x / 2);
     border-bottom: solid 1px $is-border-color;
 
     &.is-selected, &:hover {
@@ -203,14 +204,16 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     > div {
       display: flex;
       align-items: center;
+      flex-wrap: wrap !important;
 
       > div {
         flex: 0 0 auto;
         padding: 0 0.625rem;
-        height: 3.0625rem;
 
-        &:not(:last-child):not(.sticky-note-content) {
-          border-right: solid 1px $is-border-color-alt;
+        &.sticky-note-head, &.sticky-note-content, &.sticky-note-actions {
+          height: 3.0625rem;
+          margin-right: -10px;
+          padding-right: 0;
         }
       }
     }
@@ -234,6 +237,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       padding-left: 0;
       justify-content: space-between;
       align-items: center;
+      order: 1;
     }
 
     .sticky-note-content {
@@ -242,6 +246,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       flex-direction: column-reverse;
       padding-top: 0;
       padding-bottom: 0;
+      order: 2;
+      width: calc(100% - 200px - 67px);
 
       .title {
         color: $is-text-color-alt;
@@ -262,7 +268,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
     .sticky-note-state-progress {
       height: 1.125rem;
-      width: 230px;
+      width: 50%;
+      padding-left: 0;
+      padding-right: 0;
+      order: 5;
 
       .progress {
         height: 1.125rem;
@@ -284,8 +293,9 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-actions {
-      width: 230px;
+      width: 200px;
       justify-content: space-around;
+      order: 3;
 
       .action {
         .action-icon {
@@ -304,8 +314,18 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       font-size: 0.875rem;
     }
 
-    .sticky-note-tags .badge {
-      font-size: 0.625rem;
+
+    .sticky-note-tags {
+      width: 50%;
+      order: 4;
+
+      .badge {
+        font-size: 0.625rem;
+      }
+
+      .action {
+        float: none;
+      }
     }
 
     &.sticky-note-type {
@@ -578,7 +598,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     height: $is-story-heigth;
 
     &.sticky-note-container:not(.is-selected):not(:hover) {
-      box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.05) !important; // Override js style
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05) !important; // Override js style
     }
 
     .sticky-note {
