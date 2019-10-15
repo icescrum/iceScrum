@@ -10,7 +10,6 @@
         </linearGradient>
     </defs>
     <g fill="none" fill-rule="evenodd">
-        <path stroke="#FFF" stroke-width=".01" d="M.005.005h20.99v19.99H.005z"/>
         <g transform="translate(.672 3)">
             <rect width="19.32" height="14.167" x=".42" y=".417" fill="url(#a)" rx="1"/>
             <g fill="#FFF" fill-rule="nonzero" opacity=".621">

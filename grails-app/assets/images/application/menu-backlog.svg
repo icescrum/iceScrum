@@ -26,7 +26,6 @@
         </linearGradient>
     </defs>
     <g fill="none" fill-rule="evenodd">
-        <path stroke="#FFF" stroke-width=".01" d="M.005.005h20.99v19.99H.005z"/>
         <g fill-rule="nonzero">
             <path fill="url(#a)" d="M19.587 5.582l-1.514-2.668a.34.34 0 0 0-.296-.171H1.895a.34.34 0 0 0-.296.17L.085 5.583A.654.654 0 0 0 0 5.904v1.489h19.672V5.904a.654.654 0 0 0-.085-.322z" transform="translate(.48 4)"/>
             <g opacity=".589">

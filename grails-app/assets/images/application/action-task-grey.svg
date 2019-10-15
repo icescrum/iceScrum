@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
     <g fill="none" fill-rule="nonzero">
-        <path stroke="#FFF" stroke-width=".01" d="M.005.005h11.99v11.99H.005z"/>
         <path fill="#687583" d="M3 1h6a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zm-.462 2.308v.769h.77v-.77h-.77zm0 2.307v.77h.77v-.77h-.77zm1.539-2.307v.769h5.385v-.77H4.077zm0 2.307v.77h5.385v-.77H4.077zM2.538 7.923v.77h.77v-.77h-.77zm1.539 0v.77h5.385v-.77H4.077z"/>
     </g>
 </svg>
