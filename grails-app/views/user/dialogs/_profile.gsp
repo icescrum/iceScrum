@@ -26,7 +26,7 @@
           validate="true"
           submitButton="${message(code: 'is.button.update')}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'todo.is.ui.profile')}">
+          title="${message(code: 'is.dialog.profile')}">
     <uib-tabset type="pills" justified="true" class="tab-pane-higher">
         <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}">
             <div flow-files-added="editableUser.avatar = 'custom';"

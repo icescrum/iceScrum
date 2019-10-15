@@ -29,7 +29,7 @@
                     <button class="btn btn-link"
                             uib-dropdown-toggle
                             type="button">
-                        Mon compte
+                        ${message(code: 'todo.is.ui.profile')}
                     </button>
                     <div uib-dropdown-menu class="dropdown-menu-right profile-dropdown">
                         <div class="dropdown-item">
@@ -51,7 +51,7 @@
                             <a href
                                class="btn btn-secondary dropdown-button"
                                hotkey="{'shift+u':showProfile}"
-                               hotkey-description="${message(code: 'todo.is.ui.profile')}"
+                               hotkey-description="${message(code: 'is.dialog.profile')}"
                                ng-click="showProfile()">${message(code: 'is.dialog.profile')}
                             </a>
                         </div>
