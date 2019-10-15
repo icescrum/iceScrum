@@ -191,7 +191,7 @@
         </ul>
         <ul class="nav navbar-nav menu-header-hidden">
             <li class="nav-item"
-                uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
+                uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': application.menus.hidden.length == 0 }">
                 <a uib-dropdown-toggle href class="nav-link">${message(code: 'todo.is.ui.more')}</a>
                 <div uib-dropdown-menu
                      is-disabled="!currentUser.id || workspaceType != 'project'"

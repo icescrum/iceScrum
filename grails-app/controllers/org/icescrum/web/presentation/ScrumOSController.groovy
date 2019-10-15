@@ -40,6 +40,7 @@ import sun.misc.BASE64Decoder
 
 class ScrumOSController implements ControllerErrorHandler {
 
+    def userService
     def messageSource
     def servletContext
     def projectService
@@ -118,11 +119,9 @@ class ScrumOSController implements ControllerErrorHandler {
             def menu = windowDefinition.menu
             if (menu) {
                 if (ApplicationSupport.isAllowed(windowDefinition, params)) {
-                    def menuPositions = ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: true, pos: menu.defaultPosition]
                     menus << [title   : message(code: menu.title instanceof Closure ? menu.getTitle()(workspace?.object) : menu.title),
                               id      : windowDefinitionId,
-                              position: menuPositions.pos.toInteger(),
-                              visible : menuPositions.visible]
+                              position: userService.getPositionFromUserPreferences(windowDefinition) ?: menu.defaultPosition]
                     menus.sort { it.position }.eachWithIndex { menuEntry, index ->
                         menuEntry.shortcut = 'ctrl+' + (index + 1)
                     }

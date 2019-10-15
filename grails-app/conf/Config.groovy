@@ -224,7 +224,7 @@ icescrum {
                                    exclude: ['userPreferences']],
             usertoken           : [:],
             userpreferences     : [include: ['emailsSettings'],
-                                   exclude: ['user', 'menu', 'menuHidden', 'emailsSettingsData', 'widgets']],
+                                   exclude: ['user', 'menu', 'emailsSettingsData', 'widgets']],
             projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                              'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
             attachment          : [include: ['filename']],

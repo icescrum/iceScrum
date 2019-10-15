@@ -318,7 +318,7 @@ class UserController implements ControllerErrorHandler {
     }
 
     @Secured('isAuthenticated()')
-    def menu(long id, String menuId, String position, boolean hidden) {
+    def menu(long id, String menuId, Integer position) {
         User user = springSecurityService.currentUser
         if (id != user.id) {
             render(status: 403)
@@ -328,7 +328,7 @@ class UserController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        userService.menu(user, menuId, position, hidden ?: false)
+        userService.updateMenuPosition(user, menuId, position)
         render(status: 200)
     }
 

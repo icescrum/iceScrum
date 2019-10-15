@@ -868,7 +868,6 @@ var isApplication = angular.module('isApplication', [
             loadingPercent: 0,
             submitting: false,
             isFullScreen: false,
-            menus: Session.menus,
             mediaBreakpoint: screenSize.get()
         };
         $rootScope.$state = $state; // To be able to track state in views
@@ -915,7 +914,11 @@ var isApplication = angular.module('isApplication', [
                 isSettings.user.preferences = isSettings.userPreferences;
             }
             PDFJS.workerSrc = isSettings.workerSrc;
-            Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
+            $rootScope.application.menus = {
+                visible: isSettings.menus,
+                hidden: []
+            };
+            Session.create(isSettings.user, isSettings.roles, isSettings.defaultView);
             $rootScope.loaders = {
                 menu: menuLoaderAnimation,
                 main: mainLoaderAnimation

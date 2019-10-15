@@ -388,8 +388,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
     var menuSortableChange = function(event) {
         UserService.updateMenuPreferences({
             menuId: event.source.itemScope.modelValue.id,
-            position: event.dest.index + 1,
-            hidden: event.dest.sortableScope.modelValue === $scope.application.menus.hidden
+            position: event.dest.index + 1
         }).catch(function() {
             $scope.revertSortable(event);
         });

@@ -28,7 +28,6 @@ var services = angular.module('services', ['restResource']);
 services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'FormService', 'CacheService', function($timeout, $http, $rootScope, $injector, UserService, User, PushService, IceScrumEventType, FormService, CacheService) {
     var self = this;
     self.defaultView = '';
-    self.menus = {visible: [], hidden: []};
     self.user = new User();
     if (isSettings.workspace) {
         var workspaceConstructor = $injector.get(isSettings.workspace.class); // Get the ressource constructor, e.g. Portfolio or Project
@@ -63,7 +62,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
             document.location.reload(true);
         }, 3500);
     };
-    this.create = function(user, roles, menus, defaultView) {
+    this.create = function(user, roles, defaultView) {
         _.extend(self.user, user);
         _.merge(self.roles, roles);
         self.defaultView = defaultView;
@@ -73,11 +72,6 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
                     self.unreadActivitiesCount = data.unreadActivitiesCount;
                 });
         }
-
-        var menusByVisibility = _.groupBy(menus, 'visible');
-        self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
-        self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
-
         if (self.listeners.activity) {
             self.listeners.activity.unregister();
         }
