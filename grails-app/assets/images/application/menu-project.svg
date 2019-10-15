@@ -10,7 +10,6 @@
         </linearGradient>
     </defs>
     <g fill="none" fill-rule="evenodd">
-        <path fill-rule="nonzero" stroke="#FFF" stroke-width=".01" d="M.005.005h20.99v19.99H.005z"/>
         <path fill="url(#a)" d="M.72 0h5.002a.72.72 0 0 1 .72.72v7.57a.72.72 0 0 1-.72.72H.72A.72.72 0 0 1 0 8.29V.72A.72.72 0 0 1 .72 0z" transform="translate(4 3)"/>
         <path fill="url(#b)" d="M.72 10.08h5.002a.72.72 0 0 1 .72.72v2.87a.72.72 0 0 1-.72.72H.72a.72.72 0 0 1-.72-.72V10.8a.72.72 0 0 1 .72-.72z" transform="translate(4 3)"/>
         <path fill="url(#a)" d="M7.878 5.39h5.002a.72.72 0 0 1 .72.72v7.57a.72.72 0 0 1-.72.72H7.878a.72.72 0 0 1-.72-.72V6.11a.72.72 0 0 1 .72-.72z" transform="matrix(1 0 0 -1 4 22.79)"/>

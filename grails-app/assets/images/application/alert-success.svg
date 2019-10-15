@@ -8,7 +8,6 @@
         </filter>
     </defs>
     <g fill="none" fill-rule="evenodd">
-        <path fill-rule="nonzero" stroke="#FFF" stroke-width=".01" d="M.005.005h38.99v38.99H.005z"/>
         <g transform="translate(8 6)">
             <use fill="#000" filter="url(#a)" xlink:href="#b"/>
             <use fill="#27D285" xlink:href="#b"/>
