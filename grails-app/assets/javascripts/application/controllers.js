@@ -271,7 +271,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     }
 }]);
 
-extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, $location, ContextService, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
+extensibleController('mainMenuCtrl', ['$scope', '$location', '$timeout', 'ContextService', 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, $location, $timeout, ContextService, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedPortfolio = PortfolioService.authorizedPortfolio;
     $scope['import'] = function(project) {
@@ -280,7 +280,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
             keyboard: false,
             backdrop: 'static',
             templateUrl: url + "Dialog",
-            controller: ['$scope', '$http', '$rootScope', '$timeout', function($scope, $http, $rootScope, $timeout) {
+            controller: ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
                 // Functions
                 $scope.showProgress = function() {
                     $scope.progress = true;
@@ -381,14 +381,37 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
         }
         return menuUrl;
     };
+    $scope.hideMenusToFitAvailableSpace = function() {
+        if (_.includes(['xs', 'sm', 'md'], $scope.application.mediaBreakpoint)) {
+            $scope.application.menus.visible = $scope.application.menus.visible.concat($scope.application.menus.hidden);
+            $scope.application.menus.hidden = [];
+        } else {
+            $timeout(function() {
+                var menuElement = angular.element('#primary-menu');
+                if (menuElement[0]) {
+                    var marginBetweenMenuAndNext = 8;
+                    var moreMenuWidth = 60;
+                    var menuMaxWidth = 169;
+                    var nextElement = menuElement.next().next(); // Skip spacer
+                    var leftSpace = nextElement.offset().left - menuElement.outerWidth() - menuElement.offset().left;
+                    if (leftSpace <= marginBetweenMenuAndNext && $scope.application.menus.visible.length > 0) {
+                        $scope.application.menus.hidden.unshift($scope.application.menus.visible.pop());
+                    } else if ((leftSpace >= menuMaxWidth && $scope.application.menus.hidden.length >= 2) || (leftSpace >= (menuMaxWidth - moreMenuWidth) && $scope.application.menus.hidden.length === 1)) {
+                        $scope.application.menus.visible.push($scope.application.menus.hidden.shift());
+                    }
+                }
+            });
+        }
+    };
     // Init
     $scope.workspace = Session.getWorkspace();
     $scope.menuDragging = false;
     $scope.sortableId = 'menu';
     var menuSortableChange = function(event) {
+        var hiddenOffset = event.dest.sortableScope.modelValue === $scope.application.menus.hidden ? $scope.application.menus.visible.length : 0;
         UserService.updateMenuPreferences({
             menuId: event.source.itemScope.modelValue.id,
-            position: event.dest.index + 1
+            position: event.dest.index + hiddenOffset + 1
         }).catch(function() {
             $scope.revertSortable(event);
         });
@@ -406,6 +429,14 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
             $scope.menuDragging = false;
         }
     };
+    $scope.resizing = false;
+    $scope.$watch('application.menus', function() {
+        $scope.hideMenusToFitAvailableSpace();
+    }, true);
+    $(window).on("resize.menus", _.throttle($scope.hideMenusToFitAvailableSpace, 200));
+    $scope.$on("$destroy", function() {
+        $(window).off("resize.menus");
+    });
 }]);
 
 extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService', 'Session', function($scope, $interval, active, FormService, Session) {

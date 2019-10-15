@@ -788,7 +788,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}]).directive("stickyList", ['$window', function($window) {
+}]).directive("stickyList", ['$window', function($window) { // Not used anymore
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {

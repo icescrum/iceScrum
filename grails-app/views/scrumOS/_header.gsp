@@ -41,7 +41,7 @@
        tooltip-placement="right"
        defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
     </a>
-    <div class="collapse navbar-collapse order-3 order-lg-2" id="primary-menu" ng-controller="mainMenuCtrl">
+    <div class="collapse navbar-collapse order-3 order-lg-2 flex-lg-grow-0" id="primary-menu" ng-controller="mainMenuCtrl">
         <ul class="nav navbar-nav menu-header"
             is-disabled="!currentUser.id || workspaceType != 'project'"
             as-sortable="menuSortableOptions"
@@ -205,7 +205,8 @@
             </li>
         </ul>
     </div>
-    <div class="navbar-right  order-2 order-lg-3 flex-grow-1 justify-content-end"
+    <div class="flex-grow-1 order-4 order-lg-3 d-none d-lg-block"></div>
+    <div class="navbar-right order-2 order-lg-4 flex-grow-1 flex-lg-grow-0 justify-content-end"
          ng-style="application.context | contextStyle">
         <g:if test="${project}">
             <form class="form-inline" role="search">
