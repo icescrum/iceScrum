@@ -41,8 +41,9 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
             } else {
                 $scope.notifySuccess('todo.is.ui.profile.updated');
             }
+            // NOT sure these 2 lines are needed anymore since UserService.update changed
             angular.extend(Session.user, updatedUser);
-            Session.user.preferences.emailsSettings = newEmailsSettings; // Need manual setting because it is not returned by the JSON marshaller for performance and security reasons
+            Session.user.preferences.emailsSettings = newEmailsSettings;
         });
     };
     $scope.refreshAvatar = function(user) {

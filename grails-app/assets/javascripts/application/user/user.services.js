@@ -37,7 +37,9 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     };
     this.update = function(user) {
         user.class = 'user';
-        return user.$update();
+        return User.update(user).$promise.then(function(updatedUser) {
+            _.merge(user, updatedUser);
+        });
     };
     this.save = function(user) {
         user.class = 'user';
