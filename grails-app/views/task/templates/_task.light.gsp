@@ -44,6 +44,7 @@
         <div class="sticky-note-tags">
             <a ng-repeat="tag in ::task.tags" href>
                 <span class="tag {{ getTagColor(tag) | contrastColor }}"
+                      ng-if="$index < 3"
                       ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
             </a>
         </div>
