@@ -392,8 +392,8 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', '$timeout', 'Contex
                     var marginBetweenMenuAndNext = 8;
                     var moreMenuWidth = 60;
                     var menuMaxWidth = 169;
-                    var nextElement = menuElement.next().next(); // Skip spacer
-                    var leftSpace = nextElement.offset().left - menuElement.outerWidth() - menuElement.offset().left;
+                    // var leftSpace = menuElement.next().next().offset().left - menuElement.outerWidth() - menuElement.offset().left; // alternate way using offset, which may cost more
+                    var leftSpace = menuElement.parent().width() - menuElement.outerWidth() - menuElement.next().next().outerWidth() - menuElement.prev().prev().outerWidth();
                     if (leftSpace <= marginBetweenMenuAndNext && $scope.application.menus.visible.length > 0) {
                         $scope.application.menus.hidden.unshift($scope.application.menus.visible.pop());
                     } else if ((leftSpace >= menuMaxWidth && $scope.application.menus.hidden.length >= 2) || (leftSpace >= (menuMaxWidth - moreMenuWidth) && $scope.application.menus.hidden.length === 1)) {
