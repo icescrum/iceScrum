@@ -134,8 +134,6 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_user_preferences` CHANGE `last_project_opened` `last_project_opened` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu` CHANGE `menu_idx` `menu_idx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu` CHANGE `menu_elt` `menu_elt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_user_preferences_menu_hidden` CHANGE `menu_hidden_idx` `menu_hidden_idx` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_user_preferences_menu_hidden` CHANGE `menu_hidden_elt` `menu_hidden_elt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_tokens` CHANGE `id` `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_tokens` CHANGE `name` `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `tag_links` CHANGE `type` `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -200,7 +198,6 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_user` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_user_preferences_menu_hidden` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_tokens` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_portfolio` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `tags` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
