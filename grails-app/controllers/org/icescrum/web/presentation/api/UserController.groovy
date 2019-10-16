@@ -111,7 +111,7 @@ class UserController implements ControllerErrorHandler {
             }
             bindData(user, userParams, [include: propertiesToBind])
             user.preferences = new UserPreferences()
-            bindData(user.preferences, userParams.preferences, [include: ['language', 'activity', 'enableDarkMode']])
+            bindData(user.preferences, userParams.preferences, [include: ['language', 'activity', 'colorScheme']])
             userService.save(user, userParams.token)
         }
         render(status: 201, contentType: 'application/json', text: user as JSON)
@@ -157,7 +157,7 @@ class UserController implements ControllerErrorHandler {
             }
             bindData(user, params.user, [include: propertiesToBind])
             if (params.user.preferences) {
-                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew', 'displayReleaseNotes', 'enableDarkMode']])
+                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew', 'displayReleaseNotes', 'colorScheme']])
             }
             if (params.user.password?.trim() != '') {
                 props.pwd = params.user.password

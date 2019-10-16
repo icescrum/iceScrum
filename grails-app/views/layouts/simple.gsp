@@ -39,7 +39,7 @@
         <script type="text/javascript">
             isSettings.darkMode = '${asset.stylesheet(href:"application-dark.css", id:"main-css", bundle:"true")}';
             isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
-            darkOrLightMode();
+            darkOrLightMode(${colorScheme ? "'$colorScheme'" : null });
         </script>
         <g:layoutHead/>
     </head>

@@ -69,7 +69,7 @@ class ScrumOSController implements ControllerErrorHandler {
                      moreWorkspacesExist     : workspaces?.size() > workspacesLimit,
                      portfolioEnabled        : portfolioEnabled,
                      workspacesFilteredsList : workspaces.take(workspacesLimit),
-                     darkMode                : (user && user.preferences.enableDarkMode) || params.darkMode]
+                     colorScheme             : user?.preferences?.colorScheme]
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
             workspace.indexScrumOS.delegate = this
