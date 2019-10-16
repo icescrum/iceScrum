@@ -1021,13 +1021,18 @@ var isApplication = angular.module('isApplication', [
             }
             $rootScope.application.focusedDetailsView = toState.name.indexOf('.focus') > 0;
         });
+        $rootScope.getColorScheme = getColorScheme;
+        $rootScope.setColorScheme = setColorScheme;
+        $rootScope.toggleColorScheme = function() {
+            var newColorScheme = $rootScope.getColorScheme() === 'dark' ? 'light' : 'dark';
+            $rootScope.setColorScheme(newColorScheme);
+            UserService.updateColorScheme(newColorScheme);
+        };
         screenSize.onRuleChange($rootScope, function(breakPoint) {
             $rootScope.application.mediaBreakpoint = breakPoint;
         });
         hotkeys.add({
             combo: 'shift+d',
-            callback: function() {
-                toggleColorScheme();
-            }
+            callback: $rootScope.toggleColorScheme
         });
     }]);

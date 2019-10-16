@@ -49,6 +49,22 @@
                         </div>
                         <div class="dropdown-item">
                             <a href
+                               ng-if="getColorScheme() == 'dark'"
+                               style="background: white; color: #111111;"
+                               class="btn btn-secondary dropdown-button"
+                               ng-click="$event.stopPropagation(); toggleColorScheme()">
+                                <i class="color-scheme-icon icon-sun"></i> Light mode
+                            </a>
+                            <a href
+                               ng-if="getColorScheme() == 'light'"
+                               style="background: #282829; color: white;"
+                               class="btn btn-secondary dropdown-button"
+                               ng-click="$event.stopPropagation(); toggleColorScheme()">
+                                <i class="color-scheme-icon icon-moon"></i> Dark mode
+                            </a>
+                        </div>
+                        <div class="dropdown-item">
+                            <a href
                                class="btn btn-secondary dropdown-button"
                                hotkey="{'shift+u':showProfile}"
                                hotkey-description="${message(code: 'is.dialog.profile')}"

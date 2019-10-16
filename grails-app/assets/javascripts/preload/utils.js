@@ -5,6 +5,10 @@ function isTouchOnlyDevice() { //not the best place... but there isn't a best pl
     return /iP(ad|hone|od)/.test(navigator.userAgent) || navigator.userAgent.indexOf('Android') > 0;
 }
 
+function getColorScheme() {
+    return savedColorScheme;
+}
+
 function setColorScheme(colorScheme, isInit) {
     savedColorScheme = colorScheme === 'dark' ? 'dark' : 'light';
     var css = colorScheme === 'dark' ? isSettings.darkMode : isSettings.lightMode;
@@ -13,10 +17,6 @@ function setColorScheme(colorScheme, isInit) {
     } else {
         angular.element('#main-css').attr('href', css);
     }
-}
-
-function toggleColorScheme() {
-    setColorScheme(savedColorScheme === 'dark' ? 'light' : 'dark');
 }
 
 function darkOrLightMode(colorScheme) {
