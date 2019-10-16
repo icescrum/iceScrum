@@ -28,6 +28,7 @@
     <div class="form-group" style="position:relative;">
         <div class="visible-hidden" style="right:0;position:absolute;">
             <button class="btn btn-primary btn-sm"
+                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;"
                     type="button"
                     ng-click="expandCommentEditor()">
                 <i class="fa fa-plus"></i>
@@ -58,6 +59,11 @@
                 ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid"
                 type="submit">
             ${message(code: 'default.button.create.label')}
+        </button>
+        <button class="btn btn-secondary btn-sm float-right"
+                ng-click="formHolder.formExpanded = false;"
+                type="button">
+            ${message(code: 'is.button.cancel')}
         </button>
     </div>
 </form>
