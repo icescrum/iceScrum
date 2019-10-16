@@ -88,8 +88,8 @@
             <div class="sprint col"
                  ng-repeat="sprint in visibleSprints"
                  ng-controller="sprintBacklogCtrl">
-                <div>
-                    <div class="d-flex justify-content-between">
+                <div class="mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
                         <div class="sprint-header-left">
                             <a href="{{ openSprintUrl(sprint) }}" class="sprint-title">
                                 {{ (sprint | sprintName) }}

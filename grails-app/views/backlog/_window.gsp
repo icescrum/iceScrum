@@ -33,7 +33,7 @@
                         ng-repeat="elem in visibleElementsList">
                         <a href="{{ toggleElementUrl(elem) }}"
                            class="nav-link"
-                           ng-class="{'active': isShown(elem), 'd-none d-lg-block': $index > 0}"
+                           ng-class="{'active': isShown(elem)}"
                            ng-click="clickOnElementHref($event)">
                             <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
                         </a>

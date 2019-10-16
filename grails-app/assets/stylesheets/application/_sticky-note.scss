@@ -156,7 +156,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
 .sticky-notes.list-group {
   position: relative;
-  padding-top: ($is-spacer-x - $is-sticky-note-spacer);
 
   &.as-sortable-drag {
     border-top: solid 1px $is-border-color;
@@ -168,11 +167,12 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   }
 
   &:not(.list-group-small) .sticky-note-container {
-    padding: 0 ($is-spacer-x / 2);
+    padding: 0 $is-spacer-x;
     border-bottom: solid 1px $is-border-color;
 
     &.is-selected, &:hover {
       z-index: 2;
+      border-radius: 0.1875rem;
 
       &:first-of-type {
         border-top: solid 1px $is-border-color;
