@@ -737,20 +737,16 @@ a.link-documentation {
   display: inline-block;
 }
 
-.icon-private {
-  background-image: url("icon-private.svg");
+.color-scheme-icon {
+  margin-bottom: -2px;
+  @include square-background(0.875rem);
+  display: inline-block;
 }
 
-.icon-public {
-  background-image: url("icon-public.svg");
-}
-
-.icon-project {
-  background-image: url("icon-project.svg");
-}
-
-.icon-portfolio {
-  background-image: url("icon-portfolio.svg");
+@each $icon-type in (private, public, project, portfolio, sun, moon) {
+  .icon-#{$icon-type} {
+    background-image: url("icon-#{$icon-type}.svg");
+  }
 }
 
 .icon-main-menu {
