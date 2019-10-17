@@ -67,16 +67,16 @@
                     <span class="badge">{{ story.comments_count  || '' }}</span>
                 </a>
             </span>
-            <span class="action" ng-class="{'active':story.tasks_count}">
-                <a href="{{ link ? link : openStoryUrl(story.id) }}/tasks">
-                    <i class="fa fa-tasks" defer-tooltip="${message(code: 'todo.is.ui.tasks')}"></i>
-                    <span class="badge">{{ story.tasks_count || '' }}</span>
-                </a>
-            </span>
             <span class="action" ng-class="{'active':story.acceptanceTests_count}">
                 <a href="{{ link ? link : openStoryUrl(story.id) }}/tests">
                     <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'" defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':story.tasks_count}">
+                <a href="{{ link ? link : openStoryUrl(story.id) }}/tasks">
+                    <i class="fa fa-tasks" defer-tooltip="${message(code: 'todo.is.ui.tasks')}"></i>
+                    <span class="badge">{{ story.tasks_count || '' }}</span>
                 </a>
             </span>
         </div>

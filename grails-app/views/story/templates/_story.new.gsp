@@ -64,18 +64,18 @@
                         <span class="action">
                             <a class="action-link"><span class="action-icon action-icon-comment"></span></a>
                         </span>
-                        <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                            <a class="action-link"
-                               defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                <span class="action-icon action-icon-task"></span>
-                                <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
-                            </a>
-                        </span>
                         <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
                             <a class="action-link"
                                defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                                 <span class="action-icon action-icon-test"></span>
                                 <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
+                            </a>
+                        </span>
+                        <span class="action" ng-class="{'active':storyPreview.tasks_count}">
+                            <a class="action-link"
+                               defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                <span class="action-icon action-icon-task"></span>
+                                <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                             </a>
                         </span>
                         <span class="action">

@@ -75,16 +75,16 @@
                                         <span class="badge">{{ topStory.comments_count || '' }}</span>
                                     </a>
                                 </span>
-                                <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                    <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                        <span class="action-icon action-icon-task"></span>
-                                        <span class="badge">{{ topStory.tasks_count || '' }}</span>
-                                    </a>
-                                </span>
                                 <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
                                     <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                                         <span class="action-icon action-icon-test"></span>
                                         <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
+                                    </a>
+                                </span>
+                                <span class="action" ng-class="{'active':topStory.tasks_count}">
+                                    <a class="action-link" defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                        <span class="action-icon action-icon-task"></span>
+                                        <span class="badge">{{ topStory.tasks_count || '' }}</span>
                                     </a>
                                 </span>
                                 <span class="action">
