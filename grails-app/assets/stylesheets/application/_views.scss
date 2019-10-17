@@ -913,15 +913,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 // Story tasks, Feature stories
 ////////////////////
 
-.story-tasks, .feature-stories, .story-acceptanceTests, .comments {
-  font-size: $is-font-size-sm;
-
-  hr {
-    margin-top: 0.5rem;
-    width: 50%;
-  }
-}
-
 .story-task, .story-acceptanceTest {
   background: $is-bg-color;
 }

@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="nested.stories.html">
-<div class="feature-stories card-body">
+<div class="card-body font-size-sm feature-stories">
     <div ng-controller="featureStoriesCtrl">
         <div ng-repeat="storyEntry in storyEntries"
              class="mb-5">
@@ -53,7 +53,7 @@
                 <div ng-if="story.description">
                     <p class="description form-control-plaintext" ng-bind-html="story.description | lineReturns | actorTag: actors"></p>
                 </div>
-                <hr ng-if="!$last"/>
+                <hr ng-if="!$last" class="w-50 mt-2"/>
             </div>
         </div>
         <div ng-show="selected.stories !== undefined && !selected.stories.length"

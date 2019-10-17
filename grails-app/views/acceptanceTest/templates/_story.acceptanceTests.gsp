@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.acceptanceTests.html">
-<div class="story-acceptanceTests card-body" ng-controller="acceptanceTestListCtrl">
+<div class="card-body font-size-sm story-acceptanceTests" ng-controller="acceptanceTestListCtrl">
     <entry:point id="acceptanceTests-before-list"/>
     <div is-disabled="!isAcceptanceTestSortable()"
          as-sortable="acceptanceTestSortableOptions | merge: sortableScrollOptions()"
@@ -120,7 +120,7 @@
                     </button>
                 </div>
             </form>
-            <hr ng-if="!$last"/>
+            <hr ng-if="!$last" class="w-50 mt-2"/>
         </div>
         <div ng-show="selected.acceptanceTests_count === 0"
              class="empty-content">

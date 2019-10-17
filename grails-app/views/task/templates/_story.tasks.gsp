@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="story-tasks card-body" ng-controller="taskSortableStoryCtrl">
+<div class="card-body font-size-sm story-tasks" ng-controller="taskSortableStoryCtrl">
     <div ng-repeat="taskEntry in tasksByState"
          class="mb-5">
         <h5 class="text-center mb-3"
@@ -52,7 +52,7 @@
                 <div ng-if="task.description">
                     <p class="description form-control-plaintext" ng-bind-html="task.description | lineReturns"></p>
                 </div>
-                <hr ng-if="!$last"/>
+                <hr ng-if="!$last" class="w-50 mt-2"/>
             </div>
         </div>
     </div>

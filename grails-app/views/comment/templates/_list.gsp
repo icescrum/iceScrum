@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<div class="comments card-body">
+<div class="card-body font-size-sm comments">
     <div ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
         <form name="formHolder.commentForm"
               ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
@@ -95,7 +95,7 @@
                 </button>
             </div>
         </form>
-        <hr ng-if="!$last"/>
+        <hr ng-if="!$last" class="w-50 mt-2"/>
     </div>
     <div ng-show="selected.comments_count === 0"
          class="empty-content">
