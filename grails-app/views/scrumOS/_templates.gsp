@@ -135,7 +135,7 @@
     </script>
 
     <script type="text/ng-template" id="is.progress.html">
-    <uib-progressbar value="progress.value" type="{{ progress.type }}">
+    <uib-progressbar class="m-4" value="progress.value" type="{{ progress.type }}">
         <b>{{progress.label}}</b>
     </uib-progressbar>
     </script>
