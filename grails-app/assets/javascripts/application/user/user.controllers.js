@@ -73,6 +73,12 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
         $scope.languages = languages;
         $scope.languageKeys = _.keys(languages);
     });
+    $scope.colorSchemes = {
+        'dark': $scope.message('is.ui.colorScheme.dark'),
+        'light': $scope.message('is.ui.colorScheme.light'),
+        'null': $scope.message('is.ui.colorScheme.default')
+    };
+    $scope.colorSchemeKeys = _.keys($scope.colorSchemes);
 }]);
 
 controllers.controller('userInvitationCtrl', ['$scope', '$state', '$timeout', '$location', '$filter', 'UserService', 'Session', function($scope, $state, $timeout, $location, $filter, UserService, Session) {

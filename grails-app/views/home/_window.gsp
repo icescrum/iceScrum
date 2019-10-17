@@ -52,15 +52,19 @@
                                ng-if="getColorScheme() == 'dark'"
                                style="background: white; color: #111111;"
                                class="btn btn-secondary dropdown-button"
+                               uib-tooltip="${message(code: 'is.ui.colorScheme.toggle')} (SHIFT+D)"
+                               tooltip-placement="left"
                                ng-click="$event.stopPropagation(); toggleColorScheme()">
-                                <i class="color-scheme-icon icon-sun"></i> Light mode
+                                <i class="color-scheme-icon icon-sun"></i> ${message(code: 'is.ui.colorScheme.light')}
                             </a>
                             <a href
                                ng-if="getColorScheme() == 'light'"
                                style="background: #282829; color: white;"
                                class="btn btn-secondary dropdown-button"
+                               uib-tooltip="${message(code: 'is.ui.colorScheme.toggle')} (SHIFT+D)"
+                               tooltip-placement="left"
                                ng-click="$event.stopPropagation(); toggleColorScheme()">
-                                <i class="color-scheme-icon icon-moon"></i> Dark mode
+                                <i class="color-scheme-icon icon-moon"></i> ${message(code: 'is.ui.colorScheme.dark')}
                             </a>
                         </div>
                         <div class="dropdown-item">

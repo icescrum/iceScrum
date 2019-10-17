@@ -147,13 +147,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 form-group">
+                    <div class="form-half">
                         <label for="user.preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
                         <input name="user.preferences.activity"
                                autocomplete="off"
                                type="text"
                                class="form-control"
                                ng-model="editableUser.preferences.activity">
+                    </div>
+                    <div class="form-half">
+                        <label for="user.preferences.colorScheme">${message(code: 'is.ui.colorScheme')}</label>
+                        <ui-select name="user.preferences.colorScheme"
+                                   class="form-control"
+                                   ng-model="editableUser.preferences.colorScheme">
+                            <ui-select-match>{{ colorSchemes[$select.selected] }}</ui-select-match>
+                            <ui-select-choices repeat="colorSchemeKey in colorSchemeKeys">{{ colorSchemes[colorSchemeKey] }}</ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
                 <div>

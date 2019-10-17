@@ -1033,6 +1033,7 @@ var isApplication = angular.module('isApplication', [
         });
         hotkeys.add({
             combo: 'shift+d',
-            callback: $rootScope.toggleColorScheme
+            callback: $rootScope.toggleColorScheme,
+            description: $rootScope.message('is.ui.colorScheme.toggle')
         });
     }]);
