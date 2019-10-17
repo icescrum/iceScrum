@@ -716,6 +716,7 @@ a.link-documentation {
 }
 
 .time-stamp {
+  white-space: nowrap;
   font-size: $is-font-size-sm;
   color: $is-text-color;
 }
