@@ -52,11 +52,12 @@
                 </ul>
             </div>
         </div>
+        <hr ng-if="!$last" class="w-50"/>
     </div>
-    <hr/>
     <div ng-if="(selected.activities.length < selected.activities_total) || allActivities"
          ng-switch="allActivities"
          class="text-center">
+        <hr class="w-50"/>
         <span ng-switch-default
               class="toggle-more"
               ng-click="activities(selected, true)">

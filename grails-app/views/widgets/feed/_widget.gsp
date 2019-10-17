@@ -34,7 +34,7 @@
                 <h5><a target="_blank" href="{{item.link}}" ng-bind-html="item.title"></a></h5>
             </div>
             <p class="text-left" ng-bind-html="item.description"></p>
-            <hr ng-if="!$last"/>
+            <hr ng-if="!$last" class="w-50"/>
         </div>
     </div>
 </is:widget>
