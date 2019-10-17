@@ -29,11 +29,12 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
         });
         user.preferences.emailsSettings = newEmailsSettings;
         var languageChanged = Session.user.preferences.language != user.preferences.language;
+        var colorSchemeChanged = Session.user.preferences.colorScheme != user.preferences.colorScheme;
         UserService.update(user).then(function(updatedUser) {
             if ($scope.$close) {
                 $scope.$close(); // Close auth modal if present
             }
-            if (languageChanged) {
+            if (languageChanged || colorSchemeChanged) {
                 $scope.notifySuccess('todo.is.ui.profile.updated.refreshing');
                 $timeout(function() {
                     document.location.reload(true);
@@ -41,8 +42,8 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
             } else {
                 $scope.notifySuccess('todo.is.ui.profile.updated');
             }
-            // NOT sure these 2 lines are needed anymore since UserService.update changed
             angular.extend(Session.user, updatedUser);
+            angular.extend(Session.user.preferences, user.preferences); // Need manual setting because it is not returned by the JSON marshaller for performance and security reasons
             Session.user.preferences.emailsSettings = newEmailsSettings;
         });
     };

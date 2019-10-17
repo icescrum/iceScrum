@@ -160,7 +160,7 @@
                         <ui-select name="user.preferences.colorScheme"
                                    class="form-control"
                                    ng-model="editableUser.preferences.colorScheme">
-                            <ui-select-match>{{ colorSchemes[$select.selected] }}</ui-select-match>
+                            <ui-select-match placeholder="{{ message('is.ui.colorScheme.default') }}">{{ colorSchemes[$select.selected] }}</ui-select-match>
                             <ui-select-choices repeat="colorSchemeKey in colorSchemeKeys">{{ colorSchemes[colorSchemeKey] }}</ui-select-choices>
                         </ui-select>
                     </div>
