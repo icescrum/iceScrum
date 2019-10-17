@@ -30,7 +30,6 @@
      flow-drag-leave="dropClass='card'"
      ng-class="authorizedStory('upload', story) && dropClass">
     <div class="details-header">
-        <entry:point id="story-details-right-title"/>
         <a ng-if="previousStory()"
            class="btn btn-icon"
            role="button"
@@ -84,6 +83,7 @@
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i>
                 </span>
+                <entry:point id="story-details-after-star"/>
                 <div class="text-muted">
                     <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
                 </div>
