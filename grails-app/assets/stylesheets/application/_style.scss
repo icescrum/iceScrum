@@ -816,7 +816,7 @@ a.link-documentation {
 
 .states-progress {
   overflow: visible;
-  background: white;
+  background: $is-bg-state-progress;
   display: flex;
 
   .state {
