@@ -197,8 +197,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-state-progress {
-      height: 1.125rem;
-
       .progress {
         height: 1.125rem;
       }
@@ -343,6 +341,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-state-progress {
+      height: 1.125rem;
       width: 50%;
       padding-left: 0;
       padding-right: 0;
@@ -422,6 +421,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-state-progress {
+      height: 1.125rem;
       width: 230px;
     }
 
