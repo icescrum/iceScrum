@@ -39,10 +39,10 @@
             </div>
             <table class="table table-bordered table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
                 <tr>
-                    <th class="text-center">${message(code: 'is.story')}</th>
+                    <th>${message(code: 'is.story')}</th>
                     <th class="text-center">{{:: storyStatesByName.DONE | i18n: 'StoryStates' }}</th>
                 </tr>
-                <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state">
+                <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state" ng-click="newDone[story.id] = !newDone[story.id]">
                     <td is-watch="story" class="pt-0 pb-0">
                         <div ng-include="'story.html'"></div>
                     </td>

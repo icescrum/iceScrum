@@ -97,36 +97,35 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
                     return _.includes($scope.selectedIds, story.id);
                 };
                 $scope.submit = function(selectedIds) {
-                    options.submit(selectedIds, $scope.backlog.stories).then(function() {
+                    var ids = [];
+                    _.each(selectedIds, function(isSelected, storyId) {
+                        if (isSelected) {
+                            ids.push(parseInt(storyId));
+                        }
+                    });
+                    options.submit(ids, $scope.backlog.stories).then(function() {
                         $scope.$close(true);
                     });
                 };
                 $scope.filterStories = function() {
-                    $scope.selectedIds = [];
+                    var previousSelectedIds = $scope.selectedIds ? $scope.selectedIds : {};
                     $scope.backlog.storiesLoaded = false;
                     StoryService.filter($scope.selectorOptions.filter, $scope.getProjectFromState()).then(function(stories) {
                         $scope.backlog.stories = $scope.selectorOptions.order ? $filter('orderBy')(stories, $scope.selectorOptions.order) : stories;
                         $scope.backlog.storiesLoaded = true;
-                        if ($scope.selectorOptions.initSelectedIds) {
-                            $scope.selectedIds = $scope.selectorOptions.initSelectedIds($scope.backlog.stories);
-                        }
+                        $scope.selectedIds = _.transform(stories, function(selectedIds, story) {
+                            selectedIds[story.id] = $scope.selectorOptions.initSelectedIds ? _.includes($scope.selectorOptions.initSelectedIds, story.id) : false;
+                        }, {});
+                        $scope.selectedIds = _.extend($scope.selectedIds, previousSelectedIds);
                     });
                 };
                 // Init
                 $scope.buttonColor = options.buttonColor ? options.buttonColor : 'primary';
-                $scope.selectedIds = [];
+                $scope.selectedIds = {};
                 $scope.backlog = {
                     stories: [],
                     code: options.code,
                     storiesLoaded: false
-                };
-                $scope.selectableOptions = {
-                    notSelectableSelector: '.action, button, a',
-                    allowMultiple: true,
-                    forceMultiple: true,
-                    selectionUpdated: function(selectedIds) {
-                        $scope.selectedIds = selectedIds;
-                    }
                 };
                 $scope.selectorOptions = options;
                 $scope.filterStories();

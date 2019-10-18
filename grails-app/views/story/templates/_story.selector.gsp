@@ -26,7 +26,7 @@
           submitButton="{{ message('todo.is.ui.story.selector.' + backlog.code + '.button') }}"
           submitButtonColor="{{ buttonColor }}"
           closeButton="${message(code: 'is.button.cancel')}"
-          class="modal-no-padding"
+          class="modal-no-padding story-selector"
           title="{{ message('todo.is.ui.story.selector.' + backlog.code + '.title') }}">
     <div class="row">
         <div class="modal-search text-center">
@@ -38,16 +38,26 @@
                    ng-change="filterStories()"
                    placeholder="{{ message('todo.is.ui.story.selector.' + backlog.code + '.search') }}">
         </div>
-        <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
-            <div class="loading-logo" ng-include="'loading.html'"></div>
-            <div class="sticky-notes list-group sticky-notes-disabled sticky-note-selector"
-                 ng-controller="storyBacklogCtrl"
-                 ng-model="backlog.stories"
-                 as-sortable
-                 is-disabled="true"
-                 ng-init="emptyBacklogTemplate = 'story.backlog.' + backlog.code + '.empty.html'"
-                 ng-include="'story.backlog.html'">
+        <div class="sticky-notes list-group w-100"
+             ng-controller="storyBacklogCtrl"
+             ng-model="backlog.stories">
+            <div ng-if="backlog.stories.length == 0"
+                 class="empty-view">
+                <div ng-include="'story.backlog.close.empty.html'"></div>
             </div>
+            <table class="table table-bordered table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
+                <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state" ng-click="selectedIds[story.id] = !selectedIds[story.id]">
+                    <td is-watch="story" class="pt-0 pb-0">
+                        <div ng-include="'story.html'"></div>
+                    </td>
+                    <td class="align-middle">
+                        <div class="text-center story-checkbox">
+                            <input type="checkbox"
+                                   ng-model="selectedIds[story.id]">
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </is:modal>
