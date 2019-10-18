@@ -187,6 +187,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-content {
+      .item-values {
+        white-space: nowrap;
+      }
+
       .title {
         @include text-truncate;
       }
@@ -235,7 +239,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-tags .badge {
-      font-size: 0.625rem;
+      display: none;
     }
 
     &.sticky-note-type {
