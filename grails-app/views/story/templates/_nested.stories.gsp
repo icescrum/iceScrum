@@ -41,7 +41,7 @@
                     <div class="col-sm-4 d-flex justify-content-between align-items-baseline" ng-controller="storyCtrl">
                         <span class="state-title state-title-small mr-2">
                             <span class="state-dot" ng-class="'story-state-dot-' + story.state"></span>
-                            <span class="d-none d-sm-block">{{ (story.state | i18n: 'StoryStates') }}</span>
+                            <span class="d-none d-xl-block text-nowrap">{{ (story.state | i18n: 'StoryStates') }}</span>
                         </span>
                         <div class="btn-menu" uib-dropdown>
                             <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>

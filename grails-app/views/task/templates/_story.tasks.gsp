@@ -40,7 +40,7 @@
                     <div class="col-sm-4 d-flex justify-content-between align-items-baseline" ng-controller="taskCtrl">
                         <span class="state-title state-title-small mr-2">
                             <span class="state-dot" ng-class="'task-state-dot-' + task.state"></span>
-                            <span class="d-none d-sm-block">{{ (task.state | i18n: 'TaskStates') }}</span>
+                            <span class="d-none d-xl-block text-nowrap">{{ (task.state | i18n: 'TaskStates') }}</span>
                         </span>
                         <div class="btn-menu" uib-dropdown>
                             <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
