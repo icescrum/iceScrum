@@ -499,6 +499,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         display: flex;
         flex-wrap: wrap;
         padding: 16px;
+        align-content: start;
       }
     }
   }

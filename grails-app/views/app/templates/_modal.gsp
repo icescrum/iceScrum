@@ -34,7 +34,7 @@
                        class="form-control search-input"
                        placeholder="${message(code: 'todo.is.ui.search.action')}">
             </div>
-            <ul class="nav nav-pills nav-fill flex-column">
+            <ul class="nav nav-pills flex-column">
                 <div class="text-center more-results" ng-hide="filteredApps.length">
                     <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
                 </div>

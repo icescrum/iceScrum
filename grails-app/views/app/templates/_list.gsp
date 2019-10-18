@@ -29,7 +29,7 @@
            placeholder="${message(code: 'todo.is.ui.search.action')}">
 </div>
 <div class="app-list text-center">
-    <div ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
+    <div class="align-self-start" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
         <div ng-click="openAppDefinition(currentAppDefinition)"
              class="app-logo">
             <div class="app-enabled" ng-if="isEnabledApp(currentAppDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></div>

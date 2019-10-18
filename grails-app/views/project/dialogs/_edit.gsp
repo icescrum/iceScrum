@@ -24,7 +24,7 @@
 <is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="modal-split" footer="${false}">
     <div class="row">
         <div class="col-sm-3 modal-split-left">
-            <ul class="nav nav-pills nav-fill flex-column">
+            <ul class="nav nav-pills flex-column">
                 <li class="nav-item"
                     ng-if="authorizedProject('update', currentProject)">
                     <a class="nav-link"

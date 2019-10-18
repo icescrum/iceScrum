@@ -234,7 +234,7 @@
                            class="form-control search-input"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                 </div>
-                <ul class="nav nav-pills nav-fill flex-column">
+                <ul class="nav nav-pills flex-column">
                     <li class="nav-item"
                         ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
                         <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)"
