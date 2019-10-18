@@ -49,6 +49,7 @@
                     <td class="align-middle">
                         <div class="text-center story-checkbox">
                             <input type="checkbox"
+                                   ng-click="$event.stopPropagation()"
                                    ng-model="newDone[story.id]">
                         </div>
                     </td>
