@@ -43,7 +43,7 @@
              ng-model="backlog.stories">
             <div ng-if="backlog.stories.length == 0"
                  class="empty-view">
-                <div ng-include="'story.backlog.close.empty.html'"></div>
+                <div ng-include="'story.backlog.' + backlog.code + '.empty.html'"></div>
             </div>
             <table class="table table-bordered table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
                 <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state" ng-click="selectedIds[story.id] = !selectedIds[story.id]">
