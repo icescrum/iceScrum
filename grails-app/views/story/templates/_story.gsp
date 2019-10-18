@@ -28,7 +28,7 @@
     <div as-sortable-item-handle>
         <div class="sticky-note-head">
             <div class="id-icon" ng-include="'story.icon.html'"></div>
-            <span class="id" ng-class="::{ 'mini': story.uid > 999 }">{{:: story.uid }}33</span>
+            <span class="id" ng-class="::{ 'mini': story.uid > 999 }">{{:: story.uid }}</span>
             <div class="sticky-note-type-icon"></div>
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!story.description}">
