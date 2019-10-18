@@ -667,6 +667,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         z-index: 2;
         color: #687583;
         font-size: 0.75rem;
+        &.mini {
+          font-size: 0.5rem;
+          top:15px;
+        }
       }
 
       .sticky-note-content {
