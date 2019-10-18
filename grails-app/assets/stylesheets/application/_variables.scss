@@ -249,3 +249,13 @@ $h6-font-size: 0.75rem;
 $headings-color: $is-text-color-alt;
 $headings-font-family: $is-font-family-bold;
 $hr-border-color: $is-border-color-alt;
+
+$pagination-bg: $is-bg-color;
+$pagination-color: $is-text-color-alt;
+$pagination-border-color: $is-outline-color;
+$pagination-disabled-bg: $is-bg-color-alt;
+$pagination-disabled-color: $is-text-color;
+$pagination-disabled-border-color: $pagination-border-color;
+$pagination-hover-color: $pagination-color;
+$pagination-hover-bg: $is-bg-color;
+$pagination-hover-border-color: $pagination-border-color;
