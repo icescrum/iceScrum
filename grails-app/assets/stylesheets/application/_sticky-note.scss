@@ -861,3 +861,11 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
   }
 }
+
+////////////////////
+// Light
+////////////////////
+
+.sticky-note-container.sticky-note-story.sticky-note-story-light .sticky-note {
+  pointer-events: none;
+}

@@ -289,11 +289,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="kanban-swimlane story-ghost"
+                <div class="kanban-swimlane story-swimlane-ghost"
                      ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'">
                     <div class="sticky-notes list-group list-group-small">
-                        <div class="sticky-note-container sticky-note-story" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
-                            <div ng-include="'story.light.html'"></div>
+                        <div class="sticky-note-container sticky-note-story sticky-note-story-light"
+                             ng-controller="storyCtrl"
+                             ng-click="selectStory($event, story.id)"
+                             is-watch="story"
+                             ng-class="{'is-selected': isSelected(story)}">
+                            <div ng-include="'story.html'"></div>
                         </div>
                     </div>
                     <div class="kanban-row">

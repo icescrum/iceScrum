@@ -392,6 +392,10 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   &.story-swimlane-7 {
     border-color: darken(map-get($is-state-colors, 'done'), 4%);
   }
+
+  &.story-swimlane-ghost {
+    border-color: $is-red;
+  }
 }
 
 .kanban-row {
