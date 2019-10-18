@@ -384,6 +384,14 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       padding-left: 0.5rem;
     }
   }
+
+  &.story-swimlane-6 {
+    border-color: map-get($is-state-colors, 'inReview');
+  }
+
+  &.story-swimlane-7 {
+    border-color: darken(map-get($is-state-colors, 'done'), 4%);
+  }
 }
 
 .kanban-row {

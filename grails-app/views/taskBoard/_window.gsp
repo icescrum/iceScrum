@@ -239,9 +239,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="kanban-swimlane"
-                     ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'"
-                     ng-class="{'story-done': story.state == storyStatesByName.DONE }">
+                <div class="kanban-swimlane {{ 'story-swimlane-' + story.state }}"
+                     ng-class="{'is-selected': isSelected(story)}"
+                     ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'">
                     <div class="sticky-notes list-group list-group-small">
                         <div class="sticky-note-container sticky-note-story"
                              ng-controller="storyCtrl"
@@ -251,8 +251,7 @@
                             <div ng-include="'story.html'"></div>
                         </div>
                     </div>
-                    <div class="kanban-row"
-                         ng-class="{'is-selected': isSelected(story)}">
+                    <div class="kanban-row">
                         <div class="kanban-column col"
                              ng-repeat="taskState in sprintTaskStates">
                             <div class="sticky-notes grid-group"
