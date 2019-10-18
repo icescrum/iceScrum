@@ -166,32 +166,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     box-shadow: none !important; // Override js style
   }
 
-  &:not(.list-group-small) .sticky-note-container {
-    padding: 0 $is-spacer-x;
-    border-bottom: solid 1px $is-border-color;
-
-    &.is-selected, &:hover {
-      z-index: 2;
-      border-radius: 0.1875rem;
-
-      &:first-of-type {
-        border-top: solid 1px $is-border-color;
-      }
-    }
-
-    &:hover {
-      background: $is-bg-color-ter;
-    }
-
-    &.is-selected {
-      background: $is-bg-color;
-    }
-
-    &:first-of-type {
-      border-top: solid 1px transparent;
-    }
-  }
-
   .sticky-note {
     background: none !important; // Override js style
     padding: 0.3125rem 0;
@@ -342,6 +316,35 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
     &.invert .id-icon text {
       fill: $is-sticky-note-text-invert;
+    }
+  }
+
+}
+
+.sticky-notes.list-group:not(.list-group-small) {
+  .sticky-note-container {
+    padding: 0 $is-spacer-x;
+    border-bottom: solid 1px $is-border-color;
+
+    &.is-selected, &:hover {
+      z-index: 2;
+      border-radius: 0.1875rem;
+
+      &:first-of-type {
+        border-top: solid 1px $is-border-color;
+      }
+    }
+
+    &:hover {
+      background: $is-bg-color-ter;
+    }
+
+    &.is-selected {
+      background: $is-bg-color;
+    }
+
+    &:first-of-type {
+      border-top: solid 1px transparent;
     }
   }
 
