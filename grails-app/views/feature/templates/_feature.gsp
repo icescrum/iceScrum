@@ -49,7 +49,6 @@
                         hide="true"
                         count="{{:: feature.tags.length }}"/>
             <a ng-repeat="tag in ::feature.tags"
-               ng-if="$index < 3"
                href="{{ tagContextUrl(tag) }}">
                 <span class="tag {{ getTagColor(tag) | contrastColor }}"
                       ng-style="{'background-color': getTagColor(tag) }">{{:: tag }}</span>
