@@ -629,7 +629,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     height: $is-story-heigth;
 
     &.sticky-note-container:not(.is-selected):not(:hover) {
-      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05) !important; // Override js style
+      box-shadow: -1px 2px 2px -1px rgba(0, 0, 0, 0.05) !important; // Override js style
     }
 
     .sticky-note {
@@ -797,7 +797,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
   &:not(.is-selected):hover {
     z-index: 2;
-    opacity: 0.8;
+    opacity: 0.7;
   }
 }
 
