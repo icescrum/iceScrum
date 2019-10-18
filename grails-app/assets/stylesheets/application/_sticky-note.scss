@@ -168,28 +168,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
   .sticky-note {
     background: none !important; // Override js style
-    padding: 0.3125rem 0;
     color: $is_text-color;
 
     a {
       color: $is_text-color;
-    }
-
-    > div {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap !important;
-
-      > div {
-        flex: 0 0 auto;
-        padding: 0 0.625rem;
-
-        &.sticky-note-head, &.sticky-note-content, &.sticky-note-actions {
-          height: 3.0625rem;
-          margin-right: -10px;
-          padding-right: 0;
-        }
-      }
     }
 
     .id {
@@ -200,39 +182,13 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       display: block;
 
       text {
-        font-size: 1rem;
         fill: $is-sticky-note-text;
       }
     }
 
-    .sticky-note-head {
-      display: flex;
-      width: 67px;
-      padding-left: 0;
-      justify-content: space-between;
-      align-items: center;
-      order: 1;
-    }
-
     .sticky-note-content {
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column-reverse;
-      padding-top: 0;
-      padding-bottom: 0;
-      order: 2;
-      width: calc(100% - 200px - 67px);
-
       .title {
-        color: $is-text-color-alt;
-        font-size: 1.0625rem;
         @include text-truncate;
-      }
-
-      .item-values {
-        height: 1.3125rem;
-        font-size: $is-font-size-sm;
-        color: $is-text-color;
       }
 
       .description {
@@ -242,10 +198,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
     .sticky-note-state-progress {
       height: 1.125rem;
-      width: 50%;
-      padding-left: 0;
-      padding-right: 0;
-      order: 5;
 
       .progress {
         height: 1.125rem;
@@ -267,10 +219,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-actions {
-      width: 200px;
-      justify-content: space-around;
-      order: 3;
-
       .action {
         .action-icon {
           @include square-background(0.875rem);
@@ -288,18 +236,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       font-size: 0.875rem;
     }
 
-
-    .sticky-note-tags {
-      width: 50%;
-      order: 4;
-
-      .badge {
-        font-size: 0.625rem;
-      }
-
-      .action {
-        float: none;
-      }
+    .sticky-note-tags .badge {
+      font-size: 0.625rem;
     }
 
     &.sticky-note-type {
@@ -318,7 +256,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       fill: $is-sticky-note-text-invert;
     }
   }
-
 }
 
 .sticky-notes.list-group:not(.list-group-small) {
@@ -351,15 +288,97 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   &.grey-sticky-notes .sticky-note-container:hover {
     background-color: $is-bg-color;
   }
+
+  .sticky-note {
+    padding: 0.3125rem 0;
+
+    > div {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap !important;
+
+      > div {
+        flex: 0 0 auto;
+        padding: 0 0.625rem;
+
+        &.sticky-note-head, &.sticky-note-content, &.sticky-note-actions {
+          height: 3.0625rem;
+          margin-right: -10px;
+          padding-right: 0;
+        }
+      }
+    }
+
+    .id-icon svg text {
+      font-size: 1rem;
+    }
+
+    .sticky-note-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 67px;
+      padding-left: 0;
+      order: 1;
+    }
+
+    .sticky-note-content {
+      flex: 1 1 auto;
+      display: flex;
+      padding-top: 0;
+      padding-bottom: 0;
+      flex-direction: column-reverse;
+      order: 2;
+      width: calc(100% - 200px - 67px);
+
+      .item-values {
+        height: 1.3125rem;
+        font-size: $is-font-size-sm;
+      }
+
+      .title {
+        color: $is-text-color-alt;
+        font-size: 1.0625rem;
+      }
+    }
+
+    .sticky-note-state-progress {
+      width: 50%;
+      padding-left: 0;
+      padding-right: 0;
+      order: 5;
+    }
+
+    .sticky-note-actions {
+      width: 200px;
+      justify-content: space-around;
+      order: 3;
+    }
+
+    .sticky-note-tags {
+      width: 50%;
+      order: 4;
+    }
+  }
 }
 
-.sticky-notes.list-group-small {
+.sticky-notes.list-group.list-group-small {
   .sticky-note {
     padding: 0.1875rem;
-    color: $is_text-color;
 
-    a {
-      color: $is_text-color;
+    > div {
+      display: flex;
+      align-items: center;
+
+      > div {
+        flex: 0 0 auto;
+        padding: 0 0.625rem;
+        height: 1.625rem;
+
+        &:not(:last-child):not(.sticky-note-content) {
+          border-right: solid 1px $is-border-color-alt;
+        }
+      }
     }
 
     .id-icon svg {
@@ -372,21 +391,25 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .sticky-note-head {
-      font-size: 0.6875rem;
-      padding-left: 0.625rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       width: 61px;
-    }
-
-    > div > div {
-      height: 1.625rem;
+      padding-left: 0.625rem;
+      font-size: 0.6875rem;
     }
 
     .sticky-note-content {
+      flex: 1 1 auto;
+      display: flex;
+      padding-top: 0;
+      padding-bottom: 0;
       flex-direction: row;
       align-items: center;
 
       .item-values {
         height: auto;
+        font-size: 0.75rem;
         padding-right: 0.625rem;
       }
 
@@ -396,10 +419,15 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         border-left: solid 1px $is-border-color-alt;
         padding-left: 0.625rem;
       }
+    }
 
-      .item-values {
-        font-size: 0.75rem;
-      }
+    .sticky-note-state-progress {
+      width: 230px;
+    }
+
+    .sticky-note-actions {
+      width: 230px;
+      justify-content: space-around;
     }
 
     &.sticky-note-type .sticky-note-type-icon {
