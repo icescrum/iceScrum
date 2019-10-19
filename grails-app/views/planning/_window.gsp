@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 <div class="sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }} scrollable-selectable-container"
-                     s ng-class="{'sortable-moving':application.sortableMoving}"
+                     ng-class="{'sortable-moving':application.sortableMoving}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingSprint(sprint)"

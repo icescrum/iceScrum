@@ -31,6 +31,8 @@ body {
 
   nav.navbar {
     flex: 0 0 auto;
+    z-index: 2;
+    background-color: $is-bg-color;
   }
 
   .is-container-fluid {
@@ -64,6 +66,7 @@ body {
         flex: 1 0 auto;
 
         > .card-header {
+          border-top: 1px solid $is-border-color;
           position: relative // Ensure that box-shadow is applied to next sibling in DOM (card-body). Don't use z-index as it overrides the z-index of dropdowns.
         }
 
@@ -348,11 +351,11 @@ nav.navbar {
 }
 
 .card-view {
-  border-top: solid 1px $is-border-color;
   background-color: transparent;
   border-radius: 0;
 
   > .card-header {
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -637,7 +640,7 @@ $state-dot-size-sm: 0.5rem;
   &.has-selected:after {
     background: #000;
     content: " ";
-    top: 0;
+    top: 4rem;
     left: 0;
     right: 0;
     bottom: 0;
@@ -646,6 +649,10 @@ $state-dot-size-sm: 0.5rem;
     pointer-events: none;
     z-index: 1;
   }
+}
+
+.backlog.has-selected:after, .features.scrollable-selectable-container:after {
+  position: fixed; //ugly hack
 }
 
 .sticky-note-selector > .sticky-note-container:not(.is-selected) {
@@ -922,7 +929,7 @@ a.link-documentation {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 53px;
+  height: 52px;
   padding-left: $is-spacer-x;
   padding-right: $is-spacer-x;
 
