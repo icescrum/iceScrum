@@ -45,10 +45,10 @@ var menuLoaderAnimation = $menuLoader.length > 0 ? lottie.loadAnimation({
 $('[data-target=#primary-menu]').click(function() {
     var $this = $(this);
     if ($this.attr('aria-expanded') === 'false') {
-        $('body > .is-container-fluid, .header-notifications').hide();
+        $('.header-notifications').hide();
         $('.header-avatar').removeClass('d-none');
     } else {
-        $('body > .is-container-fluid, .header-notifications').show();
+        $('.header-notifications').show();
         $('.header-avatar').addClass('d-none');
     }
 });

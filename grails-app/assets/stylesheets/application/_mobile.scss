@@ -27,6 +27,10 @@
       padding: 0.8125rem 0;
     }
 
+    .navbar-collapse.show {
+      height:calc(100vh - 4rem);
+    }
+
     .navbar-collapse .workspace-menu {
       padding-left: 0;
 
