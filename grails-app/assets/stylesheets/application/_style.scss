@@ -640,7 +640,7 @@ $state-dot-size-sm: 0.5rem;
   &.has-selected:after {
     background: #000;
     content: " ";
-    top: 4rem;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -652,6 +652,7 @@ $state-dot-size-sm: 0.5rem;
 }
 
 .backlog.has-selected:after, .features.scrollable-selectable-container:after {
+  top: 4rem;
   position: fixed; //ugly hack
 }
 
