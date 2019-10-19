@@ -85,6 +85,5 @@
                 <path stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.35" d="M61.447 39.878l1.64 1.614 4.377-4.303"/>
             </g>
         </g>
-        <path stroke="#FFF" stroke-opacity=".01" stroke-width=".01" d="M.005.005h91.99v90.99H.005z"/>
     </g>
 </svg>

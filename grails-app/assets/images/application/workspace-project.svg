@@ -40,6 +40,5 @@
         <path fill="url(#e)" fill-rule="nonzero" d="M0 37.605h6.3v6.267H0zM74.7 43.872H81v6.267h-6.3z" transform="translate(5 8)"/>
         <path fill="url(#f)" fill-rule="nonzero" d="M33.3 73.419h3.6V77h-3.6z" transform="translate(5 8)"/>
         <path fill="url(#b)" fill-rule="nonzero" d="M62.1 0h6.3v6.267h-6.3z" transform="translate(5 8)"/>
-        <path stroke="#FFF" stroke-opacity=".01" stroke-width=".01" d="M.005.005h91.99v90.99H.005z"/>
     </g>
 </svg>
