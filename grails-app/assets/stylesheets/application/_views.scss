@@ -400,6 +400,10 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   &.story-swimlane-ghost {
     border-color: $is-red;
   }
+
+  &.is-selected {
+    z-index: 2;
+  }
 }
 
 .kanban-row {

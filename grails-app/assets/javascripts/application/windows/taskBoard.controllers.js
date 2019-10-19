@@ -34,7 +34,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         }
     };
     $scope.hasSelected = function() {
-        return $state.params.taskId != undefined;
+        return $state.params.taskId != undefined || $state.params.storyId != undefined;
     };
     $scope.isSortableTaskBoard = function(sprint) {
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
@@ -88,7 +88,8 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             };
         });
         _.each(TaskTypesByName, function(type) {
-            var label = type === TaskTypesByName.URGENT ? $scope.message('is.ui.sprintPlan.kanban.urgentTasks') : $scope.message('is.ui.sprintPlan.kanban.recurrentTasks');;
+            var label = type === TaskTypesByName.URGENT ? $scope.message('is.ui.sprintPlan.kanban.urgentTasks') : $scope.message('is.ui.sprintPlan.kanban.recurrentTasks');
+            ;
             var tasksType = _.filter(tasks, {type: type});
             if (tasksType) {
                 label += ' (' + tasksType.length;
