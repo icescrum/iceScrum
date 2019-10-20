@@ -88,8 +88,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     var inputName = $interpolate(input.attr('name'))(input.scope());
                     var inputModel = form[inputName];
                     scope.$watch(function() {
-                        return inputModel.$invalid && (inputModel.$dirty || inputModel.$touched);
+                        return inputModel.$invalid && inputModel.$dirty && inputModel.$touched; //only if user has typed in
                     }, function(newIsInvalid, oldIsInvalid) {
+
                         if (newIsInvalid && !oldIsInvalid) {
                             var childScope = scope.$new();
                             childScope.inputModel = inputModel;
