@@ -51,8 +51,9 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
         },
         {
             name: 'default.button.delete.label',
+            deleteMenu: true,
             visible: function(feature) { return $scope.authorizedFeature('delete'); },
-            action: function(feature) { $scope.confirmDelete({callback: $scope.delete, args: [feature]}); }
+            action: function(feature) { $scope.delete(feature); }
         }
     ];
     $scope.showFeatureProgress = function(feature) {

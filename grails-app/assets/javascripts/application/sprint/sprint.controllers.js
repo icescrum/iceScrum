@@ -212,14 +212,15 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.warning.dissociateAll'), callback: $scope.unPlan, args: [sprint]}); }
         },
         {
-            name: 'is.ui.releasePlan.menu.sprint.delete',
-            visible: function(sprint) { return $scope.authorizedSprint('delete', sprint); },
-            action: function(sprint) { $scope.confirmDelete({callback: $scope.delete, args: [sprint]}); }
-        },
-        {
             name: 'todo.is.ui.details',
             visible: function(sprint, viewType) { return viewType !== 'details'; },
             action: function(sprint) { $window.location.hash = $scope.openSprintUrl(sprint); } // Inherited
+        },
+        {
+            name: 'is.ui.releasePlan.menu.sprint.delete',
+            deleteMenu: true,
+            visible: function(sprint) { return $scope.authorizedSprint('delete', sprint); },
+            action: function(sprint) { $scope.delete(sprint); }
         }
     ];
     $scope.validateStartDate = function(startDate) {

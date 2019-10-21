@@ -178,14 +178,15 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             }
         },
         {
-            name: 'is.ui.sprintPlan.menu.task.delete',
-            visible: function(task) { return $scope.authorizedTask('delete', task); },
-            action: function(task) { $scope.confirmDelete({callback: $scope.delete, args: [task]}); }
-        },
-        {
             name: 'is.ui.sprintPlan.menu.task.block',
             visible: function(task) { return $scope.authorizedTask('block', task); },
             action: function(task) { $scope.block(task); }
+        },
+        {
+            name: 'is.ui.sprintPlan.menu.task.delete',
+            deleteMenu: true,
+            visible: function(task) { return $scope.authorizedTask('delete', task); },
+            action: function(task, item, $event) { $scope.delete(task); }
         }
     ];
     $scope.showEditEstimationModal = function(task, $event) {

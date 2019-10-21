@@ -86,6 +86,16 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
             $scope.logIn();
         }
     };
+    $scope.menus = [
+        {
+            name: 'default.button.delete.label',
+            deleteMenu: true,
+            visible:function(){ return true },
+            action: function(comment){
+                $scope.delete(comment, comment.commentable);
+            }
+        }
+    ];
     // Init
     $scope.formHolder = {};
     $scope.resetCommentForm();

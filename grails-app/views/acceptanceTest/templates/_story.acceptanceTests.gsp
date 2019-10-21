@@ -72,18 +72,7 @@
                                     class="btn btn-link btn-sm"
                                     uib-dropdown-toggle>
                             </button>
-                            <div uib-dropdown-menu class="dropdown-menu-right">
-                                <a href
-                                   class="dropdown-item"
-                                   ng-click="copy(acceptanceTest, selected)">
-                                    ${message(code: 'is.ui.copy')}
-                                </a>
-                                <a href
-                                   class="dropdown-item text-danger"
-                                   ng-click="confirmDelete({ callback: delete, args: [acceptanceTest, selected] })">
-                                    ${message(code: 'default.button.delete.label')}
-                                </a>
-                            </div>
+                            <div uib-dropdown-menu ng-init="itemType = 'acceptanceTest'" template-url="item.menu.html"></div>
                         </div>
                     </div>
                 </div>

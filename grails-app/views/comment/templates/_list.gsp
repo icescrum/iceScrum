@@ -51,14 +51,7 @@
                 <div class="col-1">
                     <div class="btn-group" ng-show="formDeletable() || formEditable()" uib-dropdown>
                         <button type="button" class="btn btn-link btn-sm" uib-dropdown-toggle></button>
-                        <div uib-dropdown-menu
-                             class="dropdown-menu-right">
-                            <a href
-                               class="dropdown-item text-danger"
-                               ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
-                                ${message(code: 'default.button.delete.label')}
-                            </a>
-                        </div>
+                        <div uib-dropdown-menu ng-init="itemType = 'comment'" template-url="item.menu.html"></div>
                     </div>
                 </div>
             </div>

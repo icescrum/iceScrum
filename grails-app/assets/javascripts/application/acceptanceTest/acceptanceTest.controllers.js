@@ -79,6 +79,23 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             }
         }
     };
+    $scope.menus = [
+        {
+            name: 'is.ui.copy',
+            visible:function(){ return true },
+            action: function(acceptanceTest){
+                $scope.copy(acceptanceTest, $scope.story);
+            }
+        },
+        {
+            name: 'default.button.delete.label',
+            deleteMenu: true,
+            visible:function(){ return true },
+            action: function(acceptanceTest){
+                $scope.delete(acceptanceTest, $scope.story);
+            }
+        }
+    ];
     $scope.blurAcceptanceTestDescription = function() {
         $scope.showAcceptanceTestDescriptionTextarea = false;
         if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim()) {

@@ -115,6 +115,10 @@ body {
 ////////////////////
 // General style
 ////////////////////
+.confirm-delete-action {
+  font-family: $is-font-family-bold;
+}
+
 .avatar {
   position: relative;
   @extend .rounded-circle;

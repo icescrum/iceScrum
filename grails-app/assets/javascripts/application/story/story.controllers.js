@@ -177,8 +177,9 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
         },
         {
             name: 'is.ui.backlog.menu.delete',
+            deleteMenu: true,
             visible: function(story) { return $scope.authorizedStory('delete', story) },
-            action: function(story) { $scope.confirmDelete({callback: $scope.delete, args: [story]}); }
+            action: function(story) { $scope.delete(story); }
         }
     ];
     $scope.showStoryProgress = function(story) {

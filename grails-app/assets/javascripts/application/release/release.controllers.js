@@ -140,14 +140,15 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             }
         },
         {
-            name: 'is.ui.timeline.menu.delete',
-            visible: function(release) { return $scope.authorizedRelease('delete', release); },
-            action: function(release) { $scope.confirmDelete({callback: $scope.delete, args: [release]}); }
-        },
-        {
             name: 'is.ui.timeline.menu.close',
             visible: function(release) { return $scope.authorizedRelease('close', release); },
             action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release]}); }
+        },
+        {
+            name: 'is.ui.timeline.menu.delete',
+            deleteMenu: true,
+            visible: function(release) { return $scope.authorizedRelease('delete', release); },
+            action: function(release) { $scope.delete(release); }
         }
     ];
     $scope.validateStartDate = function(startDate) {

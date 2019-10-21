@@ -853,7 +853,21 @@ var isApplication = angular.module('isApplication', [
             }
         };
         $rootScope.menuClick = function(menuElement, item, $event) {
-            if (menuElement.action) {
+            var actionConfirmed = true;
+            if (menuElement.deleteMenu) {
+                actionConfirmed = false;
+                $event.preventDefault();
+                $event.stopPropagation();
+                var el = angular.element($event.target);
+                el = el.hasClass("name") ? el : el.find('.name');
+                if (!el.hasClass("confirm-delete-action")) {
+                    el.addClass("confirm-delete-action");
+                    el.html($rootScope.message('is.ui.delete.confirm'));
+                } else {
+                    actionConfirmed = true;
+                }
+            }
+            if (menuElement.action && actionConfirmed) {
                 $event.preventDefault();
                 menuElement.action(item);
             }
