@@ -901,6 +901,7 @@ var isApplication = angular.module('isApplication', [
             $rootScope.warning = isSettings.warning;
             $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
             $rootScope.workspaceType = Session.workspaceType;
+            $rootScope.logoutLink = isSettings.logoutLink;
             if (isSettings.announcement && isSettings.announcement.code && !$localStorage['hideAnnouncement-' + isSettings.announcement.code]) {
                 $rootScope.application.announcement = isSettings.announcement;
             }

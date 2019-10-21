@@ -76,7 +76,7 @@
                             </a>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-center text-danger" href="${createLink(controller: 'logout')}" class="delete-link">
+                        <a class="dropdown-item text-center text-danger" href="{{:: logoutLink }}" class="delete-link">
                             <strong>${message(code: 'is.logout')}</strong>
                         </a>
                     </div>
