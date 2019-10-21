@@ -186,6 +186,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
     }
 
+    .sticky-note-head.id-size-xs .id-icon text {
+      font-size: 0.75rem;
+    }
+
     .sticky-note-content {
       .item-values {
         white-space: nowrap;
@@ -670,17 +674,25 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         z-index: 1;
       }
 
-      .sticky-note-head .id {
-        position: absolute;
-        left: 151px;
-        top: 13px;
-        z-index: 2;
-        color: #687583;
-        font-size: 0.75rem;
+      .sticky-note-head {
+        .id {
+          position: absolute;
+          left: 151px;
+          top: 13px;
+          z-index: 2;
+          color: #687583;
+          font-size: 0.75rem;
+        }
 
-        &.mini {
-          font-size: 0.5rem;
+        &.id-size-sm .id {
+          left: 149px;
           top: 15px;
+        }
+
+        &.id-size-xs .id {
+          left: 149px;
+          font-size: 0.5625rem;
+          top: 18px;
         }
       }
 
@@ -839,8 +851,21 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       width: $is-story-width-sm;
       height: $is-story-heigth-sm;
 
-      .sticky-note-head .id {
-        left: 131px;
+      .sticky-note-head {
+        .id {
+          left: 131px;
+        }
+
+        &.id-size-sm .id {
+          left: 129px;
+          top: 15px;
+        }
+
+        &.id-size-xs .id {
+          left: 129px;
+          font-size: 0.5625rem;
+          top: 18px;
+        }
       }
 
       .sticky-note-content {

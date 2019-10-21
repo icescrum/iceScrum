@@ -26,9 +26,9 @@
      sticky-note-color="{{:: story | storyColor }}"
      ng-class=":: [((story | storyColor) | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
-        <div class="sticky-note-head">
+        <div class="sticky-note-head" ng-class=":: story | idSizeClass">
             <div class="id-icon" ng-include="'story.icon.html'"></div>
-            <span class="id" ng-class="::{ 'mini': story.uid > 999 }">{{:: story.uid }}</span>
+            <span class="id">{{:: story.uid }}</span>
             <div class="sticky-note-type-icon"></div>
         </div>
         <div class="sticky-note-content" ng-class="::{'has-description':!!story.description}">

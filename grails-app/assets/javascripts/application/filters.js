@@ -646,4 +646,14 @@ filters
     return function(story, returnIfTrue, returnIfFalse) {
         return Session.user ? (_.find(story.followers_ids, {id: Session.user.id}) ? (returnIfTrue ? returnIfTrue : true) : (returnIfFalse ? returnIfFalse : false)) : (returnIfFalse ? returnIfFalse : false);
     }
-}]);
+}]).filter('idSizeClass', function() {
+    return function(item) {
+        if (!item || item.uid < 99) {
+            return '';
+        } else if (item.uid > 999) {
+            return 'id-size-xs';
+        } else {
+            return 'id-size-sm';
+        }
+    }
+});
