@@ -24,7 +24,8 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view">
         <div class="card-header row" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
-            <div class="card-nav order-0 col-auto flex-grow-1">
+            <div class="card-nav order-0 col-auto flex-grow-1"
+                 id="elementslist-list">
                 <ul class="nav nav-pills"
                     as-sortable="elementsListSortableOptions"
                     ng-model="visibleElementsList">
@@ -67,7 +68,8 @@
                 </ul>
             </div>
             <div class="w-100 order-2 d-block d-sm-none col-auto"></div>
-            <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto mt-2 mt-sm-0 pl-1 pr-0 justify-content-between">
+            <div class="btn-toolbar order-3 order-sm-1 col-12 col-sm-auto mt-2 mt-sm-0 pl-1 pr-0 justify-content-between"
+                 id="elementslist-toolbar">
                 <div class="btn-group ml-0" ng-if="backlogContainers.length == 1">
                     <div uib-dropdown>
                         <button class="btn btn-link"

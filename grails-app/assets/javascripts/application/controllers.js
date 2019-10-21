@@ -831,6 +831,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         var navTabsSize = $element.children('#elementslist-list').outerWidth();
         var btnToolbarSize = $element.children('#elementslist-toolbar').outerWidth();
         var totalSpace = $element.width();
+        // This works on the backlog only when reducing the view, for wrong reasons : the space left is actually the place taken by the "new" button unless it goes on the next line
         var leftSpace = totalSpace - navTabsSize - btnToolbarSize;
         if (leftSpace <= 5 && $scope.visibleElementsList.length > 0) {
             $scope.hiddenElementsList.unshift($scope.visibleElementsList.pop());
@@ -864,7 +865,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         $scope.savedHiddenElementsOrder = $scope.getWindowSetting('hiddenElementsListOrder');
         $scope.savedVisibleElementsOrder = $scope.getWindowSetting('elementsListOrder');
         $scope.hideAndOrderElementsFromSettings(elementsList);
-        $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
+        $timeout($scope.hideElementsToFitAvailableSpace);
     };
     $scope.isShown = function(element) {
         return _.includes([$state.params.pinnedElementId, $state.params.elementId], element[self.propId].toString());
@@ -948,7 +949,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         },
         dragEnd: function() {
             $scope.menuDragging = false;
-            $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
+            $timeout($scope.hideElementsToFitAvailableSpace);
         }
     };
     $scope.closeElementUrl = function(element) {
@@ -964,12 +965,14 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
     // Watchers
     $scope.$watchCollection('elementsList', function() {
         $scope.hideAndOrderElementsFromSettings($scope.elementsList);
-        $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
+        $timeout($scope.hideElementsToFitAvailableSpace);
     });
     $scope.$watchCollection('hiddenElementsList', function() {
-        $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
+        $timeout($scope.hideElementsToFitAvailableSpace);
     });
-    $(window).on("resize.elementsList", _.throttle($scope.hideElementsToFitAvailableSpace, 200));
+    $(window).on("resize.elementsList", _.throttle(function() {
+        $timeout($scope.hideElementsToFitAvailableSpace);
+    }, 200));
     $scope.$on("$destroy", function() {
         $(window).off("resize.elementsList");
     });
