@@ -28,6 +28,7 @@
                  id="elementslist-list">
                 <ul class="nav nav-pills"
                     as-sortable="elementsListSortableOptions"
+                    ng-if="visibleElementsList.length"
                     ng-model="visibleElementsList">
                     <li class="nav-item mr-2"
                         as-sortable-item
