@@ -90,7 +90,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     scope.$watch(function() {
                         return inputModel.$invalid && inputModel.$dirty && inputModel.$touched; //only if user has typed in
                     }, function(newIsInvalid, oldIsInvalid) {
-
                         if (newIsInvalid && !oldIsInvalid) {
                             var childScope = scope.$new();
                             childScope.inputModel = inputModel;

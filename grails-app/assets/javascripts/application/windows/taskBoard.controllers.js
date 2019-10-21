@@ -89,7 +89,6 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         });
         _.each(TaskTypesByName, function(type) {
             var label = type === TaskTypesByName.URGENT ? $scope.message('is.ui.sprintPlan.kanban.urgentTasks') : $scope.message('is.ui.sprintPlan.kanban.recurrentTasks');
-            ;
             var tasksType = _.filter(tasks, {type: type});
             if (tasksType) {
                 label += ' (' + tasksType.length;

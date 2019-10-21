@@ -26,7 +26,7 @@
 jQuery.fn.scrollToVisible = function(element, speed) {
     var computedOffsetTop = this.data('scrollToVisibleComputedOffsetTop');
     var offset = 0;
-    if (computedOffsetTop === true || (computedOffsetTop && $(element).hasClass(computedOffsetTop))) {
+    if (computedOffsetTop === true || (computedOffsetTop && $(element).hasClass(computedOffsetTop))) {
         offset = 0;
         var parent = $(element).parent();
         while (parent[0] !== this[0]) {
