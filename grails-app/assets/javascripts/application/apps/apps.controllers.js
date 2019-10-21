@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window', '$timeout', '$uibModal', function($scope, AppService, Session, $window, $timeout, $uibModal) {
+extensibleController('appsCtrl', ['$scope', 'AppService', 'Session', '$window', '$timeout', '$uibModal', function($scope, AppService, Session, $window, $timeout, $uibModal) {
     // Functions
     $scope.openAppDefinition = function(appDefinition) {
         $scope.appDefinition = appDefinition;

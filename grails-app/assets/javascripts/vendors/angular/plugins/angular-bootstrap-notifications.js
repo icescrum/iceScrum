@@ -25,17 +25,20 @@
 angular.module('notification-templates', []).run(['$templateCache', function($templateCache) {
     $templateCache.put('toast.container.html', '<div class="toast-container" aria-live="polite" aria-atomic="true"></div>');
     $templateCache.put('toast.html', '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">' +
-                                            '    <div class="toast-header">' +
-                                            '        <div class="toast-close" data-dismiss="toast" aria-label="Close"></div>' +
-                                            '        <div class="toast-content">' +
-                                            '            <div class="toast-icon {{:: \'toast-\' + type }}"></div>' +
-                                            '            <div>' +
-                                            '               <div ng-if="title"><strong>{{:: title }}</strong></div>' +
-                                            '               {{:: message }}' +
-                                            '            </div>' +
-                                            '        </div>' +
-                                            '    </div>' +
-                                            '</div>');
+                                     '    <div class="toast-header">' +
+                                     '        <div class="toast-close" data-dismiss="toast" aria-label="Close"></div>' +
+                                     '        <div class="toast-content">' +
+                                     '            <div class="toast-icon {{:: \'toast-\' + type }}"></div>' +
+                                     '            <div>' +
+                                     '               <div ng-if="title"><strong>{{:: title }}</strong></div>' +
+                                     '               {{:: message }}' +
+                                     '            </div>' +
+                                     '        </div>' +
+                                     '    </div>' +
+                                     '   <div class="mt-2" ng-if="::button">' +
+                                     '       <a href ng-click="button.action()" class="btn btn-sm btn-{{::button.type}} float-right">{{::button.name}}</a>' +
+                                     '   </div>' +
+                                     '</div>');
 }]);
 
 angular.module('angular-notifications', ['notification-templates']).provider('notifications', function() {
@@ -55,6 +58,7 @@ angular.module('angular-notifications', ['notification-templates']).provider('no
                 scope.title = title;
                 scope.message = message;
                 scope.type = type;
+                scope.button = options ? options.button : null;
                 var toast = $compile($templateCache.get('toast.html'))(scope);
                 $container.append(toast);
                 var $toast = angular.element(toast);

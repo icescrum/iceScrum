@@ -84,6 +84,21 @@ strong {
   }
 }
 
+.btn-primary.gold {
+  border:none;
+  background-color: #fbca00;
+  text-shadow: 0 0.125rem 0.25rem #d2c518;
+
+  &:hover, &:active, &:focus, &:not(:disabled):not(.disabled):active:focus {
+    background-color: #fbca00;
+    box-shadow: 0 0.5rem 1.75rem 0 rgba(251, 202, 0, 0.44);
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: #fbca00;
+  }
+}
+
 .btn-secondary {
   color: $is-text-color-alt;
   box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-1;
