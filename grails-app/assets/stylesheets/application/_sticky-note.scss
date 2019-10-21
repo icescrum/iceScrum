@@ -645,8 +645,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       &.sticky-note-type .sticky-note-type-icon {
         position: absolute;
-        top: 1px;
-        right: 1px;
+        top: 3px;
+        right: 33px;
         z-index: 2;
       }
 
@@ -667,9 +667,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         z-index: 2;
         color: #687583;
         font-size: 0.75rem;
+
         &.mini {
           font-size: 0.5rem;
-          top:15px;
+          top: 15px;
         }
       }
 
@@ -713,8 +714,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       &.sticky-note-type {
         @each $item-type in (defect, technical) {
-          &.#{$item-type} .sticky-note-type-icon {
-            background-image: url("type-#{$item-type}-grey.svg");
+          &.#{$item-type} {
+            .sticky-note-type-icon {
+              background-image: url("type-#{$item-type}-black.svg");
+            }
+
+            &.invert .sticky-note-type-icon {
+              background-image: url("type-#{$item-type}-white.svg");
+            }
           }
         }
       }
