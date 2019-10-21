@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="col-md-7 row">
-            <div class="col-md-{{ 12 / appDefinition.screenshots.length }} app-screenshot"
+            <div class="col-md-{{ 12 / appDefinition.screenshots.length }} app-screenshot p-0"
                  ng-repeat="screenshot in appDefinition.screenshots">
                 <a href
                    ng-click="showScreenshot(appDefinition, screenshot)">
