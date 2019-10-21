@@ -82,7 +82,7 @@ filters
             if (!project) {
                 project = $rootScope.getProjectFromState();
             }
-            if (!project || !project.pkey) {
+            if (!project || !project.pkey || !user) {
                 return classes;
             }
             if (!userVisualRolesCache[project.pkey]) {
