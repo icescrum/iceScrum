@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar btn-toolbar-multiline">
                     <button type="button"
                             ng-if="authorizedStories('accept', stories)"
                             class="btn btn-primary btn-sm"
