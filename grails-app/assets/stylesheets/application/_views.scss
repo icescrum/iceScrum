@@ -707,6 +707,16 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       margin-left: 8px;
       text-align: center;
 
+      img {
+        height: 40px;
+        width: 40px;
+      }
+
+      &.avatars-size-xs img {
+        height: 30px;
+        width: 30px;
+      }
+
       .avatar {
         margin-left: -8px;
         position: relative;
