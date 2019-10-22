@@ -613,7 +613,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
                 $scope.showDescriptionTextarea = false;
                 if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == $scope.getDescriptionTemplate($scope.editableStory).trim()) {
-                    $scope.editableStory.description = '';
+                    $scope.editableStory.description = null;
                 }
             }
         };
