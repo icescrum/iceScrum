@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<div class="activities card-body" ng-controller="activityCtrl">
+<div class="card-body font-size-sm" ng-controller="activityCtrl">
     <div ng-repeat="groupedActivity in groupedActivities">
         <div class="activity media">
             <div class="{{ groupedActivity.poster | userColorRoles }} avatar mr-3">

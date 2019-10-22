@@ -68,16 +68,16 @@
         </div>
         <table class="table table-bordered table-striped">
             <thead>
-            <tr>
-                <th>${message(code: 'is.project.name')}</th>
-                <th style="width:20px"><i class="fa fa-trash"></i></th>
-            </tr>
+                <tr>
+                    <th>${message(code: 'is.project.name')}</th>
+                    <th style="width:20px"><i class="fa fa-trash"></i></th>
+                </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="project in deletableProjects">
-                <td>{{:: project.name }}</td>
-                <td><input type="checkbox" ng-model="project.delete"/></td>
-            </tr>
+                <tr ng-repeat="project in deletableProjects">
+                    <td>{{:: project.name }}</td>
+                    <td><input type="checkbox" ng-model="project.delete"/></td>
+                </tr>
             </tbody>
         </table>
     </is:modal>
@@ -157,34 +157,42 @@
     <div class="empty-content" ng-show="groupedUserActivities === undefined">
         <i class="fa fa-refresh fa-spin"></i>
     </div>
-
-    <div ng-repeat="groupedActivity in groupedUserActivities">
-        <div><h4><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></h4></div>
-
-        <div class="media" ng-class="{ 'unread': activity.notRead }" ng-repeat="activity in groupedActivity.activities">
-            <img height="36px"
-                 ng-src="{{activity.poster | userAvatar}}"
-                 class="{{ activity.poster | userColorRoles }}"
-                 alt="{{activity.poster | userFullName}}"/>
-
-            <div class="media-body">
-                <div class="time-stamp float-right">
-                    <time timeago datetime="{{ activity.dateCreated }}">
-                        {{ activity.dateCreated | dateTime }}
-                    </time>
+    <div ng-repeat="groupedActivity in groupedUserActivities"
+         ng-class="{'mb-3': !$last}">
+        <div class="pl-3 pr-3">
+            <a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">
+                <strong class="text-accent font-size-base">{{ groupedActivity.project.name }}</strong>
+            </a>
+        </div>
+        <div class="pt-2 pl-3 pr-3"
+             ng-class="{ 'activity-unread': activity.notRead, 'pb-2': $last }"
+             ng-repeat="activity in groupedActivity.activities">
+            <div class="activity media">
+                <div class="{{ activity.poster | userColorRoles }} avatar mr-3">
+                    <img ng-src="{{activity.poster | userAvatar}}"
+                         width="37px"
+                         height="37px"
+                         class="align-self-center"
+                         alt="{{:: activity.poster | userFullName}}"/>
                 </div>
-
-                <div>
-                    {{activity.poster | userFullName}}
-                </div>
-
-                <div>
-                    <span>{{ activity | activityName }} <a href="{{ activity.story.uid | permalink: 'story': groupedActivity.project.pkey }}">{{ activity.story.name }}</a></span>
+                <div class="media-body">
+                    <div class="time-stamp float-right">
+                        <time timeago datetime="{{ activity.dateCreated }}">
+                            {{ activity.dateCreated | dateTime }}
+                        </time>
+                    </div>
+                    <div>
+                        {{activity.poster | userFullName}}
+                    </div>
+                    <div>
+                        <span class="text-accent">{{ activity | activityName }}</span>
+                        <a href="{{ activity.story.uid | permalink: 'story': groupedActivity.project.pkey }}" class="link">{{ activity.story.name }}</a>
+                    </div>
                 </div>
             </div>
+            <hr ng-if="!$last" class="mb-0 mt-2"/>
         </div>
     </div>
-
     <div class="empty-content form-text" ng-show="groupedUserActivities != undefined && groupedUserActivities.length == 0">
         ${message(code: 'todo.is.ui.history.empty')}
     </div>

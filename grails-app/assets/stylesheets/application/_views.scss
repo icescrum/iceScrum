@@ -917,17 +917,19 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 // Activities
 ////////////////////
 
-.activities {
-  font-size: $is-font-size-sm;
+.notifications-dropdown {
+  width: 500px;
+  max-height: 500px;
+  overflow: auto;
+}
 
-  .activity-name {
-    color: $is-text-color-alt;
-  }
+.activity-unread {
+  background-color: $is-bg-color-alt;
+}
 
-  .activity ul {
-    padding-inline-start: 17px;
-    margin-bottom: 0;
-  }
+.activity ul {
+  padding-inline-start: 17px;
+  margin-bottom: 0;
 }
 
 ////////////////////

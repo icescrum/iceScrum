@@ -259,7 +259,7 @@
                     <span class="notification-count" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                 </div>
             </div>
-            <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'notifications.panel.html'"></div>
+            <div uib-dropdown-menu class="dropdown-menu-right notifications-dropdown" ng-include="'notifications.panel.html'"></div>
         </div>
         <div ng-if=":: currentUser.username" class="d-none d-lg-block header-avatar">
             <a hotkey="{ 'shift+h': goToHome}"

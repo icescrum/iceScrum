@@ -244,7 +244,7 @@
                         <i class="icon icon-rss"></i>
                     </a>
                 </div>
-                <div class="card-body activities">
+                <div class="card-body font-size-sm">
                     <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">
                         <div class="activity media">
                             <div class="{{ activity.poster | userColorRoles }} avatar mr-3">
@@ -264,7 +264,7 @@
                                     {{activity.poster | userFullName}}
                                 </div>
                                 <div>
-                                    <span class="activity-name">{{ activity | activityName }}</span>
+                                    <span class="text-accent">{{ activity | activityName }}</span>
                                     <a href ng-click="openFromId(activity)" ng-if="activity.code != 'delete'" class="link">{{ activity.label }}</a>
                                     <span ng-if="activity.code == 'delete'">{{ activity.label }}</span>
                                 </div>
