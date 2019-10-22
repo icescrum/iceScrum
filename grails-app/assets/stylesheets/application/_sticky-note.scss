@@ -818,7 +818,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         right: -12px;
         display: block;
         @include square-background(1.5rem);
-        @include background-image-retina('badge-task-blocked');
+        background-image: url("badge-task-blocked.svg");
       }
     }
   }
