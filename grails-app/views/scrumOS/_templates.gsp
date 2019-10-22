@@ -68,16 +68,16 @@
         </div>
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
-                    <th>${message(code: 'is.project.name')}</th>
-                    <th style="width:20px"><i class="fa fa-trash"></i></th>
-                </tr>
+            <tr>
+                <th>${message(code: 'is.project.name')}</th>
+                <th style="width:20px"><i class="fa fa-trash"></i></th>
+            </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="project in deletableProjects">
-                    <td>{{:: project.name }}</td>
-                    <td><input type="checkbox" ng-model="project.delete"/></td>
-                </tr>
+            <tr ng-repeat="project in deletableProjects">
+                <td>{{:: project.name }}</td>
+                <td><input type="checkbox" ng-model="project.delete"/></td>
+            </tr>
             </tbody>
         </table>
     </is:modal>
@@ -144,12 +144,13 @@
     <script type="text/ng-template" id="menuitem.item.html">
     <a hotkey="{ '{{:: menu.shortcut }}' : hotkeyClick }"
        class="nav-link"
-       data-toggle="collapse"
-       data-target="#primary-menu.show"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
        href="{{ getMenuUrl(menu) }}">
-        <span class="icon-main-menu" ng-class="'icon-main-menu-' + menu.id" as-sortable-item-handle></span>
-        <span class="nav-link-title">{{:: menu.title }}</span>
+        <div data-toggle="collapse"
+             data-target="#primary-menu.show">
+            <span class="icon-main-menu" ng-class="'icon-main-menu-' + menu.id" as-sortable-item-handle></span>
+            <span class="nav-link-title">{{:: menu.title }}</span>
+        </div>
     </a>
     </script>
 
@@ -157,6 +158,7 @@
     <div class="empty-content" ng-show="groupedUserActivities === undefined">
         <i class="fa fa-refresh fa-spin"></i>
     </div>
+
     <div ng-repeat="groupedActivity in groupedUserActivities"
          ng-class="{'mb-3': !$last}">
         <div class="pl-3 pr-3">
@@ -164,6 +166,7 @@
                 <strong class="text-accent font-size-base">{{ groupedActivity.project.name }}</strong>
             </a>
         </div>
+
         <div class="pt-2 pl-3 pr-3"
              ng-class="{ 'activity-unread': activity.notRead, 'pb-2': $last }"
              ng-repeat="activity in groupedActivity.activities">
@@ -175,15 +178,18 @@
                          class="align-self-center"
                          alt="{{:: activity.poster | userFullName}}"/>
                 </div>
+
                 <div class="media-body">
                     <div class="time-stamp float-right">
                         <time timeago datetime="{{ activity.dateCreated }}">
                             {{ activity.dateCreated | dateTime }}
                         </time>
                     </div>
+
                     <div>
                         {{activity.poster | userFullName}}
                     </div>
+
                     <div>
                         <span class="text-accent">{{ activity | activityName }}</span>
                         <a href="{{ activity.story.uid | permalink: 'story': groupedActivity.project.pkey }}" class="link">{{ activity.story.name }}</a>
@@ -193,6 +199,7 @@
             <hr ng-if="!$last" class="mb-0 mt-2"/>
         </div>
     </div>
+
     <div class="empty-content form-text" ng-show="groupedUserActivities != undefined && groupedUserActivities.length == 0">
         ${message(code: 'todo.is.ui.history.empty')}
     </div>
