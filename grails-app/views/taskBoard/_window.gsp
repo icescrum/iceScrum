@@ -164,7 +164,7 @@
                                 </div>
                                 <button type="button"
                                         ng-if="!tasksShown(taskState, taskTypesByName.URGENT)"
-                                        class="btn btn-secondary btn-sm mr-auto ml-auto mt-1 mb-1"
+                                        class="btn btn-secondary kanban-sticky btn-sm mr-auto ml-auto mt-1 mb-1 align-self-start"
                                         ng-click="showTasks(taskTypesByName.URGENT, true)">
                                     {{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}
                                 </button>
@@ -175,7 +175,7 @@
                                         {{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}
                                     </button>
                                 </div>
-                                <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task">
+                                <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task kanban-sticky">
                                     <a class="kanban-add-task" ng-click="openNewTaskByType(taskTypesByName.URGENT)" href>
                                         <span class="plus-icon"></span>
                                     </a>
@@ -219,7 +219,7 @@
                                 </div>
                                 <button type="button"
                                         ng-if="!tasksShown(taskState, taskTypesByName.RECURRENT)"
-                                        class="btn btn-secondary btn-sm mr-auto ml-auto mt-1 mb-1"
+                                        class="btn btn-secondary btn-sm kanban-sticky mr-auto ml-auto mt-1 mb-1 align-self-start"
                                         ng-click="showTasks(taskTypesByName.RECURRENT, true)">
                                     {{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}
                                 </button>
@@ -230,7 +230,7 @@
                                         {{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}
                                     </button>
                                 </div>
-                                <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task">
+                                <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task kanban-sticky">
                                     <a class="kanban-add-task" ng-click="openNewTaskByType(taskTypesByName.RECURRENT)" href>
                                         <span class="plus-icon"></span>
                                     </a>
@@ -270,7 +270,7 @@
                                 </div>
                                 <button type="button"
                                         ng-if="!tasksShown(taskState, story)"
-                                        class="btn btn-secondary btn-sm mr-auto ml-auto mt-1 mb-1"
+                                        class="btn btn-secondary btn-sm kanban-sticky mr-auto ml-auto mt-1 mb-1 align-self-start"
                                         ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
                                 </button>
                                 <div ng-if="tasksHidden(taskState, story)" class="sticky-note-container sticky-note-task d-flex">
@@ -280,7 +280,7 @@
                                         {{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
                                     </button>
                                 </div>
-                                <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="sticky-note-container sticky-note-task">
+                                <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="sticky-note-container sticky-note-task kanban-sticky">
                                     <a class="kanban-add-task" ng-click="openNewTaskByStory(story)" href>
                                         <span class="plus-icon"></span>
                                     </a>
@@ -319,7 +319,7 @@
                                 </div>
                                 <button type="button"
                                         ng-if="!tasksShown(taskState, story, true)"
-                                        class="btn btn-secondary btn-sm mr-auto ml-auto mt-1 mb-1"
+                                        class="btn btn-secondary btn-sm kanban-sticky mr-auto ml-auto mt-1 mb-1 align-self-start"
                                         ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
                                 </button>
                                 <div ng-if="tasksHidden(taskState, story, true)" class="sticky-note-container sticky-note-task d-flex">

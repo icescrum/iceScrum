@@ -462,6 +462,11 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   position: relative;
 }
 
+.kanban-sticky {
+  top: 10px;
+  position: sticky !important;
+}
+
 ////////////////////
 // Apps
 ////////////////////
