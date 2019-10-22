@@ -32,7 +32,7 @@
                 class="col-md-12"
                 min="2"
                 step="1"
-                max="10"
+                max="splitCount < 10 ? 10 : splitCount"
                 value="splitCount"
                 on-stop-slide="onChangeSplitNumber()"></slider>
         <div class="col-md-12 form-text">${message(code: 'is.dialog.split.description')}</div>
@@ -40,7 +40,7 @@
     <div ng-repeat="story in stories track by $index">
         <hr ng-if="!$first">
         <div class="row">
-            <div class="form-group col-sm-8">
+            <div class="form-group col-sm-6">
                 <label>${message(code: 'is.story.name')}</label>
                 <input required
                        name="name{{ $index }}"
@@ -85,6 +85,9 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
+            <div class="form-group align-self-end ml-auto mr-3">
+                <button class="btn btn-danger btn-sm ml-auto" type="button" ng-click="removeAStory($index)" ng-if="stories.length > 2">${message(code:'default.button.delete.label')}</button>
+            </div>
             <div class="form-group col-sm-12">
                 <label for="description">
                     <span class="text-muted small float-right"><i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}</span>
@@ -98,6 +101,9 @@
                           class="form-control"></textarea>
             </div>
         </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-secondary btn-sm" type="button" ng-click="splitCount = splitCount+1; addNewStory();"> + </button>
     </div>
 </is:modal>
 </script>

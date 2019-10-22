@@ -429,7 +429,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
     $scope.storyStatesByName = StoryStatesByName;
 }]);
 
-extensibleController('storySplitCtrl', ['$scope', 'Session', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, Session, $controller, $q, StoryService, StoryStatesByName, story) {
+extensibleController('storySplitCtrl', ['$scope', '$timeout', 'Session', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, $timeout, Session, $controller, $q, StoryService, StoryStatesByName, story) {
     $controller('storyCtrl', {$scope: $scope});
     $controller('storyAtWhoCtrl', {$scope: $scope});
     // Functions
@@ -470,6 +470,17 @@ extensibleController('storySplitCtrl', ['$scope', 'Session', '$controller', '$q'
             });
         }
     };
+    $scope.addNewStory = function(){
+        $scope.onChangeSplitNumber();
+        $timeout(function() {
+            var scroller = angular.element(".modal")[0];
+            scroller.scrollTop = scroller.scrollHeight;
+        }, 0, false);
+    };
+    $scope.removeAStory = function($index){
+        $scope.splitCount -= 1;
+        $scope.stories.splice($index, 1);
+    }
     $scope.submit = function(stories) {
         var tasks = [];
         var lastRank = null;
