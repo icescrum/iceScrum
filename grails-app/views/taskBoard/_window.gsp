@@ -26,14 +26,13 @@
          ng-if="sprint">
         <div class="card-header row kanban-header">
             <div class="card-header-left col-auto flex-grow-1">
-                <span uib-dropdown on-toggle="scrollToActiveSprint(open)">
+                <span class="sprint-dropdown" uib-dropdown on-toggle="scrollToActiveSprint(open)">
                     <span uib-dropdown-toggle class="card-title">{{ (sprint | sprintName) }}</span>
-                    <div uib-dropdown-menu role="menu">
+                    <div uib-dropdown-menu role="menu" class="sprint-dropdown-menus">
                         <div ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
                              ng-switch="sprintEntry.type"
-                             ng-class="{'divider': 'dropdown-divider', 'release': 'dropdown-header', 'sprint': 'dropdown-item'}[sprintEntry.type]">
+                             ng-class="(sprintEntry.item.id == sprint.id ? 'active' : '') + ' dropdown-' + {'divider': 'divider', 'release': 'header', 'sprint': 'item'}[sprintEntry.type]">
                             <a ng-switch-when="sprint"
-                               ng-class="{'active': sprintEntry.item.id == sprint.id}"
                                href="{{ openSprintUrl(sprintEntry.item, true) }}">
                                 {{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}
                                 <span>
@@ -77,6 +76,7 @@
                              ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">
                             <a ng-if="sprintFilter.id != 'divider'"
                                class="dropdown-item"
+                               ng-class="{'active': currentSprintFilter.id == sprintFilter.id}"
                                ng-click="changeSprintFilter(sprintFilter)"
                                href>
                                 {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}

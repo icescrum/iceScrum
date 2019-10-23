@@ -217,14 +217,14 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.totalRemainingTime = function(tasks) {
         return _.sum(_.filter(_.map(tasks, 'estimation'), _.isNumber));
     };
-    $scope.scrollToActiveSprint = function(open) {
-        if (open) {
-            var dropdown = angular.element('.planning-dropdown');
-            var ele = dropdown.find("li>a.active");
-            var list = dropdown.find('.planning-menu');
-            var posi = list.scrollTop() + ele.offset().top - ele.innerHeight();
-            list.animate({
-                scrollTop: posi - 60
+    $scope.scrollToActiveSprint = function(isOpen) {
+        if (isOpen) {
+            var dropdown = angular.element('.sprint-dropdown');
+            var activeSprint = dropdown.find(".dropdown-item.active");
+            var dropdownMenus = dropdown.find('.sprint-dropdown-menus');
+            var activeSprintPosition = dropdownMenus.scrollTop() + activeSprint.offset().top - activeSprint.innerHeight();
+            dropdownMenus.animate({
+                scrollTop: activeSprintPosition - 100
             }, 200);
         }
     };

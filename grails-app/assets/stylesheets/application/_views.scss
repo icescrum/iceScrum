@@ -467,6 +467,11 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   position: sticky !important;
 }
 
+.sprint-dropdown-menus {
+  max-height: 400px;
+  overflow-x: auto;
+}
+
 ////////////////////
 // Apps
 ////////////////////

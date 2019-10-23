@@ -365,8 +365,14 @@ form label {
 .dropdown-menu {
   box-shadow: $is-shadow;
 
-  .dropdown-item &.active {
-    font-family: $is-font-family-bold;
+  .dropdown-item {
+    &.active {
+      font-family: $is-font-family-bold;
+    }
+
+    a {
+      color: inherit;
+    }
   }
 }
 
