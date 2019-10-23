@@ -116,7 +116,7 @@
                             <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                                 <a role="menuitem"
                                    class="dropdown-item"
-                                   href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainers[0].backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                   href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ backlogContainers[0].backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
                                    ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">
                                     ${format.name}
                                 </a>
