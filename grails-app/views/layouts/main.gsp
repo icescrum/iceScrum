@@ -50,7 +50,7 @@
           flow-prevent-drop=""
           fullscreen="application.isFullScreen"
           ng-class="{'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)}"
-          class="splash-screen loading ${workspace?.name ? 'workspace-' + workspace.name : ''} ${bodyClasses}">
+          class="splash-screen loading ${workspace?.name ? 'workspace-' + workspace.name : ''} ${bodyClasses ?: ''}">
         <g:include view="layouts/_splashScreen.gsp"/>
         <is:header/>
         <div class="is-container-fluid main" ui-view>

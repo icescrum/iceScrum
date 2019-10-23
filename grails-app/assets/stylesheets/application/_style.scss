@@ -1411,15 +1411,15 @@ $widget-card-header-height: 42px;
     }
 
     &.widget-width-1 {
-      @extend .col-md-2;
+      @extend .col-lg-2;
     }
 
     &.widget-width-2 {
-      @extend .col-md-4;
+      @extend .col-lg-4;
     }
 
     &.widget-width-3 {
-      @extend .col-md-6;
+      @extend .col-lg-6;
     }
   }
 
