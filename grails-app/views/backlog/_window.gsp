@@ -173,15 +173,17 @@
                         <span class="icon icon-close"></span>
                     </a>
                 </div>
-                <div class="sticky-notes grey-sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
-                     ng-class="{'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
-                     ng-controller="storyBacklogCtrl"
-                     as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
-                     is-disabled="!isSortingBacklog(backlogContainer)"
-                     ng-model="backlogContainer.backlog.stories"
-                     ng-init="(backlog = backlogContainer.backlog) && (container = backlogContainer) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html') && (orderBy = backlogContainer.orderBy)"
-                     ng-include="'story.backlog.html'">
-                </div>
+                <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
+                    <div class="loading-logo" ng-include="'loading.html'"></div>
+                    <div class="sticky-notes grey-sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
+                         ng-class="{'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
+                         ng-controller="storyBacklogCtrl"
+                         as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
+                         is-disabled="!isSortingBacklog(backlogContainer)"
+                         ng-model="backlogContainer.backlog.stories"
+                         ng-init="(backlog = backlogContainer.backlog) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html') && (orderBy = backlogContainer.orderBy)"
+                         ng-include="'story.backlog.html'">
+                    </div>
             </div>
             <entry:point id="backlog-list-details"/>
         </div>
