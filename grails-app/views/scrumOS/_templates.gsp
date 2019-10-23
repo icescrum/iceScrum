@@ -68,16 +68,16 @@
         </div>
         <table class="table table-bordered table-striped">
             <thead>
-            <tr>
-                <th>${message(code: 'is.project.name')}</th>
-                <th style="width:20px"><i class="fa fa-trash"></i></th>
-            </tr>
+                <tr>
+                    <th>${message(code: 'is.project.name')}</th>
+                    <th style="width:20px"><i class="fa fa-trash"></i></th>
+                </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="project in deletableProjects">
-                <td>{{:: project.name }}</td>
-                <td><input type="checkbox" ng-model="project.delete"/></td>
-            </tr>
+                <tr ng-repeat="project in deletableProjects">
+                    <td>{{:: project.name }}</td>
+                    <td><input type="checkbox" ng-model="project.delete"/></td>
+                </tr>
             </tbody>
         </table>
     </is:modal>

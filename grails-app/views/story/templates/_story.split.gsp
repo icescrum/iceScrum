@@ -86,7 +86,7 @@
                 </ui-select>
             </div>
             <div class="form-group align-self-end ml-auto mr-3">
-                <button class="btn btn-danger btn-sm ml-auto" type="button" ng-click="removeAStory($index)" ng-if="stories.length > 2">${message(code:'default.button.delete.label')}</button>
+                <button class="btn btn-danger btn-sm ml-auto" type="button" ng-click="removeAStory($index)" ng-if="stories.length > 2">${message(code: 'default.button.delete.label')}</button>
             </div>
             <div class="form-group col-sm-12">
                 <label for="description{{ $index }}" class="w-100">

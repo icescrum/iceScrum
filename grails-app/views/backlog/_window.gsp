@@ -184,6 +184,7 @@
                          ng-init="(backlog = backlogContainer.backlog) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html') && (orderBy = backlogContainer.orderBy)"
                          ng-include="'story.backlog.html'">
                     </div>
+                </div>
             </div>
             <entry:point id="backlog-list-details"/>
         </div>

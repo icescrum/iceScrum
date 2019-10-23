@@ -470,17 +470,17 @@ extensibleController('storySplitCtrl', ['$scope', '$timeout', 'Session', '$contr
             });
         }
     };
-    $scope.addNewStory = function(){
+    $scope.addNewStory = function() {
         $scope.onChangeSplitNumber();
         $timeout(function() {
             var scroller = angular.element(".modal")[0];
             scroller.scrollTop = scroller.scrollHeight;
         }, 0, false);
     };
-    $scope.removeAStory = function($index){
+    $scope.removeAStory = function($index) {
         $scope.splitCount -= 1;
         $scope.stories.splice($index, 1);
-    }
+    };
     $scope.submit = function(stories) {
         var tasks = [];
         var lastRank = null;
