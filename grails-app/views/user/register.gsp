@@ -32,37 +32,17 @@
                 <div class="rect_1"></div>
                 <div class="rect_2"></div>
                 <div class="rect_3"></div>
-                <div class="login">
+                <div class="register" style="max-width:600px;">
                     <div class="text-center">
                         <a href="https://www.icescrum.com" target="_blank">
                             <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
                             <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-fluid">
                         </a>
                     </div>
-                    <h1 class="text-center">Great to see you again!</h1>
                     <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
-                        <p class="form-group">
-                            <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                            <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="">
-                        </p>
-                        <p class="form-group">
-                            <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
-                            <input class="input-large input-text form-control" type="password" name="j_password" id="password">
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="back-link">
-                                <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve') }</g:link>
-                            </div>
-                            <div>
-                                <input type="submit" class="btn btn-primary" name="login" value="Login">
-                            </div>
-                        </div>
-                        <p id="remember_me_holder" style="display: none;">
-                            <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
-                        </p>
                         <div class="text-center login-footer">
-                            <div class="login-cta-text">Don't have an account</div>
-                            <g:link class="btn btn-secondary" action="register" controller="user">${message(code: 'is.login.register') }</g:link>
+                            <div class="login-cta-text">Already have an account</div>
+                            <g:link class="btn btn-secondary" action="auth" controller="login">${message(code: 'is.login')}</g:link>
                         </div>
                     </form>
                 </div>

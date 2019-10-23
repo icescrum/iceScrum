@@ -183,13 +183,20 @@
 // Login
 ////////////////////
 
-.login {
+.login, .retrieve {
   padding-top: 3.75rem;
   margin-top: 1em;
 
   h1 {
     margin-top: 1.25rem;
     margin-bottom: 6.5rem;
+  }
+}
+
+.retrieve {
+  max-width:600px;
+  .retrieve-description {
+    margin-top: 3.25rem;margin-bottom: 2.0rem;
   }
 }
 

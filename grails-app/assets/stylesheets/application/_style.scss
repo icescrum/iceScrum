@@ -627,6 +627,7 @@ $state-dot-size-sm: 0.5rem;
   padding: 5px;
   font-size: $is-font-size-sm;
   text-align: center;
+  z-index: 2;
 }
 
 .pdf-viewer {

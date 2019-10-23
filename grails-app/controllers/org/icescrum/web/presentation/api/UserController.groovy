@@ -218,7 +218,7 @@ class UserController implements ControllerErrorHandler {
 
     @Secured(['!isAuthenticated()'])
     def register() {
-        render(status: 200, template: 'dialogs/register')
+        render(status: 200, view: 'register')
     }
 
     def avatar(long id) {
@@ -284,7 +284,7 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: users as JSON)
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured('isAuthenticated()')
     def openProfile() {
         def user = springSecurityService.currentUser
         render(status: 200, template: 'dialogs/profile', model: [user: user, projects: grailsApplication.config.icescrum.alerts.enable ? Project.findAllByRole(user, [BasePermission.WRITE, BasePermission.READ], [cache: true, max: 11], true, false) : null])
@@ -297,12 +297,12 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
-    @Secured(['!isAuthenticated()'])
+    @Secured('!isAuthenticated()')
     def retrieve() {
-        if (!params.user?.username) {
-            render(status: 200, template: 'dialogs/retrieve')
-        } else {
-            def user = User.findWhere(username: params.user.username)
+        def user = null
+        def error = null
+        if (params.username) {
+            user = User.findWhere(username: params.username)
             if (!user || !user.enabled || user.accountExternal) {
                 def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.login.error.disabled' : 'is.user.error.externalAccount')
                 returnError(code: code)
@@ -310,17 +310,15 @@ class UserController implements ControllerErrorHandler {
                 try {
                     User.withTransaction {
                         userService.resetPassword(user)
-                        render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.login.retrieve.success', args: [user.email])] as JSON)
                     }
                 } catch (MailException e) {
-                    returnError(code: 'is.mail.error', exception: e)
-                } catch (RuntimeException re) {
-                    returnError(text: re.message, exception: re)
+                    error = message(code: 'is.mail.error', exception: e)
                 } catch (Exception e) {
-                    returnError(code: 'is.mail.error', exception: e)
+                    error = message(code: 'is.mail.error', exception: e)
                 }
             }
         }
+        render(status: 200, view: 'retrieve', model: [submitted: user, error: error])
     }
 
     @Secured('isAuthenticated()')
