@@ -38,7 +38,8 @@
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-           ui-sref=".({featureId: previousFeature.id})">
+           tooltip-placement="bottom"
+           href="{{ currentStateUrl(previousFeature.id) }}">
             <span class="icon icon-caret-left"></span>
         </a>
         <a ng-if="!isModal"
@@ -49,7 +50,8 @@
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-           ui-sref=".({featureId: nextFeature.id})">
+           tooltip-placement="bottom"
+           href="{{ currentStateUrl(nextFeature ? nextFeature.id : feature.id) }}">
             <span class="icon icon-caret-right"></span>
         </a>
         <a class="btn btn-icon expandable"

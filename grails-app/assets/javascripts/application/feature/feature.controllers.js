@@ -91,6 +91,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
         var stateName = $scope.application.focusedDetailsView ? ($state.params.featureTabId ? '^.^.tab' : '^') : $state.params.featureTabId ? '^.focus.tab' : '.focus';
         return $state.href(stateName, {featureTabId: $state.params.featureTabId});
     };
+    $scope.currentStateUrl = function(id) {
+        return $state.href($state.current.name, {featureId: id});
+    };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(features, $scope.feature);

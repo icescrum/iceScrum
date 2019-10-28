@@ -38,7 +38,8 @@
            hotkey="{'left': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
-           href="{{:: currentStateUrl(previousTask.id) }}">
+           tooltip-placement="bottom"
+           href="{{ currentStateUrl(previousTask.id) }}">
             <span class="icon icon-caret-left"></span>
         </a>
         <a class="btn btn-icon"
@@ -48,7 +49,8 @@
            hotkey="{'right': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
-           href="{{:: currentStateUrl(nextTask ? nextTask.id : task.id) }}">
+           tooltip-placement="bottom"
+           href="{{ currentStateUrl(nextTask ? nextTask.id : task.id) }}">
             <span class="icon icon-caret-right"></span>
         </a>
         <a class="btn btn-icon expandable"
