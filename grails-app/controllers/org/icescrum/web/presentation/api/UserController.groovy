@@ -112,7 +112,7 @@ class UserController implements ControllerErrorHandler {
                 }
                 bindData(user, userParams, [include: propertiesToBind])
                 user.preferences = new UserPreferences()
-                bindData(user.preferences, userParams.preferences, [include: ['language', 'activity']])
+                bindData(user.preferences, userParams.preferences, [include: ['language', 'activity', 'needsEmailValidation']])
                 if (userParams.preferences?.containsKey('colorScheme')) {
                     user.preferences.colorScheme = userParams.preferences.colorScheme == 'null' ? null : userParams.preferences.colorScheme
                 }
@@ -173,7 +173,7 @@ class UserController implements ControllerErrorHandler {
             }
             bindData(user, params.user, [include: propertiesToBind])
             if (params.user.preferences) {
-                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew', 'displayReleaseNotes']])
+                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew', 'displayReleaseNotes', 'needsEmailValidation']])
                 if (params.user.preferences.containsKey('colorScheme')) {
                     user.preferences.colorScheme = params.user.preferences.colorScheme == 'null' ? null : params.user.preferences.colorScheme
                 }
