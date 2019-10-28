@@ -152,6 +152,10 @@ class UrlMappings {
             controller = 'user'
             action = [GET: "index", POST: "save"]
         }
+        "/user/register" {
+            controller = 'user'
+            action = [GET: "register", POST: "save"]
+        }
         "/user/retrieve" {
             controller = 'user'
             action = [GET: "retrieve", POST: "retrieve"]

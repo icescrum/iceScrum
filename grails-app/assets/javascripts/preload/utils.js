@@ -37,3 +37,11 @@ function darkOrLightMode(colorScheme) {
     }
     setColorScheme(colorScheme, true);
 }
+
+function togglePassword(element){
+    var $this = $(element);
+    var $eyes = $this.find('.fa-eye').is(':visible');
+    $this.find($eyes ? '.fa-eye-slash' : '.fa-eye').show();
+    $this.find($eyes ? '.fa-eye' : '.fa-eye-slash').hide();
+    $this.parent().parent().find('input').attr('type', $eyes ? 'text' : 'password');
+}

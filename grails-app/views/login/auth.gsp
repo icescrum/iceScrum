@@ -43,7 +43,7 @@
                     <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
                         <p class="form-group">
                             <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                            <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="">
+                            <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="${params.username ?: ''}">
                         </p>
                         <p class="form-group">
                             <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
@@ -54,7 +54,7 @@
                                 <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve') }</g:link>
                             </div>
                             <div>
-                                <input type="submit" class="btn btn-primary" name="login" value="Login">
+                                <input type="submit" class="btn btn-primary" value="${message(code: 'is.login')}">
                             </div>
                         </div>
                         <p id="remember_me_holder" style="display: none;">
@@ -62,7 +62,7 @@
                         </p>
                         <div class="text-center login-footer">
                             <div class="login-cta-text">Don't have an account</div>
-                            <g:link class="btn btn-secondary" action="register" controller="user">${message(code: 'is.login.register') }</g:link>
+                            <a href="${createLink(action:"register", controller:"user" )}/" class="btn btn-secondary">${message(code: 'is.login.register')}</a>
                         </div>
                     </form>
                 </div>

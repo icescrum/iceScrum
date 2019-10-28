@@ -100,24 +100,37 @@ class UserController implements ControllerErrorHandler {
         }
         if (!request.restAPI && userParams.confirmPassword != userParams.password) {
             // Cannot be executed inside withFormat closure because return will return only from closure and code below will still be executed
-            returnError(code: 'is.user.error.password.check')
+            redirect(action: 'register', model: [error: message(code: 'is.user.error.password.check')])
             return
         }
         User user = new User()
-        User.withTransaction {
-            def propertiesToBind = ['username', 'firstName', 'lastName', 'email', 'password']
-            if (request.admin) {
-                propertiesToBind << 'accountExternal'
+        try {
+            User.withTransaction {
+                def propertiesToBind = ['username', 'firstName', 'lastName', 'email', 'password']
+                if (request.admin) {
+                    propertiesToBind << 'accountExternal'
+                }
+                bindData(user, userParams, [include: propertiesToBind])
+                user.preferences = new UserPreferences()
+                bindData(user.preferences, userParams.preferences, [include: ['language', 'activity']])
+                if (userParams.preferences?.containsKey('colorScheme')) {
+                    user.preferences.colorScheme = userParams.preferences.colorScheme == 'null' ? null : userParams.preferences.colorScheme
+                }
+                userService.save(user, userParams.token)
             }
-            bindData(user, userParams, [include: propertiesToBind])
-            user.preferences = new UserPreferences()
-            bindData(user.preferences, userParams.preferences, [include: ['language', 'activity']])
-            if (userParams.preferences.containsKey('colorScheme')) {
-                user.preferences.colorScheme = userParams.preferences.colorScheme == 'null' ? null : userParams.preferences.colorScheme
+        } catch (RuntimeException e) {
+            if (!request.restAPI) {
+                render(status: 200, view: 'register', model: [user: user])
+                return
+            } else {
+                returnError(exception: e)
             }
-            userService.save(user, userParams.token)
         }
-        render(status: 201, contentType: 'application/json', text: user as JSON)
+        if (request.restAPI) {
+            render(status: 201, contentType: 'application/json', text: user as JSON)
+        } else {
+            redirect(status: 200, action: 'auth', controller: 'login', params: [username: user.username])
+        }
     }
 
     @Secured("isAuthenticatedWeb() || hasAnyScopeOauth2('user', 'user:write')")

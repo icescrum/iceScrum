@@ -39,18 +39,20 @@
                     <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-fluid">
                 </a>
             </div>
-            <g:if test="${user || error}">
-                <div class="alert ${error ? 'alert-danger' : 'alert-success'} mb-4 mt-4" role="alert">
-                    <div>${user ? g.message(code:'is.login.retrieve.success', args:[user.email]) : error}</div>
-                </div>
-            </g:if>
-            <div class="retrieve-description">
-                ${g.message(code:'is.login.retrieve.description')}
-            </div>
             <form action="${g.createLink(action:'retrieve', controller: 'user')}/"
-                  class="form-special mt-4"
+                  class="form-special"
                   show-validation
                   method="post" autocomplete='off'>
+                <g:if test="${user || error}">
+                    <div class="alert ${error ? 'alert-danger' : 'alert-success'} mb-4 mt-4" role="alert">
+                        <div>${user ? g.message(code:'is.login.retrieve.success', args:[user.email]) : error}</div>
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="description">
+                        ${g.message(code:'is.login.retrieve.description')}
+                    </div>
+                </g:else>
                 <div class="form-group">
                     <label for="username">${message(code: 'is.login.retrieve.input')}</label>
                     <input required
@@ -64,7 +66,7 @@
             </form>
             <div class="text-center login-footer">
                 <div class="login-cta-text">${message(code:'is.login.account')}</div>
-                <g:link class="btn btn-secondary" action="auth" controller="login">${message(code: 'is.login')}</g:link>
+                <a href="${createLink(action:"auth", controller:"login" )}/" class="btn btn-secondary">${message(code: 'is.login')}</a>
             </div>
         </div>
     </div>
