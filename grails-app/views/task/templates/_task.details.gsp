@@ -55,9 +55,9 @@
            ng-if="!isModal && !application.focusedDetailsView"
            href="{{ toggleFocusUrl() }}"
            tabindex="0"
-           uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)"
+           uib-tooltip="${message(code: 'is.ui.window.focus')} (SHIFT+↑)"
            tooltip-placement="bottom"
-           hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
+           hotkey="{'space': hotkeyClick, 'shift+up': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.window.focus')}">
             <span class="icon icon-expand"></span>
         </a>
@@ -65,9 +65,9 @@
            ng-if="!isModal && application.focusedDetailsView"
            href="{{ toggleFocusUrl() }}"
            tabindex="0"
-           uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"
+           uib-tooltip="${message(code: 'is.ui.window.unfocus')} (SHIFT+↓)"
            tooltip-placement="bottom"
-           hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
+           hotkey="{'escape': hotkeyClick, 'shift+down': hotkeyClick}"
            hotkey-description="${message(code: 'is.ui.window.unfocus')}">
             <span class="icon icon-compress"></span>
         </a>
