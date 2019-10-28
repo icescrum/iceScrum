@@ -242,7 +242,7 @@ var isApplication = angular.module('isApplication', [
                             }
                         }
                     },
-                    isStateProvider.getFeatureDetailsState()
+                    isStateProvider.getFeatureDetailsState('@feature')
                 ]
             })
             .state({
@@ -414,7 +414,7 @@ var isApplication = angular.module('isApplication', [
                     }]
                 },
                 children: [
-                    isStateProvider.getSprintDetailsState(),
+                    isStateProvider.getSprintDetailsState('@taskBoard'),
                     {
                         name: 'task',
                         url: "/task",

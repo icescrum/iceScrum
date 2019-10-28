@@ -294,6 +294,10 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
             $scope.mostUsedColors = colors;
         });
     };
+    $scope.toggleFocusUrl = function() {
+        var stateName = $scope.application.focusedDetailsView ? ($state.params.taskTabId ? '^.^.tab' : '^') : $state.params.taskTabId ? '^.focus.tab' : '.focus';
+        return $state.href(stateName, {taskTabId: $state.params.taskTabId});
+    };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task'});
     $scope.project = project;

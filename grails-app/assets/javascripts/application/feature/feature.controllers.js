@@ -87,6 +87,10 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.openStoryUrl = function(storyId) {
         return $state.href('.story.details', {storyId: storyId});
     };
+    $scope.toggleFocusUrl = function() {
+        var stateName = $scope.application.focusedDetailsView ? ($state.params.featureTabId ? '^.^.tab' : '^') : $state.params.featureTabId ? '^.focus.tab' : '.focus';
+        return $state.href(stateName, {featureTabId: $state.params.featureTabId});
+    };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(features, $scope.feature);

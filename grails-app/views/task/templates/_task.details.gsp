@@ -51,6 +51,26 @@
            href="{{:: currentStateUrl(nextTask ? nextTask.id : task.id) }}">
             <span class="icon icon-caret-right"></span>
         </a>
+        <a class="btn btn-icon expandable"
+           ng-if="!isModal && !application.focusedDetailsView"
+           href="{{ toggleFocusUrl() }}"
+           tabindex="0"
+           uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)"
+           tooltip-placement="bottom"
+           hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.window.focus')}">
+            <span class="icon icon-expand"></span>
+        </a>
+        <a class="btn btn-icon expandable"
+           ng-if="!isModal && application.focusedDetailsView"
+           href="{{ toggleFocusUrl() }}"
+           tabindex="0"
+           uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"
+           tooltip-placement="bottom"
+           hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
+           hotkey-description="${message(code: 'is.ui.window.unfocus')}">
+            <span class="icon icon-compress"></span>
+        </a>
         <details-layout-buttons remove-ancestor="true"/>
     </div>
     <div class="card-header">
@@ -70,35 +90,65 @@
         </div>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="task" model-states="taskStatesByName"/></a>
     </div>
-    <ul class="nav nav-tabs nav-justified disable-active-link">
-        <li role="presentation"
-            class="nav-item text-nowrap">
-            <a href="{{ tabUrl() }}"
-               class="nav-link"
-               ng-class="{'active':!$state.params.taskTabId}">
-                ${message(code: 'todo.is.ui.details')}
-            </a>
-        </li>
-        <li role="presentation"
-            class="nav-item text-nowrap">
-            <a href="{{ tabUrl('comments') }}"
-               class="nav-link"
-               ng-class="{'active':$state.params.taskTabId == 'comments'}">
-                ${message(code: 'todo.is.ui.comments')} {{ task.comments_count | parens }}
-            </a>
-        </li>
-        <li role="presentation"
-            class="nav-item text-nowrap">
-            <a href="{{ tabUrl('activities') }}"
-               class="nav-link"
-               ng-class="{'active':$state.params.taskTabId == 'activities'}">
-                ${message(code: 'todo.is.ui.history')}
-            </a>
-        </li>
-        <entry:point id="task-details-tab-button"/>
-    </ul>
-    <div ui-view="details-tab">
-        <g:include view="task/templates/_task.properties.gsp"/>
+    <div class="details-content-container">
+        <div class="details-content details-content-left">
+            <ul class="nav nav-tabs nav-justified disable-active-link">
+                <li role="presentation"
+                    class="nav-item text-nowrap">
+                    <a href="{{ tabUrl() }}"
+                       class="nav-link"
+                       ng-class="{'active':!$state.params.taskTabId}">
+                        ${message(code: 'todo.is.ui.details')}
+                    </a>
+                </li>
+                <li role="presentation"
+                    class="nav-item text-nowrap"
+                    ng-if="!application.focusedDetailsView">
+                    <a href="{{ tabUrl('comments') }}"
+                       class="nav-link"
+                       ng-class="{'active':$state.params.taskTabId == 'comments'}">
+                        ${message(code: 'todo.is.ui.comments')} {{ task.comments_count | parens }}
+                    </a>
+                </li>
+                <li role="presentation"
+                    class="nav-item text-nowrap"
+                    ng-if="!application.focusedDetailsView">
+                    <a href="{{ tabUrl('activities') }}"
+                       class="nav-link"
+                       ng-class="{'active':$state.params.taskTabId == 'activities'}">
+                        ${message(code: 'todo.is.ui.history')}
+                    </a>
+                </li>
+                <entry:point id="task-details-tab-button"/>
+            </ul>
+            <div ui-view="details-tab">
+                <g:include view="task/templates/_task.properties.gsp"/>
+            </div>
+        </div>
+        <div ng-if="application.focusedDetailsView" class="details-content details-content-center">
+            <ul class="nav nav-tabs nav-justified disable-active-link">
+                <li role="presentation"
+                    class="nav-item">
+                    <a href
+                       class="nav-link active">
+                        ${message(code: 'todo.is.ui.comments')} {{ task.comments_count | parens }}
+                    </a>
+                </li>
+            </ul>
+            <div ui-view="details-tab-center"></div>
+        </div>
+        <div ng-if="application.focusedDetailsView" class="details-content details-content-right">
+            <ul class="nav nav-tabs nav-justified disable-active-link">
+                <li role="presentation"
+                    class="nav-item">
+                    <a href
+                       class="nav-link active">
+                        ${message(code: 'todo.is.ui.history')}
+                    </a>
+                </li>
+            </ul>
+            <div ui-view="details-tab-right"></div>
+        </div>
     </div>
 </div>
 </script>

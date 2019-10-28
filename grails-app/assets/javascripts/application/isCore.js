@@ -113,20 +113,22 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 comments: {
-                    resolve: ['$stateParams', 'CommentService', 'detailsTask', 'project', function($stateParams, CommentService, detailsTask, project) {
-                        if ($stateParams.taskTabId == 'comments') {
+                    resolve: ['$stateParams', '$rootScope', 'CommentService', 'detailsTask', 'project', function($stateParams, $rootScope, CommentService, detailsTask, project) {
+                        if ($stateParams.taskTabId == 'comments' || $rootScope.application.focusedDetailsView) {
                             return CommentService.list(detailsTask, project.id);
                         }
                     }],
-                    templateUrl: 'comment.list.html'
+                    templateUrl: 'comment.list.html',
+                    focusTabCenter: true
                 },
                 activities: {
-                    resolve: ['$stateParams', 'ActivityService', 'detailsTask', 'project', function($stateParams, ActivityService, detailsTask, project) {
-                        if ($stateParams.taskTabId == 'activities') {
+                    resolve: ['$stateParams', '$rootScope', 'ActivityService', 'detailsTask', 'project', function($stateParams, $rootScope, ActivityService, detailsTask, project) {
+                        if ($stateParams.taskTabId == 'activities' || $rootScope.application.focusedDetailsView) {
                             return ActivityService.activities(detailsTask, false, project.id);
                         }
                     }],
-                    templateUrl: 'activity.list.html'
+                    templateUrl: 'activity.list.html',
+                    focusTabRight: true
                 }
             },
             story: {
@@ -181,20 +183,22 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 stories: {
-                    resolve: ['$stateParams', 'StoryService', 'detailsFeature', 'project', function($stateParams, StoryService, detailsFeature, project) {
-                        if ($stateParams.featureTabId == 'stories') {
+                    resolve: ['$stateParams', '$rootScope', 'StoryService', 'detailsFeature', 'project', function($stateParams, $rootScope, StoryService, detailsFeature, project) {
+                        if ($stateParams.featureTabId == 'stories' || $rootScope.application.focusedDetailsView) {
                             StoryService.listByType(detailsFeature, project.id);
                         }
                     }],
-                    templateUrl: 'nested.stories.html'
+                    templateUrl: 'nested.stories.html',
+                    focusTabRight: true
                 },
                 comments: {
-                    resolve: ['$stateParams', 'CommentService', 'detailsFeature', 'project', function($stateParams, CommentService, detailsFeature, project) {
-                        if ($stateParams.featureTabId == 'comments') {
+                    resolve: ['$stateParams', '$rootScope', 'CommentService', 'detailsFeature', 'project', function($stateParams, $rootScope, CommentService, detailsFeature, project) {
+                        if ($stateParams.featureTabId == 'comments' || $rootScope.application.focusedDetailsView) {
                             return CommentService.list(detailsFeature, project.id);
                         }
                     }],
-                    templateUrl: 'comment.list.html'
+                    templateUrl: 'comment.list.html',
+                    focusTabCenter: true
                 },
                 activities: {
                     resolve: ['$stateParams', 'ActivityService', 'detailsFeature', 'project', function($stateParams, ActivityService, detailsFeature, project) {
@@ -245,6 +249,28 @@ angular.module('isCore', ['ui.router'])
         this.$get = angular.noop;
         var getMainStateFromFullState = function(fullState) {
             return fullState ? (fullState.split('.')[0] ? fullState.split('.')[0] : '') : '';
+        };
+        var getFocusState = function(tabs, setSelected) {
+            return {
+                name: 'focus',
+                url: '/focus',
+                resolve: {},
+                views: {
+                    'details-tab-center': {
+                        templateUrl: function() {
+                            return _.find(tabs, function(tab) { return tab.focusTabCenter; }).templateUrl;
+                        },
+                        controller: setSelected
+                    }
+                    ,
+                    'details-tab-right': {
+                        templateUrl: function() {
+                            return _.find(tabs, function(tab) { return tab.focusTabRight; }).templateUrl;
+                        },
+                        controller: setSelected
+                    }
+                }
+            }
         };
         this.getFeatureNewState = function(fullParentPathState) {
             var featureNewState = {
@@ -344,6 +370,9 @@ angular.module('isCore', ['ui.router'])
         this.getTaskDetailsState = function(fullParentPathState) {
             var taskTabs = itemTabsProvider.itemTabs.task;
             var tabNames = _.keys(taskTabs);
+            var setSelected = ['$scope', 'detailsTask', function($scope, detailsTask) {
+                $scope.selected = detailsTask;
+            }];
             var taskState = {
                 name: 'details',
                 url: "/{taskId:int}",
@@ -365,19 +394,32 @@ angular.module('isCore', ['ui.router'])
                                         return taskTabs[$stateParams.taskTabId].templateUrl;
                                     }
                                 },
-                                controller: ['$scope', 'detailsTask', function($scope, detailsTask) {
-                                    $scope.selected = detailsTask;
-                                }]
+                                controller: setSelected
                             }
                         }
-                    }
+                    },
+                    getFocusState(taskTabs, setSelected)
                 ]
             };
             // Default tab (without tabId)
             taskState.resolve.details = taskTabs.details.resolve;
             var taskTabState = taskState.children[0];
+            var taskFocusState = taskState.children[1];
+            var taskFocusTabState = _.cloneDeep(taskTabState);
+            taskFocusTabState.onEnter = ['$state', '$stateParams', '$timeout', function($state, $stateParams, $timeout) {
+                var focusTabs = _.keys(_.pickBy(taskTabs, function(tab) {
+                    return tab.focusTabCenter || tab.focusTabRight;
+                }));
+                if (_.includes(focusTabs, $stateParams.taskTabId)) {
+                    $timeout(function() {$state.go('^', $stateParams, {location: 'replace'});});
+                }
+            }];
+            taskFocusTabState.views['details-tab' + fullParentPathState + '.task.details'] = taskFocusTabState.views['details-tab'];
+            delete taskFocusTabState.views['details-tab'];
+            taskFocusState.children = [taskFocusTabState];
             _.each(taskTabs, function(value, key) {
                 taskTabState.resolve['data' + key] = value.resolve;
+                (value.focusTabCenter || value.focusTabRight ? taskFocusState : taskFocusTabState).resolve['data' + key] = value.resolve;
             });
             taskState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'task.details.html',
@@ -388,6 +430,9 @@ angular.module('isCore', ['ui.router'])
         this.getFeatureDetailsState = function(fullParentPathState, isModal) {
             var featureTabs = itemTabsProvider.itemTabs.feature;
             var tabNames = _.keys(featureTabs);
+            var setSelected = ['$scope', 'detailsFeature', function($scope, detailsFeature) {
+                $scope.selected = detailsFeature;
+            }];
             var featureState = {
                 name: 'details',
                 url: "/{featureId:int}",
@@ -410,19 +455,33 @@ angular.module('isCore', ['ui.router'])
                                         return featureTabs[$stateParams.featureTabId].templateUrl;
                                     }
                                 },
-                                controller: ['$scope', 'detailsFeature', function($scope, detailsFeature) {
-                                    $scope.selected = detailsFeature;
-                                }]
+                                controller: setSelected
                             }
                         }
-                    }
+                    },
+                    getFocusState(featureTabs, setSelected)
                 ]
             };
             // Default tab (without tabId)
             featureState.resolve.details = featureTabs.details.resolve;
             var featureTabState = featureState.children[0];
+            var featureFocusState = featureState.children[1];
+            var featureFocusTabState = _.cloneDeep(featureTabState);
+            featureFocusTabState.onEnter = ['$state', '$stateParams', '$timeout', function($state, $stateParams, $timeout) {
+                var focusTabs = _.keys(_.pickBy(featureTabs, function(tab) {
+                    return tab.focusTabCenter || tab.focusTabRight;
+                }));
+                if (_.includes(focusTabs, $stateParams.featureTabId)) {
+                    $timeout(function() {$state.go('^', $stateParams, {location: 'replace'});});
+                }
+            }];
+            featureFocusTabState.views['details-tab' + fullParentPathState + (fullParentPathState === '@feature' ? '' : '.feature') + '.details'] = featureFocusTabState.views['details-tab'];
+            console.log(featureFocusTabState.views);
+            delete featureFocusTabState.views['details-tab'];
+            featureFocusState.children = [featureFocusTabState];
             _.each(featureTabs, function(value, key) {
                 featureTabState.resolve['data' + key] = value.resolve;
+                (value.focusTabCenter || value.focusTabRight ? featureFocusState : featureFocusTabState).resolve['data' + key] = value.resolve;
             });
             featureState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'feature.details.html',
@@ -458,7 +517,7 @@ angular.module('isCore', ['ui.router'])
                         url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
                         resolve: {},
                         views: {
-                            "details-tab-left": {
+                            "details-tab": {
                                 templateUrl: function($stateParams) {
                                     if ($stateParams.storyTabId) {
                                         return storyTabs[$stateParams.storyTabId].templateUrl;
@@ -468,26 +527,7 @@ angular.module('isCore', ['ui.router'])
                             }
                         }
                     },
-                    {
-                        name: 'focus',
-                        url: '/focus',
-                        resolve: {},
-                        views: {
-                            "details-tab-center": {
-                                templateUrl: function() {
-                                    return _.find(storyTabs, function(tab) { return tab.focusTabCenter; }).templateUrl;
-                                },
-                                controller: setSelected
-                            }
-                            ,
-                            "details-tab-right": {
-                                templateUrl: function() {
-                                    return _.find(storyTabs, function(tab) { return tab.focusTabRight; }).templateUrl;
-                                },
-                                controller: setSelected
-                            }
-                        }
-                    }
+                    getFocusState(storyTabs, setSelected)
                 ]
             };
             storyState.resolve.details = storyTabs.details.resolve; // Default tab (without tabId)
@@ -502,6 +542,8 @@ angular.module('isCore', ['ui.router'])
                     $timeout(function() {$state.go('^', $stateParams, {location: 'replace'});});
                 }
             }];
+            storyFocusTabState.views['details-tab' + fullParentPathState + '.story.details'] = storyFocusTabState.views['details-tab'];
+            delete storyFocusTabState.views['details-tab'];
             storyFocusState.children = [storyFocusTabState];
             _.each(storyTabs, function(value, key) {
                 storyTabState.resolve['data' + key] = value.resolve;
@@ -512,8 +554,6 @@ angular.module('isCore', ['ui.router'])
                 templateUrl: 'story.details.html',
                 controller: 'storyDetailsCtrl'
             };
-            storyFocusTabState.views["details-tab-left" + (fullParentPathState ? (fullParentPathState + '.story.details') : '')] = storyFocusTabState.views["details-tab-left"];
-            delete storyFocusTabState.views["details-tab-left"];
             if (!isModal) {
                 var featureDetailsModalState = this.getDetailsModalState('feature', {
                     resolve: {

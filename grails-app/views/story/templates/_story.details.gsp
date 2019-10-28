@@ -171,7 +171,7 @@
                     </div>
                 </li>
             </ul>
-            <div ui-view="details-tab-left">
+            <div ui-view="details-tab">
                 <g:include view="story/templates/_story.properties.gsp"/>
             </div>
         </div>
