@@ -259,6 +259,11 @@ form label {
   }
 }
 
+input::placeholder {
+  color: $input-placeholder-color;
+  opacity: 1;
+}
+
 .input-group-text {
   height: $input-height;
 }
