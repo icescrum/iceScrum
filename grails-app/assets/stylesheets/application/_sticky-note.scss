@@ -517,19 +517,13 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         }
       }
 
-      .sticky-note-content.has-description {
-        .description {
-          display: inline-block;
-        }
-
-        .title {
-          display: none;
-        }
+      .sticky-note-content.has-description .title {
+        display: none;
       }
     }
 
     .sticky-note-content {
-      &.has-description .description {
+      .description {
         display: none;
       }
 
@@ -613,12 +607,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           line-height: 1.17;
           height: 3.51em;
         }
-
-        .description {
-          font-size: 0.75rem;
-          line-height: 1.17;
-          height: 5.85em;
-        }
       }
 
       .sticky-note-actions {
@@ -635,6 +623,13 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       .progress {
         border-radius: 0 0 0.25rem 0.25rem; // TODO this is a big hack with a different radius to hide color bleeding, see https://bugs.chromium.org/p/chromium/issues/detail?id=491574
+      }
+
+      &:hover .sticky-note-content.has-description .description {
+        font-size: 0.75rem;
+        line-height: 1.17;
+        height: 5.85em;
+        @include text-truncate-multiline(5);
       }
     }
   }
@@ -718,13 +713,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           line-height: 1.17;
           height: 5.85em; // 5 lines (= 1.17 * 5)
         }
-
-        .description {
-          font-size: 0.75rem;
-          padding-top: 0.3em;
-          line-height: 1.17;
-          height: 7.32em; // 6 lines (= 1.17 * 6 + 0.3)
-        }
       }
 
       .sticky-note-tags {
@@ -751,6 +739,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
             background-image: url("acceptanceTest-#{$acceptance-test-state}-white.svg");
           }
         }
+      }
+
+      &:hover .sticky-note-content.has-description .description {
+        font-size: 0.75rem;
+        padding-top: 0.3em;
+        line-height: 1.17;
+        height: 7.32em; // 6 lines (= 1.17 * 6 + 0.3)
+        @include text-truncate-multiline(6);
       }
     }
   }
@@ -796,13 +792,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           height: 28px;
           font-size: 0.75rem;
         }
-
-        .description {
-          padding-top: 0.1875rem;
-          line-height: 1.1;
-          font-size: 0.625rem;
-          height: 44px;
-        }
       }
 
       .sticky-note-tags {
@@ -820,6 +809,14 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         @include square-background(1.5rem);
         background-image: url("badge-task-blocked.svg");
       }
+    }
+
+    &:hover .sticky-note-content.has-description .description {
+      padding-top: 0.1875rem;
+      line-height: 1.1;
+      font-size: 0.625rem;
+      height: 44px;
+      @include text-truncate-multiline(3);
     }
   }
 }
@@ -875,7 +872,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
         }
 
         .description {
-          display: none;
+          display: none !important;
         }
       }
 

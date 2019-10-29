@@ -137,6 +137,13 @@ $is-state-colors: (
   @include rectangle-background($side, $side);
 }
 
+@mixin text-truncate-multiline($lines) {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  display: -webkit-box;
+}
+
 ////////////////////
 // Override bootstrap variables
 ////////////////////
