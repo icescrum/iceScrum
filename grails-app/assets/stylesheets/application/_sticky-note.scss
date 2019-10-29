@@ -606,6 +606,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           font-size: 0.9375rem;
           line-height: 1.17;
           height: 3.51em;
+          @include text-truncate-multiline(3);
         }
       }
 
@@ -712,6 +713,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           font-size: 0.9375rem;
           line-height: 1.17;
           height: 5.85em; // 5 lines (= 1.17 * 5)
+          @include text-truncate-multiline(5);
         }
       }
 
@@ -791,6 +793,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           line-height: 1.17;
           height: 28px;
           font-size: 0.75rem;
+          @include text-truncate-multiline(2);
         }
       }
 
@@ -869,6 +872,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
           font-size: 0.875rem;
           line-height: 1.1;
           height: 3.3em;
+          @include text-truncate-multiline(3);
         }
 
         .description {
@@ -878,7 +882,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
 
       &:hover .sticky-note-content.has-description .title {
         vertical-align: top;
-        display: inline-block;
+        display: -webkit-box;
       }
     }
 
