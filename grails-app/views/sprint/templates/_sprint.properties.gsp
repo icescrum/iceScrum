@@ -138,7 +138,16 @@
                    placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
         </div>
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.IN_PROGRESS">
-            <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
+            <label for="retrospective" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.sprint.retrospective')}</div>
+                <div ng-if="formHolder.editing"
+                     class="small">
+                    <a href="https://retromat.org/"
+                        target="_blank">
+                        <i class="fa fa-question-circle"></i> ${message(code: 'is.ui.sprint.retrospective.link')}
+                    </a>
+                </div>
+            </label>
             <textarea at
                       is-markitup
                       class="form-control"
