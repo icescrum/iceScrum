@@ -87,7 +87,7 @@ body {
 
       [ui-view='details'] {
         width: 35%;
-        z-index: 2;
+        z-index: 3;
         flex: 1 0 auto;
         display: flex;
         flex-direction: column;
@@ -362,7 +362,7 @@ nav.navbar {
   border-radius: 0;
 
   > .card-header {
-    z-index: 2;
+    z-index: 3; // Inherited by dropdown that need to be above content
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -942,7 +942,7 @@ a.link-documentation {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 52px;
+  height: 53px;
   padding-left: $is-spacer-x;
   padding-right: $is-spacer-x;
 
