@@ -187,7 +187,7 @@ class FeatureController implements ControllerErrorHandler {
 
     @Secured('inProject() or (isAuthenticated() and stakeHolder())')
     def colors(long project) {
-        def results = ['#50e3c2', '#4a90e2', '#9013fe', '#bd10e0', '#7ed321', '#8b572a', '#f5a623', '#d0021b', '#ff3389', '#c462f6', '#6056eb', '#0067e8', '#6eeb83', '#ffd1c1', '#ff8501', '#ff3e33', '#575757', '#838383']
+        def results = ['#50e3c2', '#4a90e2', '#9013fe', '#bd10e0', '#7ed321', '#8b572a', '#f5a623', '#d0021b', '#d25a00', '#870101', '#53055c', '#002673', '#ff3389', '#c462f6', '#6056eb', '#0067e8', '#6eeb83', '#ffd1c1', '#ff8501', '#ff3e33', '#575757', '#838383']
         def _project = Project.withProject(project)
         def usedColor = _project.features?.collect { it ->
             it.color
