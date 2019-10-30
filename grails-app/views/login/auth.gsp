@@ -43,7 +43,7 @@
                     <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
                         <p class="form-group">
                             <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                            <input type="text" class="input-large input-text form-control" name="j_username" id="username" value="${params.username ?: ''}">
+                            <input type="text" autofocus class="input-large input-text form-control" name="j_username" id="username" value="${params.username ?: ''}">
                         </p>
                         <p class="form-group">
                             <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
