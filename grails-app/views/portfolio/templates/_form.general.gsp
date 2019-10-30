@@ -28,22 +28,15 @@
 <div class="row">
     <div class="form-2-tiers">
         <label for="name">${message(code: 'is.portfolio.name')}</label>
-        <div class="input-group">
-            <input autofocus
-                   name="name"
-                   type="text"
-                   class="form-control"
-                   autocomplete="off"
-                   placeholder="${message(code: 'is.ui.portfolio.noname')}"
-                   ng-model="portfolio.name"
-                   ng-change="nameChanged()"
-                   ng-required="isCurrentStep(1, 'portfolio')">
-            <span class="input-group-append">
-                <span class="input-group-text">
-                    ${message(code: 'is.ui.workspace.hidden')}
-                </span>
-            </span>
-        </div>
+        <input autofocus
+               name="name"
+               type="text"
+               class="form-control"
+               autocomplete="off"
+               placeholder="${message(code: 'is.ui.portfolio.noname')}"
+               ng-model="portfolio.name"
+               ng-change="nameChanged()"
+               ng-required="isCurrentStep(1, 'portfolio')">
     </div>
     <div class="form-1-tier">
         <label for="fkey">${message(code: 'is.portfolio.fkey')}</label>

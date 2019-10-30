@@ -23,7 +23,7 @@
 --}%
 
 
-<is:modal icon="folder" title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="modal-split" footer="${false}">
+<is:modal icon="workspace-icon icon-project" title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="modal-split" footer="${false}">
     <form name="formHolder.projectForm"
           show-validation
           novalidate>

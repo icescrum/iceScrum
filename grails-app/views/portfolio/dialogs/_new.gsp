@@ -23,7 +23,7 @@
 --}%
 
 
-<is:modal icon="briefcase" title="{{ (portfolio.name ? portfolio.name : '${message(code: /is.dialog.wizard.portfolio/)}') + (portfolio.fkey ? ' - ' + portfolio.fkey : '') }}" class="modal-split" footer="${false}">
+<is:modal icon="workspace-icon icon-portfolio" title="{{ (portfolio.name ? portfolio.name : '${message(code: /is.dialog.wizard.portfolio/)}') + (portfolio.fkey ? ' - ' + portfolio.fkey : '') }}" class="modal-split" footer="${false}">
     <form name="formHolder.portfolioForm"
           show-validation
           novalidate>
