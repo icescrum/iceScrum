@@ -1019,7 +1019,9 @@ var isApplication = angular.module('isApplication', [
         $rootScope.toggleColorScheme = function() {
             var newColorScheme = $rootScope.getColorScheme() === 'dark' ? 'light' : 'dark';
             $rootScope.setColorScheme(newColorScheme);
-            UserService.updateColorScheme(newColorScheme);
+            if (Session.authenticated()) {
+                UserService.updateColorScheme(newColorScheme);
+            }
         };
         screenSize.onRuleChange($rootScope, function(breakPoint) {
             $rootScope.application.mediaBreakpoint = breakPoint;
