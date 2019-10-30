@@ -476,7 +476,6 @@ angular.module('isCore', ['ui.router'])
                 }
             }];
             featureFocusTabState.views['details-tab' + fullParentPathState + (fullParentPathState === '@feature' ? '' : '.feature') + '.details'] = featureFocusTabState.views['details-tab'];
-            console.log(featureFocusTabState.views);
             delete featureFocusTabState.views['details-tab'];
             featureFocusState.children = [featureFocusTabState];
             _.each(featureTabs, function(value, key) {
