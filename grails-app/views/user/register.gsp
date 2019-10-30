@@ -23,8 +23,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>${message(code: 'is.login')}</title>
-    <meta name='layout' content='simple-without-ng'/>
+    <title>iceScrum - ${message(code: 'is.login')}</title>
+    <meta name='layout' content='simple'/>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
 
         <div class="rect_3"></div>
 
-        <div class="register">
+        <div class="register" ng-controller="registerCtrl">
             <div class="text-center">
                 <a href="https://www.icescrum.com" target="_blank">
                     <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
@@ -44,7 +44,7 @@
                 </a>
             </div>
 
-            <form action='${createLink(action: 'save', controller: 'user')}/' class="form-special" method="post" autocomplete='off'>
+            <form role='form' name="formHolder.registerForm" show-validation ng-submit='register()' class="form-special" method="post" autocomplete='off' novalidate>
                 <g:if test="${user?.errors}">
                     <div class="alert alert-danger mb-4 mt-4" role="alert">
                         <g:renderErrors bean="${user}"/>
@@ -58,6 +58,7 @@
                                class="form-control"
                                name="user.username"
                                autocomplete="off"
+                               ng-model="user.username"
                                ng-remote-validate="/user/available/username"
                                ng-remote-validate-code="user.username.unique"
                                value="${user ? user.username : ''}"
@@ -73,7 +74,8 @@
                                class="form-control"
                                autocomplete="off"
                                value="${user ? user.firstName : ''}"
-                               name="user.firstName"/>
+                               name="user.firstName"
+                               ng-model="user.firstName"/>
                     </div>
 
                     <div class="form-group col-6">
@@ -83,7 +85,8 @@
                                class="form-control"
                                autocomplete="off"
                                value="${user ? user.lastName : ''}"
-                               name="user.lastName"/>
+                               name="user.lastName"
+                               ng-model="user.lastName"/>
                     </div>
                 </div>
 
@@ -96,6 +99,7 @@
                                class="form-control"
                                autocomplete="off"
                                value="${user ? user.email : ''}"
+                               ng-model="user.email"
                                ng-remote-validate-code="user.email.unique"
                                ng-remote-validate="/user/available/email"/>
                     </div>
@@ -115,7 +119,8 @@
                                name="user.password"
                                type="password"
                                class="form-control"
-                               minlength="4">
+                               ng-model="user.password"
+                               ng-password-strength>
                     </div>
 
                     <div class="form-group col-6">
@@ -128,10 +133,11 @@
                             </div>
                         </label>
                         <input required
-                               name="user.confirmPassword"
+                               name="confirmPassword"
                                type="password"
                                class="form-control"
-                               minlength="4">
+                               is-match="user.password"
+                               ng-model="user.confirmPassword">
                     </div>
                 </div>
 
@@ -141,13 +147,14 @@
                         <input name="preferences.activity"
                                type="text"
                                value="${user ? user.preferences.activity : ''}"
-                               class="form-control">
+                               class="form-control"
+                               ng-model="user.preferences.activity">
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <input type="submit" class="btn btn-primary" value="${message(code: 'is.login.register')}">
+                        <button type='submit'ng-disabled='application.submitting || formHolder.registerForm.$invalid' class="btn btn-primary">${message(code: 'is.login.register')}</button>
                     </div>
                 </div>
             </form>

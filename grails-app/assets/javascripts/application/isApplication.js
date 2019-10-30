@@ -789,28 +789,6 @@ var isApplication = angular.module('isApplication', [
                 message: $rootScope.message('is.ui.admin.contact.enable')
             });
         };
-        $rootScope.showRegisterModal = function(user) {
-            if (isSettings.registrationEnabled) {
-                var childScope = $rootScope.$new();
-                if (user) {
-                    childScope.user = user;
-                }
-                $uibModal.open({
-                    keyboard: false,
-                    backdrop: 'static',
-                    templateUrl: $rootScope.serverUrl + '/user/register',
-                    controller: 'registerCtrl',
-                    scope: childScope
-                }).result.then(function(username) {
-                    $state.transitionTo('root');
-                    $rootScope.logIn();
-                }, function() {
-                    $state.transitionTo('root');
-                });
-            } else {
-                $rootScope.showNotEnabledFeature();
-            }
-        };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
             if (appDefinitionId) {
