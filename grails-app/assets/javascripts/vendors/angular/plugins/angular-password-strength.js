@@ -8,11 +8,7 @@
  * @description
  * # ngPasswordStrength HEAVILY CUSTOMISED DO NOT UPDATE
  */
-angular.module('ngPasswordStrength', [
-    'ui.bootstrap.progressbar',
-    'uib/template/progressbar/progress.html',
-    'uib/template/progressbar/progressbar.html'
-]).directive('ngPasswordStrength', ['$compile', '$rootScope', function($compile, $rootScope) {
+angular.module('ngPasswordStrength', []).directive('ngPasswordStrength', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -160,12 +156,10 @@ angular.module('ngPasswordStrength', [
                 return Math.max(0, Math.min(100, Math.round(strength)));
             },
             getClass = function(score) {
-                if (score < 20) {
-                    return "bad";
-                } else if (score < 60) {
-                    return "good";
+                if (score < 40) {
+                    return "danger";
                 } else {
-                    return "strong";
+                    return "success";
                 }
             },
             getLabel = function(score) {
@@ -175,21 +169,21 @@ angular.module('ngPasswordStrength', [
                     return 'weak'
                 } else if (score < 60) {
                     return 'good'
-                } else if (score < 80) {
-                    return 'strong'
                 } else {
-                    return 'verystrong'
+                    return 'strong'
                 }
             };
-            var template = '<div id="pass-strength-result" class="form-text {{class}}">{{ label }}</div>';
+            var template = '<div id="password-strength-result" class="form-text validation-error text-{{class}}">{{ label }}</div>';
             scope.$watch('pwd', function() {
                 if (!ngModel.$pristine) {
                     scope.value = mesureStrength(scope.pwd);
                     scope.label = $rootScope.message("todo.is.ui.password.strength." + getLabel(scope.value));
                     scope.class = getClass(scope.value);
                     var compiledTemplate = angular.element($compile(template)(scope));
-                    elem.parent().find('#pass-strength-result').remove();
-                    elem.after(compiledTemplate);
+                    elem.parent().find('#password-strength-result').remove();
+                    if(scope.pwd) {
+                        elem.after(compiledTemplate);
+                    }
                 }
             });
         }
