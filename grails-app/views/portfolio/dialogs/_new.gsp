@@ -30,21 +30,19 @@
         <wizard class="row" name="portfolio">
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio")}">
                 <ng-include src="'form.general.portfolio.html'"></ng-include>
-                <div class="footer-btn-toolbar">
-                    <div class="float-right btn-toolbar">
-                        <button type="button"
-                                role="button"
-                                class="btn btn-secondary"
-                                ng-click="$close()">
-                            ${message(code: 'is.button.cancel')}
-                        </button>
-                        <input type="submit" class="btn btn-secondary" ng-disabled="formHolder.portfolioForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
-                    </div>
+                <div class="float-right btn-toolbar">
+                    <button type="button"
+                            role="button"
+                            class="btn btn-secondary"
+                            ng-click="$close()">
+                        ${message(code: 'is.button.cancel')}
+                    </button>
+                    <input type="submit" class="btn btn-secondary" ng-disabled="formHolder.portfolioForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                 </div>
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.projects")}">
                 <ng-include src="'form.projects.portfolio.html'"></ng-include>
-                <div class="footer-btn-toolbar">
+                <div>
                     <button type="button"
                             role="button"
                             class="btn btn-secondary float-left"
@@ -64,7 +62,7 @@
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.members")}">
                 <ng-include src="'form.members.portfolio.html'"></ng-include>
-                <div class="footer-btn-toolbar">
+                <div>
                     <button type="button"
                             role="button"
                             class="btn btn-secondary"

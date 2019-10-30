@@ -30,7 +30,6 @@
         <wizard class="row" name="project">
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.project")}">
                 <ng-include src="'form.general.project.html'"></ng-include>
-                <div class="footer-btn-toolbar">
                     <div class="btn-toolbar float-right">
                         <button type="button"
                                 role="button"
@@ -40,13 +39,12 @@
                         </button>
                         <input type="submit" class="btn btn-secondary" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                     </div>
-                </div>
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.team")}">
                 <div ng-controller="teamCtrl">
                     <ng-include src="'form.team.html'"></ng-include>
                     <ng-include src="'form.members.project.html'"></ng-include>
-                    <div class="footer-btn-toolbar">
+                    <div>
                         <button type="button"
                                 role="button"
                                 class="btn btn-secondary"
@@ -67,7 +65,7 @@
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.options")}">
                 <ng-include src="'form.practices.project.html'"></ng-include>
-                <div class="footer-btn-toolbar">
+                <div>
                     <button type="button"
                             role="button"
                             class="btn btn-secondary"
@@ -87,7 +85,7 @@
             </wz-step>
             <wz-step wz-title="${message(code: "todo.is.ui.project.planning")}">
                 <ng-include src="'form.planning.project.html'"></ng-include>
-                <div class="footer-btn-toolbar">
+                <div>
                     <button type="button"
                             role="button"
                             class="btn btn-secondary"

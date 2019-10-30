@@ -749,6 +749,13 @@ a.link-documentation {
   font-size: $font-size-base;
 }
 
+.footer-btn-toolbar {
+  position: absolute;
+  bottom: $modal-inner-padding;
+  right: $modal-inner-padding;
+  left: $modal-inner-padding;
+}
+
 ////////////////////
 // Icons
 ////////////////////
