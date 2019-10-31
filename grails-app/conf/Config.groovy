@@ -642,9 +642,8 @@ grails {
 /* User config */
 environments {
     production {
-        def oldConfigEnvName = 'icescrum_config_location'
-        def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME) ?: System.getProperty(oldConfigEnvName)
-        def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME) ?: System.getenv(oldConfigEnvName)
+        def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
+        def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
         def homeConfig = "${userHome}${File.separator}.icescrum${File.separator}config.groovy"
         println "--------------------------------------------------------"
         if (systemConfig && new File(systemConfig).exists()) {  // 1. System variable passed to the JVM : -Dicescrum.config.file=.../config.groovy
@@ -661,7 +660,7 @@ environments {
             grails.config.locations = []
         }
         try {
-            String extConfFile = (String) new InitialContext().lookup('java:comp/env/' + ApplicationSupport.CONFIG_ENV_NAME) ?: (String) new InitialContext().lookup('java:comp/env/' + oldConfigEnvName)
+            String extConfFile = (String) new InitialContext().lookup('java:comp/env/' + ApplicationSupport.CONFIG_ENV_NAME)
             if (extConfFile) {
                 grails.config.locations << extConfFile
                 println "Use configuration file provided by JNDI: ${extConfFile}"
