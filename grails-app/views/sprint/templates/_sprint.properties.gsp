@@ -89,7 +89,7 @@
             </div>
         </div>
         <div ng-if="project.portfolio && (formHolder.sprintForm.startDate.$dirty || formHolder.sprintForm.endDate.$dirty)"
-             class="form-text alert bg-warning spaced-form-text">
+             class="form-text alert bg-warning spaced-form-text mb-3">
             ${message(code: 'is.ui.portfolio.warning.dates')}
         </div>
         <div is-watch="sprint" is-watch-property="['doneDate','endDate']">
