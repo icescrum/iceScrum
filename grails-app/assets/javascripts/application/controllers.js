@@ -777,6 +777,17 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
         }
         $scope.resetFormValidation($scope.formHolder[form]);
     };
+    $scope.markitupCheckboxOptions = function(property, action) {
+        return {
+            options: {
+                object: function() { return $scope[editable]; },
+                property: property ? property : 'notes',
+                action: action ? action : $scope.update,
+                autoSubmit: function() { return !$scope.isInEditingMode(); },
+                isEnabled: function() { return $scope.formEditable(); }
+            }
+        }
+    };
     // Init
     $scope[type] = item;
     $scope[editable] = {};

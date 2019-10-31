@@ -67,6 +67,76 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
+}]).directive('bindHtmlCompile', ['$compile', function($compile) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            scope.$watch(function() {
+                return scope.$eval(attrs.bindHtmlCompile);
+            }, function(value) {
+                // In case value is a TrustedValueHolderType, sometimes it
+                // needs to be explicitly called into a string in order to
+                // get the HTML string.
+                element.html(value && value.toString());
+                // If scope is provided use it, otherwise use parent scope
+                var compileScope = scope;
+                var obj = scope.$eval(attrs.bindHtmlScope);
+                if (obj) {
+                    if (obj.$id) {
+                        compileScope = obj
+                    } else {
+                        // if an object, transform it to scope
+                        compileScope = scope.$new();
+                        for (var p in obj) {
+                            compileScope[p] = obj[p]
+                        }
+                    }
+                }
+                $compile(element.contents())(compileScope);
+            });
+        }
+    };
+}]).directive('markitupCheckbox', ['$http', '$rootScope', function($http, $rootScope) {
+    return {
+        restrict: 'A',
+        scope: {
+            markitupCheckbox: '='
+        },
+        link: function(scope, element, attrs) {
+            element.on('focus', function(event) {
+                var options = scope.markitupCheckbox;
+                if (options.isEnabled()) {
+                    var editable = options.object();
+                    event.stopPropagation();
+                    var isChecked = element.hasClass('fa-check-square-o');
+                    var indexClicked = element.parent().find(isChecked ? '[markitup-checkbox].fa-check-square-o' : '[markitup-checkbox].fa-square-o').index(element[0]) + 1;
+                    var textile = editable[options.property];
+                    var indexCheckbox = 0;
+                    textile = textile.replace(isChecked ? /\[x\]/g : /\[\]/g, function(match) {
+                        indexCheckbox++;
+                        return (indexCheckbox === indexClicked) ? (isChecked ? "[]" : "[x]") : match;
+                    });
+                    editable[options.property] = textile;
+                    if (options.autoSubmit()) {
+                        options.action(editable);
+                    } else {
+                        scope.$apply($http({
+                            method: 'POST',
+                            isBackground: true, // Custom attribute to prevent application.submitting
+                            url: $rootScope.serverUrl + '/textileParser',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                            data: 'data=' + encodeURIComponent(textile)
+                        }).success(function(data) {
+                            editable[options.property + '_html'] = data;
+                        }));
+                    }
+                }
+            });
+            element.on('$destroy', function() {
+                element.off('focus');
+            });
+        }
+    };
 }]).directive('showValidation', ['$compile', '$interpolate', '$rootScope', function($compile, $interpolate, $rootScope) {
     return {
         restrict: "A",
