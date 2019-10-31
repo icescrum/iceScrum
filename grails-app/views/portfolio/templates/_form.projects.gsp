@@ -40,7 +40,7 @@
         <span class="input-group-text"><i class="fa fa-search"></i></span>
     </span>
 </div>
-<div class="alert bg-warning mb-3" role="alert" ng-if="portfolio.projects.length >= 10">
+<div class="form-text alert bg-warning mb-3" role="alert" ng-if="portfolio.projects.length >= 10">
     ${message(code: 'is.ui.portfolio.limit.projects')}
 </div>
 <table class="table table-striped" ng-if="portfolio.projects.length > 0">
