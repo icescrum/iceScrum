@@ -30,7 +30,7 @@ angular.module('notification-templates', []).run(['$templateCache', function($te
                                      '        <div class="toast-content">' +
                                      '            <div class="toast-icon {{:: \'toast-\' + type }}"></div>' +
                                      '            <div>' +
-                                     '               <div ng-if="title"><strong>{{:: title }}</strong></div>' +
+                                     '               <div class="toast-title" ng-if="title"><strong>{{:: title }}</strong></div>' +
                                      '               {{:: message }}' +
                                      '            </div>' +
                                      '        </div>' +
@@ -45,9 +45,22 @@ angular.module('angular-notifications', ['notification-templates']).provider('no
     'use strict';
 
     this.$get = ['$rootScope', '$compile', '$templateCache', function($rootScope, $compile, $templateCache) {
-
         function notifyByType(type) {
             return function(title, message, options) {
+                options = _.merge({autohide: false, delay:4500}, (options || {}));
+
+                //may use the same toast
+                if ($rootScope.lastNotification && $rootScope.lastNotification.find('toast-title').text() === title) {
+                    var $existingToast = $rootScope.lastNotification;
+                    if(!options.autohide && options.delay) { //same condition to override existing condition
+                        clearTimeout($existingToast.data('timeout'));
+                        $existingToast.data('timeout', setTimeout(function() {
+                            $existingToast.toast('hide'); //to benefit hidden.bs.toast
+                        }, options.delay));
+                        return;
+                    }
+                }
+
                 var $body = angular.element('body');
                 var $container = angular.element('.toast-container');
                 if (!$container.length) {
@@ -62,11 +75,23 @@ angular.module('angular-notifications', ['notification-templates']).provider('no
                 var toast = $compile($templateCache.get('toast.html'))(scope);
                 $container.append(toast);
                 var $toast = angular.element(toast);
-                $toast.toast(_.merge({delay: 4500}, (options || {})));
+                $toast.toast(options);
                 $toast.one('click hidden.bs.toast', function() {
                     $toast.remove();
+                    if ($rootScope.lastNotification === $toast) {
+                        clearTimeout($toast.data('timeout'));
+                        $rootScope.lastNotification = null;
+                    }
                 });
+                if(!options.autohide && options.delay){ //override native
+                    $toast.one('shown.bs.toast', function() {
+                        $toast.data('timeout', setTimeout(function() {
+                            $toast.toast('hide'); //to benefit hidden.bs.toast
+                        }, options.delay));
+                    });
+                }
                 $toast.toast('show');
+                $rootScope.lastNotification = $toast;
             };
         }
 
