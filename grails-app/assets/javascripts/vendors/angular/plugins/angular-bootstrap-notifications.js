@@ -63,7 +63,7 @@ angular.module('angular-notifications', ['notification-templates']).provider('no
                 $container.append(toast);
                 var $toast = angular.element(toast);
                 $toast.toast(_.merge({delay: 4500}, (options || {})));
-                $toast.on('hidden.bs.toast', function() {
+                $toast.one('click hidden.bs.toast', function() {
                     $toast.remove();
                 });
                 $toast.toast('show');
