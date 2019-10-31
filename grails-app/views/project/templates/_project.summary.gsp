@@ -2,9 +2,9 @@
 <div class="row">
     <h4 class="col-md-6">
         <i ng-if="!project.preferences.hidden" class="fa fa-eye"></i>
-        <i class="fa fa-folder"></i> {{ project.name + ' (' + project.pkey + ')' }}
+        <i class="workspace-icon icon-project"></i> {{ project.name + ' (' + project.pkey + ')' }}
     </h4>
-    <h4 class="col-md-6 text-right"><i class="fa fa-users"></i> {{ project.team.name }}</h4>
+    <h4 class="col-md-6 text-right">{{ project.team.name }}</h4>
 </div>
 <div class="row project-desc-chart">
     <div class="col-md-5" ng-bind-html="project.description_html ? project.description_html : ''"></div>

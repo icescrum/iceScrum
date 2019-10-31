@@ -266,12 +266,10 @@
                     </li>
                 </ul>
             </div>
-
             <div class="col-sm-9 modal-split-right" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
                 <div ng-switch-when="true">
                     ${message(code: 'is.ui.widget.noAvailableWidgetDefinitions')}
                 </div>
-
                 <div class="col-md-12" ng-switch-default>
                     <h4>{{ widgetDefinition.name }}</h4>
 
@@ -285,30 +283,24 @@
     <script type="text/ng-template" id="project.digest.html">
     <h4 class="col-12 clearfix">
         <div class="float-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
-
         <div class="time-stamp float-right">
             <time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time>
         </div>
     </h4>
-
     <div class="col-9">
         <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 195 : null)"></div>
-
         <div ng-if="project.currentOrNextRelease.currentOrNextSprint.goal" style="margin-top:8px;">
             <p><strong>{{:: message('todo.is.ui.sprint.goal.label', [project.currentOrNextRelease.currentOrNextSprint.index]) }}</strong>
                 <span ng-bind-html="project.currentOrNextRelease.currentOrNextSprint.goal | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 20 : 80):'/#/taskBoard/'+project.currentOrNextRelease.currentOrNextSprint.id"></span>
             </p>
         </div>
     </div>
-
     <div class="col-3">
         <div class="backlogCharts chart float-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
-
-        <div class="team-name text-truncate" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
+        <div class="team-name text-truncate" title="{{:: project.team.name }}">{{:: project.team.name }}</div>
     </div>
-
     <div class="col-9" style="margin-top:2px">
         <div class="row">
             <ul class="list-inline text-muted col-md-12">
@@ -341,7 +333,6 @@
             </ul>
         </div>
     </div>
-
     <div class="col-3 users" style="margin-top:2px">
         <img ng-src="{{:: user | userAvatar }}"
              ng-repeat="user in ::project.allUsers | limitTo:2"
