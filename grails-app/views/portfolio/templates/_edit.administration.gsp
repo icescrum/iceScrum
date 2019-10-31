@@ -29,7 +29,7 @@
       ng-submit='update(portfolio)'
       name="formHolder.editPortfolioForm">
     <entry:point id="portfolio-edit-administration"/>
-    <h4>${message(code: "is.ui.danger.zone")}</h4>
+    <h4 class="mb-2">${message(code: "is.ui.danger.zone")}</h4>
     <div class="btn-toolbar">
         <button ng-if="authorizedPortfolio('delete', portfolio)"
                 type="button"
@@ -39,19 +39,15 @@
             ${message(code: 'is.ui.portfolio.delete')}
         </button>
     </div>
-    <div class="btn-toolbar float-right">
-        <button type="button"
-                role="button"
-                class="btn btn-secondary btn-sm"
-                ng-click="$close()">
-            ${message(code: 'is.button.cancel')}
-        </button>
-        <button type='submit'
-                role="button"
-                class='btn btn-primary'
-                ng-disabled="!formHolder.editPortfolioForm.$dirty || formHolder.editPortfolioForm.$invalid">
-            ${message(code: 'is.button.update')}
-        </button>
+    <div class="footer-btn-toolbar">
+        <div class="btn-toolbar float-right">
+            <button type="button"
+                    role="button"
+                    class="btn btn-secondary"
+                    ng-click="$close()">
+                ${message(code: 'is.button.cancel')}
+            </button>
+        </div>
     </div>
 </form>
 </script>

@@ -116,7 +116,8 @@
             <i class="fa fa-warning"></i> ${message(code: 'is.ui.feature.rank.disabled')}
         </div>
         <div class="card-body scrollable-selectable-container features"
-             selectable="selectableOptions" ng-class="{'has-selected': hasSelected()}">
+             selectable="selectableOptions"
+             ng-class="{'has-selected': hasSelected()}">
             <div ng-if="features.length == 0"
                  class="empty-view">
                 <p class="form-text">${message(code: 'is.ui.feature.help')}<p>

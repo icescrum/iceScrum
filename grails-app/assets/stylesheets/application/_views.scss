@@ -240,8 +240,7 @@
       overflow-y: auto;
 
       &.grid-group {
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
         margin: 0 (-$is-sticky-note-spacer);
       }
 
