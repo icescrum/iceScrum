@@ -1007,6 +1007,10 @@ a.link-documentation {
         background-image: linear-gradient(254deg, $is-sprint-done-right, $is-sprint-done-left);
       }
 
+      &.bg-invisible {
+        box-shadow: none;
+      }
+
       &:last-of-type {
         margin-right: 0;
       }
