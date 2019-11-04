@@ -720,9 +720,14 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         width: 40px;
       }
 
-      &.avatars-size-xs img {
+      &.avatars-size-sm img {
         height: 30px;
         width: 30px;
+      }
+
+      &.avatars-size-xs img {
+        height: 20px;
+        width: 20px;
       }
 
       .avatar {
