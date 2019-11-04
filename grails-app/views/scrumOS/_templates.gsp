@@ -281,65 +281,23 @@
     </script>
 
     <script type="text/ng-template" id="project.digest.html">
-    <h4 class="col-12 clearfix">
-        <div class="float-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
-        <div class="time-stamp float-right">
-            <time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time>
+    <div class="rich-content font-size-sm" ng-bind-html="project.description_html ? project.description_html : ''"></div>
+    <div ng-if="project.currentOrNextRelease" class="release-vision mb-0">
+        <div class="d-flex justify-content-between">
+            <div><strong class="text-accent">{{ project.currentOrNextRelease.name }}</strong></div>
+            <div>{{ project.currentOrNextRelease.startDate | dayShorter }} | {{ project.currentOrNextRelease.endDate | dayShorter }}</div>
         </div>
-    </h4>
-    <div class="col-9">
-        <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 195 : null)"></div>
-        <div ng-if="project.currentOrNextRelease.currentOrNextSprint.goal" style="margin-top:8px;">
-            <p><strong>{{:: message('todo.is.ui.sprint.goal.label', [project.currentOrNextRelease.currentOrNextSprint.index]) }}</strong>
-                <span ng-bind-html="project.currentOrNextRelease.currentOrNextSprint.goal | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 20 : 80):'/#/taskBoard/'+project.currentOrNextRelease.currentOrNextSprint.id"></span>
-            </p>
+        <div class="rich-content"
+             ng-if="project.currentOrNextRelease.vision_html"
+             ng-bind-html="project.currentOrNextRelease.vision_html">
         </div>
     </div>
-    <div class="col-3">
-        <div class="backlogCharts chart float-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
-            <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
+    <div ng-if="project.currentOrNextRelease.currentOrNextSprint.goal" class="sprint-goal mr-0">
+        <div class="sprint-goal-label d-flex justify-content-between">
+            <div>{{ message('todo.is.ui.sprint.goal.label', [project.currentOrNextRelease.currentOrNextSprint.index]) }}</div>
+            <div>{{ project.currentOrNextRelease.startDate | dayShorter }} | {{ project.currentOrNextRelease.endDate | dayShorter }}</div>
         </div>
-        <div class="team-name text-truncate" title="{{:: project.team.name }}">{{:: project.team.name }}</div>
-    </div>
-    <div class="col-9" style="margin-top:2px">
-        <div class="row">
-            <ul class="list-inline text-muted col-md-12">
-                <li class="release" ng-if=":: project.currentOrNextRelease">
-                    <a href="{{:: project.pkey | projectUrl }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
-                            class="text-truncate">{{:: project.currentOrNextRelease.name }}</span></a>
-                </li>
-                <li class="features" ng-if=":: project.features_count">
-                    <a href="{{:: project.pkey | projectUrl }}#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
-                </li>
-                <li class="stories" ng-if=":: project.stories_count">
-                    <a href="{{:: project.pkey | projectUrl }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
-                </li>
-                <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
-                    <a href="{{:: project.pkey | projectUrl }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
-                            class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
-                        <span class="progress-value">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span>
-
-                        <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar"
-                             aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
-                             style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
-                    </div></a>
-                    <span class="time-stamp" ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 2">
-                        <time timeago datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.endDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.endDate | dateTime }}</time>
-                    </span>
-                    <span class="time-stamp" ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 1">
-                        <time timeago datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.startDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.startDate | dateTime }}</time>
-                    </span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-3 users" style="margin-top:2px">
-        <img ng-src="{{:: user | userAvatar }}"
-             ng-repeat="user in ::project.allUsers | limitTo:2"
-             height="20" width="20" style="margin-left:5px;"
-             class="{{:: user | userColorRoles:project }}"
-             defer-tooltip="{{:: user | userFullName }}"/>
-        <span class="team-count" ng-if=":: project.allUsers.length > 2">+ {{ project.allUsers.length - 2 }}</span>
+        <div>{{ project.currentOrNextRelease.currentOrNextSprint.goal }}</div>
     </div>
     </script>
 
