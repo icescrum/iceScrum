@@ -99,12 +99,21 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 form-group">
+    <div class="form-half">
         <label for="user.preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
         <input name="user.preferences.activity"
                type="text"
                class="form-control"
                ng-model="user.preferences.activity">
+    </div>
+    <div class="form-half">
+        <label for="needsEmailValidation">
+            <input type="checkbox"
+                   name="user.preferences.needsEmailValidation"
+                   id="needsEmailValidation"
+                   ng-model="user.preferences.needsEmailValidation">
+            Needs email validation (experimental)
+        </label>
     </div>
 </div>
 </script>
