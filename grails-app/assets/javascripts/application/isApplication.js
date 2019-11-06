@@ -83,6 +83,29 @@ var isApplication = angular.module('isApplication', [
                 templateUrl: 'ui/window/home'
             })
             .state({
+                name: 'userregister',
+                url: "/user/register/:token",
+                params: {token: {value: null}}, // Doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
+                onEnter: ['$rootScope', '$state', '$stateParams', '$uibModal', function($rootScope, $state, $stateParams, $uibModal) {
+                    if ($stateParams.token) {
+                        $uibModal.open({
+                            keyboard: false,
+                            backdrop: 'static',
+                            templateUrl: 'user.invitation.html',
+                            controller: 'userInvitationCtrl'
+                        }).result.then(function(continuing) {
+                            if (!continuing) {
+                                $state.transitionTo('root');
+                            }
+                        }, function() {
+                            $state.transitionTo('root');
+                        });
+                    } else {
+                        $state.transitionTo('root');
+                    }
+                }]
+            })
+            .state({
                 name: 'userretrieve',
                 url: "/user/retrieve",
                 onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {

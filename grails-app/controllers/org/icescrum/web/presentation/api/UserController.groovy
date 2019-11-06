@@ -119,12 +119,12 @@ class UserController implements ControllerErrorHandler {
                 userService.save(user, userParams.token)
             }
         } catch (RuntimeException e) {
-            if (!request.restAPI) {
-                render(status: 200, view: 'register', model: [user: user])
-                return
+            if (request.restAPI) {
+                throw e
             } else {
-                returnError(exception: e)
+                render(status: 200, view: 'register', model: [user: user]) // TODO show error
             }
+            return
         }
         if (request.restAPI) {
             render(status: 201, contentType: 'application/json', text: user as JSON)
@@ -229,9 +229,17 @@ class UserController implements ControllerErrorHandler {
         render(status: 204)
     }
 
-    @Secured(['!isAuthenticated()'])
-    def register() {
-        render(status: 200, view: 'register')
+    def register(String token) {
+        if (springSecurityService.isLoggedIn()) {
+            def targetUrl = createLink(absolute: true, controller: 'scrumOS', action: 'index')
+            if (token) {
+                targetUrl += "#/user/register/$token"
+            }
+            redirect(url: targetUrl)
+            return
+        } else {
+            render(status: 200, view: 'register')
+        }
     }
 
     def avatar(long id) {
@@ -312,8 +320,8 @@ class UserController implements ControllerErrorHandler {
 
     @Secured('!isAuthenticated()')
     def retrieve() {
-        def user = null
-        def error = null
+        def user
+        def error
         if (params.username) {
             user = User.findWhere(username: params.username)
             if (!user || !user.enabled || user.accountExternal) {

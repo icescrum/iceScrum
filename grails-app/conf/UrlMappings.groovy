@@ -152,9 +152,12 @@ class UrlMappings {
             controller = 'user'
             action = [GET: "index", POST: "save"]
         }
-        "/user/register" {
+        "/user/register/$token?" {
             controller = 'user'
             action = [GET: "register", POST: "save"]
+            constraints {
+                token(matches: /[0-9a-z]*/)
+            }
         }
         "/user/retrieve" {
             controller = 'user'
