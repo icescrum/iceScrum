@@ -79,7 +79,7 @@
         </ui-select>
     </div>
 </div>
-<div class="row" ng-show="!editableUser.accountExternal">
+<div class="row" ng-if="!editableUser.accountExternal">
     <div class="form-half">
         <label for="user.password">${message(code: 'is.user.password')}</label>
         <input ng-required="!user.id"
