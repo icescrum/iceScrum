@@ -31,7 +31,7 @@ angular.module('notification-templates', []).run(['$templateCache', function($te
                                      '            <div class="toast-icon {{:: \'toast-\' + type }}"></div>' +
                                      '            <div>' +
                                      '               <div class="toast-title" ng-if="title"><strong>{{:: title }}</strong></div>' +
-                                     '               {{:: message }}' +
+                                     '               <div ng-bind-html=":: message"></div>' +
                                      '            </div>' +
                                      '        </div>' +
                                      '    </div>' +
