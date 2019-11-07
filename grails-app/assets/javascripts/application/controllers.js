@@ -690,7 +690,7 @@ extensibleController('registerCtrl', ['$scope', 'User', 'UserService', 'Session'
     // Functions
     $scope.register = function() {
         UserService.save($scope.user).then(function() {
-            $scope.$close($scope.user.username);
+            document.location = $scope.serverUrl  + '/login/auth?username=' + $scope.user.username;
         });
     };
     // Init

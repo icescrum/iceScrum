@@ -39,7 +39,14 @@
                             <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-fluid">
                         </a>
                     </div>
-                    <form role='form' name="formHolder.registerForm" show-validation ng-submit='register()' class="form-special" method="post" autocomplete='off' novalidate>
+                    <form role='form'
+                          name="formHolder.registerForm"
+                          show-validation
+                          ng-submit='register()'
+                          class="form-special"
+                          method="post"
+                          autocomplete='off'
+                          novalidate>
                         <g:if test="${user?.errors}">
                             <div class="alert alert-danger mb-4 mt-4" role="alert">
                                 <g:renderErrors bean="${user}"/>
