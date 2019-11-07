@@ -24,6 +24,7 @@
 
 package org.icescrum.web.presentation
 
+import eu.bitwalker.useragentutils.Browser
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.Metadata
@@ -50,6 +51,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def uiDefinitionService
     def springSecurityService
     def pushService
+    def userAgentIdentService
 
     def index() {
         User user = (User) springSecurityService.currentUser
@@ -69,6 +71,7 @@ class ScrumOSController implements ControllerErrorHandler {
                      moreWorkspacesExist     : workspaces?.size() > workspacesLimit,
                      portfolioEnabled        : portfolioEnabled,
                      workspacesFilteredsList : workspaces.take(workspacesLimit),
+                     outdatedBrowser         : userAgentIdentService.isBrowser(Browser.IE11),
                      colorScheme             : user?.preferences?.colorScheme]
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
