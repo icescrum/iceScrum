@@ -41,16 +41,31 @@
                     </div>
                     <h1 class="text-center">${message(code: 'is.ui.login.welcome')}</h1>
                     <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
+                        <g:if test="${params.login_error == "1"}">
+                            <div class="alert bg-danger form-text mb-4 text-center">
+                                ${message(code: 'is.login.error')}
+                            </div>
+                        </g:if>
                         <p class="form-group">
                             <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                            <input type="text" autofocus class="input-large input-text form-control" name="j_username" id="username" value="${params.username ?: ''}">
+                            <input type="text"
+                                   autofocus
+                                   class="input-large input-text form-control"
+                                   name="j_username"
+                                   required="required"
+                                   id="username"
+                                   value="${params.username ?: ''}">
                         </p>
                         <p class="form-group">
                             <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
-                            <input class="input-large input-text form-control" type="password" name="j_password" id="password">
+                            <input class="input-large input-text form-control"
+                                   type="password"
+                                   name="j_password"
+                                   required="required"
+                                   id="password">
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="back-link">
+                            <div class="back-link" style="visibility: hidden">
                                 <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve')}</g:link>
                             </div>
                             <div>
