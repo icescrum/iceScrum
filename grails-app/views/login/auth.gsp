@@ -51,7 +51,7 @@
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="back-link">
-                                <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve') }</g:link>
+                                <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve')}</g:link>
                             </div>
                             <div>
                                 <input type="submit" class="btn btn-primary" value="${message(code: 'is.login')}">
@@ -62,7 +62,7 @@
                         </p>
                         <div class="text-center login-footer">
                             <div class="login-cta-text">${message(code: 'is.ui.login.register.cta')}</div>
-                            <a href="${createLink(action:"register", controller:"user" )}/" class="btn btn-secondary">${message(code: 'is.login.register')}</a>
+                            <a href="${createLink(action: 'register', controller: 'user')}/" class="btn btn-secondary">${message(code: 'is.login.register')}</a>
                         </div>
                     </form>
                 </div>
