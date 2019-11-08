@@ -64,13 +64,15 @@
                                    required="required"
                                    id="password">
                         </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="back-link" style="visibility: hidden">
-                                <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve')}</g:link>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center flex-row-reverse">
                             <div>
                                 <input type="submit" class="btn btn-primary" value="${message(code: 'is.login')}">
                             </div>
+                            <g:if test="${grailsApplication.config.icescrum.login.retrieve.enable}">
+                                <div class="back-link">
+                                    <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve')}</g:link>
+                                </div>
+                            </g:if>
                         </div>
                         <p id="remember_me_holder" style="display: none;">
                             <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>

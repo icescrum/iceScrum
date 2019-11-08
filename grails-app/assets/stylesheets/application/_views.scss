@@ -198,26 +198,32 @@
     padding-right: 15%;
     width: 600px;
   }
+
   .description {
-    margin-top: 3.25rem;margin-bottom: 2.0rem;
+    margin-top: 3.25rem;
+    margin-bottom: 2.0rem;
   }
-}
 
-.login-cta-text {
-  font-size: 1.125rem;
-  margin-bottom: 20px;
-}
-
-.back-link {
-  display: flex;
-
-  a {
-    font-size: 0.875rem;
+  .btn {
+    padding: 0.75rem 1.875rem !important;
   }
-}
 
-.login-footer {
-  margin-top: 5.75rem;
+  .login-cta-text {
+    font-size: 1.125rem;
+    margin-bottom: 20px;
+  }
+
+  .back-link {
+    display: flex;
+
+    a {
+      font-size: 0.875rem;
+    }
+  }
+
+  .login-footer {
+    margin-top: 5.75rem;
+  }
 }
 
 ////////////////////
