@@ -42,8 +42,13 @@
                     <h1 class="text-center">${message(code: 'is.login.welcome')}</h1>
                     <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
                         <g:if test="${params.login_error == "1"}">
-                            <div class="alert bg-danger form-text mb-4 text-center">
+                            <div class="alert bg-danger form-text mb-4 text-center" role="alert">
                                 ${message(code: 'is.login.error')}
+                            </div>
+                        </g:if>
+                        <g:if test="${params.retrieve == "1"}">
+                            <div class="alert bg-info form-text mb-4 text-center" role="alert">
+                                ${message(code: 'is.login.retrieve.success')}
                             </div>
                         </g:if>
                         <p class="form-group">
@@ -69,7 +74,7 @@
                                 <input type="submit" class="btn btn-primary" value="${message(code: 'is.login')}">
                             </div>
                             <g:if test="${grailsApplication.config.icescrum.login.retrieve.enable}">
-                                <div class="back-link">
+                                <div class="font-size-sm">
                                     <g:link action="retrieve" controller="user">${message(code: 'is.login.retrieve')}</g:link>
                                 </div>
                             </g:if>

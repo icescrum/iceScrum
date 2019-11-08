@@ -305,28 +305,43 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
-    @Secured('!isAuthenticated()')
-    def retrieve() {
-        def user
-        def error
-        if (params.username) {
-            user = User.findWhere(username: params.username)
-            if (!user || !user.enabled || user.accountExternal) {
-                def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.login.error.disabled' : 'is.user.error.externalAccount')
-                returnError(code: code)
-            } else {
-                try {
-                    User.withTransaction {
-                        userService.resetPassword(user)
-                    }
-                } catch (MailException e) {
-                    error = message(code: 'is.mail.error', exception: e)
-                } catch (Exception e) {
-                    error = message(code: 'is.mail.error', exception: e)
+    def retrieve(String username) {
+        if (springSecurityService.isLoggedIn()) {
+            redirect(controller: 'scrumOS', action: 'index')
+            return
+        } else {
+            if (username) {
+                def user
+                def error
+                user = User.findWhere(username: username)
+                if (!user) {
+                    user = User.findWhere(email: username)
                 }
+                if (!user || !user.enabled || user.accountExternal) {
+                    error = message(code: !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.login.error.disabled' : 'is.user.error.externalAccount'))
+                } else {
+                    try {
+                        User.withTransaction {
+                            userService.resetPassword(user)
+                        }
+                    } catch (MailException e) {
+                        error = message(code: 'is.mail.error', exception: e)
+                    } catch (Exception e) {
+                        error = message(code: 'is.mail.error', exception: e)
+                    }
+                }
+                if (error) {
+                    render(status: 200, view: 'retrieve', model: [error: error])
+                    return
+                } else {
+                    redirect(url: createLink(absolute: true, controller: 'login', action: 'auth') + '?retrieve=1&username=' + username)
+                    return
+                }
+            } else {
+                render(status: 200, view: 'retrieve')
+                return
             }
         }
-        render(status: 200, view: 'retrieve', model: [submitted: user, error: error])
     }
 
     @Secured('isAuthenticated()')

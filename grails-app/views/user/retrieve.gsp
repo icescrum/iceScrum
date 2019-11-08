@@ -43,18 +43,18 @@
                           class="form-special"
                           show-validation
                           method="post" autocomplete='off'>
-                        <g:if test="${user || error}">
-                            <div class="alert ${error ? 'alert-danger' : 'alert-success'} mb-4 mt-4" role="alert">
-                                <div>${user ? g.message(code: 'is.login.retrieve.success', args: [user.email]) : error}</div>
+                        <g:if test="${error}">
+                            <div class="alert bg-danger form-text mb-4 text-center" role="alert">
+                                ${error}
                             </div>
                         </g:if>
                         <g:else>
-                            <div class="description">
+                            <div class="mb-4 text-center">
                                 ${g.message(code: 'is.login.retrieve.description')}
                             </div>
                         </g:else>
                         <div class="form-group">
-                            <label for="username">${message(code: 'is.login.retrieve.input')}</label>
+                            <label for="username">${message(code: 'is.login.username.or.email')}</label>
                             <input required
                                    autofocus
                                    type="text"
