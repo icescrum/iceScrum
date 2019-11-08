@@ -36,7 +36,7 @@ angular.module('notification-templates', []).run(['$templateCache', function($te
                                      '        </div>' +
                                      '    </div>' +
                                      '   <div class="mt-2" ng-if="::button">' +
-                                     '       <a href ng-click="button.action()" class="btn btn-sm btn-{{::button.type}} float-right">{{::button.name}}</a>' +
+                                     '       <a href ng-click="button.action(); $event.stopPropagation()" class="btn btn-sm btn-{{::button.type}} float-right">{{::button.name}}</a>' +
                                      '   </div>' +
                                      '</div>');
 }]);
