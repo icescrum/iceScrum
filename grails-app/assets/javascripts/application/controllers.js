@@ -689,16 +689,12 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
 extensibleController('registerCtrl', ['$scope', 'User', 'UserService', 'Session', function($scope, User, UserService, Session) {
     // Functions
     $scope.register = function() {
-        UserService.save($scope.user).then(function() {
+        UserService.save(angular.copy($scope.user)).then(function() {
             document.location = $scope.serverUrl  + '/login/auth?username=' + $scope.user.username;
         });
     };
     // Init
-    var newUser = new User();
-    if ($scope.user) {
-        _.merge(newUser, $scope.user);
-    }
-    $scope.user = newUser;
+    $scope.user = new User();
     $scope.languages = {};
     $scope.languageKeys = [];
     Session.getLanguages().then(function(languages) {
