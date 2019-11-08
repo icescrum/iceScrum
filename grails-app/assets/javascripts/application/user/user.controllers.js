@@ -121,6 +121,9 @@ controllers.controller('userInvitationCtrl', ['$scope', '$state', '$timeout', '$
                 };
             });
             $scope.invitedEmailAddress = _.first(invitations).email;
+            if ($scope.user) {
+                _.merge($scope.user, $filter('userNamesFromEmail')($scope.invitedEmailAddress));
+            }
         }
     }, function() {
         $timeout($scope.$close, 3000);

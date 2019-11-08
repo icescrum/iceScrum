@@ -31,6 +31,7 @@ filters
             var namesFromEmail = {email: email};
             var emailPrefix = email.split('@')[0];
             namesFromEmail.firstName = emailPrefix;
+            namesFromEmail.username = emailPrefix;
             var dotPosition = emailPrefix.indexOf('.');
             if (dotPosition != -1) {
                 namesFromEmail.firstName = _.capitalize(emailPrefix.substring(0, dotPosition));

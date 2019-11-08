@@ -689,6 +689,9 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
 extensibleController('registerCtrl', ['$scope', '$uibModal', '$timeout', 'User', 'UserService', 'Session', function($scope, $uibModal, $timeout, User, UserService, Session) {
     // Functions
     $scope.register = function() {
+        if ($scope.token) {
+            $scope.user.token = $scope.token;
+        }
         UserService.save(angular.copy($scope.user)).then(function() {
             document.location = $scope.serverUrl + '/login/auth?username=' + $scope.user.username;
         });
