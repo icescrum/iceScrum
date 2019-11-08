@@ -89,14 +89,10 @@ controllers.controller('userInvitationCtrl', ['$scope', '$state', '$timeout', '$
             document.location = $scope.serverUrl;
         })
     };
-    $scope.register = function() {
-        var user = $filter('userNamesFromEmail')($scope.invitedEmailAddress);
-        user.token = $scope.token;
-        $scope.$close(true);
-        $scope.showRegisterModal(user);
-    };
     // Init
-    $scope.token = $state.params.token;
+    if (!$scope.token) {
+        $scope.token = $state.params.token;
+    }
     if (Session.authenticated()) {
         $scope.currentEmailAddress = Session.user.email;
     }

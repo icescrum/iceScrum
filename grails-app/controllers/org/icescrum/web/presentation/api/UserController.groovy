@@ -225,7 +225,7 @@ class UserController implements ControllerErrorHandler {
             redirect(url: targetUrl)
             return
         } else {
-            render(status: 200, view: 'register')
+            render(status: 200, view: 'register', model: [token: token])
         }
     }
 

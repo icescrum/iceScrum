@@ -58,7 +58,7 @@
             <div class="btn-toolbar">
                 <button class="btn btn-primary float-right"
                         ng-disabled="application.submitting"
-                        ng-click="register()"
+                        ng-click="$close(true)"
                         hotkey="{'return': hotkeyClick }"
                         type="button">
                     ${message(code: 'is.ui.user.invitation.create')}

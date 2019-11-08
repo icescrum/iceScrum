@@ -32,7 +32,7 @@
                 <div class="rect_1"></div>
                 <div class="rect_2"></div>
                 <div class="rect_3"></div>
-                <div class="register" ng-controller="registerCtrl">
+                <div class="register" ng-controller="registerCtrl" ng-init="token = '${token ?: ''}'">
                     <div class="text-center">
                         <a href="https://www.icescrum.com" target="_blank">
                             <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
