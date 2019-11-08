@@ -82,6 +82,11 @@
                         <p id="remember_me_holder" style="display: none;">
                             <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
                         </p>
+                        <g:if test="${params.redirectTo}">
+                            <input type="hidden"
+                                   name="redirectTo"
+                                   value="${params.redirectTo.replaceAll('_HASH_', '#')}">
+                        </g:if>
                         <div class="text-center login-footer">
                             <div class="login-cta-text">${message(code: 'is.login.register.cta')}</div>
                             <a href="${createLink(action: 'register', controller: 'user')}/" class="btn btn-secondary">${message(code: 'is.login.register')}</a>

@@ -600,7 +600,7 @@ grails {
             userLookup.authorityJoinClassName = 'org.icescrum.core.domain.security.UserAuthority'
             authority.className = 'org.icescrum.core.domain.security.Authority'
             successHandler.alwaysUseDefault = false
-
+            successHandler.targetUrlParameter = 'redirectTo'
             useBasicAuth = true
             basic.realmName = "Basic authentication for iceScrum"
             filterChain.chainMap = [

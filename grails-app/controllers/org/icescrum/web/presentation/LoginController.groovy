@@ -52,10 +52,10 @@ class LoginController implements ControllerErrorHandler {
     }
 
     // Show the login page
-    def auth(String username) {
+    def auth(String username, String redirectTo) {
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
-            redirect(uri: config.successHandler.defaultTargetUrl)
+            redirect(uri: redirectTo ?: config.successHandler.defaultTargetUrl)
             return
         }
         render(view: 'auth', model: [noJS               : true,
