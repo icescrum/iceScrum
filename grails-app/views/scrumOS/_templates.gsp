@@ -119,9 +119,11 @@
 
     <script type="text/ng-template" id="select.member.html">
     <a>
-        <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span>
-        <button class="btn btn-secondary btn-sm" type="button" ng-show="!match.model.id">
-            ${message(code: 'is.ui.user.will.be.invited.click')} <i class="fa fa-envelope"></i>
+        <span ng-if="match.model.id">{{ match.model | userFullName }}</span>
+        <button class="btn btn-secondary btn-sm"
+                ng-if="!match.model.id"
+                type="button">
+            {{ 'is.ui.user.will.be.invited.click' | message: [(match.model | userFullName)] }} <i class="fa fa-envelope"></i>
         </button>
     </a>
     </script>

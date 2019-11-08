@@ -646,6 +646,8 @@ filters
     return function(story, returnIfTrue, returnIfFalse) {
         return Session.user ? (_.find(story.followers_ids, {id: Session.user.id}) ? (returnIfTrue ? returnIfTrue : true) : (returnIfFalse ? returnIfFalse : false)) : (returnIfFalse ? returnIfFalse : false);
     }
+}]).filter('message', ['I18nService', function(I18nService) {
+    return I18nService.message;
 }]).filter('idSizeClass', function() {
     return function(item) {
         if (!item || item.uid < 99) {
