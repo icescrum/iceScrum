@@ -26,13 +26,13 @@
 <body>
     <h1>Oops!</h1>
     <h2>${message(code: 'todo.is.ui.404')}</h2>
-    <div class="error-details">
+    <div class="mt-4 mb-4">
         ${message(code: 'todo.is.ui.404.details')}
     </div>
-    <div class="error-actions">
+    <div class="btn-toolbar justify-content-center">
         <a href="${homeUrl.encodeAsHTML()}" class="btn btn-primary btn-lg">
             <i class="fa fa-home"></i> ${message(code: 'todo.is.ui.40x.home')}</a>
-        <a href="mailto:${emailSupport.encodeAsHTML()}" class="btn btn-secondary btn-lg">
+        <a href="mailto:${supportEmail.encodeAsHTML()}" class="btn btn-secondary btn-lg">
             <i class="fa fa-envelope"></i> ${message(code: 'todo.is.ui.40x.support')}</a>
     </div>
 </body>

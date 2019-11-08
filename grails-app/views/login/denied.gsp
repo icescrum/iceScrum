@@ -25,7 +25,8 @@
     <meta name='layout' content='error'/>
 </head>
 <body>
-    <div class="error-details">
+    <h1>Oops!</h1>
+    <div class="mt-4 mb-4">
         ${message(code: 'is.denied')}
     </div>
 </body>

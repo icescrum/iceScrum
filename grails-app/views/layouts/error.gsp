@@ -38,16 +38,9 @@
         <asset:stylesheet href="application.css"/>
         <g:layoutHead/>
     </head>
-    <body class="error-template">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div>
-                        <div class="logo-loading"></div>
-                        <g:layoutBody/>
-                    </div>
-                </div>
-            </div>
+    <body class="text-center">
+        <div style="margin-top: 100px;">
+            <g:layoutBody/>
         </div>
     </body>
 </html>

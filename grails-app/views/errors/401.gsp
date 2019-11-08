@@ -26,7 +26,7 @@
 <body>
     <h1>Oops!</h1>
     <h2>${message(code: 'todo.is.ui.401')}</h2>
-    <div class="error-details">
+    <div class="mt-4 mb-4">
         ${message(code: 'todo.is.ui.401.details')}
     </div>
     <script type="text/javascript">
