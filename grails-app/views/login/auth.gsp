@@ -39,7 +39,7 @@
                             <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum" class="img-fluid">
                         </a>
                     </div>
-                    <h1 class="text-center">${message(code: 'is.ui.login.welcome')}</h1>
+                    <h1 class="text-center">${message(code: 'is.login.welcome')}</h1>
                     <form action='${postUrl}' name="loginform" id="loginform" class="form-special" method="post" autocomplete='off'>
                         <g:if test="${params.login_error == "1"}">
                             <div class="alert bg-danger form-text mb-4 text-center">
@@ -76,7 +76,7 @@
                             <input type='checkbox' name='${rememberMeParameter}' id='remember_me' checked='checked'/>
                         </p>
                         <div class="text-center login-footer">
-                            <div class="login-cta-text">${message(code: 'is.ui.login.register.cta')}</div>
+                            <div class="login-cta-text">${message(code: 'is.login.register.cta')}</div>
                             <a href="${createLink(action: 'register', controller: 'user')}/" class="btn btn-secondary">${message(code: 'is.login.register')}</a>
                         </div>
                     </form>

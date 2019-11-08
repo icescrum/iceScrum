@@ -154,7 +154,7 @@
                         </div>
                     </form>
                     <div class="text-center login-footer">
-                        <div class="login-cta-text">${message(code: 'is.ui.register.login.cta')}</div>
+                        <div class="login-cta-text">${message(code: 'is.login.register.login.cta')}</div>
                         <a href="${createLink(action: 'auth', controller: 'login')}/" class="btn btn-secondary">${message(code: 'is.login')}</a>
                     </div>
                 </div>
