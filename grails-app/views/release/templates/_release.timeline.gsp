@@ -23,14 +23,16 @@
 <script type="text/ng-template" id="release.timeline.html">
 <div class="timeline-bar-container">
     <div class="progress timeline-bar">
-        <div ng-repeat="sprint in releaseParts"
-             class="progress-bar {{ $last ? 'last-bar' : '' }} bg-{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
-             uib-tooltip-template="'sprint.tooltip.html'"
-             tooltip-enable="sprint.id"
-             tooltip-placement="top"
-             ng-style="{width: (sprint.duration / release.duration * 100) + '%'}">
+        <a href="{{ sprint.id ? openSprintUrl(sprint) : '' }}"
+           ng-repeat="sprint in releaseParts"
+           class="progress-bar bg-{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
+           ng-class="{'disabled-link':!sprint.id, 'last-bar': $last}"
+           uib-tooltip-template="'sprint.tooltip.html'"
+           tooltip-enable="sprint.id"
+           tooltip-placement="top"
+           ng-style="{width: (sprint.duration / release.duration * 100) + '%'}">
             {{ sprint.id ? sprint.index : '' }}
-        </div>
+        </a>
         <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
     </div>
 </div>
