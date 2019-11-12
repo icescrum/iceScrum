@@ -693,7 +693,11 @@ extensibleController('registerCtrl', ['$scope', '$uibModal', '$timeout', 'User',
             $scope.user.token = $scope.token;
         }
         UserService.save(angular.copy($scope.user)).then(function() {
-            document.location = $scope.serverUrl + '/login/auth?username=' + $scope.user.username;
+            var loginUrl = $scope.serverUrl + '/login/auth?username=' + $scope.user.username;
+            if ($scope.redirectTo) {
+                loginUrl += ('&redirectTo=' + $scope.redirectTo);
+            }
+            document.location = loginUrl;
         });
     };
     // Init

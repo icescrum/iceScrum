@@ -89,7 +89,7 @@
                         </g:if>
                         <div class="text-center login-footer">
                             <div class="login-cta-text">${message(code: 'is.login.register.cta')}</div>
-                            <a href="${createLink(action: 'register', controller: 'user')}/" class="btn btn-secondary">${message(code: 'is.login.register')}</a>
+                            <a href="${createLink(action: 'register', controller: 'user', params: params)}" class="btn btn-secondary">${message(code: 'is.login.register')}</a>
                         </div>
                     </form>
                 </div>
