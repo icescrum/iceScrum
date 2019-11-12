@@ -160,11 +160,11 @@
             <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showRetrospectiveTextarea"
-                 ng-click="showRetrospectiveTextarea = formEditable()"
                  ng-focus="editForm(true); showRetrospectiveTextarea = formEditable()"
                  ng-class="{'placeholder': !editableSprint.retrospective_html}"
                  tabindex="0"
-                 ng-bind-html="editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
+                 bind-html-scope="markitupCheckboxOptions('retrospective')"
+                 bind-html-compile="editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
         </div>
         <div class="form-group">
             <label for="goal">${message(code: 'is.sprint.goal')}</label>
@@ -191,11 +191,11 @@
             <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showDoneDefinitionTextarea"
-                 ng-click="showDoneDefinitionTextarea = formEditable()"
                  ng-focus="editForm(true); showDoneDefinitionTextarea = formEditable()"
                  ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
                  tabindex="0"
-                 ng-bind-html="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
+                 bind-html-scope="markitupCheckboxOptions('doneDefinition')"
+                 bind-html-compile="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
         </div>
         <label>${message(code: 'is.backlogelement.attachment')} {{ sprint.attachments_count > 0 ? '(' + sprint.attachments_count + ')' : '' }}</label>
         <div class="attachments attachments-bordered">

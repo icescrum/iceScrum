@@ -33,10 +33,11 @@
                   placeholder="${message(code: 'is.ui.widget.notes.placeholder')}"></textarea>
         <div class="markitup-preview form-control"
              ng-show="!showNotesTextarea"
-             ng-click="showNotesTextarea = true"
+             ng-focus="showNotesTextarea = true"
              ng-class="{'placeholder': !widget.settings.text_html}"
              tabindex="0"
-             ng-bind-html="widget.settings.text_html ? widget.settings.text_html : '<p>${message(code: 'is.ui.widget.notes.placeholder')}</p>'"></div>
+             bind-html-scope="markitupCheckboxOptions()"
+             bind-html-compile="widget.settings.text_html ? widget.settings.text_html : '<p>${message(code: 'is.ui.widget.notes.placeholder')}</p>'"></div>
     </div>
     <div class="form-control-plaintext" ng-if="!authorizedWidget('update', widget)" ng-bind-html="widget.settings.text_html">
 </is:widget>

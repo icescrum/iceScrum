@@ -175,6 +175,7 @@ widgets = {
         width 2
         secured 'isAuthenticated()'
         defaultSettings = [text: '']
+        ngController = 'notesWidgetCtrl'
         onUpdate { widget, settings ->
             settings.text_html = ServicesUtils.textileToHtml(settings.text)
         }

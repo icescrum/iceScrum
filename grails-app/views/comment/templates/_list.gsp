@@ -68,10 +68,10 @@
                           class="form-control"></textarea>
                 <div class="markitup-preview form-control no-fixed-height"
                      ng-show="!showCommentBodyTextarea"
-                     ng-click="editCommentBody()"
                      ng-focus="editCommentBody()"
                      tabindex="0"
-                     ng-bind-html="editableComment.body_html"></div>
+                     bind-html-scope="markitupCheckboxOptions()"
+                     bind-html-compile="editableComment.body_html"></div>
             </div>
             <div class="btn-toolbar justify-content-end mb-3"
                  ng-if="formHolder.editing">

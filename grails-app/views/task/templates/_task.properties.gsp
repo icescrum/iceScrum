@@ -178,11 +178,11 @@
             <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showNotesTextarea"
-                 ng-click="showNotesTextarea = formEditable()"
                  ng-focus="editForm(true); showNotesTextarea = formEditable()"
                  ng-class="{'placeholder': !editableTask.notes_html}"
                  tabindex="0"
-                 ng-bind-html="editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
+                 bind-html-scope="markitupCheckboxOptions()"
+                 bind-html-compile="editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
         <label>${message(code: 'is.backlogelement.attachment')} {{ task.attachments_count > 0 ? '(' + task.attachments_count + ')' : '' }}</label>
         <div class="attachments attachments-bordered">

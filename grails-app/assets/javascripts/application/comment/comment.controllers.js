@@ -90,12 +90,26 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         {
             name: 'default.button.delete.label',
             deleteMenu: true,
-            visible:function(){ return true },
-            action: function(comment){
+            visible: function() { return true },
+            action: function(comment) {
                 $scope.delete(comment, comment.commentable);
             }
         }
     ];
+    $scope.markitupCheckboxOptions = function(property, action) {
+        return {
+            options: {
+                object: function() { return $scope.editableComment; },
+                property: property ? property : 'body',
+                action: action ? action : function(comment) {
+                    $scope.formHolder.commentForm.$dirty = true;
+                    $scope.update(comment);
+                },
+                autoSubmit: function() { return true; },
+                isEnabled: function() { return $scope.formEditable(); }
+            }
+        }
+    };
     // Init
     $scope.formHolder = {};
     $scope.resetCommentForm();

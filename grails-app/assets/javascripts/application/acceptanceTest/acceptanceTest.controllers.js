@@ -82,16 +82,16 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.menus = [
         {
             name: 'is.ui.copy',
-            visible:function(){ return true },
-            action: function(acceptanceTest){
+            visible: function() { return true },
+            action: function(acceptanceTest) {
                 $scope.copy(acceptanceTest, $scope.story);
             }
         },
         {
             name: 'default.button.delete.label',
             deleteMenu: true,
-            visible:function(){ return true },
-            action: function(acceptanceTest){
+            visible: function() { return true },
+            action: function(acceptanceTest) {
                 $scope.delete(acceptanceTest, $scope.story);
             }
         }
@@ -117,6 +117,20 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.selectAcceptanceTestState = function(editableAcceptanceTest, selected) {
         if (!$scope.formHolder.acceptanceTestForm.name.$dirty && !$scope.formHolder.acceptanceTestForm.description.$dirty) {
             $scope.update(editableAcceptanceTest, selected);
+        }
+    };
+    $scope.markitupCheckboxOptions = function(property, action) {
+        return {
+            options: {
+                object: function() { return $scope.editableAcceptanceTest; },
+                property: property ? property : 'description',
+                action: action ? action : function(acceptanceTest) {
+                    $scope.formHolder.acceptanceTestForm.$dirty = true;
+                    $scope.update(acceptanceTest, $scope.story);
+                },
+                autoSubmit: function() { return true; },
+                isEnabled: function() { return $scope.formEditable(); }
+            }
         }
     };
     // Init

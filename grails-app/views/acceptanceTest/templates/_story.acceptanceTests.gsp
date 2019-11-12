@@ -88,11 +88,11 @@
                               placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                     <div class="markitup-preview form-control no-fixed-height"
                          ng-show="!showAcceptanceTestDescriptionTextarea"
-                         ng-click="editAcceptanceTestDescription()"
                          ng-focus="editAcceptanceTestDescription()"
                          ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
                          tabindex="0"
-                         ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>
+                         bind-html-scope="markitupCheckboxOptions('description')"
+                         bind-html-compile="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>
                 </div>
                 <div class="btn-toolbar justify-content-end mb-3"
                      ng-if="formHolder.editing">
