@@ -22,7 +22,13 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="card card-view">
+    <div class="card card-view"
+         flow-init
+         flow-drop
+         flow-files-submitted="newFromFiles($flow, project)"
+         flow-drop-enabled="authorizedFeature('create')"
+         flow-drag-enter="dropClass='card drop-enabled'"
+         flow-drag-leave="dropClass='card'">
         <div class="card-header row">
             <div class="card-header-left order-0 col-auto flex-grow-1">
                 <span class="card-title">${message(code: 'is.ui.feature')} ({{ features.length}})</span>

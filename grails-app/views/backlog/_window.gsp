@@ -22,7 +22,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="card card-view">
+    <div class="card card-view"
+         flow-init
+         flow-drop
+         flow-files-submitted="newFromFiles($flow, project)"
+         flow-drop-enabled="authorizedStory('create')"
+         flow-drag-enter="dropClass='card drop-enabled'"
+         flow-drag-leave="dropClass='card'"
+         ng-class="dropClass">
         <div class="card-header row" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
             <div class="card-nav order-0 col-auto flex-grow-1"
                  id="elementslist-list">

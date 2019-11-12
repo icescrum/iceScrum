@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'project', 'features', function($scope, $state, $controller, FeatureService, project, features) {
+extensibleController('featuresCtrl', ['$scope', '$state', '$timeout', '$controller', 'FeatureService', 'Feature', 'project', 'features', function($scope, $state, $timeout, $controller, FeatureService, Feature, project, features) {
     // Functions
     $scope.isSelected = function(selectable) {
         if ($state.params.featureId) {
@@ -83,6 +83,39 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
         accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         }
+    };
+    $scope.newFromFiles = function($flow, project) {
+        var feature = new Feature();
+        $controller('attachmentCtrl', {$scope: $scope, attachmentable: feature, clazz: 'feature', project: project});
+        feature.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
+        FeatureService.getAvailableColors(project.id).then(function(colors) {
+            feature.color = colors && colors.length ? _.last(colors) : "#2d8ccc";
+            FeatureService.save(feature, project.id).then(function(savedFeature) {
+                var onFileSuccess = function(flowFile) {
+                    $flow.removeFile(flowFile);
+                };
+                var onFileError = function(flowFile, message) {
+                    var data = JSON.parse(message);
+                    $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {delay: 8000});
+                    $flow.removeFile(flowFile);
+                };
+                var onComplete = function() {
+                    $scope.selectableOptions.selectionUpdated([savedFeature.id]);
+                    $flow.off('fileError', onFileError);
+                    $flow.off('fileSuccess', onFileSuccess);
+                    $flow.off('complete', onComplete);
+                    $timeout(function() {
+                        $("[ui-view='details'] input[name='name']").focus();
+                    }, 25);
+                };
+                $flow.on('fileError', onFileError);
+                $flow.on('fileSuccess', onFileSuccess);
+                $flow.on('complete', onComplete);
+                $scope.attachmentQuery($flow, savedFeature);
+            }, function() {
+                $flow.cancel();
+            });
+        });
     };
     $scope.sortableId = 'feature';
     $scope.selectableOptions = {
