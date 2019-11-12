@@ -145,15 +145,13 @@
     </div>
     <div class="col-sm-12 form-group">
         <div class="timeline-bar-container">
-            <uib-progress class="timeline-bar" max="totalDuration">
-                <uib-bar ng-repeat="sprint in sprints"
-                         class="{{ $last ? 'last-bar' : '' }}"
-                         uib-tooltip-template="'sprint.tooltip.html'"
-                         type="todo"
-                         value="project.preferences.estimatedSprintsDuration">
+            <div class="progress timeline-bar">
+                <div ng-repeat="sprint in sprints"
+                     class="progress-bar bg-todo {{ $last ? 'last-bar' : '' }}"
+                     ng-style="{width: (project.preferences.estimatedSprintsDuration / totalDuration * 100) + '%'}">
                     {{ sprint.index }}
-                </uib-bar>
-            </uib-progress>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-sm-12 form-group">

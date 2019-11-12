@@ -990,10 +990,7 @@ a.link-documentation {
       color: white;
       font-family: $is-font-family-bold;
       box-shadow: 0 3px 4px rgba(0, 0, 5, 0.10);
-
-      span {
-        padding-top: 2px // Hack to align text
-      }
+      padding-top: 2px; // Hack to align text
 
       &.bg-todo {
         color: $is-grey;
