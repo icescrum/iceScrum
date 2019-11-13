@@ -115,7 +115,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 try {
                     var jsonBody = atmosphere.util.parseJSON(text);
                     if (jsonBody.eventType) {
-                        jsonBody.content = atmosphere.util.parseJSON(atob(jsonBody.content));
+                        jsonBody.content = atmosphere.util.parseJSON(b64DecodeUnicode(jsonBody.content));
                         if (jsonBody.content.ids) { //same update for multiple objects
                             var event = {
                                 namespace: jsonBody.namespace,
