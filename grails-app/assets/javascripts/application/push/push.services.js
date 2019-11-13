@@ -115,16 +115,17 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 try {
                     var jsonBody = atmosphere.util.parseJSON(text);
                     if (jsonBody.eventType) {
-                        if (jsonBody.object.ids) { //same update for multiple objects
+                        jsonBody.content = atmosphere.util.parseJSON(atob(jsonBody.content));
+                        if (jsonBody.content.ids) { //same update for multiple objects
                             var event = {
                                 namespace: jsonBody.namespace,
                                 eventType: jsonBody.eventType,
-                                object: jsonBody.object.properties
+                                content: jsonBody.content.properties
                             };
-                            var ids = jsonBody.object.ids;
-                            delete jsonBody.object.ids;
+                            var ids = jsonBody.content.ids;
+                            delete jsonBody.content.ids;
                             _.each(ids, function(id) {
-                                event.object.id = id;
+                                event.content.id = id;
                                 self.publishEvent(event)
                             });
                         } else {
@@ -191,7 +192,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     };
     this.publishEvent = function(jsonBody) {
         if (this.enabled) {
-            var object = jsonBody.object;
+            var object = jsonBody.content;
             var namespace = jsonBody.namespace.toLowerCase();
             if (!_.isEmpty(self.listeners[namespace])) {
                 var eventType = jsonBody.eventType;
