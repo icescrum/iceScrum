@@ -218,7 +218,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         }
         return $state.href(stateName, {elementId: backlog.code});
     };
-
     $scope.newFromFiles = function($flow, project) {
         var story = new Story();
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', project: project});

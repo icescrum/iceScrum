@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Kagilum.
+ * Copyright (c) 2019 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -17,7 +17,8 @@
  *
  * Authors:
  *
- * Marwah Soltani (msoltani@kagilum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  */
 controllers.controller("notesWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', '$controller', function($scope, $filter, FormService, WidgetService, $controller) {
     $controller('widgetCtrl', {$scope: $scope});

@@ -487,11 +487,11 @@ angular.module('isCore', ['ui.router'])
                 controller: 'featureDetailsCtrl'
             };
             if (!isModal) {
-                featureTabState.children = [
-                    this.getDetailsModalState('story', {
-                        children: [this.getStoryDetailsState('@', true)]
-                    })
-                ];
+                var storyDetailsModalState = this.getDetailsModalState('story', {
+                    children: [this.getStoryDetailsState('@', true)]
+                });
+                featureTabState.children = [storyDetailsModalState];
+                featureFocusState.children.push(_.cloneDeep(storyDetailsModalState));
             }
             return featureState;
         };
