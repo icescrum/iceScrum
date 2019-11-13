@@ -54,3 +54,10 @@ $is-sprint-inprogress-right: $is-release-inprogress-right;
 $is-sprint-done-right: #44cfb8;
 $is-release-inprogress: #2c6cA8;
 $is-sprint-goal-right: rgba(40, 40, 41, 0.26);
+
+$list-group-bg:$is-bg-color;
+$list-group-hover-bg:$is-bg-color;
+$list-group-action-active-bg:$is-bg-color;
+$list-group-border-color:$is-border-color;
+$list-group-action-color:$is-text-color;
+$list-group-action-active-color:$is-text-color;
