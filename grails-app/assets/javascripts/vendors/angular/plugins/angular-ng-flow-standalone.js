@@ -1809,7 +1809,45 @@ angular.module('flow.dragEvents', ['flow.init'])
                 }
             }
         };
-    }]);
+    }]).directive('flowDragHover', ['$timeout', function($timeout) {
+    return {
+        'scope': false,
+        'link': function(scope, element, attrs) {
+            var promise;
+            var enter = false;
+            element.bind('dragover', function (event) {
+                if (!isFileDrag(event)) {
+                    return ;
+                }
+                if (!enter) {
+                    var dataTransfer = event.dataTransfer || event.originalEvent.dataTransfer;
+                    element.addClass('draghover');
+                    enter = true;
+                }
+                $timeout.cancel(promise);
+                event.preventDefault();
+            });
+            element.bind('dragleave drop', function (event) {
+                $timeout.cancel(promise);
+                promise = $timeout(function () {
+                    element.removeClass('draghover');
+                    promise = null;
+                    enter = false;
+                }, 100);
+            });
+            function isFileDrag(dragEvent) {
+                var fileDrag = false;
+                var dataTransfer = dragEvent.dataTransfer || dragEvent.originalEvent.dataTransfer;
+                angular.forEach(dataTransfer && dataTransfer.types, function(val) {
+                    if (val === 'Files') {
+                        fileDrag = true;
+                    }
+                });
+                return fileDrag;
+            }
+        }
+    };
+}]);
 
 angular.module('flow.drop', ['flow.init'])
     .directive('flowDrop', function() {

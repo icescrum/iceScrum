@@ -50,7 +50,7 @@ extensibleController('backlogChartCtrl', ['$scope', '$controller', '$element', f
 }]);
 
 
-extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter', '$timeout', '$state', 'StoryService', 'Story', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($controller, $scope, window, $filter, $timeout, $state, StoryService, Story, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
+extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$filter', '$timeout', '$state', 'StoryService', 'Story', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($controller, $scope, $q, window, $filter, $timeout, $state, StoryService, Story, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
     $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from windowCtrl
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
@@ -219,34 +219,53 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         return $state.href(stateName, {elementId: backlog.code});
     };
     $scope.newFromFiles = function($flow, project) {
-        var story = new Story();
-        $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', project: project});
-        story.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
-        StoryService.save(story, project.id).then(function(savedStory) {
-            var onFileSuccess = function(flowFile) {
-                $flow.removeFile(flowFile);
-            };
-            var onFileError = function(flowFile, message) {
-                var data = JSON.parse(message);
-                $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {delay: 8000});
-                $flow.removeFile(flowFile);
-            };
-            var onComplete = function() {
-                $scope.selectableOptions.selectionUpdated([savedStory.id]);
-                $timeout(function() {
-                    $("[ui-view='details'] input[name='name']").focus();
-                }, 25);
-                $flow.off('fileError', onFileError);
-                $flow.off('fileSuccess', onFileSuccess);
-                $flow.off('complete', onComplete);
-            };
-            $flow.on('fileError', onFileError);
-            $flow.on('fileSuccess', onFileSuccess);
-            $flow.on('complete', onComplete);
-            $scope.attachmentQuery($flow, savedStory);
-        }, function() {
-            $flow.cancel();
-        });
+        var createStoryWithFile = function(files, project, selectOnComplet) {
+            $flow.files = files;
+            var story = new Story();
+            $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', project: project});
+            story.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
+            return StoryService.save(story, project.id).then(function(savedObject) {
+                var onFileSuccess = function(flowFile) {
+                    $flow.removeFile(flowFile);
+                };
+                var onFileError = function(flowFile, message) {
+                    var data = JSON.parse(message);
+                    $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {delay: 8000});
+                    $flow.removeFile(flowFile);
+                };
+                var onComplete = function() {
+                    if (selectOnComplet) {
+                        $scope.selectableOptions.selectionUpdated([savedObject.id]);
+                        $timeout(function() {
+                            $("[ui-view='details'] input[name='name']").focus();
+                        }, 25);
+                    }
+                    $flow.off('fileError', onFileError);
+                    $flow.off('fileSuccess', onFileSuccess);
+                    $flow.off('complete', onComplete);
+                };
+                $flow.on('fileError', onFileError);
+                $flow.on('fileSuccess', onFileSuccess);
+                $flow.on('complete', onComplete);
+                $scope.attachmentQuery($flow, savedObject);
+            }, function() {
+                $flow.cancel();
+            });
+        };
+        var storyPerFile = $('.drop-split-zone-left').hasClass('draghover');
+        var files = $flow.files;
+        $flow.files = null;
+        if (storyPerFile) {
+            $q.serial(_.map(files, function(file) {
+                return {
+                    success: function() {
+                        return createStoryWithFile([file], project, false);
+                    }
+                };
+            }));
+        } else {
+            createStoryWithFile(files, project, true);
+        }
     };
     // Init
     $scope.viewName = 'backlog';
