@@ -1392,6 +1392,7 @@ $widget-card-header-height: 42px;
       background-color: $is-bg-color;
 
       .card-header {
+        height: $widget-card-header-height;
         background: none;
         padding-bottom: 0;
 
