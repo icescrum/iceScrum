@@ -140,9 +140,8 @@
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.IN_PROGRESS">
             <label for="retrospective" class="d-flex align-items-center justify-content-between">
                 <div>${message(code: 'is.sprint.retrospective')}</div>
-                <div ng-if="formHolder.editing"
-                     class="small">
-                    <a href="https://retromat.org/"
+                <div class="small">
+                    <a href="https://www.retromat.org/?utm_source=icescrum&utm_medium=link&utm_campaign=Retromat"
                         target="_blank">
                         <i class="fa fa-question-circle"></i> ${message(code: 'is.ui.sprint.retrospective.link')}
                     </a>
