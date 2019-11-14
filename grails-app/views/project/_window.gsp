@@ -122,10 +122,6 @@
                         </a>
                     </div>
                     <div ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
-                    <div class="small text-right">
-                        <a href="https://www.retromat.org/?utm_source=icescrum&utm_medium=link&utm_campaign=Retromat"
-                           target="_blank" class="link-documentation"><div class="icon-help"></div> ${message(code: 'is.ui.sprint.retrospective.link')}</a>
-                    </div>
                 </div>
             </div>
             <div class="card attachments"
