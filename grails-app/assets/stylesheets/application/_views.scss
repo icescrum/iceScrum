@@ -193,9 +193,7 @@
 
   form {
     margin-top: 3.5rem;
-    padding-left: 15%;
-    padding-right: 15%;
-    width: 600px;
+    width: 100%;
   }
 
   .btn {
@@ -210,6 +208,16 @@
   .login-footer {
     margin-top: 5.75rem;
     margin-bottom: 30px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .login, .retrieve, .register {
+    form {
+      padding-left: 15%;
+      padding-right: 15%;
+      width: 600px;
+    }
   }
 }
 

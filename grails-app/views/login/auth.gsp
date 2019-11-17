@@ -51,7 +51,7 @@
                                 ${message(code: 'is.login.retrieve.success')}
                             </div>
                         </g:if>
-                        <p class="form-group">
+                        <div class="form-group">
                             <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
                             <input type="text"
                                    autofocus
@@ -60,15 +60,21 @@
                                    required="required"
                                    id="username"
                                    value="${params.username ?: ''}">
-                        </p>
-                        <p class="form-group">
-                            <label for="password">${message(code: 'is.user.password')}<span class="required">*</span></label>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="d-flex align-items-center justify-content-between">
+                                <div>${message(code: 'is.user.password')}<span class="required">*</span></div>
+                                <div class="small" onclick="togglePassword(this)">
+                                    <i class="fa fa-eye"></i>
+                                    <i class="fa fa-eye-slash" style="display:none;"></i>
+                                </div>
+                            </label>
                             <input class="input-large input-text form-control"
                                    type="password"
                                    name="j_password"
                                    required="required"
                                    id="password">
-                        </p>
+                        </div>
                         <div class="d-flex justify-content-between align-items-center flex-row-reverse">
                             <div>
                                 <input type="submit" class="btn btn-primary" value="${message(code: 'is.login')}">
