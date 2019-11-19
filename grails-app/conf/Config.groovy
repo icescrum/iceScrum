@@ -25,6 +25,7 @@
 
 import grails.plugin.springsecurity.SecurityFilterPosition
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.userdetails.GrailsUser
 import grails.util.Holders
 import grails.util.Metadata
 import org.apache.log4j.DailyRollingFileAppender
@@ -621,10 +622,13 @@ grails {
 
             useSecurityEventListener = true
             onInteractiveAuthenticationSuccessEvent = { e, appCtx ->
-                User.withTransaction {
-                    def user = User.lock(e.authentication.principal.id)
-                    user.lastLogin = new Date()
-                    user.save(flush: true)
+                def principal = e.authentication.principal
+                if (principal instanceof GrailsUser) {
+                    User.withTransaction {
+                        def user = User.lock(principal.id)
+                        user.lastLogin = new Date()
+                        user.save(flush: true)
+                    }
                 }
             }
 
