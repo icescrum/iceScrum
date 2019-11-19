@@ -34,10 +34,13 @@ class AppController implements ControllerErrorHandler {
 
     def appService
     def appDefinitionService
+    def grailsApplication
 
     @Secured('permitAll()')
     def definitions() {
-        def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
+        def marshalledDefinitions = appDefinitionService.getAppDefinitions().findAll {
+            return grailsApplication.config.icescrum.enabledBetas ? true : !it.isBeta
+        }.collect { AppDefinition appDefinition ->
             Map marshalledAppDefinition = appDefinition.properties.clone()
             ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer', 'isAvailableForServer', 'reportUsageData'].each { k ->
                 marshalledAppDefinition.remove(k)
