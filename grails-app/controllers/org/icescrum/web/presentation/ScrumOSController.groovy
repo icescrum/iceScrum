@@ -28,6 +28,8 @@ import eu.bitwalker.useragentutils.Browser
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.Metadata
+import org.icescrum.atmosphere.IceScrumBroadcaster
+import org.icescrum.atmosphere.IceScrumBroadcasterListener
 import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
@@ -50,7 +52,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def grailsApplication
     def uiDefinitionService
     def springSecurityService
-    def pushService
+    def atmosphereMeteor
     def userAgentIdentService
 
     def index() {
@@ -102,12 +104,13 @@ class ScrumOSController implements ControllerErrorHandler {
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def connections() {
-        render(status: 200, contentType: 'application/json', text: [maxUsers          : grailsApplication.config.icescrum.atmosphere.maxUsers,
-                                                                    liveUsers         : grailsApplication.config.icescrum.atmosphere.liveUsers,
-                                                                    maxUsersDate      : grailsApplication.config.icescrum.atmosphere.maxUsersDate,
-                                                                    maxConnections    : grailsApplication.config.icescrum.atmosphere.maxConnections,
-                                                                    maxConnectionsDate: grailsApplication.config.icescrum.atmosphere.maxConnectionsDate,
-                                                                    liveConnections   : grailsApplication.config.icescrum.atmosphere.liveConnections] as JSON)
+        IceScrumBroadcaster broadcaster = ((IceScrumBroadcaster)atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, IceScrumBroadcasterListener.GLOBAL_CONTEXT))
+        render(status: 200, contentType: 'application/json', text: [maxUsers          : broadcaster.maxUsers,
+                                                                    liveUsers         : broadcaster.liveUsers,
+                                                                    maxUsersDate      : broadcaster.maxUsersDate,
+                                                                    maxConnections    : broadcaster.maxConnections,
+                                                                    maxConnectionsDate: broadcaster.maxConnectionsDate,
+                                                                    liveConnections   : broadcaster.liveConnections] as JSON)
     }
 
     def textileParser(String data) {
@@ -136,7 +139,7 @@ class ScrumOSController implements ControllerErrorHandler {
         }
         def onlineMembers = ""
         if (workspace?.name == 'project') {
-            onlineMembers = pushService.getOnlineUsers('/stream/app/project-' + workspace.object.id)
+            onlineMembers = ((IceScrumBroadcaster)atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, '/stream/app/project-' + workspace.object.id))?.users?:[]
         }
         def announcement = [:]
         ['code', 'text', 'type'].each {
