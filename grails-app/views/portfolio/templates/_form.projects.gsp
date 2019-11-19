@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="form.projects.portfolio.html">
 <p class="form-text">${message(code: 'is.ui.portfolio.help.projects')}</p>
 <label for="project.name">${message(code: 'todo.is.ui.project.create.or.select')}</label>
-<div class="input-group" style="margin-bottom:15px;" ng-if="portfolio.projects.length < 10">
+<div class="input-group" style="margin-bottom:15px;" ng-if="portfolio.projects.length < 20">
     <input autocomplete="off"
            type="text"
            autofocus
@@ -35,12 +35,12 @@
            typeahead-on-select="selectProject($item); "
            typeahead-template-url="select.or.create.project.html"
            ng-model="formHolder.projectSelection"
-           ng-disabled="portfolio.projects.length >= 10">
+           ng-disabled="portfolio.projects.length >= 20">
     <span class="input-group-append">
         <span class="input-group-text"><i class="fa fa-search"></i></span>
     </span>
 </div>
-<div class="form-text alert bg-warning mb-3" role="alert" ng-if="portfolio.projects.length >= 10">
+<div class="form-text alert bg-warning mb-3" role="alert" ng-if="portfolio.projects.length >= 20">
     ${message(code: 'is.ui.portfolio.limit.projects')}
 </div>
 <table class="table table-striped" ng-if="portfolio.projects.length > 0">
