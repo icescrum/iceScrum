@@ -673,6 +673,9 @@ environments {
         println "(*) grails.config.locations = ${grails.config.locations}"
         println "--------------------------------------------------------"
     }
+    development {
+        icescrum.beta.enable = true
+    }
 }
 
 JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
