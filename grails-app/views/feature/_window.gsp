@@ -33,13 +33,13 @@
         <div class="drop-split-zone-left d-flex align-items-center justify-content-center" flow-drag-hover>
             <div>
                 <asset:image src="application/upload-new-many-features.svg" width="70" height="70"/>
-                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.many', args:[message(code:'is.feature')])}</span>
+                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.many', args: [message(code: 'is.feature')])}</span>
             </div>
         </div>
         <div class="drop-split-zone-right d-flex align-items-center justify-content-center" flow-drag-hover>
             <div>
                 <asset:image src="application/upload-new-one-feature.svg" width="70" height="70"/>
-                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.one', args:[message(code:'is.feature')])}</span>
+                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.one', args: [message(code: 'is.feature')])}</span>
             </div>
         </div>
         <div class="card-header row">

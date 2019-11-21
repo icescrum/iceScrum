@@ -33,13 +33,13 @@
         <div class="drop-split-zone-left d-flex align-items-center justify-content-center" flow-drag-hover>
             <div>
                 <asset:image src="application/upload-new-many-stories.svg" width="70" height="70"/>
-                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.many', args:[message(code:'is.story')])}</span>
+                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.many', args: [message(code: 'is.story')])}</span>
             </div>
         </div>
         <div class="drop-split-zone-right d-flex align-items-center justify-content-center" flow-drag-hover>
             <div>
                 <asset:image src="application/upload-new-one-story.svg" width="70" height="70"/>
-                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.one', args:[message(code:'is.story')])}</span>
+                <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.one', args: [message(code: 'is.story')])}</span>
             </div>
         </div>
         <div class="card-header row" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">

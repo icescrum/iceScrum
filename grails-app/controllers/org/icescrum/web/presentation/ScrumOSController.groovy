@@ -104,7 +104,7 @@ class ScrumOSController implements ControllerErrorHandler {
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def connections() {
-        IceScrumBroadcaster broadcaster = ((IceScrumBroadcaster)atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, IceScrumBroadcasterListener.GLOBAL_CONTEXT))
+        IceScrumBroadcaster broadcaster = ((IceScrumBroadcaster) atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, IceScrumBroadcasterListener.GLOBAL_CONTEXT))
         render(status: 200, contentType: 'application/json', text: [maxUsers          : broadcaster.maxUsers,
                                                                     liveUsers         : broadcaster.liveUsers,
                                                                     maxUsersDate      : broadcaster.maxUsersDate,
@@ -139,7 +139,7 @@ class ScrumOSController implements ControllerErrorHandler {
         }
         def onlineMembers = ""
         if (workspace?.name == 'project') {
-            onlineMembers = ((IceScrumBroadcaster)atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, '/stream/app/project-' + workspace.object.id))?.users?:[]
+            onlineMembers = ((IceScrumBroadcaster) atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, '/stream/app/project-' + workspace.object.id))?.users ?: []
         }
         def announcement = [:]
         ['code', 'text', 'type'].each {
