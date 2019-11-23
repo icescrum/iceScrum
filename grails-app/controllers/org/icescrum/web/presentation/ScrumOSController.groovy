@@ -110,6 +110,7 @@ class ScrumOSController implements ControllerErrorHandler {
                                                                     maxUsersDate      : broadcaster.maxUsersDate,
                                                                     maxConnections    : broadcaster.maxConnections,
                                                                     maxConnectionsDate: broadcaster.maxConnectionsDate,
+                                                                    transports        : broadcaster.users.countBy{ it.transport },
                                                                     liveConnections   : broadcaster.liveConnections] as JSON)
     }
 
