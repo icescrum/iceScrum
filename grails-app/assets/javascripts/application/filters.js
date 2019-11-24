@@ -103,7 +103,7 @@ filters
                 userVisualRolesCache[project.pkey][user.id] = classes;
             }
             var finalClasses = userVisualRolesCache[project.pkey][user.id];
-            if (_.find(project.onlineMembers, {id: user.id}) && (Session.user && Session.user.id != user.id)) {
+            if (_.find(project.onlineMembers, {id: user.id})) {
                 finalClasses += " user-online";
             }
             return finalClasses;

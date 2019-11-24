@@ -28,8 +28,8 @@ import eu.bitwalker.useragentutils.Browser
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.Metadata
+import org.icescrum.atmosphere.IceScrumAtmosphereEventListener
 import org.icescrum.atmosphere.IceScrumBroadcaster
-import org.icescrum.atmosphere.IceScrumBroadcasterListener
 import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
@@ -104,13 +104,13 @@ class ScrumOSController implements ControllerErrorHandler {
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def connections() {
-        IceScrumBroadcaster broadcaster = ((IceScrumBroadcaster) atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, IceScrumBroadcasterListener.GLOBAL_CONTEXT))
+        IceScrumBroadcaster broadcaster = ((IceScrumBroadcaster) atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, IceScrumAtmosphereEventListener.GLOBAL_CONTEXT))
         render(status: 200, contentType: 'application/json', text: [maxUsers          : broadcaster.maxUsers,
                                                                     liveUsers         : broadcaster.liveUsers,
                                                                     maxUsersDate      : broadcaster.maxUsersDate,
                                                                     maxConnections    : broadcaster.maxConnections,
                                                                     maxConnectionsDate: broadcaster.maxConnectionsDate,
-                                                                    transports        : broadcaster.users.countBy{ it.transport },
+                                                                    transports        : broadcaster.resources.collect{ it.transport().toString() }.countBy{ it },
                                                                     liveConnections   : broadcaster.liveConnections] as JSON)
     }
 
@@ -138,7 +138,7 @@ class ScrumOSController implements ControllerErrorHandler {
                 }
             }
         }
-        def onlineMembers = ""
+        def onlineMembers = null
         if (workspace?.name == 'project') {
             onlineMembers = ((IceScrumBroadcaster) atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, '/stream/app/project-' + workspace.object.id))?.users ?: []
         }

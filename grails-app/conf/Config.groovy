@@ -337,6 +337,10 @@ icescrum {
                     'effort': 'is.story.effort'
             ]
     ]
+    beta {
+        enable = false
+        features = []
+    }
 }
 
 println "| Server Timezone: ${icescrum.timezone.default}"
@@ -675,6 +679,7 @@ environments {
     }
     development {
         icescrum.beta.enable = true
+        icescrum.beta.features << "usersOnline"
     }
 }
 
