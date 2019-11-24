@@ -339,7 +339,7 @@ icescrum {
     ]
     beta {
         enable = false
-        features = []
+        features = ['usersOnline'] //should be [] if no features
     }
 }
 
@@ -679,7 +679,6 @@ environments {
     }
     development {
         icescrum.beta.enable = true
-        icescrum.beta.features << "usersOnline"
     }
 }
 
