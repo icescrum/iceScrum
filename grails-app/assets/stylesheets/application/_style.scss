@@ -594,16 +594,19 @@ $state-dot-size-sm: 0.5rem;
   z-index: 3;
   opacity: 0.5;
   background-color: rgb(17, 17, 17);
+
   .drop-text {
     color: #FFF;
     font-family: "averta-bold";
   }
+
   img {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1.25rem;
   }
+
   &.draghover {
     opacity: 1;
     background-color: rgba(17, 17, 17, 0.8);
@@ -616,6 +619,7 @@ $state-dot-size-sm: 0.5rem;
     right: 0;
     left: 50%;
   }
+
   .drop-split-zone-left {
     display: flex !important;
     right: 50%;
@@ -793,6 +797,20 @@ a.link-documentation {
   bottom: $modal-inner-padding;
   right: $modal-inner-padding;
   left: $modal-inner-padding;
+}
+
+.colorpicker-colors {
+  height: 15px;
+  margin: 0 0 3px 0;
+  clear: both;
+
+  .color {
+    width: 15px;
+    height: 15px;
+    margin-right: 2px;
+    float: left;
+    cursor: pointer;
+  }
 }
 
 ////////////////////
