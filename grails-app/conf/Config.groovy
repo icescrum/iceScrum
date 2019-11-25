@@ -489,7 +489,6 @@ log4j = {
             'net.sf.ehcache.hibernate'
 
     warn 'org.mortbay.log'
-    warn 'org.atmosphere.cpr'
     warn 'grails.plugin.cache'
 
     if (config.grails.entryPoints.debug) {
@@ -514,10 +513,12 @@ log4j = {
     if (ApplicationSupport.booleanValue(config.icescrum.pushdebug.enable)) {
         debug 'org.icescrum.atmosphere'
         debug "org.grails.plugins.atmosphere_meteor"
+        debug 'org.atmosphere.cpr'
         debug 'org.atmosphere'
     } else {
         warn 'org.icescrum.atmosphere'
         warn "org.grails.plugins.atmosphere_meteor"
+        warn 'org.atmosphere.cpr'
         warn 'org.atmosphere'
     }
 
