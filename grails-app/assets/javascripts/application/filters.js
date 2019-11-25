@@ -94,7 +94,7 @@ filters
                     classes += " role-po";
                 }
                 if (_.find(project.team.scrumMasters, {id: user.id})) {
-                    if(classes.indexOf('role-po') !== -1){
+                    if (classes.indexOf('role-po') !== -1) {
                         classes += "-sm";
                     } else {
                         classes += " role-sm";
@@ -103,7 +103,7 @@ filters
                 userVisualRolesCache[project.pkey][user.id] = classes;
             }
             var finalClasses = userVisualRolesCache[project.pkey][user.id];
-            if (_.find(project.onlineMembers, {id: user.id})) {
+            if ((Session.user && user.id === Session.user.id) || _.find(project.onlineMembers, {id: user.id})) {
                 finalClasses += " user-online";
             }
             return finalClasses;
@@ -121,7 +121,7 @@ filters
     .filter('storyTypeIcon', ['StoryTypesClasses', function(StoryTypesClasses) {
         return function(type) {
             var clazz = StoryTypesClasses[type];
-            return clazz ? ('item-type-icon item-type-icon-' +  clazz) : '';
+            return clazz ? ('item-type-icon item-type-icon-' + clazz) : '';
         }
     }])
     .filter('featureType', ['FeatureTypesByName', function(FeatureTypesByName) {
