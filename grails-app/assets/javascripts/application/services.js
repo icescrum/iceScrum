@@ -39,7 +39,6 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
             project.startDate = new Date(project.startDate);
             project.endDate = new Date(project.endDate);
         }
-        self.workspace.onlineMembers = isSettings.onlineMembers;
         CacheService.addOrUpdate(workspaceType, self.workspace);
         self.workspaceType = workspaceType;
     } else {
