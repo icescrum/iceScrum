@@ -21,9 +21,9 @@
 
 package org.icescrum.web.presentation
 
-import org.icescrum.core.domain.Hook
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Hook
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 
