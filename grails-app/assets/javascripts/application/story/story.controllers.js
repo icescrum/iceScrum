@@ -42,6 +42,17 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.SUGGESTED)]) + ' ' + $scope.message('is.ui.story.state.sandbox.success'));
         });
     };
+    $scope.setTopPriority = function(story) {
+        var oldRank = story.rank;
+        story.rank = 1;
+        StoryService.update(story).then(function(updatedStory) {
+            if (updatedStory.rank !== 1) {
+                $scope.notifyWarning('is.ui.story.warning.rank.dependsOn');
+            }
+        }).catch(function() {
+            story.rank = oldRank;
+        });
+    };
     $scope.unPlan = function(story) {
         StoryService.unPlan(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.unplanned');
@@ -149,6 +160,11 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             name: 'is.ui.backlog.menu.split',
             visible: function(story) { return $scope.authorizedStory('split', story) },
             action: function(story) { $scope.showStorySplitModal(story); }
+        },
+        {
+            name: 'is.ui.backlog.menu.setTopPriority',
+            visible: function(story) { return $scope.authorizedStory('rank', story) },
+            action: function(story) { $scope.setTopPriority(story); }
         },
         {
             name: 'is.ui.copy',
