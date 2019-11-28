@@ -53,10 +53,6 @@ beans = {
         config = grailsApplication.config
     }
 
-    tokenServices(DefaultTokenServices) {
-        supportRefreshToken = true
-    }
-
     // Manage plugins migrations
     if (!application.warDeployed) {
         String changelogLocationPath = new File('grails-app/migrations').path
