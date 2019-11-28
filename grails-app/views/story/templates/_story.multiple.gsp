@@ -122,6 +122,12 @@
                         ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.SUGGESTED | i18n:'StoryStates' }}
                     </button>
                     <button type="button"
+                            ng-if="authorizedStories('rank', stories)"
+                            class="btn btn-secondary btn-sm"
+                            ng-click="setTopPriorityMultiple()">
+                        ${message(code: 'is.ui.backlog.menu.setTopPriority')}
+                    </button>
+                    <button type="button"
                             ng-if="authorizedStories('delete', stories)"
                             class="btn btn-danger btn-sm"
                             ng-click="confirmDelete({ callback: deleteMultiple })">

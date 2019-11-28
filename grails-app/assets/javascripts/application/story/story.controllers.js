@@ -748,6 +748,11 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
             $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success.multiple', [$scope.storyStateName(StoryStatesByName.SUGGESTED)]) + ' ' + $scope.message('is.ui.story.state.sandbox.success.multiple'));
         });
     };
+    $scope.setTopPriorityMultiple = function() {
+        StoryService.rankMultiple(storyListId, 1, project.id).then(function() {
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success.multiple', [$scope.storyStateName(StoryStatesByName.SUGGESTED)]) + ' ' + $scope.message('is.ui.story.state.sandbox.success.multiple'));
+        });
+    };
     $scope.followMultiple = function(follow) {
         StoryService.followMultiple(storyListId, follow, project.id).then(function() {
             refreshStories();
