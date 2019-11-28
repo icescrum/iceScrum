@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  */
+
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.resource.CompositeResourceAccessor
 import liquibase.resource.FileSystemResourceAccessor
@@ -26,8 +27,6 @@ import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.utils.TimeoutHttpSessionListener
 import org.icescrum.i18n.IceScrumMessageSource
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices
-
 
 beans = {
 
