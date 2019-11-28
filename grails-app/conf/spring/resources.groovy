@@ -26,6 +26,8 @@ import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.utils.TimeoutHttpSessionListener
 import org.icescrum.i18n.IceScrumMessageSource
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices
+
 
 beans = {
 
@@ -49,6 +51,10 @@ beans = {
 
     timeoutHttpSessionListener(TimeoutHttpSessionListener) {
         config = grailsApplication.config
+    }
+
+    tokenServices(DefaultTokenServices) {
+        supportRefreshToken = true
     }
 
     // Manage plugins migrations
