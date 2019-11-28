@@ -147,11 +147,6 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             action: function(story) { $scope.shiftToNext(story); }
         },
         {
-            name: 'is.ui.backlog.menu.setTopPriority',
-            visible: function(story) { return $scope.authorizedStory('rank', story) },
-            action: function(story) { $scope.setTopPriority(story); }
-        },
-        {
             name: 'todo.is.ui.story.plan',
             visible: function(story) { return $scope.authorizedStory('plan', story) },
             action: function(story) { $scope.showPlanModal(story); }
@@ -160,6 +155,11 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             name: 'is.ui.backlog.menu.estimate',
             visible: function(story) { return $scope.authorizedStory('updateEstimate', story) },
             action: function(story) { $scope.showEditEffortModal(story); }
+        },
+        {
+            name: 'is.ui.backlog.menu.setTopPriority',
+            visible: function(story) { return $scope.authorizedStory('rank', story) },
+            action: function(story) { $scope.setTopPriority(story); }
         },
         {
             name: 'is.ui.backlog.menu.split',
