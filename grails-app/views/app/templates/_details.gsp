@@ -127,13 +127,10 @@
             ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
     <a ng-if="authorizedApp('askToEnableForProject', appDefinition) && !isEnabledForProject(appDefinition)"
        href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?"
-       type="button"
        class="btn btn-primary">${message(code: 'is.ui.apps.enable')}</a>
-    <button ng-if="authorizedApp('askToEnableForProject', appDefinition) && !isEnabledForProject(appDefinition)"
+    <button ng-if="authorizedApp('askToEnableForProject', appDefinition) && isEnabledForProject(appDefinition)"
             type="button"
-            class="btn btn-success btn-sm"
-            disabled="disabled"
-            ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.enabled')}</button>
+            class="btn btn-success">${message(code: 'is.ui.apps.enabled')}</button>
 </div>
 </script>
 

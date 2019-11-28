@@ -67,7 +67,7 @@ extensibleController('appsCtrl', ['$scope', 'AppService', 'Session', '$window', 
     $scope.isEnabledApp = function(appDefinition) {
         return appDefinition.availableForServer && appDefinition.enabledForServer && (!appDefinition.isProject || $scope.isEnabledForProject(appDefinition));
     };
-    $scope.isEnabledForProject = function(appDefinition, project) {
+    $scope.isEnabledForProject = function(appDefinition) {
         return AppService.authorizedApp('use', appDefinition.id, $scope.project);
     };
     $scope.showScreenshot = function(appDefinition, screenshot) {
