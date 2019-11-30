@@ -27,11 +27,13 @@
         <meta name='layout' content='simple-without-ng'/>
     </head>
     <body>
-        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect" style="height: 100vh">
-            <div class="d-flex justify-content-center content row">
-                <div class="rect_1"></div>
-                <div class="rect_2"></div>
-                <div class="rect_3"></div>
+        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect">
+            <div class="d-flex justify-content-center content ml-3 mr-3">
+                <div class="rect_container">
+                    <div class="rect_1"></div>
+                    <div class="rect_2"></div>
+                    <div class="rect_3"></div>
+                </div>
                 <div class="login">
                     <div class="text-center">
                         <a href="https://www.icescrum.com" target="_blank">

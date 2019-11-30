@@ -221,6 +221,25 @@
   }
 }
 
+@include media-breakpoint-down(md) {
+  .login, .retrieve, .register {
+    h1 {
+      margin-top: 1.5rem;
+      font-size: 1.5rem;
+    }
+  }
+  .login form, .retrieve form, .register form {
+    margin-top: 2.5rem;
+  }
+  .login .login-footer, .retrieve .login-footer, .register .login-footer {
+    margin-top: 1.75rem;
+  }
+  body.simple-template {
+    height: 100%;
+  }
+}
+
+
 ////////////////////
 // Planning
 ////////////////////

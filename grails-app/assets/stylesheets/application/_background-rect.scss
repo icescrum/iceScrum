@@ -185,6 +185,15 @@
   box-shadow: 0 2px 9px 0 rgba(77, 128, 221, 1);
 }
 
+.content .rect_container {
+  overflow: hidden;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+}
+
 @media (max-width: 991.98px) {
 
   .content .rect_1 {
@@ -223,6 +232,10 @@
     mix-blend-mode: multiply;
     background-image: linear-gradient(161deg, #2611e7, #6db4d7);
     box-shadow: 0 1px 45px 0 rgba(77, 128, 221, 1);
+  }
+
+  .content .rect_container {
+    height: 100px;
   }
 
   .not-logged-in .rect_4 {
@@ -315,6 +328,10 @@
   .content .rect_3_left {
     top: -1036px;
     left: -420px;
+  }
+
+  .content .rect_container {
+    height: 465px;
   }
 
   .container-left-top-yellow-rect:before {

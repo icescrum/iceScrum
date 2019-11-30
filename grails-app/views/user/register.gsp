@@ -27,11 +27,13 @@
         <meta name='layout' content='simple'/>
     </head>
     <body>
-        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect" style="height: 100vh; overflow-y: auto; overflow-x: hidden">
-            <div class="d-flex justify-content-center content">
-                <div class="rect_1"></div>
-                <div class="rect_2"></div>
-                <div class="rect_3"></div>
+        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect">
+            <div class="d-flex justify-content-center content ml-3 mr-3">
+                <div class="rect_container">
+                    <div class="rect_1"></div>
+                    <div class="rect_2"></div>
+                    <div class="rect_3"></div>
+                </div>
                 <div class="register" ng-controller="registerCtrl" ng-init="token = '${token ?: ''}';redirectTo='${params.redirectTo ?: ''}'">
                     <div class="text-center">
                         <a href="https://www.icescrum.com" target="_blank">
