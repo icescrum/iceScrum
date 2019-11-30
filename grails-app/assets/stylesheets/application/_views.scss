@@ -223,6 +223,7 @@
 
 @include media-breakpoint-down(md) {
   .login, .retrieve, .register {
+    width: 100%;
     h1 {
       margin-top: 1.5rem;
       font-size: 1.5rem;
@@ -234,7 +235,7 @@
   .login .login-footer, .retrieve .login-footer, .register .login-footer {
     margin-top: 1.75rem;
   }
-  body.simple-template {
+  body.simple-template:not(.splash-screen) {
     height: 100%;
   }
 }

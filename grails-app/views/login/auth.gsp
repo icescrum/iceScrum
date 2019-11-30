@@ -53,29 +53,33 @@
                                 ${message(code: 'is.login.retrieve.success')}
                             </div>
                         </g:if>
-                        <div class="form-group">
-                            <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
-                            <input type="text"
-                                   autofocus
-                                   class="input-large input-text form-control"
-                                   name="j_username"
-                                   required="required"
-                                   id="username"
-                                   value="${params.username ?: ''}">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="username">${message(code: 'is.login.username.or.email')}<span class="required">*</span></label>
+                                <input type="text"
+                                       autofocus
+                                       class="form-control"
+                                       name="j_username"
+                                       required="required"
+                                       id="username"
+                                       value="${params.username ?: ''}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password" class="d-flex align-items-center justify-content-between">
-                                <div>${message(code: 'is.user.password')}<span class="required">*</span></div>
-                                <div class="small" onclick="togglePassword(this)">
-                                    <i class="fa fa-eye"></i>
-                                    <i class="fa fa-eye-slash" style="display:none;"></i>
-                                </div>
-                            </label>
-                            <input class="input-large input-text form-control"
-                                   type="password"
-                                   name="j_password"
-                                   required="required"
-                                   id="password">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="password" class="d-flex align-items-center justify-content-between">
+                                    <div>${message(code: 'is.user.password')}<span class="required">*</span></div>
+                                    <div class="small" onclick="togglePassword(this)">
+                                        <i class="fa fa-eye"></i>
+                                        <i class="fa fa-eye-slash" style="display:none;"></i>
+                                    </div>
+                                </label>
+                                <input class="form-control"
+                                       type="password"
+                                       name="j_password"
+                                       required="required"
+                                       id="password">
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center flex-row-reverse">
                             <div>

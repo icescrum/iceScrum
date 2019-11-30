@@ -27,7 +27,7 @@
         <meta name='layout' content='simple'/>
     </head>
     <body>
-        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect">
+        <div class="not-logged-in container-left-top-yellow-rect container-left-bottom-blue-rect" style="height: 100vh; overflow-y: auto; overflow-x: hidden">
             <div class="d-flex justify-content-center content ml-3 mr-3">
                 <div class="rect_container">
                     <div class="rect_1"></div>
