@@ -10,6 +10,9 @@
     .view.flex > .content .card-view {
       border-top: none;
     }
+    &.simple-without-ng-layout {
+      height: 100%;
+    }
   }
   nav.navbar.navbar-expand-lg {
     padding: 0;
