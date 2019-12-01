@@ -224,6 +224,7 @@
 @include media-breakpoint-down(md) {
   .login, .retrieve, .register {
     width: 100%;
+
     h1 {
       margin-top: 1.5rem;
       font-size: 1.5rem;
@@ -634,7 +635,9 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   padding-top: 0;
 
   .workspace-wizard-header {
-    @include rectangle-background(910px, 115px);
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 115px;
     background-image: url("wizard-header-light.svg");
 
     &:hover {
