@@ -221,6 +221,11 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
+    this.shiftRankInList = function(ids, story, index) {
+        return Story.updateArray({projectId: story.backlog.id, id: ids, action: 'shiftRankInList'}, {story: {id: story.id}, index: index}, function(stories) {
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
+        }).$promise;
+    };
     this.listByBacklog = function(backlog, projectId) {
         return queryWithContext({projectId: projectId, type: 'backlog', typeId: backlog.id}, function(stories) {
             self.mergeStories(stories);

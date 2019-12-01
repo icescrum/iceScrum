@@ -348,6 +348,18 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['productOwner() and !archivedProject()'])
+    def shiftRankInList() {
+        List<Story> stories = Story.withStories(params).sort { it.rank }
+        Story story = stories.find { it.id == params.story.id.toLong() }
+        Integer index = params.index.toInteger()
+        Story.withTransaction {
+            storyService.shiftRankInList(stories, story, index)
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
+    @Secured(['productOwner() and !archivedProject()'])
     def returnToSandbox() {
         def stories = Story.withStories(params)
         def rank
