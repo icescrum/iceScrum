@@ -35,15 +35,21 @@ class HookController implements ControllerErrorHandler {
 
     private checkBeforeAction() {
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
-        if (workspace) { // Case workspace
-            if (!request."in${workspace.name.capitalize()}") { // Must be inWorkspace
+        if (workspace) {
+            Boolean authorized
+            if (workspace.name == 'project') {
+                authorized = request.scrumMaster || request.productOwner
+            } else {
+                authorized = request."in${workspace.name.capitalize()}"
+            }
+            if (!authorized) {
                 render(status: 403)
                 return false
             }
-        } else if (!request.admin) { // Global hooks request to be admin
+        } else if (!request.admin) {
             render(status: 403)
             return false
-        } else if (!grailsApplication.config.icescrum.hooks.enable) { // And it must be set in admin
+        } else if (!grailsApplication.config.icescrum.hooks.enable) {
             render(status: 503)
             return false
         }
