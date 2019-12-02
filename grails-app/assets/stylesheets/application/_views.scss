@@ -988,7 +988,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 // Story tasks, Feature stories
 ////////////////////
 
-.story-task, .story-acceptanceTest {
+.story-task, .story-acceptanceTest, .feature-story {
   background: $is-bg-color;
 }
 

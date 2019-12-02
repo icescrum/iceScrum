@@ -20,21 +20,23 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
 <script type="text/ng-template" id="nested.stories.html">
-<div class="card-body font-size-sm feature-stories">
-    <div ng-controller="featureStoriesCtrl">
-        <div ng-repeat="storyEntry in storyEntries"
-             class="mb-5">
-            <h5 class="text-center mb-3"
-                ng-class="::{ 'mt-2': !$first }"
-                ng-bind-html="storyEntry.label">
-            </h5>
-            <div ng-repeat="story in storyEntry.stories">
-                <div class="row">
+<div class="card-body feature-stories" ng-controller="featureStoriesCtrl">
+    <div ng-repeat="storyEntry in storyEntries"
+         class="mb-5">
+        <h5 class="text-center mb-3"
+            ng-class="::{ 'mt-2': !$first }"
+            ng-bind-html="storyEntry.label">
+        </h5>
+        <div is-disabled="!isStorySortableByState(storyEntry.state)"
+             as-sortable="storySortableOptions | merge: sortableScrollOptions()"
+             ng-model="storyEntry.stories">
+            <div class="feature-story font-size-sm " ng-repeat="story in storyEntry.stories" as-sortable-item>
+                <div class="row align-items-baseline">
                     <div class="col-sm-8">
                         <a ng-href="{{ openStoryUrl(story.id) }}">
-                            <span class="mr-1">{{:: story.uid }}</span>
+                            <span class="mr-1" ng-if="isStorySortableByState(storyEntry.state)" as-sortable-item-handle>{{:: story.uid }}</span>
+                            <span class="mr-1" ng-if="!isStorySortableByState(storyEntry.state)">{{:: story.uid }}</span>
                             <span class="text-accent">{{ story.name }}</span>
                         </a>
                     </div>
@@ -56,10 +58,10 @@
                 <hr ng-if="!$last" class="w-50 mt-2"/>
             </div>
         </div>
-        <div ng-show="selected.stories !== undefined && !selected.stories.length"
-             class="empty-content">
-            <small>${message(code: 'todo.is.ui.story.empty')}</small>
-        </div>
+    </div>
+    <div ng-show="selected.stories !== undefined && !selected.stories.length"
+         class="empty-content">
+        <small>${message(code: 'todo.is.ui.story.empty')}</small>
     </div>
 </div>
 <div class="card-footer" ng-controller="featureStoryCtrl">

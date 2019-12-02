@@ -21,16 +21,17 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="card-body font-size-sm story-tasks" ng-controller="taskSortableStoryCtrl">
+<div class="card-body story-tasks" ng-controller="taskSortableStoryCtrl">
     <div ng-repeat="taskEntry in tasksByState"
          class="mb-5">
         <h5 class="text-center mb-3"
             ng-class="::{ 'mt-2':!$first }"
-            ng-bind-html="taskEntry.label"></h5>
+            ng-bind-html="taskEntry.label">
+        </h5>
         <div is-disabled="!isTaskSortableByState(taskEntry.state)"
              as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
              ng-model="taskEntry.tasks">
-            <div class="story-task" ng-repeat="task in taskEntry.tasks" as-sortable-item>
+            <div class="story-task font-size-sm" ng-repeat="task in taskEntry.tasks" as-sortable-item>
                 <div class="row align-items-baseline">
                     <div class="col-sm-8">
                         <span class="mr-1" ng-if="isTaskSortableByState(taskEntry.state)" as-sortable-item-handle>{{:: task.uid }}</span>

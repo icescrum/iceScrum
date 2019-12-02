@@ -882,8 +882,27 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     }
 }]);
 
-controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', 'ActorService', function($controller, $scope, $filter, StoryStatesByName, ActorService) {
+controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', 'ActorService', 'StoryService', function($controller, $scope, $filter, StoryStatesByName, ActorService, StoryService) {
+    // Functions
+    $scope.storySortableOptions = {
+        orderChanged: function(event) {
+            var story = event.source.itemScope.modelValue;
+            var newIndex = event.dest.index;
+            var stories =  event.dest.sortableScope.modelValue;
+            StoryService.shiftRankInList(_.map(stories, 'id'), story, newIndex).catch(function() {
+                $scope.revertSortable(event);
+            });
+        },
+        accept: function(sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+        }
+    };
+    $scope.isStorySortableByState = function(state) {
+        return state == StoryStatesByName.SUGGESTED && StoryService.authorizedStory('rank');
+    };
+
     // Init
+    $scope.sortableId = 'feature-stories';
     $scope.storyEntries = [];
     $scope.$watch(function() {
         return $scope.selected.stories; // $scope.selected is inherited
@@ -919,6 +938,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
                 label += ')';
                 return {
                     label: label,
+                    state: state,
                     stories: _.sortBy(stories, [function(story) {
                         return story.state === StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state;
                     }, 'rank'])
