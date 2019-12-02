@@ -147,9 +147,9 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     $scope.attachmentQuery = function($flow, attachmentable) {
         $scope.flow = $flow;
         $flow.opts.target = $scope.attachmentBaseUrl + $scope.clazz + '/' + attachmentable.id + '/flow';
-        var scrollOnComplete = function(){
+        var scrollOnComplete = function() {
             var container = $('.attachments').parent();
-            if(container.length){
+            if (container.length) {
                 container[0].scrollTop = container[0].scrollHeight;
             }
             $flow.off('complete', scrollOnComplete);

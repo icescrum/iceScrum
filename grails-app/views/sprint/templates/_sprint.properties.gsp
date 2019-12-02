@@ -142,7 +142,7 @@
                 <div>${message(code: 'is.sprint.retrospective')}</div>
                 <div class="small">
                     <a href="https://www.retromat.org/?utm_source=icescrum&utm_medium=link&utm_campaign=Retromat"
-                        target="_blank">
+                       target="_blank">
                         <i class="fa fa-question-circle"></i> ${message(code: 'is.ui.sprint.retrospective.link')}
                     </a>
                 </div>

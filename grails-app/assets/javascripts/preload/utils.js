@@ -38,7 +38,7 @@ function darkOrLightMode(colorScheme) {
     setColorScheme(colorScheme, true);
 }
 
-function togglePassword(element){
+function togglePassword(element) {
     var $this = $(element);
     var $eyes = $this.find('.fa-eye').is(':visible');
     $this.find($eyes ? '.fa-eye-slash' : '.fa-eye').show();
