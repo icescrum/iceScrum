@@ -24,7 +24,7 @@ services.factory('Backlog', ['Resource', function($resource) {
     return $resource('/p/:projectId/backlog/:id/:action');
 }]);
 
-services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryService', 'BacklogCodes', 'FormService', function(Backlog, $q, CacheService, StoryService, BacklogCodes, FormService) {
+services.service("BacklogService", ['Backlog', 'StoryStatesByName', '$q', 'CacheService', 'StoryService', 'BacklogCodes', 'FormService', function(Backlog, StoryStatesByName, $q, CacheService, StoryService, BacklogCodes, FormService) {
     var self = this;
     this.get = function(id, project) {
         return Backlog.get({id: id, projectId: project.id}).$promise;
@@ -43,6 +43,14 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
     };
     this.isBacklog = function(backlog) {
         return backlog.code == BacklogCodes.BACKLOG;
+    };
+    this.isCustomBacklog = function(backlog) {
+        return !_.includes([BacklogCodes.SANDBOX, BacklogCodes.BACKLOG, BacklogCodes.DONE, BacklogCodes.ALL], backlog.code);
+    };
+    this.isSortableFromState = function(backlog) {
+        var statesInBacklog = _.groupBy(backlog.stories, 'state');
+        var keys = _.keys(statesInBacklog);
+        return  keys.length === 1 && keys[0] === StoryStatesByName.SUGGESTED
     };
     this.filterStories = function(backlog, stories) {
         var storyFilter = JSON.parse(backlog.filter).story;

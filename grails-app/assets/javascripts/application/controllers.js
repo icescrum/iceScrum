@@ -606,7 +606,13 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
         return $state.href($state.current.name, $state.params) + '?context=tag' + ContextService.contextSeparator + tag;
     };
     $scope.hasContextOrSearch = function() {
-        return $scope.application.context || $scope.application.search;
+        return $scope.hasContext() || $scope.hasSearch();
+    };
+    $scope.hasContext = function() {
+        return $scope.application.context;
+    };
+    $scope.hasSearch = function() {
+        return $scope.application.search;
     };
     $scope.clearContextAndSearch = function() {
         $scope.application.search = null;

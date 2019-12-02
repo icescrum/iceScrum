@@ -81,7 +81,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         if (backlog.stories && backlog.stories.length > 0) {
             backlogContainer.storiesLoaded = true; // Render stories already there in the client cache
         }
-        backlogContainer.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog));
+        backlogContainer.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog) || BacklogService.isSortableFromState(backlog));
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
         }, 0);
@@ -124,7 +124,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         backlogContainer.orderBy.reverse = !backlogContainer.orderBy.reverse;
     };
     $scope.isSortingBacklog = function(backlogContainer) {
-        return backlogContainer.sortable && backlogContainer.orderBy.current.id === 'rank' && !backlogContainer.orderBy.reverse && !$scope.hasContextOrSearch();
+        return backlogContainer.sortable && backlogContainer.orderBy.current.id === 'rank' && !backlogContainer.orderBy.reverse && !$scope.hasSearch();
     };
     $scope.enableSortable = function(backlogContainer) {
         $scope.clearContextAndSearch();
@@ -302,17 +302,28 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
-            var newRank = event.dest.index + 1;
-            if ($state.params.storyListId !== undefined) {
-                var ids = $state.params.storyListId.split(',');
-                StoryService.rankMultiple(ids, newRank, story.backlog.id);
+            var backlog = event.source.sortableScope.backlogContainer.backlog;
+            if (!$scope.hasContext() && !BacklogService.isCustomBacklog(backlog)) {
+                var newRank = event.dest.index + 1;
+                if ($state.params.storyListId !== undefined) {
+                    var ids = $state.params.storyListId.split(',');
+                    StoryService.rankMultiple(ids, newRank, story.backlog.id).catch(function() {
+                        $scope.revertSortable(event);
+                    });
+                } else {
+                    story.rank = newRank;
+                    StoryService.update(story).then(function(updatedStory) {
+                        if (updatedStory.rank !== newRank) {
+                            $scope.notifyWarning('is.ui.story.warning.rank.dependsOn');
+                        }
+                    }).catch(function() {
+                        $scope.revertSortable(event);
+                    });
+                }
             } else {
-                story.rank = newRank;
-                StoryService.update(story).then(function(updatedStory) {
-                    if (updatedStory.rank !== newRank) {
-                        $scope.notifyWarning('is.ui.story.warning.rank.dependsOn');
-                    }
-                }).catch(function() {
+                var newIndex = event.dest.index;
+                var stories = backlog.stories;
+                StoryService.shiftRankInList(_.map(stories, 'id'), story, newIndex).catch(function() {
                     $scope.revertSortable(event);
                 });
             }
