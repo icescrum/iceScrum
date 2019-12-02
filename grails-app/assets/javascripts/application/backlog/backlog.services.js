@@ -50,7 +50,7 @@ services.service("BacklogService", ['Backlog', 'StoryStatesByName', '$q', 'Cache
     this.isSortableFromState = function(backlog) {
         var statesInBacklog = _.groupBy(backlog.stories, 'state');
         var keys = _.keys(statesInBacklog);
-        return  keys.length === 1 && keys[0] === StoryStatesByName.SUGGESTED
+        return keys.length === 1 && keys[0] === StoryStatesByName.SUGGESTED
     };
     this.filterStories = function(backlog, stories) {
         var storyFilter = JSON.parse(backlog.filter).story;
