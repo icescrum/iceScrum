@@ -643,6 +643,10 @@ grails {
                 authorizationCodeLookup.className = 'org.icescrum.core.domain.security.AuthorizationCode'
                 accessTokenLookup.className = 'org.icescrum.core.domain.security.AccessToken'
                 refreshTokenLookup.className = 'org.icescrum.core.domain.security.RefreshToken'
+                tokenServices {
+                    accessTokenValiditySeconds = 60  // default 12 hours
+                    refreshTokenValiditySeconds = 60 * 60 * 24 * 30 // default 30 days
+                }
             }
         }
     }
