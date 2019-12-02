@@ -249,7 +249,7 @@
         </g:else>
         <g:if test="${g.meta(name: 'app.displayReleaseNotes')}">
             <div ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true"
-                 class="whats-new d-none">
+                 class="whats-new">
                 <a href ng-click="showReleaseNotesModal()">
                     <i class="fa fa-gift" id="ga-show-whats-new-event"></i>
                 </a>
