@@ -30,6 +30,10 @@ class RestUrlMappings {
             action = [GET: 'version']
             controller = 'scrumOS'
         }
+        "/ws/textile" {
+            action = [POST: 'textileParser']
+            controller = 'scrumOS'
+        }
         // User
         "/ws/user" { // Admin
             controller = 'user'
