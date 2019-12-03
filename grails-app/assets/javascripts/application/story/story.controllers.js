@@ -900,7 +900,6 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
     $scope.isStorySortableByState = function(state) {
         return state == StoryStatesByName.SUGGESTED && StoryService.authorizedStory('rank');
     };
-
     // Init
     $scope.sortableId = 'feature-stories';
     $scope.storyEntries = [];
