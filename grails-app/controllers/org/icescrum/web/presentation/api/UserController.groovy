@@ -229,30 +229,39 @@ class UserController implements ControllerErrorHandler {
         }
     }
 
-    def avatar(long id) {
-        withCacheHeaders {
-            File avatar
-            User user = id ? User.withUser(id) : null
-            // If the cache has expired, tell the browser when the last change occured.
-            // If the image has not changed, then the browser will keep using the cached image again for 30 seconds starting from this call
-            // The combination of withCacheHeaders and cache(validFor: 30) ensures that for 1 user and 1 browser, this action is called at most once a minute
-            // and that the image is rendered again only if it has changed
-            delegate.lastModified {
-                user.lastUpdated
-            }
-            generate {
-                if (user) {
-                    avatar = userService.getAvatarFile(user)
+    def avatar(Long id) {
+        User user = id ? User.withUser(id) : null
+        if (user) {
+            withCacheHeaders {
+                // If the cache has expired, tell the browser when the last change occured.
+                // If the image has not changed, then the browser will keep using the cached image again for 30 seconds starting from this call
+                // The combination of withCacheHeaders and cache(validFor: 30) ensures that for 1 user and 1 browser, this action is called at most once a minute
+                // and that the image is rendered again only if it has changed
+                delegate.lastModified {
+                    user.lastUpdated
                 }
-                if (!avatar?.exists()) {
-                    if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)) {
-                        redirect(url: "https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5())
-                        return
+                generate {
+                    File avatar = userService.getAvatarFile(user)
+                    if (!avatar?.exists()) {
+                        if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)) {
+                            redirect(url: "https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5())
+                            return
+                        }
+                        avatar = getAssetAvatarFile("avatar.png")
                     }
-                    avatar = getAssetAvatarFile("avatar.png")
+                    cache(validFor: 30) // The browser will cache the request 30 seconds so it will not call the request again during this duration regardless of if the content has changed
+                    render(file: avatar, contentType: 'image/png')
                 }
-                cache(validFor: 30) // The browser will cache the request 30 seconds so it will not call the request again during this duration regardless of if the content has changed
-                render(file: avatar, contentType: 'image/png')
+            }
+        } else {
+            withCacheHeaders {
+                delegate.lastModified {
+                    new Date(1575371594)
+                }
+                generate {
+                    cache(validFor: 3600)
+                    render(file: getAssetAvatarFile('avatar.png'), contentType: 'image/png')
+                }
             }
         }
     }
@@ -434,7 +443,7 @@ class UserController implements ControllerErrorHandler {
             def extension = FilenameUtils.getExtension(avatar)
             avatarPath = "assets/avatars/${baseName}.${extension}"
         } else {
-            avatarPath = "../grails-app/${avatarFileName}"
+            avatarPath = "../grails-app/assets/images/avatars/${avatarFileName}"
         }
         return grailsApplication.parentContext.getResource(avatarPath).file
     }

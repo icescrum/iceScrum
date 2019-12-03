@@ -65,11 +65,11 @@ filters
         };
     }])
     .filter('userAvatar', ['$rootScope', 'Session', function($rootScope, Session) {
-        return function(user, initials) {
+        return function(user) {
             if (Session.current(user)) {
                 user = Session.user; // Bind to current user to see avatar change immediately
             }
-            return user && user.id ? ($rootScope.serverUrl + '/user/' + (initials ? 'initialsAvatar' : 'avatar') + '/' + user.id) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+            return $rootScope.serverUrl + '/user' + (user && user.id ? ('/' + user.id) : '') + '/avatar';
         };
     }])
     .filter('userInitialsAvatar', ['$rootScope', 'FormService', function($rootScope, FormService) {
