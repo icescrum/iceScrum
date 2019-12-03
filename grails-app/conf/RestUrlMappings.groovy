@@ -118,6 +118,12 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
+        "/ws/project/$project/$action" {
+            controller = 'project'
+            constraints {
+                action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
+            }
+        }
         // Resources
         "/ws/project/$project/$controller" {
             action = [GET: 'index', POST: 'save']
