@@ -81,7 +81,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         if (backlog.stories && backlog.stories.length > 0) {
             backlogContainer.storiesLoaded = true; // Render stories already there in the client cache
         }
-        backlogContainer.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog) || BacklogService.isSortableFromState(backlog));
+        backlogContainer.sortable = StoryService.authorizedStory('rank') && ((BacklogService.isBacklog(backlog) && !$scope.hasContextOrSearch()) || BacklogService.isSandbox(backlog) || BacklogService.isSortableFromState(backlog));
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
         }, 0);
