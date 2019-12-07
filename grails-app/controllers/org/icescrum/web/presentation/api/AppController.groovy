@@ -39,7 +39,7 @@ class AppController implements ControllerErrorHandler {
     @Secured('permitAll()')
     def definitions() {
         def marshalledDefinitions = appDefinitionService.getAppDefinitions().findAll {
-            return grailsApplication.config.icescrum.beta.enable ? true : !it.isBeta
+            return grailsApplication.config.icescrum.beta.enable && grailsApplication.config.icescrum.beta[it.id]?.enable ? true : !it.isBeta
         }.collect { AppDefinition appDefinition ->
             Map marshalledAppDefinition = appDefinition.properties.clone()
             ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer', 'isAvailableForServer', 'reportUsageData'].each { k ->
