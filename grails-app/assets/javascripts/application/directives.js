@@ -106,21 +106,20 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             element.on('focus', function(event) {
                 var options = scope.markitupCheckbox;
                 if (options.isEnabled()) {
-
                     var editable = options.object();
                     event.stopPropagation();
                     var isChecked = element.hasClass('fa-check-square-o');
                     var securityCount = 0;
                     var currentParent = element.parent();
-                    while(!currentParent.hasClass('markitup-preview')){
+                    while (!currentParent.hasClass('markitup-preview')) {
                         currentParent = currentParent.parent();
                         securityCount++;
-                        if(securityCount === 20){ //no more than 20 iterations to find the markitup preview
+                        if (securityCount === 20) { //no more than 20 iterations to find the markitup preview
                             element.off('focus');
                             return;
                         }
                     }
-                    if(!currentParent.hasClass('markitup-preview')){
+                    if (!currentParent.hasClass('markitup-preview')) {
                         element.off('focus');
                         return;
                     }
