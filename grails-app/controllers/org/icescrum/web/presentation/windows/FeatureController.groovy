@@ -92,18 +92,20 @@ class FeatureController implements ControllerErrorHandler {
         features.each { Feature feature ->
             Feature.withTransaction {
                 bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
-                def oldTags = feature.tags
-                if (features.size() > 1) {
-                    (tagParams - oldTags).each { tag ->
-                        feature.addTag(tag)
-                    }
-                    (commonTags - tagParams).each { tag ->
-                        if (oldTags.contains(tag)) {
-                            feature.removeTag(tag)
+                if (featureParams.tags != null) {
+                    def oldTags = feature.tags
+                    if (features.size() > 1) {
+                        (tagParams - oldTags).each { tag ->
+                            feature.addTag(tag)
                         }
+                        (commonTags - tagParams).each { tag ->
+                            if (oldTags.contains(tag)) {
+                                feature.removeTag(tag)
+                            }
+                        }
+                    } else {
+                        feature.tags = tagParams
                     }
-                } else {
-                    feature.tags = tagParams
                 }
                 featureService.update(feature)
             }
