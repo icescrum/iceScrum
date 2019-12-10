@@ -40,7 +40,7 @@
         <ui-select-choices repeat="chartType in backlogChartTypes">{{ ::chartType | i18n:'BacklogChartTypes' }}</ui-select-choices>
     </ui-select>
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="workspaceType != 'project'">
     <label>${message(code: 'is.project')}</label>
     <ui-select class="form-control"
                search-enabled="true"

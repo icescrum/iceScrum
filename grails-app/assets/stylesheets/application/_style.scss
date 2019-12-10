@@ -1451,6 +1451,9 @@ $widget-card-header-height: 42px;
         height: $widget-card-header-height;
         background: none;
         padding-bottom: 0;
+        .btn-link {
+          padding-right: 0;
+        }
 
         a {
           color: $is-text-color-alt;
@@ -1460,7 +1463,6 @@ $widget-card-header-height: 42px;
       .card-body {
         padding-top: 0.5rem;
         overflow: auto;
-        border-radius: 0;
         box-shadow: none;
       }
     }

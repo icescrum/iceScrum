@@ -42,7 +42,7 @@
                 <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
                 <div ng-include="'story.table.multiple.sum.html'"></div>
             </div>
-            <div class="col-md-6 backlogCharts chart" ng-controller="backlogChartCtrl">
+            <div class="col-md-6 chart" ng-controller="backlogChartCtrl">
                 <entry:point id="backlog-details-chart-before"/>
                 <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
             </div>

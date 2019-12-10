@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', '$controller', '$element', function($scope, BacklogService, ProjectService, CacheService, $controller, $element) {
+controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', 'Session', '$controller', '$element', function($scope, BacklogService, ProjectService, CacheService, Session, $controller, $element) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     $scope.widgetReady = function(widget) {
@@ -32,7 +32,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
         return $scope.holder.title;
     };
     $scope.getUrl = function() {
-        return $scope.widgetReady(widget) ? 'p/' + widget.settings.backlog.project.pkey + '/#/backlog/' + widget.settings.backlog.code : '';
+        return $scope.widgetReady(widget) ? $scope.serverUrl + '/p/' + widget.settings.backlog.project.pkey + '/#/backlog/' + widget.settings.backlog.code : '';
     };
     $scope.refreshProjects = function(term) {
         if (widget.settings && widget.settings.backlog && widget.settings.backlog.project && !$scope.holder.projectResolved) {
@@ -96,7 +96,12 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
             var unit = widget.settings.chartUnit;
             var chartName = widget.settings.chartType + (unit ? '-' + unit : ''); // Hack to preserve the chartLoaderInterface while using an additional parameter
             $scope.openChart('backlog', chartName, widget.settings.backlog, chartWidgetOptions).then(function(data) {
-                $scope.holder.title = data.options.title.text;
+                if (Session.getWorkspace() && $scope.holder.project.id === Session.getWorkspace().id) {
+                    var index = data.options.title.text.indexOf("-");
+                    $scope.holder.title = data.options.title.text.substring(index + 1);
+                } else {
+                    $scope.holder.title = data.options.title.text;
+                }
                 $scope.holder.caption = data.options.caption.text;
             });
         }
@@ -111,6 +116,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
         widget.settings.chartUnit = 'story';
     }
     $scope.holder = {
-        title: ''
-    };
+        title: '',
+        project: Session.getWorkspace(),
+    }
 }]);

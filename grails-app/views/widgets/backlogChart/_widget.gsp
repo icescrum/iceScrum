@@ -22,8 +22,8 @@
 --}%
 
 <is:widget widgetDefinition="${widgetDefinition}">
-    <div ng-if="widgetReady(widget)">
-        <div ng-init="display(widget)" class="backlogCharts">
+    <div ng-if="widgetReady(widget)" class="backlogChart">
+        <div ng-init="display(widget)">
             <nvd3 options="options" ng-if="options.chart.type" data="data" config="{refreshDataOnly: false}"></nvd3>
             <div class="caption">{{ holder.caption }}</div>
         </div>

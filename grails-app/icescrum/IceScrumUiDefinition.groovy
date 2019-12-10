@@ -203,4 +203,14 @@ widgets = {
         ngController = "backlogChartWidgetCtrl"
         defaultSettings = [:]
     }
+    'projectBacklogChart' {
+        height 1
+        width 1
+        i18n = 'backlogChart'
+        workspace = 'project'
+        templateFolder = 'backlogChart'
+        title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
+        ngController = "backlogChartWidgetCtrl"
+        defaultSettings = [:]
+    }
 }

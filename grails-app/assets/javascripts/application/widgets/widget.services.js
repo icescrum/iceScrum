@@ -72,6 +72,8 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
                 switch (Session.workspaceType) {
                     case 'portfolio':
                         return Session.bo();
+                    case 'project':
+                        return Session.po() || Session.sm();
                     default:
                         return Session.authenticated();
                 }
