@@ -512,7 +512,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     $scope.showAbout = function(activeTabIndex) {
         $uibModal.open({
             controller: 'aboutCtrl',
-            templateUrl: 'scrumOS/about',
+            templateUrl: $scope.serverUrl + '/scrumOS/about',
             resolve: {
                 active: function() {
                     return activeTabIndex; // Set active tab unsing index
