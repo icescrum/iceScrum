@@ -25,7 +25,7 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('/p/:projectId/story/:type/:typeId/:id/:action');
 }]);
 
-services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'StoryTypesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, StoryTypesByName, SprintStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'StoryTypesByName', 'FeatureStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, StoryTypesByName, FeatureStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     var self = this;
     var queryWithContext = function(parameters, success, error) {
         if (!parameters) {
@@ -242,8 +242,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.authorizedStory = function(action, story) {
         switch (action) {
-            case 'copy':
             case 'create':
+                return Session.authenticated() && (!story || story.feature && story.feature.state != FeatureStatesByName.DONE);
+            case 'copy':
             case 'follow':
                 return Session.authenticated();
             case 'createAccepted':

@@ -89,6 +89,11 @@ class FeatureController implements ControllerErrorHandler {
                 commonTags = commonTags == null ? feature.tags : commonTags.intersect(feature.tags)
             }
         }
+        def props = [:]
+        Integer state = featureParams.state instanceof String ? featureParams.state.toInteger() : featureParams.state
+        if (state != null) {
+            props.state = state
+        }
         features.each { Feature feature ->
             Feature.withTransaction {
                 bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
@@ -107,7 +112,7 @@ class FeatureController implements ControllerErrorHandler {
                         feature.tags = tagParams
                     }
                 }
-                featureService.update(feature)
+                featureService.update(feature, props)
             }
         }
         def returnData = features.size() > 1 ? features : features.first()

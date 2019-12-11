@@ -592,8 +592,8 @@ controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'Session', 'StoryService', 'TaskService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, Session, StoryService, TaskService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
@@ -700,6 +700,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.hasSameProject = function(story1, story2) {
             return !story2 || !story2.project || (story1.project.id == story2.project.id)
         };
+        $scope.authorizedTask = TaskService.authorizedTask;
         $scope.getDependenceEntries = StoryService.getDependenceEntries; // To be overriden
         // Init
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});

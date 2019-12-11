@@ -90,9 +90,25 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar btn-toolbar-multiline">
                     <entry:point id="feature-multiple-toolbar"/>
-                    <div ng-if="authorizedFeature('delete')"
+                    <div ng-if="authorizedFeatures('markDone', features)"
+                         class="btn-group">
+                        <button type="button"
+                                class="btn btn-primary btn-sm"
+                                ng-click="doneMultiple()">
+                            ${message(code: 'is.ui.feature.state.done')}
+                        </button>
+                    </div>
+                    <div ng-if="authorizedFeatures('markInProgress', features)"
+                         class="btn-group">
+                        <button type="button"
+                                class="btn btn-primary btn-sm"
+                                ng-click="inProgressMultiple()">
+                            ${message(code: 'is.ui.feature.state.inProgress')}
+                        </button>
+                    </div>
+                    <div ng-if="authorizedFeatures('delete')"
                          class="btn-group">
                         <button type="button"
                                 class="btn btn-danger btn-sm"

@@ -41,7 +41,6 @@ extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', f
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.authorizedTask = TaskService.authorizedTask;
     // Init
     $scope.project = $scope.getProjectFromState();
     $scope.formHolder = {};

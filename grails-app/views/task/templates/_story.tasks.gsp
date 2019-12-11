@@ -63,7 +63,9 @@
         <documentation doc-url="features-stories-tasks#tasks"/>
     </div>
 </div>
-<div class="card-footer" ng-controller="taskStoryCtrl">
-    <div ng-if="authorizedTask('create', {parentStory: selected})" ng-include="'story.task.new.html'"></div>
+<div class="card-footer"
+     ng-if="authorizedTask('create', {parentStory: selected})"
+     ng-controller="taskStoryCtrl">
+    <div ng-include="'story.task.new.html'"></div>
 </div>
 </script>

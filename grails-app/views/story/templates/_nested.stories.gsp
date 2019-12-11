@@ -64,7 +64,9 @@
         <small>${message(code: 'todo.is.ui.story.empty')}</small>
     </div>
 </div>
-<div class="card-footer" ng-controller="featureStoryCtrl">
-    <div ng-if="authorizedStory('create')" ng-include="'feature.storyForm.editor.html'"></div>
+<div class="card-footer"
+     ng-if="authorizedStory('create', {feature: selected})"
+     ng-controller="featureStoryCtrl">
+    <div ng-include="'feature.storyForm.editor.html'"></div>
 </div>
 </script>

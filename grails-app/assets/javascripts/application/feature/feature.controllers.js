@@ -39,6 +39,24 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
             url: $scope.featureContextUrl
         },
         {
+            name: 'is.ui.feature.state.done',
+            visible: function(feature) { return $scope.authorizedFeature('markDone', feature); },
+            action: function(feature) {
+                FeatureService.updateState(feature, FeatureStatesByName.DONE).then(function() {
+                    $scope.notifySuccess('todo.is.ui.feature.updated');
+                });
+            }
+        },
+        {
+            name: 'is.ui.feature.state.inProgress',
+            visible: function(feature) { return $scope.authorizedFeature('markInProgress', feature); },
+            action: function(feature) {
+                FeatureService.updateState(feature, FeatureStatesByName.IN_PROGRESS).then(function() {
+                    $scope.notifySuccess('todo.is.ui.feature.updated');
+                });
+            }
+        },
+        {
             name: 'todo.is.ui.permalink.copy',
             visible: function(feature) { return true; },
             action: function(feature) {
@@ -94,6 +112,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.currentStateUrl = function(id) {
         return $state.href($state.current.name, {featureId: id});
     };
+    $scope.authorizedStory = FeatureService.authorizedStory;
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(features, $scope.feature);
@@ -141,7 +160,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     });
 }]);
 
-extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'project', function($scope, $controller, featureListId, FeatureService, project) {
+extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'FeatureStatesByName', 'project', function($scope, $controller, featureListId, FeatureService, FeatureStatesByName, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.sumValues = function(features) {
@@ -162,6 +181,17 @@ extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureLi
             $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
         });
     };
+    $scope.inProgressMultiple = function() {
+        FeatureService.updateStateMultiple(featureListId, FeatureStatesByName.IN_PROGRESS, project.id).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
+        });
+    };
+    $scope.doneMultiple = function() {
+        FeatureService.updateStateMultiple(featureListId, FeatureStatesByName.DONE, project.id).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
+        });
+    };
+    $scope.authorizedFeatures = FeatureService.authorizedFeatures;
     // Init
     $scope.selectableOptions.selectingMultiple = true;
     $scope.featureListId = featureListId;

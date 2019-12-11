@@ -55,6 +55,15 @@
         </label>
     </div>
     <div class="form-half">
+        <label for="autoDoneFeature">
+            <input type="checkbox"
+                   name="project.preferences.autoDoneFeature"
+                   id="autoDoneFeature"
+                   ng-model="project.preferences.autoDoneFeature">
+            {{ message('is.project.preferences.autoDoneFeature', [(storyStatesByName.DONE | i18n: 'StoryStates')]) }}
+        </label>
+    </div>
+    <div class="form-half">
         <label for="autoCreateTaskOnEmptyStory">
             <input type="checkbox"
                    name="project.preferences.autoCreateTaskOnEmptyStory"
