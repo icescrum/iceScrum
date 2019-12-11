@@ -96,7 +96,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
             var unit = widget.settings.chartUnit;
             var chartName = widget.settings.chartType + (unit ? '-' + unit : ''); // Hack to preserve the chartLoaderInterface while using an additional parameter
             $scope.openChart('backlog', chartName, widget.settings.backlog, chartWidgetOptions).then(function(data) {
-                if (Session.getWorkspace() && $scope.holder.project.id === Session.getWorkspace().id) {
+                if ($scope.workspaceType === 'project' && Session.getWorkspace() && $scope.holder.project.id === Session.getWorkspace().id) {
                     var index = data.options.title.text.indexOf("-");
                     $scope.holder.title = data.options.title.text.substring(index + 1);
                 } else {
@@ -116,7 +116,9 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
         widget.settings.chartUnit = 'story';
     }
     $scope.holder = {
-        title: '',
-        project: Session.getWorkspace(),
+        title: ''
+    };
+    if ($scope.workspaceType === 'project') {
+        $scope.holder.project = Session.getWorkspace();
     }
 }]);
