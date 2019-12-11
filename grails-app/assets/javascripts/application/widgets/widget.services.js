@@ -73,7 +73,7 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
                     case 'portfolio':
                         return Session.bo();
                     case 'project':
-                        return Session.po() || Session.sm();
+                        return Session.poOrSm();
                     default:
                         return Session.authenticated();
                 }
