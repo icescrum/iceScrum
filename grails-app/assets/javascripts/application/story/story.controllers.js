@@ -677,7 +677,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             return $state.href(stateName);
         };
         $scope.storyFeatureUrl = function(story) {
-            return $state.href('.feature.details', {storyId: story.id, featureId: story.feature.id});
+            return story.feature ? $state.href('.feature.details', {storyId: story.id, featureId: story.feature.id}) : '';
         };
         $scope.listFeatures = function() {
             FeatureService.list(project);
