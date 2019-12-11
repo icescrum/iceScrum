@@ -91,8 +91,7 @@ class WidgetController implements ControllerErrorHandler {
                     (!securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)))) {
                 render(status: 403)
                 return
-            }
-            else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
+            } else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
                 render(status: 403)
                 return
             }
@@ -142,8 +141,7 @@ class WidgetController implements ControllerErrorHandler {
         } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || (!securityService.productOwner(project, springSecurityService.authentication) && !securityService.scrumMaster(project, springSecurityService.authentication)))) {
             render(status: 403)
             return
-        }
-        else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
+        } else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
             render(status: 403)
             return
         }
@@ -168,12 +166,10 @@ class WidgetController implements ControllerErrorHandler {
         if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !securityService.businessOwner(portfolio, springSecurityService.authentication))) {
             render(status: 403)
             return
-        }
-        else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || (!securityService.productOwner(portfolio, springSecurityService.authentication) && !securityService.scrumMaster(portfolio, springSecurityService.authentication)))) {
+        } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || (!securityService.productOwner(portfolio, springSecurityService.authentication) && !securityService.scrumMaster(portfolio, springSecurityService.authentication)))) {
             render(status: 403)
             return
-        }
-        else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
+        } else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
             render(status: 403)
             return
         }
