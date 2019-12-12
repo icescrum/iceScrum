@@ -341,6 +341,9 @@ icescrum {
         enable = false
         features = ['usersOnline'] //should be [] if no features
     }
+    security {
+        authorizedTokenHeaders = ['X-Gitlab-Token', 'X-Auth-Token']
+    }
 }
 
 println "| Server Timezone: ${icescrum.timezone.default}"
