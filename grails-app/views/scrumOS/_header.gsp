@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:if test="${outdatedBrowser}">
+<g:if test="${isOutdatedBrowser}">
     <div class="announcement bg-warning font-size-sm">${message(code: 'is.ui.outdatedBrowser')}</div>
 </g:if>
 <div class="announcement bg-{{:: application.announcement.type }}" ng-if="application.announcement">

@@ -70,6 +70,7 @@
         workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}",
         enableEmojis: ${ApplicationSupport.isUTF8Database()},
         announcement: ${announcement as JSON},
+        isMobile: ${isMobile},
         logoutLink: "${createLink(controller: 'logout')}"
         <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]"/>
     };

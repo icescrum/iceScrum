@@ -73,7 +73,8 @@ class ScrumOSController implements ControllerErrorHandler {
                      moreWorkspacesExist     : workspaces?.size() > workspacesLimit,
                      portfolioEnabled        : portfolioEnabled,
                      workspacesFilteredsList : workspaces.take(workspacesLimit),
-                     outdatedBrowser         : userAgentIdentService.isBrowser(Browser.IE11),
+                     isOutdatedBrowser       : userAgentIdentService.isBrowser(Browser.IE11),
+                     isMobile                : userAgentIdentService.isMobile(),
                      colorScheme             : user?.preferences?.colorScheme]
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
