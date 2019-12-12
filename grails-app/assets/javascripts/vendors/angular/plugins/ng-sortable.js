@@ -693,7 +693,7 @@
                         // END CUSTOM
                         isLongTouch = false; //long touch disabled.
 
-                    hasTouch = 'ontouchstart' in $window && false; //disable for touch at the moment
+                    hasTouch = 'ontouchstart' in $window && !isSettings.isMobile; //disable for touch at the moment
                     isIOS = /iPad|iPhone|iPod/.test($window.navigator.userAgent) && !$window.MSStream;
 
                     if (sortableConfig.handleClass) {
