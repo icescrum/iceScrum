@@ -134,6 +134,11 @@ filters
             return type == FeatureTypesByName.ARCHITECTURAL ? 'item-type-icon item-type-icon-architectural' : '';
         };
     }])
+    .filter('featureNameState', ['FeatureStatesByName', 'i18nFilter', function(FeatureStatesByName, i18nFilter) {
+        return function(feature) {
+            return feature.name + (feature.state === FeatureStatesByName.DONE ? ' (' + i18nFilter(FeatureStatesByName.DONE, 'FeatureStates') + ')' : '');
+        }
+    }])
     .filter('join', function() {
         return function(array) {
             return _.join(array, ', ');

@@ -24,7 +24,7 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We should think of a better way to systematically register the listeners
-extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filter', '$window', 'StoryService', 'TaskService', 'FormService', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $controller, $uibModal, $filter, $window, StoryService, TaskService, FormService, StoryStatesByName, AcceptanceTestStatesByName) {
+extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filter', '$window', 'StoryService', 'TaskService', 'FormService', 'StoryStatesByName', 'AcceptanceTestStatesByName', 'FeatureStatesByName', function($scope, $controller, $uibModal, $filter, $window, StoryService, TaskService, FormService, StoryStatesByName, AcceptanceTestStatesByName, FeatureStatesByName) {
     $controller('tagCtrl', {$scope: $scope, type: 'story'});
     // Functions
     $scope.acceptToBacklog = function(story) {
@@ -443,6 +443,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
     };
     // Init
     $scope.storyStatesByName = StoryStatesByName;
+    $scope.featureStatesByName = FeatureStatesByName;
 }]);
 
 extensibleController('storySplitCtrl', ['$scope', '$timeout', 'Session', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, $timeout, Session, $controller, $q, StoryService, StoryStatesByName, story) {

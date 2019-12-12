@@ -102,8 +102,8 @@
                                          placeholder="${message(code: 'is.ui.story.nofeature')}">
                             <i class="fa fa-puzzle-piece" ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
                         </ui-select-match>
-                        <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                            <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
+                        <ui-select-choices ui-disable-choice="feature.state === featureStatesByName.DONE" repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                            <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature | featureNameState | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-append" ng-if="editableStory.feature.id && !isModal">
