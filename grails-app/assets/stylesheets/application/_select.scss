@@ -82,6 +82,16 @@
     background: $is-primary-color;
   }
 
+  .select2-disabled, .select2-disabled.select2-highlighted {
+    opacity: 0.5;
+    background: none;
+    color: $is-text-color-alt;
+
+    .select2-result-label {
+      cursor: default;
+    }
+  }
+
   li {
     border-radius: 4px;
   }
