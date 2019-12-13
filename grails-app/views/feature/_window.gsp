@@ -82,6 +82,22 @@
                         <i class="fa fa-hand-stop-o text-danger"></i>
                     </button>
                 </div>
+                <div uib-dropdown>
+                    <button class="btn btn-link"
+                            uib-dropdown-toggle
+                            type="button">
+                        {{ currentFeaturesFilter.name + ' (' + countByFilter(currentFeaturesFilter) + ')'}}
+                    </button>
+                    <div uib-dropdown-menu role="menu">
+                        <a role="menuitem"
+                           class="dropdown-item"
+                           ng-repeat="featuresFilter in featuresFilters"
+                           ng-click="changeFeaturesFilter(featuresFilter)"
+                           href>
+                            {{ featuresFilter.name + ' (' + countByFilter(featuresFilter) + ')'}}
+                        </a>
+                    </div>
+                </div>
                 <div class="btn-group"
                      uib-dropdown
                      ng-if="authenticated()">
@@ -169,7 +185,7 @@
                      ng-class="{ 'is-selected': isSelected(feature) }"
                      selectable-id="{{ ::feature.id }}"
                      as-sortable-item
-                     ng-repeat="feature in features | search | orderBy:orderBy.current.id:orderBy.reverse"
+                     ng-repeat="feature in features | filter: currentFeaturesFilter.filter | search | orderBy:orderBy.current.id:orderBy.reverse"
                      class="sticky-note-container sticky-note-feature">
                     <div ng-include="'feature.html'"></div>
                 </div>

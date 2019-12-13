@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$controller', 'FeatureService', 'Feature', 'project', 'features', function($scope, $q, $state, $timeout, $controller, FeatureService, Feature, project, features) {
+extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$filter', '$controller', 'FeatureService', 'FeatureStatesByName', 'Feature', 'project', 'features', function($scope, $q, $state, $timeout, $filter, $controller, FeatureService, FeatureStatesByName, Feature, project, features) {
     // Functions
     $scope.isSelected = function(selectable) {
         if ($state.params.featureId) {
@@ -51,14 +51,21 @@ extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$co
         return FeatureService.authorizedFeature('rank', null, $scope.project);
     };
     $scope.isSortingFeature = function() {
-        return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && !$scope.hasContextOrSearch();
+        return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && !$scope.hasContextOrSearch() && $scope.currentFeaturesFilter.id === 'all';
     };
     $scope.enableSortable = function() {
         $scope.clearContextAndSearch();
         $scope.orderByRank();
+        $scope.currentFeaturesFilter = _.find($scope.featuresFilters, {id: 'all'});
     };
     $scope.openFeatureUrl = function(feature) {
         return '#/' + $scope.viewName + '/' + feature.id;
+    };
+    $scope.countByFilter = function(featuresFilter) {
+        return _.filter(project.features, featuresFilter.filter).length;
+    };
+    $scope.changeFeaturesFilter = function(featuresFilter) {
+        $scope.currentFeaturesFilter = featuresFilter;
     };
     // Init
     $scope.viewName = 'feature';
@@ -170,5 +177,12 @@ extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$co
             {id: 'state', name: $scope.message('todo.is.ui.sort.state')}
         ], 'name')
     };
+    $scope.featuresFilters = [
+        {id: 'all', name: $scope.message('todo.is.ui.backlog.all'), filter: {}},
+        {id: 'todo', name: $filter('i18n')(FeatureStatesByName.TODO, 'FeatureStates'), filter: {state: FeatureStatesByName.TODO}},
+        {id: 'inProgress', name: $filter('i18n')(FeatureStatesByName.IN_PROGRESS, 'FeatureStates'), filter: {state: FeatureStatesByName.IN_PROGRESS}},
+        {id: 'done', name: $filter('i18n')(FeatureStatesByName.DONE, 'FeatureStates'), filter: {state: FeatureStatesByName.DONE}}
+    ];
+    $scope.currentFeaturesFilter = _.find($scope.featuresFilters, {id: 'all'});
     $scope.orderByRank();
 }]);
