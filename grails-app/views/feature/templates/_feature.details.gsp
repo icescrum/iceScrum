@@ -82,6 +82,25 @@
                 <span class="item-id">{{ ::feature.uid }}</span>
                 <span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
                 <entry:point id="feature-details-left-title"/>
+                <div class="font-size-sm small">
+                    <div ng-if="isAllReleases">
+                        <a ng-repeat="release in feature.actualReleases"
+                           ng-class="{'strong': release.state == releaseStatesByName.IN_PROGRESS}"
+                           ui-sref="planning.release.details({releaseId: release.id})">
+                            {{ release.name }}<span ng-if="!$last">,&nbsp;</span>
+                        </a>
+                    </div>
+                    <div ng-if="!isAllReleases && feature.actualReleases.length">
+                        <a ng-class="{'strong': getCurrentRelease(feature).state == releaseStatesByName.IN_PROGRESS}"
+                           ui-sref="planning.release.details({releaseId: getCurrentRelease(feature).id})">
+                            {{ getCurrentRelease(feature).name }}
+                        </a>
+                        <span ng-if="feature.actualReleases.length > 1"
+                              ng-click="showAllReleases()">
+                            (...)
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="btn-menu" uib-dropdown>
                 <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>

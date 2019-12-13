@@ -203,7 +203,7 @@ icescrum {
                                    asShort: ['firstName', 'lastName'],
                                    include: ['admin']],
             actor               : [asShort: ['name']],
-            feature             : [include: ['countDoneStories', 'state', 'effort', 'tags', 'inProgressDate', 'project'],
+            feature             : [include: ['countDoneStories', 'state', 'effort', 'tags', 'inProgressDate', 'project', 'actualReleases'],
                                    exclude: ['metaDatas'],
                                    withIds: ['stories'],
                                    textile: ['notes'],

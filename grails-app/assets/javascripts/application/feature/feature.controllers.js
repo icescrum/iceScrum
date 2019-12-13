@@ -83,7 +83,7 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
     }
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'FeatureService', 'StoryService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, FeatureService, StoryService, FormService, detailsFeature, StoryStatesByName, features, project) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'ReleaseStatesByName', 'FeatureService', 'StoryService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, ReleaseStatesByName, FeatureService, StoryService, FormService, detailsFeature, StoryStatesByName, features, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature', project: project});
     // Functions
@@ -112,12 +112,28 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.currentStateUrl = function(id) {
         return $state.href($state.current.name, {featureId: id});
     };
+    $scope.getCurrentRelease = function(feature) {
+        var release = _.find(feature.actualReleases, function(release) {
+            return release.state < ReleaseStatesByName.DONE;
+        });
+        if (!release) {
+            release = _.findLast(feature.actualReleases, function(release) {
+                return release.state === ReleaseStatesByName.DONE;
+            });
+        }
+        return release;
+    };
+    $scope.showAllReleases = function() {
+        $scope.isAllReleases = true;
+    };
     $scope.authorizedStory = StoryService.authorizedStory;
     // Init
+    $scope.isAllReleases = false;
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(features, $scope.feature);
     $scope.nextFeature = FormService.next(features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;
+    $scope.releaseStatesByName = ReleaseStatesByName;
     $scope.storyStatesByName = StoryStatesByName;
     $scope.availableColors = [];
 }]);

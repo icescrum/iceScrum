@@ -35,7 +35,7 @@ html, body {
   font-family: $font-family-base;
 }
 
-strong, b {
+strong, b, .strong {
   font-family: $is-font-family-bold;
   font-weight: normal;
 }
