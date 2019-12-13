@@ -28,7 +28,7 @@
             <div class="card-header-left col-auto flex-grow-1">
                 <span class="sprint-dropdown" uib-dropdown on-toggle="scrollToActiveSprint(open)">
                     <span uib-dropdown-toggle class="card-title">{{ (sprint | sprintName) }}</span>
-                    <div uib-dropdown-menu role="menu" class="sprint-dropdown-menus">
+                    <div uib-dropdown-menu role="menu" class="sprint-dropdown-menus dropdown-menu-scroll">
                         <div ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
                              ng-switch="sprintEntry.type"
                              ng-class="(sprintEntry.item.id == sprint.id ? 'active' : '') + ' dropdown-' + {'divider': 'divider', 'release': 'header', 'sprint': 'item'}[sprintEntry.type]">
@@ -70,7 +70,7 @@
                             type="button">
                         {{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}
                     </button>
-                    <div uib-dropdown-menu class="dropdown-menu-right" role="menu">
+                    <div uib-dropdown-menu class="dropdown-menu-right dropdown-menu-scroll" role="menu">
                         <div role="menuitem"
                              ng-repeat="sprintFilter in sprintFilters"
                              ng-class="{'dropdown-divider': sprintFilter.id == 'divider'}">

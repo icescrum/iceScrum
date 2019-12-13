@@ -168,6 +168,7 @@ $btn-shadow: (success: rgba(36, 153, 88, 0.3), warning: rgba(179, 142, 1, 0.3), 
 
 .btn-toolbar-multiline {
   margin-bottom: -0.5rem;
+
   > .btn,
   > .btn-group,
   > .btn-menu,
@@ -411,6 +412,11 @@ input::placeholder {
 
 .dropdown-header {
   font-family: $is-font-family-bold;
+}
+
+.dropdown-menu.dropdown-menu-scroll {
+  max-height: 400px;
+  overflow-x: auto;
 }
 
 ////////////////////
