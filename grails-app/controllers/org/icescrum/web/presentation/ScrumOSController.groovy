@@ -74,7 +74,6 @@ class ScrumOSController implements ControllerErrorHandler {
                      portfolioEnabled        : portfolioEnabled,
                      workspacesFilteredsList : workspaces.take(workspacesLimit),
                      isOutdatedBrowser       : userAgentIdentService.isBrowser(Browser.IE11),
-                     isMobile                : userAgentIdentService.isMobile(),
                      colorScheme             : user?.preferences?.colorScheme]
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
@@ -158,6 +157,7 @@ class ScrumOSController implements ControllerErrorHandler {
                                                                 defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
                                                                 serverURL      : ApplicationSupport.serverURL(),
                                                                 onlineMembers  : onlineMembers,
+                                                                isMobile       : userAgentIdentService.isMobile(),
                                                                 projectMenus   : projectMenus])
         } catch (Exception exception) {
             if (!exception.message?.contains("Row was updated or deleted by another transaction")) {
