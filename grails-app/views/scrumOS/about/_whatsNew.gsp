@@ -21,27 +21,11 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<div id="carousel-whats-new" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carousel-whats-new" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-whats-new" data-slide-to="1"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item text-center active">
-            <asset:image src="/whatsNew/new-ui.png" style="max-height:500px;  margin:0 auto;"/>
-            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
-                <h3>Coming soon...</h3>
-                <p><strong>A new UI is coming! First on our website, and then in iceScrum.</strong></p>
-                <p><strong>Don't worry, you will not have to learn using iceScrum again. It will just be prettier and easier!</strong></p>
-            </div>
-        </div>
-        <div class="item text-center">
-            <asset:image src="/whatsNew/story-workflow.jpg" style="max-height:500px; margin:0 auto;"/>
-            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
-                <h3>New App: Story workflow</h3>
-                <p><strong>Customize the story workflow on your project and add the "Frozen" and "In review" states.</strong></p>
-                <p><button ng-click="$close(); showAppsModal('storyWorkflow');" class="btn btn-primary">Enable it now!</button></p>
-            </div>
-        </div>
-    </div>
+<div class="d-flex flex-column align-items-center">
+    <asset:image src="/whatsNew/whatsNew.png" style="width: 650px" class="img-shadow m-3"/>
+    <h3 class="mt-1">Manually mark a feature as Done</h3>
+    <p class="pl-5 pr-5 mt-1 text-center">
+        As part of this update, features which state was previously calculated as "Done" will be marked as "In progress".
+        Read more in the <a class="link" target="_blank" href="https://www.icescrum.com/blog/icescrum-v7.42">release notes</a>.
+    </p>
 </div>

@@ -20,8 +20,10 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-%{--<g:render template="/scrumOS/about/whatsNew"/>--}%
-${releaseNotes}
+<g:render template="/scrumOS/about/whatsNew"/>
+<div class="pl-4 pr-4 mb-3">
+    ${releaseNotes}
+</div>
 <div class="text-center mt-3">
     <a class="link"
        target="_blank"

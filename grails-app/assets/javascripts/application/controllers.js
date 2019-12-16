@@ -252,13 +252,6 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     if ($scope.displayWhatsNew && $scope.workspaceType == 'project') {
         var modal = $uibModal.open({
             size: 'lg',
-            controller: function() {
-                $timeout(function() {
-                    $('#carousel-whats-new').carousel({
-                        interval: 5000
-                    })
-                }, 500);
-            },
             templateUrl: 'is.dialog.whatsNew.html'
         });
         modal.result.then(function() {
