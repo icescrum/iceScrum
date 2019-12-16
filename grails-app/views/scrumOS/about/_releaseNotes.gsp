@@ -22,3 +22,10 @@
 --}%
 %{--<g:render template="/scrumOS/about/whatsNew"/>--}%
 ${releaseNotes}
+<div class="text-center mt-3">
+    <a class="link"
+       target="_blank"
+       href="https://www.icescrum.com/blog/icescrum-v${g.meta(name: 'app.version').replaceAll('Pro', '').replaceAll('\\.', '-')}">
+        ${message(code: 'is.ui.read.more')}
+    </a>
+</div>
