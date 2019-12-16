@@ -31,7 +31,7 @@ angular.module('notification-templates', []).run(['$templateCache', function($te
                                      '            <div class="toast-icon {{:: \'toast-\' + type }}"></div>' +
                                      '            <div>' +
                                      '               <div class="toast-title" ng-if="title"><strong>{{:: title }}</strong></div>' +
-                                     '               <div ng-bind-html=":: message"></div>' +
+                                     '               <div class="toast-message" ng-bind-html=":: message"></div>' +
                                      '            </div>' +
                                      '        </div>' +
                                      '    </div>' +
@@ -47,20 +47,18 @@ angular.module('angular-notifications', ['notification-templates']).provider('no
     this.$get = ['$rootScope', '$compile', '$templateCache', function($rootScope, $compile, $templateCache) {
         function notifyByType(type) {
             return function(title, message, options) {
-                options = _.merge({autohide: false, delay:4500}, (options || {}));
-
-                //may use the same toast
-                if ($rootScope.lastNotification && $rootScope.lastNotification.find('toast-title').text() === title) {
+                options = _.merge({autohide: false, delay: 4500}, (options || {}));
+                // May use the same toast
+                if ($rootScope.lastNotification && $rootScope.lastNotification.find('.toast-title').text() === title && $rootScope.lastNotification.find('.toast-message').text() === message) {
                     var $existingToast = $rootScope.lastNotification;
-                    if(!options.autohide && options.delay) { //same condition to override existing condition
+                    if (!options.autohide && options.delay) { // Same condition to override existing condition
                         clearTimeout($existingToast.data('timeout'));
                         $existingToast.data('timeout', setTimeout(function() {
-                            $existingToast.toast('hide'); //to benefit hidden.bs.toast
+                            $existingToast.toast('hide'); // To benefit hidden.bs.toast
                         }, options.delay));
                         return;
                     }
                 }
-
                 var $body = angular.element('body');
                 var $container = angular.element('.toast-container');
                 if (!$container.length) {
@@ -83,10 +81,10 @@ angular.module('angular-notifications', ['notification-templates']).provider('no
                         $rootScope.lastNotification = null;
                     }
                 });
-                if(!options.autohide && options.delay){ //override native
+                if (!options.autohide && options.delay) { // Override native
                     $toast.one('shown.bs.toast', function() {
                         $toast.data('timeout', setTimeout(function() {
-                            $toast.toast('hide'); //to benefit hidden.bs.toast
+                            $toast.toast('hide'); // To benefit hidden.bs.toast
                         }, options.delay));
                     });
                 }
