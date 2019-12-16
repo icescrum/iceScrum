@@ -26,6 +26,6 @@
     <h3 class="mt-1">Manually mark a feature as Done</h3>
     <p class="pl-5 pr-5 mt-1 text-center">
         As part of this update, features which state was previously calculated as "Done" will be marked as "In progress".
-        Read more in the <a class="link" target="_blank" href="https://www.icescrum.com/blog/icescrum-v7.42">release notes</a>.
+        Read more in the <a class="link" target="_blank" href="https://www.icescrum.com/blog/icescrum-v7-42">release notes</a>.
     </p>
 </div>
