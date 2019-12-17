@@ -330,16 +330,6 @@ filters
             return items.slice().reverse();
         };
     })
-    .filter('permalink', ['$rootScope', function($rootScope) {
-        return function(uid, type, projectKey) {
-            var prefixByType = {
-                story: '',
-                feature: 'F',
-                task: 'T'
-            };
-            return $rootScope.serverUrl + '/' + (projectKey ? projectKey : $rootScope.getProjectFromState().pkey) + '-' + prefixByType[type] + uid;
-        };
-    }])
     .filter('projectUrl', ['$rootScope', function($rootScope) {
         return function(projectKey) {
             return $rootScope.serverUrl + '/p/' + projectKey + '/';

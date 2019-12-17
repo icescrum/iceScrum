@@ -169,7 +169,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             name: 'todo.is.ui.permalink.copy',
             visible: function(task) { return true; },
             action: function(task) {
-                FormService.copyToClipboard($filter('permalink')(task.uid, 'task')).then(function() {
+                FormService.copyToClipboard(task.permalink).then(function() {
                     $scope.notifySuccess('is.ui.permalink.copy.success');
                 }, function(text) {
                     $scope.notifyError('is.ui.permalink.copy.error' + ' ' + text);

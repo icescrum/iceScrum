@@ -174,7 +174,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             name: 'todo.is.ui.permalink.copy',
             visible: function(story) { return true },
             action: function(story) {
-                FormService.copyToClipboard($filter('permalink')(story.uid, 'story')).then(function() {
+                FormService.copyToClipboard(story.permalink).then(function() {
                     $scope.notifySuccess('is.ui.permalink.copy.success');
                 }, function(text) {
                     $scope.notifyError('is.ui.permalink.copy.error' + ' ' + text);

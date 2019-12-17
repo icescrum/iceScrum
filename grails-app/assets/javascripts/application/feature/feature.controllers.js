@@ -60,7 +60,7 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
             name: 'todo.is.ui.permalink.copy',
             visible: function(feature) { return true; },
             action: function(feature) {
-                FormService.copyToClipboard($filter('permalink')(feature.uid, 'feature')).then(function() {
+                FormService.copyToClipboard(feature.permalink).then(function() {
                     $scope.notifySuccess('is.ui.permalink.copy.success');
                 }, function(text) {
                     $scope.notifyError($scope.message('is.ui.permalink.copy.error') + ' ' + text);

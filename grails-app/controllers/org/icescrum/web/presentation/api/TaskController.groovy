@@ -322,7 +322,7 @@ class TaskController implements ControllerErrorHandler {
                         notes      : ServicesUtils.textileToHtml(_task.notes),
                         sprint     : g.message(code: 'is.sprint') + " " + ((Sprint) _task.backlog).index,
                         taskColor  : _task.color,
-                        permalink  : createLink(absolute: true, uri: '/' + _project.pkey + '-T' + _task.uid),
+                        permalink  : _task.permalink,
                         story      : _task.parentStory ? _task.parentStory.name : null,
                         estimation : _task.estimation,
                         type       : _task.parentStory ? null : message(code: grailsApplication.config.icescrum.resourceBundles.taskTypes[_task.type])

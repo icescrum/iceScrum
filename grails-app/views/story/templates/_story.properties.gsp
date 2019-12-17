@@ -145,7 +145,7 @@
                             <i class="fa fa-info-circle"></i>
                         </a>
                         <a ng-if="!hasSameProject(editableStory, editableStory.dependsOn)"
-                           ng-href="{{ editableStory.dependsOn.uid | permalink: 'story': editableStory.dependsOn.project.pkey }}"
+                           ng-href="{{:: editableStory.dependsOn.permalink }}"
                            class="btn btn-secondary">
                             <i class="fa fa-info-circle"></i>
                         </a>
@@ -162,7 +162,7 @@
                        title="{{ dependence | storyLabel }}">
                         {{ dependence.name | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
                     <a ng-if="!hasSameProject(editableStory, dependence)"
-                       ng-href="{{ dependence.uid | permalink: 'story': dependence.project.pkey }}"
+                       ng-href="{{:: dependence.permalink }}"
                        title="{{ dependence | storyLabel : false : true }}">
                         {{ (dependence.name + ' (' +  dependence.project.name + ')') | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
                 </span>

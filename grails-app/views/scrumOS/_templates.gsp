@@ -193,7 +193,7 @@
 
                     <div>
                         <span class="text-accent">{{ activity | activityName }}</span>
-                        <a href="{{ activity.story.uid | permalink: 'story': groupedActivity.project.pkey }}" class="link">{{ activity.story.name }}</a>
+                        <a href="{{:: story.permalink }}" class="link">{{ activity.story.name }}</a>
                     </div>
                 </div>
             </div>
