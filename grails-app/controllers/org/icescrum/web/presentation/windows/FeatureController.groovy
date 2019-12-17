@@ -56,6 +56,18 @@ class FeatureController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
+    @Secured('isAuthenticated()')
+    def uid(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Feature feature = Feature.findByBacklogAndUid(_project, uid)
+        if (feature) {
+            params.id = feature.id.toString()
+            forward(action: "show")
+        } else {
+            render(status: 404)
+        }
+    }
+
     @Secured('productOwner() and !archivedProject()')
     def save(long project) {
         def featureParams = params.feature

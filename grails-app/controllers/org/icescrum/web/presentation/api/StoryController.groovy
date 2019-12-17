@@ -86,6 +86,18 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
+    @Secured(['stakeHolder() or inProject()'])
+    def uid(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Story story = Story.findByBacklogAndUid(_project, uid)
+        if (story) {
+            params.id = story.id.toString()
+            forward(action: "show")
+        } else {
+            render(status: 404)
+        }
+    }
+
     @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def save(long project) {
         def storyParams = params.story

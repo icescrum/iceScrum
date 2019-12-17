@@ -75,6 +75,18 @@ class TaskController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def uid(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Task task = Task.findByParentProjectAndUid(_project, uid)
+        if (task) {
+            params.id = task.id.toString()
+            forward(action: "show")
+        } else {
+            render(status: 404)
+        }
+    }
+
     @Secured('inProject() and !archivedProject()')
     def save() {
         def taskParams = params.task

@@ -58,6 +58,12 @@ class AcceptanceTestController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
+    @Secured('(stakeHolder() or inProject()) and !archivedProject()')
+    def uid(int uid, long project) {
+        AcceptanceTest acceptanceTest = AcceptanceTest.findByProjectIdAndUid(project, uid)
+        render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
+    }
+
     @Secured('inProject() and !archivedProject()')
     def save(long project) {
         def acceptanceTestParams = params.acceptanceTest

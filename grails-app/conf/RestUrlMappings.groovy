@@ -144,6 +144,14 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
+        "/ws/project/$project/$controller/uid/$uid" {
+            action = [GET: 'uid']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                controller(inList: ['story', 'acceptanceTest', 'feature', 'actor', 'task'])
+                uid(matches: /\d*/)
+            }
+        }
         // Activities
         "/ws/project/$project/activity/$type/$fluxiableId" {
             controller = 'activity'
