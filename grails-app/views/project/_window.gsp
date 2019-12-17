@@ -163,6 +163,7 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.chart.title')}
                     </span>
+                    <entry:point id="project-dashboard-charts-after-title"/>
                     <div class="btn-toolbar float-right">
                         <div uib-dropdown
                              class="btn-group">
