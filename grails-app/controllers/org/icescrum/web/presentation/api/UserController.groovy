@@ -394,7 +394,7 @@ class UserController implements ControllerErrorHandler {
             def project = story.backlog
             [
                     activity: activity,
-                    story   : [uid: story.uid, name: story.name],
+                    story   : [uid: story.uid, name: story.name, permalink: story.permalink],
                     project : [pkey: project.pkey, name: project.name],
                     notRead : activity.dateCreated > user.preferences.lastReadActivities
             ]
