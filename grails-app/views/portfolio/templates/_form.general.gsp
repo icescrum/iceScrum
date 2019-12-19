@@ -57,6 +57,17 @@
 </div>
 <div class="row">
     <div class="col form-group">
+        <label for="framework">${message(code: 'is.portfolio.framework')}</label>
+        <div>
+            <div class="btn-group">
+                <label class="btn btn-primary" ng-model="portfolio.framework" uib-btn-radio="'DEFAULT'">LeSS, Nexus...</label>
+                <label class="btn btn-primary" ng-model="portfolio.framework" uib-btn-radio="'SAFE'">SAFe</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col form-group">
         <label for="description">${message(code: 'is.portfolio.description')}</label>
         <textarea at
                   is-markitup

@@ -69,7 +69,7 @@ class PortfolioController implements ControllerErrorHandler {
         Portfolio portfolio = new Portfolio()
         def projects = Project.withProjects(portfolioParams.projects, 'id', springSecurityService.currentUser)
         Portfolio.withTransaction {
-            bindData(portfolio, portfolioParams, [include: ['fkey', 'name', 'description']])
+            bindData(portfolio, portfolioParams, [include: ['fkey', 'name', 'description', 'framework']])
             def businessOwners = portfolioParams.businessOwners ? portfolioParams.businessOwners.list('id').collect { it.toLong() } : []
             def stakeholders = portfolioParams.stakeHolders ? portfolioParams.stakeHolders.list('id').collect { it.toLong() } : []
             def invitedBusinessOwners = portfolioParams.invitedBusinessOwners ? portfolioParams.invitedBusinessOwners.list('email') : []
@@ -90,7 +90,7 @@ class PortfolioController implements ControllerErrorHandler {
         def invitedBusinessOwners = portfolioParams.invitedBusinessOwners ? portfolioParams.invitedBusinessOwners.list('email') : []
         def invitedStakeHolders = portfolioParams.invitedStakeHolders ? portfolioParams.invitedStakeHolders.list('email') : []
         Portfolio.withTransaction {
-            bindData(_portfolio, portfolioParams, [include: ['name', 'description', 'fkey']])
+            bindData(_portfolio, portfolioParams, [include: ['name', 'description', 'fkey', 'framework']])
             portfolioService.update(_portfolio, projects, businessOwners, stakeholders)
             portfolioService.managePortfolioInvitations(_portfolio, invitedBusinessOwners, invitedStakeHolders)
             entry.hook(id: "portfolio-update", model: [portfolio: _portfolio])
