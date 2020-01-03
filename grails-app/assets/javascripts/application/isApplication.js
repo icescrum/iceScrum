@@ -916,6 +916,7 @@ var isApplication = angular.module('isApplication', [
                 menu: menuLoaderAnimation,
                 main: mainLoaderAnimation
             };
+            moment.locale(isSettings.lang);
         }
         $rootScope.authenticated = Session.authenticated;
         $rootScope.authorizedApp = AppService.authorizedApp;
