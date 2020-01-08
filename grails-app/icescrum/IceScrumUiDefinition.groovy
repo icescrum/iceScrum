@@ -175,7 +175,7 @@ widgets = {
         width 2
         secured 'isAuthenticated()'
         defaultSettings = [text: '']
-        ngController = 'notesWidgetCtrl'
+        ngController 'notesWidgetCtrl'
         onUpdate { widget, settings ->
             settings.text_html = ServicesUtils.textileToHtml(settings.text)
         }
@@ -200,26 +200,26 @@ widgets = {
         width 1
         title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
         secured 'isAuthenticated()'
-        ngController = "backlogChartWidgetCtrl"
+        ngController 'backlogChartWidgetCtrl'
         defaultSettings = [:]
     }
     'projectBacklogChart' {
         height 1
         width 1
         i18n = 'backlogChart'
-        workspace = 'project'
-        templateFolder = 'backlogChart'
+        workspace 'project'
+        templateFolder 'backlogChart'
         title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
-        ngController = "backlogChartWidgetCtrl"
+        ngController 'backlogChartWidgetCtrl'
         defaultSettings = [:]
     }
     'projectLeadTimeChart' {
         height 1
         width 1
-        workspace = 'project'
-        ngController = 'leadTimeChartWidgetCtrl'
-        i18n = 'leadTimeChart'
-        templateFolder = 'leadTimeChart'
+        workspace 'project'
+        ngController 'leadTimeChartWidgetCtrl'
+        i18n 'leadTimeChart'
+        templateFolder 'leadTimeChart'
         defaultSettings = [:]
     }
 }
