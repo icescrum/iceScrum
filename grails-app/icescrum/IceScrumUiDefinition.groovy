@@ -213,4 +213,13 @@ widgets = {
         ngController = "backlogChartWidgetCtrl"
         defaultSettings = [:]
     }
+    'projectLeadTimeChart' {
+        height 1
+        width 1
+        workspace = 'project'
+        ngController = 'leadTimeChartWidgetCtrl'
+        i18n = 'leadTimeChart'
+        templateFolder = 'leadTimeChart'
+        defaultSettings = [:]
+    }
 }

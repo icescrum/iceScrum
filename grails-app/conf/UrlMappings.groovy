@@ -319,6 +319,13 @@ class UrlMappings {
                 action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
             }
         }
+        "/project/$project/leadTime/$startState?" {
+            controller = 'project'
+            action = 'leadTime'
+            constraints {
+                startState(matches: /\d*/)
+            }
+        }
         "/project/$project" {
             controller = 'project'
             action = [GET: "show", DELETE: "delete", POST: "update"]
