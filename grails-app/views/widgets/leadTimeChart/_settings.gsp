@@ -21,6 +21,19 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
+<div class="form-group" ng-if="workspaceType != 'project'">
+    <label>${message(code: 'is.project')}</label>
+    <ui-select class="form-control"
+               search-enabled="true"
+               ng-change="projectChanged()"
+               append-to-body="true"
+               ng-model="holder.project">
+        <ui-select-match placeholder="${message(code: 'is.ui.widget.project.no')}">{{ $select.selected.name }}</ui-select-match>
+        <ui-select-choices repeat="proj in projects track by $index"
+                           refresh="refreshProjects($select.search)"
+                           refresh-delay="150">{{proj.name}}</ui-select-choices>
+    </ui-select>
+</div>
 <div class="form-group">
     <label for="startState">${message(code: 'is.ui.widget.leadTimeChart.startState')}</label>
     <ui-select ng-model="widget.settings.startState"

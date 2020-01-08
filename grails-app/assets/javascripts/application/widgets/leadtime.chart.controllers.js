@@ -22,13 +22,13 @@
  *
  */
 
-controllers.controller('leadTimeChartWidgetCtrl', ['$scope', '$element', '$controller', '$timeout', 'Session', 'StoryStatesByName', function($scope, $element, $controller, $timeout, Session, StoryStatesByName) {
+controllers.controller('projectLeadTimeChartWidgetCtrl', ['$scope', '$element', '$controller', '$timeout', 'Session', 'StoryStatesByName', function($scope, $element, $controller, $timeout, Session, StoryStatesByName) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
-    $scope.widgetReady = function(widget) {
-        return !!(widget.settings && widget.settings.startState);
-    };
     // Functions
+    $scope.widgetReady = function(widget) {
+        return !!(widget.settings && widget.settings.startState && ($scope.workspaceType === 'project' || widget.settings.project));
+    };
     $scope.display = function(widget) {
         if ($scope.widgetReady(widget)) {
             var chartWidgetOptions = _.merge($scope.getChartWidgetOptions(widget), {
@@ -51,18 +51,51 @@ controllers.controller('leadTimeChartWidgetCtrl', ['$scope', '$element', '$contr
                 }
             });
             var chartName = 'leadTime/' + widget.settings.startState; // Hack to provide param in the chart URL
-            $scope.openChart('project', chartName, $scope.project, chartWidgetOptions).then(function(chart) {
+            $scope.openChart('project', chartName, $scope.workspaceType === 'project' ? Session.getWorkspace() : widget.settings.project, chartWidgetOptions).then(function(chart) {
                 $timeout(function() {
-                    var cycleTime = _.sumBy(chart.data, '[1]');
-                    $scope.options.chart.title = cycleTime ? moment.duration(cycleTime, 'days').humanize() : '?';
+                    var leadTime = _.sumBy(chart.data, '[1]');
+                    $scope.options.chart.title = leadTime ? moment.duration(leadTime, 'days').humanize() : '?';
                 }, 100); // Hack, as a lower delay does not work...
             });
         }
     };
     // Init
-    $scope.holder = {};
-    if ($scope.workspaceType === 'project') {
-        $scope.holder.project = Session.getWorkspace();
-    }
     $scope.storyStartStates = [StoryStatesByName.SUGGESTED, StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED];
+    if (!widget.settings) {
+        widget.settings = {
+            startState: $scope.storyStartStates[0]
+        };
+    }
+}]);
+
+controllers.controller('leadTimeChartWidgetCtrl', ['$scope', '$element', '$controller', '$timeout', 'StoryStatesByName', 'ProjectService', function($scope, $element, $controller, $timeout, StoryStatesByName, ProjectService) {
+    $controller('projectLeadTimeChartWidgetCtrl', {$scope: $scope, $element: $element});
+    var widget = $scope.widget; // $scope.widget is inherited
+    // Functions
+    $scope.getTitle = function() {
+        return $scope.widgetReady(widget) ? widget.settings.project.pkey + ' - ' + $scope.message('is.ui.widget.leadTimeChart.name') : '';
+    };
+    $scope.getUrl = function() {
+        return $scope.widgetReady(widget) ? $scope.openWorkspaceUrl(widget.settings.project) : '';
+    };
+    $scope.refreshProjects = function(term) {
+        if (widget.settings && widget.settings.project && !$scope.holder.projectResolved) {
+            ProjectService.get(widget.settings.project.id).then(function(project) {
+                $scope.holder.projectResolved = true;
+                $scope.holder.project = project;
+            });
+        }
+        ProjectService.listByUser({term: term}).then(function(projectsAndCount) {
+            $scope.projects = projectsAndCount.projects;
+            if (!term && widget.settings && widget.settings.project && !_.find($scope.projects, {id: widget.settings.project.id})) {
+                $scope.projects.unshift(widget.settings.project);
+            }
+        });
+    };
+    $scope.projectChanged = function() { // Use callback instead of direct model linking to filter data before sending it
+        widget.settings.project = _.pick($scope.holder.project, ['id', 'pkey']);
+    };
+    // Init
+    $scope.holder = {};
+    $scope.projects = [];
 }]);
