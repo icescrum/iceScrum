@@ -68,7 +68,7 @@ controllers.controller('projectLeadTimeChartWidgetCtrl', ['$scope', '$element', 
     }
 }]);
 
-controllers.controller('leadTimeChartWidgetCtrl', ['$scope', '$element', '$controller', '$timeout', 'StoryStatesByName', 'ProjectService', function($scope, $element, $controller, $timeout, StoryStatesByName, ProjectService) {
+controllers.controller('leadTimeChartWidgetCtrl', ['$scope', '$element', '$controller', 'ProjectService', function($scope, $element, $controller, ProjectService) {
     $controller('projectLeadTimeChartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     // Functions
