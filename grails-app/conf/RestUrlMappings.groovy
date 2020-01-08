@@ -128,6 +128,13 @@ class RestUrlMappings {
                 action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
             }
         }
+        "/ws/project/$project/leadTime/$startState?" {
+            controller = 'project'
+            action = 'leadTime'
+            constraints {
+                startState(matches: /\d*/)
+            }
+        }
         // Resources
         "/ws/project/$project/$controller" {
             action = [GET: 'index', POST: 'save']
