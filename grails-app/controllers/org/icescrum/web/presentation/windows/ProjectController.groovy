@@ -402,6 +402,12 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: "application/json", text: [data: dataPoints, options: options] as JSON)
     }
 
+    def cycleTime(long project) {
+        Project _project = Project.withProject(project)
+        def meanCycleTime = storyService.meanCycleTime(_project)
+        render(status: 200, contentType: "application/json", text: [data: [['', meanCycleTime]], options: [:]] as JSON)
+    }
+
     @Secured('isAuthenticated()')
     def "import"() {
         try {

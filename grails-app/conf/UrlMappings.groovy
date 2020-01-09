@@ -316,7 +316,7 @@ class UrlMappings {
         "/project/$project/$action" {
             controller = 'project'
             constraints {
-                action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
+                action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup', 'cycleTime'])
             }
         }
         "/project/$project/leadTime/$startState?" {
