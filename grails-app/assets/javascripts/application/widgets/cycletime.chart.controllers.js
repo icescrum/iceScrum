@@ -52,8 +52,8 @@ controllers.controller('projectCycleTimeChartWidgetCtrl', ['$scope', '$element',
             });
             $scope.openChart('project', 'cycleTime', $scope.workspaceType === 'project' ? Session.getWorkspace() : widget.settings.project, chartWidgetOptions).then(function(chart) {
                 $timeout(function() {
-                    var cycleTime = chart.data[0][1];
-                    $scope.options.chart.title = cycleTime ? moment.duration(cycleTime, 'days').humanize() : '?';
+                    var cycleTime = chart.data.length ? chart.data[0][1] : undefined;
+                    $scope.options.chart.title = cycleTime ? moment.duration(cycleTime, 'days').humanize() : (cycleTime === 0 ? '' + cycleTime : '');
                 }, 100); // Hack, as a lower delay does not work...
             });
         }

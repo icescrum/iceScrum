@@ -54,7 +54,7 @@ controllers.controller('projectLeadTimeChartWidgetCtrl', ['$scope', '$element', 
             $scope.openChart('project', chartName, $scope.workspaceType === 'project' ? Session.getWorkspace() : widget.settings.project, chartWidgetOptions).then(function(chart) {
                 $timeout(function() {
                     var leadTime = _.sumBy(chart.data, '[1]');
-                    $scope.options.chart.title = leadTime ? moment.duration(leadTime, 'days').humanize() : '?';
+                    $scope.options.chart.title = leadTime ? moment.duration(leadTime, 'days').humanize() : (leadTime === 0 ? '' + leadTime : '');
                 }, 100); // Hack, as a lower delay does not work...
             });
         }
