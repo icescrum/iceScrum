@@ -61,13 +61,11 @@ class WidgetController implements ControllerErrorHandler {
             widgets = Project.withProject(project).widgets
         } else {
             User user = springSecurityService.currentUser
-            if (user) {
-                widgets = user.preferences.widgets.findAll { !['quickProjects', 'publicProjects'].contains(it.widgetDefinitionId) } // Legacy widget replaced by dedicated line
-            } else {
-                widgets = uiDefinitionService.widgetDefinitions.findResults { id, WidgetDefinition widgetDefinition ->
-                    ApplicationSupport.isAllowed(widgetDefinition, params) ? ['widgetDefinitionId': id, 'height': widgetDefinition.height, 'width': widgetDefinition.width] : null
-                }
-            }
+            widgets = user ? user.preferences.widgets : []
+        }
+        widgets = widgets.findAll { Widget widget ->
+            def widgetDefinition = uiDefinitionService.widgetDefinitions[widget.widgetDefinitionId]
+            return widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params)
         }
         render(status: 200, contentType: 'application/json', text: widgets as JSON)
     }
