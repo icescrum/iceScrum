@@ -52,7 +52,6 @@ class ProjectController implements ControllerErrorHandler {
     def releaseService
     def springSecurityService
     def featureService
-    def storyService
     def securityService
     def dummyService
 
@@ -384,29 +383,6 @@ class ProjectController implements ControllerErrorHandler {
                                barColor: colors],
                        title: [text: message(code: "is.chart.projectParkinglot.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
-    }
-
-    def leadTime(long project, Integer startState) {
-        if (!startState) {
-            startState = Story.STATE_SUGGESTED
-        }
-        Project _project = Project.withProject(project)
-        def storyStateNames = _project.getStoryStateNames()
-        def dataPoints = [], colors = [], total = 0
-        storyService.meanTimePerState(_project, startState, Story.STATE_DONE).each { state, meanTime ->
-            dataPoints << [message(code: storyStateNames[state]), meanTime]
-            colors << grailsApplication.config.icescrum.resourceBundles.storyStatesColor[state]
-            total += meanTime
-        }
-        def options = [chart: [title: "$total", color: colors]]
-        render(status: 200, contentType: "application/json", text: [data: dataPoints, options: options] as JSON)
-    }
-
-    def cycleTime(long project) {
-        Project _project = Project.withProject(project)
-        def meanCycleTime = Story.meanCycleTime(_project.id)
-        def dataPoints = meanCycleTime != null ? [['', meanCycleTime]] : []
-        render(status: 200, contentType: "application/json", text: [data: dataPoints, options: [:]] as JSON)
     }
 
     @Secured('isAuthenticated()')

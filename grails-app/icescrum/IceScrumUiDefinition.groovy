@@ -213,36 +213,4 @@ widgets = {
         ngController 'backlogChartWidgetCtrl'
         defaultSettings = [:]
     }
-    'leadTimeChart' {
-        height 1
-        width 1
-        title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
-        ngController 'leadTimeChartWidgetCtrl'
-        defaultSettings = [:]
-    }
-    'projectLeadTimeChart' {
-        height 1
-        width 1
-        workspace 'project'
-        ngController 'projectLeadTimeChartWidgetCtrl'
-        i18n 'leadTimeChart'
-        templateFolder 'leadTimeChart'
-        defaultSettings = [:]
-    }
-    'cycleTimeChart' {
-        height 1
-        width 1
-        title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
-        ngController 'cycleTimeChartWidgetCtrl'
-        defaultSettings = [:]
-    }
-    'projectCycleTimeChart' {
-        height 1
-        width 1
-        workspace 'project'
-        ngController 'projectCycleTimeChartWidgetCtrl'
-        i18n 'cycleTimeChart'
-        templateFolder 'cycleTimeChart'
-        hideSettings true
-    }
 }

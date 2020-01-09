@@ -316,14 +316,7 @@ class UrlMappings {
         "/project/$project/$action" {
             controller = 'project'
             constraints {
-                action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup', 'cycleTime'])
-            }
-        }
-        "/project/$project/leadTime/$startState?" {
-            controller = 'project'
-            action = 'leadTime'
-            constraints {
-                startState(matches: /\d*/)
+                action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
             }
         }
         "/project/$project" {
