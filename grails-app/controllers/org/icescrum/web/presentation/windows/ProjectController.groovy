@@ -404,7 +404,7 @@ class ProjectController implements ControllerErrorHandler {
 
     def cycleTime(long project) {
         Project _project = Project.withProject(project)
-        def meanCycleTime = storyService.meanCycleTime(_project)
+        def meanCycleTime = Story.meanCycleTime(_project.id, true)
         render(status: 200, contentType: "application/json", text: [data: [['', meanCycleTime]], options: [:]] as JSON)
     }
 
