@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 21 20">
+  <defs>
+    <style>
+      .e3890be9-f7ca-4245-88ea-7a25c0137519 {
+        fill: url(#e1663361-1b39-4680-bd5f-fd11e95adf09);
+      }
+
+      .e5dca399-1894-4b35-87bd-5afb7af3af59 {
+        fill: url(#a20df853-c5ca-4fcf-a1ee-09158d55c531);
+      }
+
+      .a729d9b1-5b92-4bc5-97c7-8fa73fe9a4f7 {
+        fill: url(#bfd1bbc3-65f8-46e4-a2ee-6c341aae564d);
+      }
+
+      .abd0028a-adaf-475d-8735-c2ad10e251c7 {
+        fill: url(#ad4d3ef9-308b-438a-9290-97ac77ad0378);
+      }
+
+      .a7b365c3-7bf6-4293-a67f-79e9e5ffca06 {
+        fill: url(#b219b8f5-a160-42cf-ac14-e02dbaba4ac4);
+      }
+
+      .b81ae5d4-70f3-46b5-a27e-1d06c2babbbf {
+        fill: url(#a29feae2-9201-4a2c-ae0a-3509f480d768);
+      }
+    </style>
+    <linearGradient id="e1663361-1b39-4680-bd5f-fd11e95adf09" data-name="Nouvelle nuance de dégradé 1" x1="-1.79854" y1="15.14805" x2="14.97562" y2="2.0513" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2611e7"/>
+      <stop offset="1" stop-color="#6db4d7"/>
+    </linearGradient>
+    <linearGradient id="a20df853-c5ca-4fcf-a1ee-09158d55c531" x1="-3.77002" y1="11.623" x2="13.00414" y2="-1.47375" xlink:href="#e1663361-1b39-4680-bd5f-fd11e95adf09"/>
+    <linearGradient id="bfd1bbc3-65f8-46e4-a2ee-6c341aae564d" x1="-1.01587" y1="15.92575" x2="16.44543" y2="2.29251" xlink:href="#e1663361-1b39-4680-bd5f-fd11e95adf09"/>
+    <linearGradient id="ad4d3ef9-308b-438a-9290-97ac77ad0378" x1="2.67732" y1="21.02181" x2="20.11176" y2="7.40954" xlink:href="#e1663361-1b39-4680-bd5f-fd11e95adf09"/>
+    <linearGradient id="b219b8f5-a160-42cf-ac14-e02dbaba4ac4" x1="0.30845" y1="16.84666" x2="17.08261" y2="3.74992" xlink:href="#e1663361-1b39-4680-bd5f-fd11e95adf09"/>
+    <linearGradient id="a29feae2-9201-4a2c-ae0a-3509f480d768" x1="3.18864" y1="22.55075" x2="21.00824" y2="8.63775" xlink:href="#e1663361-1b39-4680-bd5f-fd11e95adf09"/>
+  </defs>
+  <g>
+    <g>
+      <ellipse class="e3890be9-f7ca-4245-88ea-7a25c0137519" cx="10.48862" cy="5.5546" rx="2.40044" ry="2.43375"/>
+      <ellipse class="e5dca399-1894-4b35-87bd-5afb7af3af59" cx="5.12868" cy="4.67517" rx="1.91425" ry="1.962"/>
+      <path class="a729d9b1-5b92-4bc5-97c7-8fa73fe9a4f7" d="M7.125,10.19849a1.19425,1.19425,0,0,0-.02734-1.2097A2.60336,2.60336,0,0,0,5.12868,7.93688c-1.99629-.0526-3.67754,2.85587-3.81427,6.64277,0,.31557.10939.52595.24612.52595H4.84209c.16408,0,.27347-.15778.35551-.42076A13.762,13.762,0,0,1,7.125,10.19849Z"/>
+      <path class="abd0028a-adaf-475d-8735-c2ad10e251c7" d="M10.48862,9.01778c-2.50258,0-4.58416,3.64325-4.76291,8.40739-.02554.3438.12768.63849.332.63849h8.86119c.17876,0,.332-.29469.332-.63849C15.04655,12.71014,12.99121,9.01778,10.48862,9.01778Z"/>
+    </g>
+    <g>
+      <ellipse class="a7b365c3-7bf6-4293-a67f-79e9e5ffca06" cx="15.89756" cy="4.67517" rx="1.91425" ry="1.962"/>
+      <path class="b81ae5d4-70f3-46b5-a27e-1d06c2babbbf" d="M15.8024,14.68484c.082.263.19143.42076.35551.42076h3.28156c.13673,0,.24612-.21038.24612-.52595-.13673-3.7869-1.79174-6.69537-3.788-6.64277a2.60333,2.60333,0,0,0-1.96894,1.05191,1.19425,1.19425,0,0,0-.02735,1.2097A13.74767,13.74767,0,0,1,15.8024,14.68484Z"/>
+    </g>
+  </g>
+</svg>
