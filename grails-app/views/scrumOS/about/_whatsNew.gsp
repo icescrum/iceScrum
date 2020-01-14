@@ -23,5 +23,5 @@
 
 <div class="d-flex flex-column align-items-center">
     <asset:image src="/whatsNew/whatsNew.png" style="width: 825px" class="img-shadow m-3"/>
-    <h4 class="mt-1">New Apps: <a href="https://www.icescrum.com/documentation/kpi/" target="_blank">Agile KPIs</a> and <a href="https://www.icescrum.com/documentation/custom-project-dashboard/" target="_blank">Custom Project Dashboard</a></h4>
+    <h4 class="mt-1">New Apps: <a href="https://www.icescrum.com/documentation/kpi/" target="_blank">Agile KPIs</a>, <a href="https://www.icescrum.com/documentation/custom-project-dashboard/" target="_blank">Custom Project Dashboard</a> and <a href="https://www.icescrum.com/documentation/mattermost/" target="_blank">Mattermost</a></h4>
 </div>
