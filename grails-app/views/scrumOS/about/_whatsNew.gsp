@@ -22,10 +22,6 @@
 --}%
 
 <div class="d-flex flex-column align-items-center">
-    <asset:image src="/whatsNew/whatsNew.png" style="width: 650px" class="img-shadow m-3"/>
-    <h3 class="mt-1">Manually mark a feature as Done</h3>
-    <p class="pl-5 pr-5 mt-1 text-center">
-        As part of this update, features which state was previously calculated as "Done" will be marked as "In progress".
-        Read more in the <a class="link" target="_blank" href="https://www.icescrum.com/blog/icescrum-v7-42">release notes</a>.
-    </p>
+    <asset:image src="/whatsNew/whatsNew.png" style="width: 825px" class="img-shadow m-3"/>
+    <h4 class="mt-1">New Apps: <a href="https://www.icescrum.com/documentation/kpi/" target="_blank">Agile KPIs</a> and <a href="https://www.icescrum.com/documentation/custom-project-dashboard/" target="_blank">Custom Project Dashboard</a></h4>
 </div>
