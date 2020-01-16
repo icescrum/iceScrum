@@ -29,4 +29,11 @@ databaseChangeLog = {
             }
         }
     }
+    changeSet(author: "vbarrier", id: "update_task_in_progress_date") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_task SET in_progress_date = done_date WHERE in_progress_date IS NULL AND done_date IS NOT NULL")
+            }
+        }
+    }
 }
