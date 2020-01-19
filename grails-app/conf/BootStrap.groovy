@@ -27,10 +27,17 @@ import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 class BootStrap {
 
     def localeResolver
+    def authorityService
     def timeoutHttpSessionListener
     DefaultGrailsApplication grailsApplication
 
     def init = { servletContext ->
+
+        if(grailsApplication.config.icescrum.createDefaultAdmin && !grailsApplication.config.icescrum.setupCompleted){
+            println "Creating default admin..."
+            authorityService.initDefaultAdmin()
+            grailsApplication.config.icescrum.setupCompleted = true
+        }
 
         servletContext.addListener(timeoutHttpSessionListener)
         localeResolver.defaultLocale = Locale.ENGLISH
