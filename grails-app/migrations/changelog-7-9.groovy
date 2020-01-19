@@ -41,7 +41,6 @@ databaseChangeLog = {
                 // No easy way to check if the constraint exists or not
                 // So we avoid running the migration if no user, meaning a probably fresh DB
                 // Required for Oracle because it cannot drop a non existing constraint
-                // May occasionnally fail only in Dev mode & Oracle on fresh DB because sometimes AuthorityService.initSecurity is executed before migrations
                 sqlCheck(expectedResult: '0', 'SELECT count(*) FROM is_user')
             }
         }
