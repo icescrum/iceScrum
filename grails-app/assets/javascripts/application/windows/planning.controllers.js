@@ -203,7 +203,7 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
                     return sprint.state == SprintStatesByName.TODO || sprint.state == SprintStatesByName.IN_PROGRESS;
                 });
                 if (firstSprintToShowIndex == -1) {
-                    firstSprintToShowIndex = $scope.sprints.length > $scope.visibleSprintMax ? $scope.sprints.length - $scope.visibleSprintMax - 1 : 0;
+                    firstSprintToShowIndex = $scope.sprints.length > $scope.visibleSprintMax ? $scope.sprints.length - $scope.visibleSprintMax : 0;
                 }
                 $scope.visibleSprintOffset = firstSprintToShowIndex;
             }
