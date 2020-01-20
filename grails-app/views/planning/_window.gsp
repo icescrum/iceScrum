@@ -128,22 +128,24 @@
                 </div>
             </div>
             <div ng-if="!sprints || sprints.length == 0"
-                 class="text-center">
-                <div class="empty-view">
-                    <p class="form-text">${message(code: 'is.ui.sprint.help')}<p>
-                </div>
+                 class="empty-view">
+                <p class="form-text">${message(code: 'is.ui.sprint.help')}<p>
+                <a class="btn btn-primary"
+                   ng-if="authorizedSprint('create')"
+                   ui-sref="planning.release.sprint.new({releaseId: release.id})">
+                    ${message(code: 'todo.is.ui.sprint.new')}
+                </a>
             </div>
         </div>
     </div>
-    <div ng-if="releases.length == 0">
-        <div class="empty-view" ng-controller="releaseCtrl">
-            <p class="form-text">${message(code: 'is.ui.release.help')}<p>
-            <a class="btn btn-primary"
-               ng-if="authorizedRelease('create')"
-               href="#{{ ::viewName }}/new">
-                ${message(code: 'todo.is.ui.release.new')}
-            </a>
-        </div>
+    <div ng-if="releases.length == 0"
+         class="empty-view">
+        <p class="form-text">${message(code: 'is.ui.release.help')}<p>
+        <a class="btn btn-primary"
+           ng-if="authorizedRelease('create')"
+           href="#{{ ::viewName }}/new">
+            ${message(code: 'todo.is.ui.release.new')}
+        </a>
     </div>
     <div class="timeline" ng-show="releases.length" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
 </is:window>

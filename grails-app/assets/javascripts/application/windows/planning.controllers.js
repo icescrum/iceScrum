@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', function($scope, $state, StoryService, SprintStatesByName, ReleaseStatesByName, project) {
+extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'ReleaseService', 'SprintService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', function($scope, $state, StoryService, ReleaseService, SprintService, SprintStatesByName, ReleaseStatesByName, project) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;
@@ -109,6 +109,8 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
     };
     // Init
     $scope.viewName = 'planning';
+    $scope.authorizedRelease = ReleaseService.authorizedRelease;
+    $scope.authorizedSprint = SprintService.authorizedSprint;
     $scope.visibleSprintMax = $scope.getVisibleSprintMax();
     $scope.visibleSprintOffset = 0;
     $scope.visibleSprints = [];
