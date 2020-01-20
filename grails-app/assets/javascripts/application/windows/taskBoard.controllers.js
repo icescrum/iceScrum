@@ -311,7 +311,14 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     };
     $scope.sprintFilters = [
         {id: 'allTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.allTasks'), filter: {}},
-        {id: 'myTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'), filter: {responsible: {id: Session.user.id}}},
+        {
+            id: 'myTasks',
+            name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'),
+            filter: function(task) {
+                // Function required because angular filterFilter will match ids 2* (e.g. 23) if provided with id 2
+                return task.responsible && Session.user && task.responsible.id === Session.user.id;
+            }
+        },
         {id: 'freeTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'), filter: {responsible: null}},
         {id: 'blockedTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'), filter: {blocked: true}}
     ];
