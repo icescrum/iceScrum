@@ -106,7 +106,7 @@ controllers.controller('userInvitationCtrl', ['$scope', '$state', '$timeout', '$
             })
         } else {
             $scope.invitationEntries = _.map(invitations, function(invitation) {
-                var type = invitation.type.name;
+                var type = invitation.type;
                 var object;
                 if (type === 'PROJECT') {
                     object = invitation.project;
