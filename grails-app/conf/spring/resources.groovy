@@ -20,9 +20,12 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  */
 
+
+import grails.plugin.springsecurity.SpringSecurityUtils
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.resource.CompositeResourceAccessor
 import liquibase.resource.FileSystemResourceAccessor
+import org.icescrum.core.security.IceScrumRedirectStrategy
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.utils.TimeoutHttpSessionListener
@@ -42,6 +45,11 @@ beans = {
         permissionEvaluator = ref('permissionEvaluator')
         roleHierarchy = ref('roleHierarchy')
         trustResolver = ref('authenticationTrustResolver')
+    }
+
+    redirectStrategy(IceScrumRedirectStrategy) {
+        useHeaderCheckChannelSecurity = SpringSecurityUtils.securityConfig.secureChannel.useHeaderCheckChannelSecurity // false
+        portResolver = ref('portResolver')
     }
 
     messageSource(IceScrumMessageSource) {
