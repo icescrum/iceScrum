@@ -22,7 +22,8 @@
 --}%
 <is:widget widgetDefinition="${widgetDefinition}">
     <div class="task-widget"
-         ng-repeat="entry in tasksByProject track by $index">
+         ng-repeat="entry in tasksByProject track by $index"
+         ng-if=":: !entry.project.preferences.archived">
         <h4 class="sticky-header">{{ ::entry.project.name }}</h4>
         <div class="sticky-notes grid-group">
             <div ng-repeat="task in entry.tasks"
