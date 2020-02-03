@@ -446,7 +446,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
     $scope.featureStatesByName = FeatureStatesByName;
 }]);
 
-extensibleController('storySplitCtrl', ['$scope', '$timeout', 'Session', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, $timeout, Session, $controller, $q, StoryService, StoryStatesByName, story) {
+extensibleController('storySplitCtrl', ['$scope', '$timeout', 'Session', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', 'projectUrlFilter', function($scope, $timeout, Session, $controller, $q, StoryService, StoryStatesByName, story, projectUrlFilter) {
     $controller('storyCtrl', {$scope: $scope});
     $controller('storyAtWhoCtrl', {$scope: $scope});
     // Functions
@@ -543,7 +543,7 @@ extensibleController('storySplitCtrl', ['$scope', '$timeout', 'Session', '$contr
         $q.serial(tasks);
     };
     $scope.getCheckStoryNameUrl = function(story) {
-        return '/p/' + $scope.getProjectFromState().id + '/story' + (story.id ? ('/' + story.id) : '') + '/available';
+        return projectUrlFilter($scope.getProjectFromState().pkey) + 'story' + (story.id ? ('/' + story.id) : '') + '/available';
     };
     $scope.validateStoryName = function(newName, story) {
         return !newName || !story || _.find($scope.stories, function(otherStory) {

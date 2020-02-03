@@ -479,16 +479,6 @@ filters
             return disallowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? ' ' : $0;
         });
     }
-}]).filter('truncateAndSeeMore', ['$rootScope', '$filter', function($rootScope, $filter) {
-    return function(text, key, length, url) {
-        var filteredText = $filter('stripTags')(text, '<br><p>');
-        var limit = length ? length : 350;
-        if (filteredText.length > limit) {
-            var permalink = $rootScope.serverUrl + '/p/' + key + (url ? url : '');
-            filteredText = $filter('ellipsis')(filteredText, limit, '&hellip;') + ' <a href="' + permalink + '">' + $rootScope.message('todo.is.ui.more') + '</a>';
-        }
-        return filteredText;
-    }
 }]).filter('allMembers', [function() {
     return function(project) {
         return _.unionBy(project.team.members, project.productOwners, 'id');
