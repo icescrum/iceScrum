@@ -24,10 +24,6 @@
  */
 controllers.controller('homeCtrl', ['$scope', '$controller', 'PushService', 'Session', 'ProjectService', 'IceScrumEventType', function($scope, $controller, PushService, Session, ProjectService, IceScrumEventType) {
     $controller('widgetViewCtrl', {$scope: $scope});
-    // Functions
-    $scope.getProjectUrl = function(project, viewName) {
-        return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
-    };
     // Init
     $scope.projectCreationEnabled = isSettings.projectCreationEnabled || Session.admin();
     $scope.projectsLoaded = false;

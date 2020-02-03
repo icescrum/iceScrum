@@ -330,10 +330,17 @@ filters
             return items.slice().reverse();
         };
     })
-    .filter('projectUrl', ['$rootScope', function($rootScope) {
-        return function(projectKey) {
-            return $rootScope.serverUrl + '/p/' + projectKey + '/';
+    .filter('workspaceUrl', ['$rootScope', function($rootScope) {
+        return function(workspaceType, workspaceKey, viewName) {
+            var workspacePath = workspaceType === 'portfolio' ? 'f' : 'p';
+            return $rootScope.serverUrl + '/' + workspacePath + '/' + workspaceKey + '/' + (viewName ? "#/" + viewName : '');
         };
+    }])
+    .filter('projectUrl', ['workspaceUrlFilter', function(workspaceUrlFilter) {
+        return _.bind(workspaceUrlFilter, null, 'project');
+    }])
+    .filter('portfolioUrl', ['workspaceUrlFilter', function(workspaceUrlFilter) {
+        return _.bind(workspaceUrlFilter, null, 'portfolio');
     }])
     .filter('flowFilesNotCompleted', function() {
         return function(items) {

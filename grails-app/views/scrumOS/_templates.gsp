@@ -165,7 +165,7 @@
     <div ng-repeat="groupedActivity in groupedUserActivities"
          ng-class="{'mb-3': !$last}">
         <div class="pl-3 pr-3">
-            <a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">
+            <a href="{{ groupedActivity.project.pkey | projectUrl }}">
                 <strong class="text-accent font-size-base">{{ groupedActivity.project.name }}</strong>
             </a>
         </div>

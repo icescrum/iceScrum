@@ -87,7 +87,7 @@
                      ng-repeat="project in projects | search">
                     <div class="d-flex flex-column justify-content-between w-100 text-truncate-fix2">
                         <div>
-                            <a ng-href="{{:: getProjectUrl(project) }}">
+                            <a ng-href="{{:: project.pkey | projectUrl }}">
                                 <h3 class="text-truncate">{{ ::project.name }}</h3>
                                 <div class="text-truncate">{{ ::project.team.name }}</div>
                             </a>
@@ -98,12 +98,12 @@
                         </div>
                     </div>
                     <div>
-                        <a href="{{:: getProjectUrl(project, 'backlog') }}"
+                        <a ng-href="{{:: project.pkey | projectUrl : 'backlog' }}"
                            class="btn btn-secondary btn-sm mb-2"
                            role="button">
                             <span class="icon-main-menu icon-main-menu-backlog d-inline-block"></span> ${message(code: 'is.ui.backlogs')}
                         </a>
-                        <a href="{{:: getProjectUrl(project, 'taskBoard') }}"
+                        <a ng-href="{{:: project.pkey | projectUrl : 'taskBoard' }}"
                            class="btn btn-secondary btn-sm"
                            role="button">
                             <span class="icon-main-menu icon-main-menu-taskBoard d-inline-block"></span> ${message(code: 'todo.is.ui.taskBoard')}
