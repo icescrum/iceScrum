@@ -283,8 +283,8 @@
     </script>
 
     <script type="text/ng-template" id="project.digest.html">
-    <div class="rich-content font-size-sm" ng-bind-html="project.description_html ? project.description_html : ''"></div>
-    <div ng-if="project.currentOrNextRelease" class="release-vision mb-0">
+    <div class="rich-content font-size-sm" ng-bind-html="project.description_html ? (project.description_html | stripTags : '<br><p>') : ''"></div>
+    <div ng-if="project.currentOrNextRelease" class="release-vision mb-0 mt-3">
         <div class="d-flex justify-content-between">
             <div><strong class="text-accent">{{ project.currentOrNextRelease.name }}</strong></div>
             <div>{{ project.currentOrNextRelease.startDate | dayShorter }} | {{ project.currentOrNextRelease.endDate | dayShorter }}</div>
@@ -297,7 +297,7 @@
     <div ng-if="project.currentOrNextRelease.currentOrNextSprint.goal" class="sprint-goal mr-0">
         <div class="sprint-goal-label d-flex justify-content-between">
             <div>{{ message('todo.is.ui.sprint.goal.label', [project.currentOrNextRelease.currentOrNextSprint.index]) }}</div>
-            <div>{{ project.currentOrNextRelease.startDate | dayShorter }} | {{ project.currentOrNextRelease.endDate | dayShorter }}</div>
+            <div>{{ project.currentOrNextRelease.currentOrNextSprint.startDate | dayShorter }} | {{ project.currentOrNextRelease.currentOrNextSprint.endDate | dayShorter }}</div>
         </div>
         <div>{{ project.currentOrNextRelease.currentOrNextSprint.goal }}</div>
     </div>
