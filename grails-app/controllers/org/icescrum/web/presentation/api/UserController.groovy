@@ -26,7 +26,6 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.io.FilenameUtils
-import org.apache.commons.validator.GenericValidator
 import org.hibernate.ObjectNotFoundException
 import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
@@ -295,7 +294,7 @@ class UserController implements ControllerErrorHandler {
             users = users.unique { it.email }.findAll(userFilter).take(9)
         }
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        if (!users && invite && GenericValidator.isEmail(term) && enableInvitation) {
+        if (!users && invite && ApplicationSupport.isValidEmailAddress(term) && enableInvitation) {
             users << [id: null, email: term]
         }
         render(status: 200, contentType: 'application/json', text: users as JSON)
