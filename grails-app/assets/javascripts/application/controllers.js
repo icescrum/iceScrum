@@ -272,7 +272,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', '$timeout', 'Contex
             keyboard: false,
             backdrop: 'static',
             templateUrl: url + "Dialog",
-            controller: ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+            controller: ['$scope', '$http', '$rootScope', 'projectUrlFilter', function($scope, $http, $rootScope, projectUrlFilter) {
                 // Functions
                 $scope.showProgress = function() {
                     $scope.progress = true;
@@ -288,7 +288,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', '$timeout', 'Contex
                         $scope.$close(true);
                         $rootScope.uiWorking(null);
                         $timeout(function() {
-                            document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
+                            $rootScope.openWorkspace(data);
                         }, 2000);
                     } else {
                         $scope.progress = false;
@@ -321,7 +321,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', '$timeout', 'Contex
                                 $scope.$close(true);
                                 $rootScope.uiWorking();
                                 $timeout(function() {
-                                    document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
+                                    $rootScope.openWorkspace(data);
                                 }, 2000);
                             } else {
                                 $scope.checkValidation(data);

@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', 'Session', '$controller', '$element', function($scope, BacklogService, ProjectService, CacheService, Session, $controller, $element) {
+controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', 'Session', '$controller', '$element', 'projectUrlFilter', function($scope, BacklogService, ProjectService, CacheService, Session, $controller, $element, projectUrlFilter) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     $scope.widgetReady = function(widget) {
@@ -32,7 +32,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
         return $scope.holder.title;
     };
     $scope.getUrl = function() {
-        return $scope.widgetReady(widget) ? $scope.serverUrl + '/p/' + widget.settings.backlog.project.pkey + '/#/backlog/' + widget.settings.backlog.code : '';
+        return $scope.widgetReady(widget) ? projectUrlFilter(widget.settings.backlog.project.pkey, 'backlog') + '/' + widget.settings.backlog.code : '';
     };
     $scope.refreshProjects = function(term) {
         if (widget.settings && widget.settings.backlog && widget.settings.backlog.project && !$scope.holder.projectResolved) {

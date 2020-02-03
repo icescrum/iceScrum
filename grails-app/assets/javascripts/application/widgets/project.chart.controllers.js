@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', '$controller', '$element', function($scope, ProjectService, ReleaseService, SprintService, $controller, $element) {
+controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', '$controller', '$element', 'projectUrlFilter', function($scope, ProjectService, ReleaseService, SprintService, $controller, $element, projectUrlFilter) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     // Functions
@@ -36,7 +36,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
         return $scope.widgetReady(widget) && $scope.holder.title ? widget.settings.project.pkey + ' - ' + $scope.holder.title : '';
     };
     $scope.getUrl = function() {
-        return $scope.widgetReady(widget) ? $scope.openWorkspaceUrl(widget.settings.project) : '';
+        return $scope.widgetReady(widget) ? projectUrlFilter(widget.settings.project.pkey) : '';
     };
     $scope.refreshProjects = function(term) {
         if (widget.settings && widget.settings.project && !$scope.holder.projectResolved) {

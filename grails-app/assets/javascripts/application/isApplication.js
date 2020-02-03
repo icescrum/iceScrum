@@ -813,15 +813,8 @@ var isApplication = angular.module('isApplication', [
                 $rootScope.notifySuccess('is.ui.copy.to.clipboard.error');
             });
         };
-        $rootScope.openWorkspaceUrl = function(object) {
-            if (object.pkey) {
-                return $rootScope.serverUrl + '/p/' + object.pkey + '/';
-            } else {
-                return $rootScope.serverUrl + '/f/' + object.fkey + '/';
-            }
-        };
         $rootScope.openWorkspace = function(object) {
-            document.location = $rootScope.openWorkspaceUrl(object);
+            document.location = object.pkey ? $filter('projectUrl')(object.pkey) : $filter('portfolioUrl')(object.fkey);
         };
         $rootScope.openDatepicker = function($event, holder) {
             $event.preventDefault();

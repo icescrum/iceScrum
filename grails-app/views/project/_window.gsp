@@ -240,7 +240,7 @@
                         ${message(code: 'todo.is.ui.history')}
                     </span>
                     <a class="btn btn-icon btn-secondary btn-sm float-right"
-                       href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
+                       href="{{ (project.pkey | projectUrl) + 'project/feed' }}">
                         <i class="icon icon-rss"></i>
                     </a>
                 </div>
