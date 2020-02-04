@@ -132,7 +132,7 @@ icescrum {
     workspaces = [
             project: [
                     path        : 'p',
-                    type        : 'project',
+                    type        : WorkspaceType.PROJECT,
                     objectClass : Project,
                     config      : { project -> [key: project.pkey, path: 'p'] },
                     params      : { project -> [project: project.id] },

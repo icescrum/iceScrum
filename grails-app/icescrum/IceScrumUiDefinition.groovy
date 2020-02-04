@@ -1,3 +1,4 @@
+import org.icescrum.core.domain.WorkspaceType
 import org.icescrum.core.utils.ServicesUtils
 
 /*
@@ -51,7 +52,7 @@ windows = {
     // Project workspace
     'backlog' {
         details true
-        workspace 'project'
+        workspace WorkspaceType.PROJECT
         help 'is.ui.backlog.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -70,7 +71,7 @@ windows = {
     }
     'feature' {
         details true
-        workspace 'project'
+        workspace WorkspaceType.PROJECT
         help 'is.ui.feature.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -87,7 +88,7 @@ windows = {
         }
     }
     'project' {
-        workspace 'project'
+        workspace WorkspaceType.PROJECT
         flex false
         help 'is.ui.project.help'
         secured 'stakeHolder() or inProject()'
@@ -98,7 +99,7 @@ windows = {
     }
     'planning' {
         details true
-        workspace 'project'
+        workspace WorkspaceType.PROJECT
         help 'todo.is.ui.planning.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -108,7 +109,7 @@ windows = {
     }
     'taskBoard' {
         details true
-        workspace 'project'
+        workspace WorkspaceType.PROJECT
         help 'todo.is.ui.taskBoard.help'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
@@ -207,7 +208,7 @@ widgets = {
         height 1
         width 1
         i18n = 'backlogChart'
-        workspace 'project'
+        workspace WorkspaceType.PROJECT
         templateFolder 'backlogChart'
         title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
         ngController 'backlogChartWidgetCtrl'

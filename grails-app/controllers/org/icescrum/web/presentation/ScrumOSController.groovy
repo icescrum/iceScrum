@@ -33,6 +33,7 @@ import org.icescrum.atmosphere.IceScrumBroadcaster
 import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.WorkspaceType
 import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
@@ -133,13 +134,13 @@ class ScrumOSController implements ControllerErrorHandler {
                         menuEntry.shortcut = 'ctrl+' + (index + 1)
                     }
                 }
-                if (windowDefinition.workspace == 'project' && windowDefinition.id != 'project') {
+                if (windowDefinition.workspace == WorkspaceType.PROJECT && windowDefinition.id != 'project') {
                     projectMenus << [id: windowDefinitionId, title: message(code: menu.title)]
                 }
             }
         }
         def onlineMembers = null
-        if (workspace?.name == 'project') {
+        if (workspace?.name == WorkspaceType.PROJECT) {
             onlineMembers = ((IceScrumBroadcaster) atmosphereMeteor.broadcasterFactory?.lookup(IceScrumBroadcaster.class, '/stream/app/project-' + workspace.object.id))?.users ?: []
         }
         def announcement = [:]
@@ -327,10 +328,10 @@ class ScrumOSController implements ControllerErrorHandler {
         User user = id ? User.get(id) : springSecurityService.currentUser
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def workspaces = []
-        if (!workspaceType || workspaceType == 'portfolio') {
+        if (!workspaceType || workspaceType == WorkspaceType.PORTFOLIO) {
             workspaces.addAll(portfolioService.getAllPortfoliosByUser(user, searchTerm))
         }
-        if (!workspaceType || workspaceType == 'project') {
+        if (!workspaceType || workspaceType == WorkspaceType.PROJECT) {
             workspaces.addAll(projectService.getAllActiveProjectsByUser(user, searchTerm))
         }
         if (paginate && !count) {

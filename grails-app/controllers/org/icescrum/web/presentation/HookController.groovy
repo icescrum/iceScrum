@@ -24,6 +24,7 @@ package org.icescrum.web.presentation
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Hook
+import org.icescrum.core.domain.WorkspaceType
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 
@@ -37,7 +38,7 @@ class HookController implements ControllerErrorHandler {
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
             Boolean authorized
-            if (workspace.name == 'project') {
+            if (workspace.name == WorkspaceType.PROJECT) {
                 authorized = request.scrumMaster || request.productOwner
             } else {
                 authorized = request."in${workspace.name.capitalize()}"
