@@ -250,10 +250,11 @@ angular.module('isCore', ['ui.router'])
     })
     .provider('isState', ['itemTabsProvider', function(itemTabsProvider) {
         this.$get = angular.noop;
-        var getMainStateFromFullState = function(fullState) {
+        var self = this;
+        this.getMainStateFromFullState = function(fullState) {
             return fullState ? (fullState.split('.')[0] ? fullState.split('.')[0] : '') : '';
         };
-        var getFocusState = function(tabs, setSelected) {
+        this.getFocusState = function(tabs, setSelected) {
             return {
                 name: 'focus',
                 url: '/focus',
@@ -286,7 +287,7 @@ angular.module('isCore', ['ui.router'])
                 },
                 views: {}
             };
-            featureNewState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            featureNewState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'feature.new.html',
                 controller: 'featureNewCtrl',
                 resolve: {
@@ -364,7 +365,7 @@ angular.module('isCore', ['ui.router'])
             _.each(backlogTabs, function(value, key) {
                 backlogTabState.resolve['data' + key] = value.resolve;
             });
-            backlogState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            backlogState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'backlog.details.html',
                 controller: 'backlogDetailsCtrl'
             };
@@ -401,7 +402,7 @@ angular.module('isCore', ['ui.router'])
                             }
                         }
                     },
-                    getFocusState(taskTabs, setSelected)
+                    self.getFocusState(taskTabs, setSelected)
                 ]
             };
             // Default tab (without tabId)
@@ -424,7 +425,7 @@ angular.module('isCore', ['ui.router'])
                 taskTabState.resolve['data' + key] = value.resolve;
                 (value.focusTabCenter || value.focusTabRight ? taskFocusState : taskFocusTabState).resolve['data' + key] = value.resolve;
             });
-            taskState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            taskState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'task.details.html',
                 controller: 'taskDetailsCtrl'
             };
@@ -462,7 +463,7 @@ angular.module('isCore', ['ui.router'])
                             }
                         }
                     },
-                    getFocusState(featureTabs, setSelected)
+                    self.getFocusState(featureTabs, setSelected)
                 ]
             };
             // Default tab (without tabId)
@@ -485,7 +486,7 @@ angular.module('isCore', ['ui.router'])
                 featureTabState.resolve['data' + key] = value.resolve;
                 (value.focusTabCenter || value.focusTabRight ? featureFocusState : featureFocusTabState).resolve['data' + key] = value.resolve;
             });
-            featureState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            featureState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'feature.details.html',
                 controller: 'featureDetailsCtrl'
             };
@@ -529,7 +530,7 @@ angular.module('isCore', ['ui.router'])
                             }
                         }
                     },
-                    getFocusState(storyTabs, setSelected)
+                    self.getFocusState(storyTabs, setSelected)
                 ]
             };
             storyState.resolve.details = storyTabs.details.resolve; // Default tab (without tabId)
@@ -552,7 +553,7 @@ angular.module('isCore', ['ui.router'])
                 (value.focusTabCenter || value.focusTabRight ? storyFocusState : storyFocusTabState).resolve['data' + key] = value.resolve;
             });
             // Put correct path to views dynamically
-            storyState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            storyState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'story.details.html',
                 controller: 'storyDetailsCtrl'
             };
@@ -617,7 +618,7 @@ angular.module('isCore', ['ui.router'])
             _.each(releaseTabs, function(value, key) {
                 releaseTabState.resolve['data' + key] = value.resolve;
             });
-            releaseState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            releaseState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'release.details.html',
                 controller: 'releaseDetailsCtrl'
             };
@@ -667,7 +668,7 @@ angular.module('isCore', ['ui.router'])
             _.each(sprintTabs, function(value, key) {
                 sprintTabState.resolve['data' + key] = value.resolve;
             });
-            sprintState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
+            sprintState.views['details' + self.getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'sprint.details.html',
                 controller: 'sprintDetailsCtrl'
             };
