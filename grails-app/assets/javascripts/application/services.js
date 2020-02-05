@@ -477,7 +477,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
         portfolio: function(oldPortfolio, newPortfolio) {
             if (newPortfolio && !oldPortfolio) {
                 _.each(workspaceCacheConfigs.portfolio, function(portfolioCache) {
-                    newProject[portfolioCache.arrayName] = []; // Init to empty to allow binding to a reference and automatically get the update
+                    newPortfolio[portfolioCache.arrayName] = []; // Init to empty to allow binding to a reference and automatically get the update
                 });
             }
         },
