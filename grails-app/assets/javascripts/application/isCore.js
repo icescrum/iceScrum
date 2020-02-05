@@ -66,28 +66,31 @@ angular.module('isCore', ['ui.router'])
             }
         };
     })
-    .provider('projectCaches', function() {
+    .provider('workspaceCacheConfigs', function() {
         this.$get = function() {
-            return this.projectCaches;
+            return this.workspaceCacheConfigs;
         };
-        this.projectCaches = {
-            story: {
-                arrayName: 'stories',
-                projectPath: 'backlog'
+        this.workspaceCacheConfigs = {
+            project: {
+                story: {
+                    arrayName: 'stories',
+                    workspacePath: 'backlog'
+                },
+                feature: {
+                    arrayName: 'features',
+                    workspacePath: 'backlog',
+                    sort: 'rank'
+                },
+                release: {
+                    arrayName: 'releases',
+                    workspacePath: 'parentProject'
+                },
+                backlog: {
+                    arrayName: 'backlogs',
+                    workspacePath: 'project'
+                }
             },
-            feature: {
-                arrayName: 'features',
-                projectPath: 'backlog',
-                sort: 'rank'
-            },
-            release: {
-                arrayName: 'releases',
-                projectPath: 'parentProject'
-            },
-            backlog: {
-                arrayName: 'backlogs',
-                projectPath: 'project'
-            }
+            portfolio: {}
         };
     })
     .provider('contextDecorators', function() {

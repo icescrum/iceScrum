@@ -469,18 +469,21 @@ services.service('CacheService', ['$injector', function($injector) {
     };
 }]);
 
-services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'projectCaches', 'Team', function($rootScope, $injector, CacheService, projectCaches, Team) { // Avoid injecting business service directly, use $injector instead in order to avoid circular references
+services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'workspaceCacheConfigs', 'Team', function($rootScope, $injector, CacheService, workspaceCacheConfigs, Team) { // Avoid injecting business service directly, use $injector instead in order to avoid circular references
     var sortByRank = function(obj1, obj2) {
         return obj1.rank - obj2.rank;
     };
     var syncFunctions = {
         portfolio: function(oldPortfolio, newPortfolio) {
             if (newPortfolio && !oldPortfolio) {
+                _.each(workspaceCacheConfigs.portfolio, function(portfolioCache) {
+                    newProject[portfolioCache.arrayName] = []; // Init to empty to allow binding to a reference and automatically get the update
+                });
             }
         },
         project: function(oldProject, newProject) {
             if (newProject && !oldProject) {
-                _.each(projectCaches, function(projectCache) {
+                _.each(workspaceCacheConfigs.project, function(projectCache) {
                     newProject[projectCache.arrayName] = []; // Init to empty to allow binding to a reference and automatically get the update
                 });
                 newProject.team = new Team(newProject.team);
@@ -701,27 +704,29 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
         }
     };
     this.sync = function(itemType, oldItem, newItem) {
-        var projectCache = projectCaches[itemType];
-        if (projectCache) {
-            var projectPath = projectCache.projectPath + '.id';
-            if (!oldItem && newItem) {
-                var cachedProject = CacheService.get('project', _.get(newItem, projectPath));
-                if (cachedProject && !_.find(cachedProject[projectCache.arrayName], {id: newItem.id})) {
-                    cachedProject[projectCache.arrayName].push(newItem);
-                    if (projectCache.sort && projectCache.sort == 'rank') {
-                        cachedProject[projectCache.arrayName].sort(sortByRank);
+        _.each(workspaceCacheConfigs, function(cacheConfigs, workspaceType) {
+            var cacheConfig = cacheConfigs[itemType];
+            if (cacheConfig) {
+                var workspacePath = cacheConfig.workspacePath + '.id';
+                if (!oldItem && newItem) {
+                    var cachedProject = CacheService.get(workspaceType, _.get(newItem, workspacePath));
+                    if (cachedProject && !_.find(cachedProject[cacheConfig.arrayName], {id: newItem.id})) {
+                        cachedProject[cacheConfig.arrayName].push(newItem);
+                        if (cacheConfig.sort && cacheConfig.sort === 'rank') {
+                            cachedProject[cacheConfig.arrayName].sort(sortByRank);
+                        }
                     }
-                }
-            } else if (oldItem && !newItem) {
-                var cachedProject = CacheService.get('project', _.get(oldItem, projectPath));
-                if (cachedProject) {
-                    _.remove(cachedProject[projectCache.arrayName], {id: oldItem.id});
-                    if (projectCache.sort && projectCache.sort == 'rank') {
-                        cachedProject[projectCache.arrayName].sort(sortByRank);
+                } else if (oldItem && !newItem) {
+                    var cachedProject = CacheService.get(workspaceType, _.get(oldItem, workspacePath));
+                    if (cachedProject) {
+                        _.remove(cachedProject[cacheConfig.arrayName], {id: oldItem.id});
+                        if (cacheConfig.sort && cacheConfig.sort === 'rank') {
+                            cachedProject[cacheConfig.arrayName].sort(sortByRank);
+                        }
                     }
                 }
             }
-        }
+        });
         if (angular.isDefined(syncFunctions[itemType])) {
             syncFunctions[itemType](oldItem, newItem);
         }
