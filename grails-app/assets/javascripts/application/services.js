@@ -476,7 +476,6 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
     var syncFunctions = {
         portfolio: function(oldPortfolio, newPortfolio) {
             if (newPortfolio && !oldPortfolio) {
-                newPortfolio.features = [];
             }
         },
         project: function(oldProject, newProject) {
@@ -638,17 +637,6 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                         }
                     }
                 });
-                // Portfolio
-                if (cachedProject.portfolio) {
-                    var cachedPortfolio = CacheService.get('portfolio', cachedProject.portfolio.id);
-                    if (cachedPortfolio) {
-                        if (!oldFeature && newFeature && !_.find(cachedPortfolio.features, {id: newFeature.id})) {
-                            cachedPortfolio.features.push(newFeature);
-                        } else if (oldFeature && !newFeature) {
-                            _.remove(cachedPortfolio.features, {id: oldFeature.id});
-                        }
-                    }
-                }
             }
         },
         sprint: function(oldSprint, newSprint) {
