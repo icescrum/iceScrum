@@ -923,16 +923,6 @@ var isApplication = angular.module('isApplication', [
         $rootScope.getPortfolioFromState = function() {
             return $state.$current.locals.globals.portfolio;
         };
-        $rootScope.getWorkspaceFromState = function() {
-            switch($rootScope.workspaceType) {
-                case 'project':
-                    return $rootScope.getProjectFromState();
-                case 'portfolio':
-                    return $rootScope.getPortfolioFromState();
-                default:
-                    return null;
-            }
-        };
         $rootScope.showWorkspaceListModal = function(listType, workspaceType) {
             workspaceType = workspaceType ? workspaceType : 'all';
             $uibModal.open({
