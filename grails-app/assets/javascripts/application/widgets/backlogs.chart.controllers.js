@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', 'Session', '$controller', '$element', 'projectUrlFilter', function($scope, BacklogService, ProjectService, CacheService, Session, $controller, $element, projectUrlFilter) {
+controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', 'Session', 'WorkspaceType', '$controller', '$element', 'projectUrlFilter', function($scope, BacklogService, ProjectService, CacheService, Session, WorkspaceType, $controller, $element, projectUrlFilter) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     $scope.widgetReady = function(widget) {
@@ -96,7 +96,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
             var unit = widget.settings.chartUnit;
             var chartName = widget.settings.chartType + (unit ? '-' + unit : ''); // Hack to preserve the chartLoaderInterface while using an additional parameter
             $scope.openChart('backlog', chartName, widget.settings.backlog, chartWidgetOptions).then(function(data) {
-                if ($scope.workspaceType === 'project' && Session.getWorkspace() && $scope.holder.project.id === Session.getWorkspace().id) {
+                if ($scope.workspaceType === WorkspaceType.PROJECT && Session.getWorkspace() && $scope.holder.project.id === Session.getWorkspace().id) {
                     var index = data.options.title.text.indexOf("-");
                     $scope.holder.title = data.options.title.text.substring(index + 1);
                 } else {
@@ -118,7 +118,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
     $scope.holder = {
         title: ''
     };
-    if ($scope.workspaceType === 'project') {
+    if ($scope.workspaceType === WorkspaceType.PROJECT) {
         $scope.holder.project = Session.getWorkspace();
     }
 }]);

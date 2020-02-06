@@ -22,7 +22,7 @@
  *
  */
 
-services.service("AppService", ['Session', 'FormService', function(Session, FormService) {
+services.service("AppService", ['Session', 'FormService', 'WorkspaceType', function(Session, FormService, WorkspaceType) {
     var self = this;
     this.updateEnabledForProject = function(appDefinition, project, enabledForProject) {
         return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}).then(function() {
@@ -47,7 +47,7 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
     this.authorizedApp = function(action, appDefinitionOrId, project) {
         switch (action) {
             case 'show':
-                return Session.authenticated() && Session.workspaceType == 'project';
+                return Session.authenticated() && Session.workspaceType === WorkspaceType.PROJECT;
             case 'enableForProject':
                 var appDefinition = appDefinitionOrId;
                 return Session.poOrSm() && appDefinition && appDefinition.availableForServer && appDefinition.enabledForServer && appDefinition.isProject;

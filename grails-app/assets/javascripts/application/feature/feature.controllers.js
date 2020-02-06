@@ -23,7 +23,7 @@
  *
  */
 
-extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'FeatureStatesByName', function($scope, $controller, $filter, FormService, FeatureService, FeatureStatesByName) {
+extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'FeatureStatesByName', 'WorkspaceType', function($scope, $controller, $filter, FormService, FeatureService, FeatureStatesByName, WorkspaceType) {
     $controller('tagCtrl', {$scope: $scope, type: 'feature'});
     // Functions
     $scope.authorizedFeature = FeatureService.authorizedFeature;
@@ -35,7 +35,7 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
     $scope.menus = [
         {
             name: 'todo.is.ui.context.set',
-            visible: function(feature) { return $scope.workspaceType == 'project' },
+            visible: function(feature) { return $scope.workspaceType === WorkspaceType.PROJECT },
             url: $scope.featureContextUrl
         },
         {

@@ -26,14 +26,14 @@ services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
 }]);
 
-services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', 'IceScrumEventType', 'CacheService', 'Project', function(Portfolio, Session, FormService, ProjectService, $q, IceScrumEventType, CacheService, Project) {
+services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', 'IceScrumEventType', 'WorkspaceType', 'CacheService', 'Project', function(Portfolio, Session, FormService, ProjectService, $q, IceScrumEventType, WorkspaceType, CacheService, Project) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(portfolio) {
         CacheService.addOrUpdate('portfolio', portfolio);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(portfolio) {
-        if (Session.workspaceType == 'portfolio') {
+        if (Session.workspaceType === WorkspaceType.PORTFOLIO) {
             var workspace = Session.getWorkspace();
             if (workspace.id == portfolio.id && workspace.fkey != portfolio.fkey) {
                 document.location = document.location.href.replace(workspace.fkey, portfolio.fkey);

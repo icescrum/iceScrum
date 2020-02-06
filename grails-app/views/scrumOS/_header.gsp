@@ -1,4 +1,4 @@
-<%@ page import="grails.converters.JSON" %>
+<%@ page import="org.icescrum.core.domain.WorkspaceType; grails.converters.JSON" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -28,7 +28,7 @@
     <strong ng-bind-html="application.announcement.text" class="announcement-text"></strong>
     <a href class="announcement-hide" ng-click="hideAnnouncement()"><small>${message(code: 'is.ui.announcement.hide')}</small></a>
 </div>
-<g:if test="${workspace && workspace.name == 'project' && workspace.object.preferences.archived}">
+<g:if test="${workspace && workspace.name == WorkspaceType.PROJECT && workspace.object.preferences.archived}">
     <div class="announcement bg-danger">${message(code: "is.ui.${workspace.name}.archived")}</div>
 </g:if>
 <entry:point id="header-before-menu"/>
@@ -46,7 +46,7 @@
     </a>
     <div class="collapse navbar-collapse order-3 order-lg-2 flex-lg-grow-0" id="primary-menu" ng-controller="mainMenuCtrl">
         <ul class="nav navbar-nav menu-header"
-            is-disabled="!currentUser.id || workspaceType != 'project'"
+            is-disabled="!currentUser.id || workspaceType != workspaceTypes.PROJECT"
             as-sortable="menuSortableOptions"
             ng-model="application.menus.visible">
             <li class="nav-item nav-item-main"
@@ -197,7 +197,7 @@
                 uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': application.menus.hidden.length == 0 }">
                 <a uib-dropdown-toggle href class="nav-link">${message(code: 'todo.is.ui.more')}</a>
                 <div uib-dropdown-menu
-                     is-disabled="!currentUser.id || workspaceType != 'project'"
+                     is-disabled="!currentUser.id || workspaceType != workspaceTypes.PROJECT"
                      as-sortable="menuSortableOptions"
                      ng-model="application.menus.hidden">
                     <span ng-repeat="menu in application.menus.hidden"

@@ -548,7 +548,7 @@ var isApplication = angular.module('isApplication', [
     .factory('UserTimeZone', function() {
         return jstz.determine();
     })
-    .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', 'FormService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', 'hotkeys', function(Session, I18nService, PushService, UserService, WidgetService, AppService, FormService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize, hotkeys) {
+    .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', 'FormService', 'WorkspaceType', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', 'hotkeys', function(Session, I18nService, PushService, UserService, WidgetService, AppService, FormService, WorkspaceType, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize, hotkeys) {
         $rootScope.uiWorking = function(message) {
             $rootScope.loaders.menu.play();
             $rootScope.loaders.menu.loop = true;
@@ -843,6 +843,7 @@ var isApplication = angular.module('isApplication', [
                 menuElement.action(item);
             }
         };
+        $rootScope.workspaceTypes = WorkspaceType;
         $rootScope.integerSuite = _.range(100);
         $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
@@ -890,7 +891,7 @@ var isApplication = angular.module('isApplication', [
             if (isSettings.announcement && isSettings.announcement.code && !$localStorage['hideAnnouncement-' + isSettings.announcement.code]) {
                 $rootScope.application.announcement = isSettings.announcement;
             }
-            if ($rootScope.workspaceType == 'project') {
+            if ($rootScope.workspaceType === WorkspaceType.PROJECT) {
                 $controller('contextCtrl', {$scope: $rootScope});
             }
             PushService.initPush(isSettings.workspace ? isSettings.workspace.id : null, $rootScope.workspaceType);

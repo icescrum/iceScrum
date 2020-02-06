@@ -25,7 +25,7 @@
 
 var services = angular.module('services', ['restResource']);
 
-services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'FormService', 'CacheService', function($timeout, $http, $rootScope, $injector, UserService, User, PushService, IceScrumEventType, FormService, CacheService) {
+services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'WorkspaceType', 'FormService', 'CacheService', function($timeout, $http, $rootScope, $injector, UserService, User, PushService, IceScrumEventType, WorkspaceType, FormService, CacheService) {
     var self = this;
     self.defaultView = '';
     self.user = new User();
@@ -34,7 +34,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
         self.workspace = new workspaceConstructor();
         _.extend(self.workspace, isSettings.workspace);
         var workspaceType = self.workspace.class.toLowerCase();
-        if (workspaceType == 'project') {
+        if (workspaceType === WorkspaceType.PROJECT) {
             var project = self.workspace;
             project.startDate = new Date(project.startDate);
             project.endDate = new Date(project.endDate);
@@ -937,7 +937,7 @@ services.service("DomainConfigService", [function() {
     this.config.portfoliod = this.config.portfolio;
 }]);
 
-services.service('ContextService', ['$location', '$q', '$injector', 'TagService', 'ActorService', 'FeatureService', 'contextDecorators', function($location, $q, $injector, TagService, ActorService, FeatureService, contextDecorators) {
+services.service('ContextService', ['$location', '$q', '$injector', 'TagService', 'ActorService', 'FeatureService', 'WorkspaceType', 'contextDecorators', function($location, $q, $injector, TagService, ActorService, FeatureService, WorkspaceType, contextDecorators) {
     var self = this;
     this.contextSeparator = '_';
     this.getContextFromUrl = function() {
@@ -952,7 +952,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
     this.contexts = [];
     this.loadContexts = function() {
         var Session = $injector.get('Session');
-        if (Session.workspaceType == 'project') {
+        if (Session.workspaceType == WorkspaceType.PROJECT) {
             var project = Session.workspace;
             return $q.all([TagService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
                 var tags = data[0];

@@ -42,14 +42,14 @@ services.factory('Project', ['Resource', function($resource) {
         });
 }]);
 
-services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheService', 'IceScrumEventType', 'PushService', '$rootScope', '$q', function(Project, Session, FormService, CacheService, IceScrumEventType, PushService, $rootScope, $q) {
+services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheService', 'IceScrumEventType', 'WorkspaceType', 'PushService', '$rootScope', '$q', function(Project, Session, FormService, CacheService, IceScrumEventType, WorkspaceType, PushService, $rootScope, $q) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(project) {
         return CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(project) {
-        if (Session.workspaceType == 'project') {
+        if (Session.workspaceType === WorkspaceType.PROJECT) {
             var workspace = Session.getWorkspace();
             if (workspace.id == project.id) {
                 if (project.pkey != workspace.pkey) {
@@ -67,7 +67,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         return CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.DELETE] = function(project) {
-        if (Session.workspaceType == 'project') {
+        if (Session.workspaceType === WorkspaceType.PROJECT) {
             var workspace = Session.getWorkspace();
             if (workspace.id == project.id) {
                 $rootScope.notifyWarning('todo.is.ui.project.deleted');

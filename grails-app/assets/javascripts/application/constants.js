@@ -111,6 +111,10 @@ isApplication
         UPDATE: 'UPDATE',
         DELETE: 'DELETE'
     })
+    .constant('WorkspaceType', {
+        PORTFOLIO: 'portfolio',
+        PROJECT: 'project'
+    })
     .constant('TaskConstants', {
         ORDER_BY: [function(task) { return -task.type }, 'parentStory.rank', 'state', 'rank']
     })

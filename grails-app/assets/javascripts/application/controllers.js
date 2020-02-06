@@ -51,7 +51,7 @@ var extensibleController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', 'stickyNoteSize', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout, Session, UserService, stickyNoteSize) {
+extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'WorkspaceType', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', 'stickyNoteSize', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, WorkspaceType, Fullscreen, notifications, $http, $window, $timeout, Session, UserService, stickyNoteSize) {
     $controller('headerCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
@@ -249,7 +249,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
             notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
         }
     });
-    if ($scope.displayWhatsNew && $scope.workspaceType == 'project') {
+    if ($scope.displayWhatsNew && $scope.workspaceType === WorkspaceType.PROJECT) {
         var modal = $uibModal.open({
             size: 'lg',
             templateUrl: 'is.dialog.whatsNew.html'
@@ -473,7 +473,7 @@ extensibleController('newCtrl', ['$scope', '$state', 'ProjectService', function(
     $scope.privateProject = true;
 }]);
 
-controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {
+controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', 'WorkspaceType', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService, WorkspaceType) {
     // Functions
     $scope.notificationToggle = function(open) {
         if (open) {
@@ -537,7 +537,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         };
         if (Session.admin()) {
             pushRole('admin');
-        } else if (Session.workspaceType == 'project') {
+        } else if (Session.workspaceType === WorkspaceType.PROJECT) {
             if (Session.owner(Session.workspace)) {
                 pushRole('owner');
             }
@@ -553,7 +553,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             if (_.isEmpty(roles) && Session.stakeHolder()) {
                 pushRole('stakeHolder');
             }
-        } else if (Session.workspaceType == 'portfolio') {
+        } else if (Session.workspaceType === WorkspaceType.PORTFOLIO) {
             if (Session.bo()) {
                 pushRole('businessOwner');
             } else {
