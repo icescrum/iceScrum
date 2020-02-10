@@ -123,7 +123,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
                 return viewType === 'list' ? 100 : defaultPriority;
             },
             visible: function(task, viewType) { return viewType !== 'details'; },
-            action: function(task) { $state.go('.task.details', {taskId: task.id}); }
+            action: function(task) { $state.go($scope.viewName + '.task.details', {taskId: task.id}); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.take',
