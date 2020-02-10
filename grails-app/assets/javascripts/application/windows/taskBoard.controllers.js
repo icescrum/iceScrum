@@ -246,6 +246,9 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             return $filter('orderBy')($filter('taskBoardSearch')($filter('filter')($scope.sprint.stories, $scope.storyFilter), $scope.tasksByStoryByState), 'rank'); // Needs to be in a function because it can change
         }
     ]);
+    $scope.openTaskUrl = function(taskId) {
+        return $state.href($scope.viewName + '.task.details', {taskId: taskId});
+    };
     // Init
     $scope.project = project;
     $scope.taskSortableOptions = {

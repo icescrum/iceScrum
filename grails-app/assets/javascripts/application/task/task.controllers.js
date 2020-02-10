@@ -47,7 +47,7 @@ extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', f
     $scope.resetTaskForm();
 }]);
 
-extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', 'TaskService', 'Session', 'TaskStatesByName', function($scope, $filter, TaskService, Session, TaskStatesByName) {
+extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', '$state', 'TaskService', 'Session', 'TaskStatesByName', function($scope, $filter, $state, TaskService, Session, TaskStatesByName) {
     // Functions
     $scope.taskSortableOptions = {
         orderChanged: function(event) {
@@ -64,6 +64,9 @@ extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', 'TaskService
     };
     $scope.isTaskSortableByState = function(state) {
         return state == TaskStatesByName.TODO && Session.tmOrSm();
+    };
+    $scope.openTaskUrl = function(taskId) {
+        return $state.href('.task.details', {taskId: taskId});
     };
     // Init
     $scope.$watch('selected.tasks', function(tasks) {
@@ -88,7 +91,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', '$filter', 'TaskService
     $scope.sortableId = 'story-tasks';
 }]);
 
-extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', function($scope, $timeout, $uibModal, $filter, $state, TaskService, FormService, TaskStatesByName, StoryStatesByName) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', '$window', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', function($scope, $timeout, $uibModal, $filter, $state, $window, TaskService, FormService, TaskStatesByName, StoryStatesByName) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -123,7 +126,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
                 return viewType === 'list' ? 100 : defaultPriority;
             },
             visible: function(task, viewType) { return viewType !== 'details'; },
-            action: function(task) { $state.go($scope.viewName + '.task.details', {taskId: task.id}); }
+            action: function(task) { $window.location.hash = $scope.openTaskUrl(task.id); } // Inherited
         },
         {
             name: 'is.ui.sprintPlan.menu.task.take',
