@@ -81,7 +81,7 @@
                 <div class="btn-menu" uib-dropdown>
                     <shortcut-menu ng-model="release" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
                     <div uib-dropdown-toggle></div>
-                    <div uib-dropdown-menu ng-init="itemType = 'release'" template-url="item.menu.html"></div>
+                    <div uib-dropdown-menu ng-init="itemType = 'release'; viewType = 'details'" template-url="item.menu.html"></div>
                 </div>
             </div>
         </div>

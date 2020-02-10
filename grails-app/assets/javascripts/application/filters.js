@@ -590,9 +590,9 @@ filters
         return $rootScope.message(boolean ? 'is.yes' : 'is.no');
     }
 }]).filter('visibleMenuElement', function() {
-    return function(menus, item) {
+    return function(menus, item, viewType) {
         return _.filter(menus, function(menuElement) {
-            return menuElement.visible(item);
+            return menuElement.visible(item, viewType);
         })
     };
 }).filter('contextIcon', function() {

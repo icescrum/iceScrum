@@ -105,7 +105,7 @@
             <div class="btn-menu" uib-dropdown>
                 <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
                 <div uib-dropdown-toggle></div>
-                <div uib-dropdown-menu ng-init="itemType = 'feature'" template-url="item.menu.html"></div>
+                <div uib-dropdown-menu ng-init="itemType = 'feature'; viewType = 'details'" template-url="item.menu.html"></div>
             </div>
         </div>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="feature" model-states="featureStatesByName"/></a>

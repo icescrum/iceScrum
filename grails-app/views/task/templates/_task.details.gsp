@@ -87,7 +87,7 @@
             <div class="btn-menu" uib-dropdown>
                 <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
                 <div uib-dropdown-toggle></div>
-                <div uib-dropdown-menu ng-init="itemType = 'task'" template-url="item.menu.html"></div>
+                <div uib-dropdown-menu ng-init="itemType = 'task'; viewType = 'details'" template-url="item.menu.html"></div>
             </div>
         </div>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="task" model-states="taskStatesByName"/></a>

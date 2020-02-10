@@ -109,7 +109,7 @@
     <div ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
         <a class="dropdown-item"
            ng-class="::{'text-danger':menuElement.deleteMenu}"
-           ng-repeat="menuElement in menus | visibleMenuElement: getItem()"
+           ng-repeat="menuElement in menus | visibleMenuElement: getItem(): viewType"
            href="{{ menuElement.url(getItem()) | orElse: '' }}"
            ng-click="menuClick(menuElement, getItem(), $event)">
             <span class="name">{{:: menuElement | menuElementName }}</span>

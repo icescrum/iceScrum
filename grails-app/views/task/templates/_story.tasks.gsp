@@ -46,7 +46,7 @@
                         <div class="btn-menu" uib-dropdown>
                             <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true" btn-secondary="true"></shortcut-menu>
                             <div uib-dropdown-toggle></div>
-                            <div uib-dropdown-menu ng-init="itemType = 'task'" template-url="item.menu.html"></div>
+                            <div uib-dropdown-menu ng-init="itemType = 'task'; viewType = 'list'" template-url="item.menu.html"></div>
                         </div>
                     </div>
                 </div>

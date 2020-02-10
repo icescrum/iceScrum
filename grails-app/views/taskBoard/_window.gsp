@@ -113,7 +113,7 @@
                 <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
                     <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                     <div uib-dropdown-toggle></div>
-                    <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                    <div uib-dropdown-menu ng-init="itemType = 'sprint'; viewType = viewName" template-url="item.menu.html"></div>
                 </div>
             </div>
         </div>
