@@ -35,7 +35,7 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', '$windo
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
-            visible: function(feature, viewType) { console.log(viewType); return viewType !== 'details'; },
+            visible: function(feature, viewType) { return viewType !== 'details'; },
             action: function(feature) { $window.location.hash = $scope.openFeatureUrl(feature); }
         },
         {
