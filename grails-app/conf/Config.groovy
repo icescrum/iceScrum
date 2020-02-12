@@ -382,18 +382,12 @@ grails.assets.enableGzip = true
 /*
  Attachmentable section
  */
-grails.attachmentable.storyDir = { "${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}" }
-grails.attachmentable.featureDir = { "${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}" }
-grails.attachmentable.releaseDir = { "${File.separator + it.parentProject.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}" }
-grails.attachmentable.sprintDir = { "${File.separator + it.parentRelease.parentProject.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}" }
-grails.attachmentable.projectDir = { "${File.separator + it.id + File.separator}attachments${File.separator}project${File.separator + it.id + File.separator}" }
-grails.attachmentable.taskDir = {
-    if (it.parentStory) {
-        return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
-    } else {
-        return "${File.separator + it.backlog?.parentRelease?.parentProject?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
-    }
-}
+grails.attachmentable.storyDir = { Story story -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, story.backlog.id, 'stories', story.id) }
+grails.attachmentable.featureDir = { Feature feature -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, feature.backlog.id, 'features', feature.id) }
+grails.attachmentable.releaseDir = { Release release -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, release.parentProject.id, 'releases', release.id) }
+grails.attachmentable.sprintDir = { Sprint sprint -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, sprint.parentRelease.parentProject.id, 'sprints', sprint.id) }
+grails.attachmentable.projectDir = { Project project -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, project.id, 'project', project.id) }
+grails.attachmentable.taskDir = { Task task-> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, task.parentProject.id, 'tasks', task.id) }
 
 grails.taggable.preserve.case = true
 
