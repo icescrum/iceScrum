@@ -147,7 +147,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.resetFeatureForm = function() {
-        $scope.feature = {color: $scope.availableColors && $scope.availableColors.length ? _.last($scope.availableColors) : "#2d8ccc"};
+        $scope.feature = {color: $scope.availableColors && $scope.availableColors.length ? _.last($scope.availableColors) : '#0067e8'};
         $scope.resetFormValidation($scope.formHolder.featureForm);
         $scope.refreshAvailableColors(); // To get a new list the next time
     };

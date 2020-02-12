@@ -98,7 +98,7 @@ extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$fi
             $controller('attachmentCtrl', {$scope: $scope, attachmentable: feature, clazz: 'feature', project: project});
             feature.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
             return FeatureService.getAvailableColors(project.id).then(function(colors) {
-                feature.color = colors && colors.length ? _.last(colors) : "#2d8ccc";
+                feature.color = colors && colors.length ? _.last(colors) : '#0067e8';
                 return FeatureService.save(feature, project.id).then(function(savedObject) {
                     var onFileSuccess = function(flowFile) {
                         $flow.removeFile(flowFile);
