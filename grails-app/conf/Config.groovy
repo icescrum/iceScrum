@@ -246,7 +246,7 @@ icescrum {
     resourceBundles = [
             featureTypes           : [
                     (Feature.TYPE_FUNCTIONAL)   : 'is.feature.type.functional',
-                    (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'
+                    (Feature.TYPE_ENABLER): 'is.feature.type.enabler'
             ],
             featureStates          : [
                     (Feature.STATE_WAIT): 'is.feature.state.wait',

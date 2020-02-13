@@ -126,12 +126,12 @@ filters
     }])
     .filter('featureType', ['FeatureTypesByName', function(FeatureTypesByName) {
         return function(type) {
-            return type == FeatureTypesByName.ARCHITECTURAL ? 'architectural sticky-note-type' : '';
+            return type == FeatureTypesByName.ENABLER ? 'enabler sticky-note-type' : '';
         };
     }])
     .filter('featureTypeIcon', ['FeatureTypesByName', function(FeatureTypesByName) {
         return function(type) {
-            return type == FeatureTypesByName.ARCHITECTURAL ? 'item-type-icon item-type-icon-architectural' : '';
+            return type == FeatureTypesByName.ENABLER ? 'item-type-icon item-type-icon-enabler' : '';
         };
     }])
     .filter('featureNameState', ['FeatureStatesByName', 'i18nFilter', function(FeatureStatesByName, i18nFilter) {

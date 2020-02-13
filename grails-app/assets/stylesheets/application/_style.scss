@@ -883,7 +883,7 @@ img.img-shadow {
   }
 }
 
-@each $item-type in (defect, technical, architectural) {
+@each $item-type in (defect, technical, enabler) {
   .item-type-icon-#{$item-type} {
     background-image: url("type-#{$item-type}-grey.svg");
   }

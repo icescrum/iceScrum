@@ -99,7 +99,7 @@ isApplication
     })
     .constant('FeatureTypesByName', {
         FUNCTIONAL: 0,
-        ARCHITECTURAL: 1
+        ENABLER: 1
     })
     .constant('ReleaseStatesByName', {
         TODO: 1,
