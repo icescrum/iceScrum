@@ -245,8 +245,8 @@ icescrum {
 
     resourceBundles = [
             featureTypes           : [
-                    (Feature.TYPE_FUNCTIONAL)   : 'is.feature.type.functional',
-                    (Feature.TYPE_ENABLER): 'is.feature.type.enabler'
+                    (Feature.TYPE_FUNCTIONAL): 'is.feature.type.functional',
+                    (Feature.TYPE_ENABLER)   : 'is.feature.type.enabler'
             ],
             featureStates          : [
                     (Feature.STATE_WAIT): 'is.feature.state.wait',
@@ -387,7 +387,7 @@ grails.attachmentable.featureDir = { Feature feature -> ApplicationSupport.getAt
 grails.attachmentable.releaseDir = { Release release -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, release.parentProject.id, 'releases', release.id) }
 grails.attachmentable.sprintDir = { Sprint sprint -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, sprint.parentRelease.parentProject.id, 'sprints', sprint.id) }
 grails.attachmentable.projectDir = { Project project -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, project.id, 'project', project.id) }
-grails.attachmentable.taskDir = { Task task-> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, task.parentProject.id, 'tasks', task.id) }
+grails.attachmentable.taskDir = { Task task -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, task.parentProject.id, 'tasks', task.id) }
 
 grails.taggable.preserve.case = true
 
