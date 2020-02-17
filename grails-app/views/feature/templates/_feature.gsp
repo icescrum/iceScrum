@@ -66,6 +66,7 @@
                         count="{{:: feature.comments_count }}"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                         href="{{:: openFeatureUrl(feature) }}/stories"
+                        ng-if="feature.state >= featureStatesByName.TODO"
                         icon="story"
                         count="{{:: feature.stories_ids.length }}"/>
             <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>

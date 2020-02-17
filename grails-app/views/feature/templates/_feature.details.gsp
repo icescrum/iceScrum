@@ -132,7 +132,7 @@
                 </li>
                 <li role="presentation"
                     class="nav-item text-nowrap"
-                    ng-if="!application.focusedDetailsView">
+                    ng-if="!application.focusedDetailsView && feature.state >= featureStatesByName.TODO">
                     <a href="{{ tabUrl('stories') }}"
                        class="nav-link"
                        ng-class="{'active':$state.params.featureTabId == 'stories'}">
@@ -140,7 +140,8 @@
                     </a>
                 </li>
                 <li role="presentation"
-                    class="nav-item text-nowrap">
+                    class="nav-item text-nowrap"
+                    ng-if="feature.state >= featureStatesByName.TODO">
                     <a href="{{ tabUrl('activities') }}"
                        class="nav-link"
                        ng-class="{'active':$state.params.featureTabId == 'activities'}">

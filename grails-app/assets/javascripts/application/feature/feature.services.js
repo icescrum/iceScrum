@@ -28,6 +28,7 @@ services.factory('Feature', ['Resource', function($resource) {
 services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', 'FormService', 'FeatureStatesByName', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType, FormService, FeatureStatesByName) {
     var self = this;
     var crudMethods = {};
+    this.crudMethods = crudMethods; // Access from outside
     crudMethods[IceScrumEventType.CREATE] = function(feature) {
         CacheService.addOrUpdate('feature', feature);
     };
@@ -38,6 +39,9 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         if ($state.includes("feature.details", {featureId: feature.id}) ||
             ($state.includes("feature.multiple") && _.includes($state.params.featureListId.split(','), feature.id.toString()))) {
             $state.go('feature', {}, {location: 'replace'});
+        } else if ($state.includes("features.details", {featureId: feature.id}) ||
+                   ($state.includes("features.multiple") && _.includes($state.params.featureListId.split(','), feature.id.toString()))) {
+            $state.go('features', {}, {location: 'replace'});
         } else if ($state.includes('roadmap.roadmap.feature', {featureId: feature.id})) {
             $state.go('roadmap.roadmap', {}, {location: 'replace'});
         }

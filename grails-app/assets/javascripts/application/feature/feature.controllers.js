@@ -86,6 +86,7 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', '$windo
         var progress = $filter('percentProgress')(feature.countDoneStories, feature.stories_ids.length);
         return $scope.showFeatureProgress(feature) && progress > 50;
     }
+    $scope.featureStatesByName = FeatureStatesByName;
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'ReleaseStatesByName', 'WorkspaceType', 'FeatureService', 'StoryService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, ReleaseStatesByName, WorkspaceType, FeatureService, StoryService, FormService, detailsFeature, StoryStatesByName, features, project) {
