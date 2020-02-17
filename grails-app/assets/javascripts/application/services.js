@@ -623,7 +623,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
             }
         },
         feature: function(oldFeature, newFeature) {
-            var cachedProject = CacheService.get('project', newFeature ? newFeature.backlog.id : oldFeature.backlog.id);
+            var cachedProject = CacheService.get('project', newFeature ? _.get(newFeature, 'backlog.id') : _.get(oldFeature, 'backlog.id'));
             if (cachedProject) {
                 // Project
                 if (oldFeature && newFeature && oldFeature.rank != newFeature.rank) {
@@ -640,6 +640,14 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
                         }
                     }
                 });
+            } else {
+                // TODO REMOVE WHEN PFV2
+                var cachedPortfolio = CacheService.get('portfolio', newFeature ? _.get(newFeature, 'portfolio.id') : _.get(oldFeature, 'portfolio.id'));
+                if (cachedPortfolio) {
+                    if (oldFeature && newFeature && oldFeature.rank != newFeature.rank) {
+                        cachedPortfolio.features.sort(sortByRank);
+                    }
+                }
             }
         },
         sprint: function(oldSprint, newSprint) {

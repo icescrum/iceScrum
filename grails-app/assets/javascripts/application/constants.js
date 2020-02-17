@@ -93,6 +93,7 @@ isApplication
         DONE: 3
     })
     .constant('FeatureStatesByName', {
+        DRAFT: -1,
         TODO: 0,
         IN_PROGRESS: 1,
         DONE: 2

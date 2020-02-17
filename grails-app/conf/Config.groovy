@@ -249,9 +249,10 @@ icescrum {
                     (Feature.TYPE_ENABLER)   : 'is.feature.type.enabler'
             ],
             featureStates          : [
-                    (Feature.STATE_WAIT): 'is.feature.state.wait',
-                    (Feature.STATE_BUSY): 'is.feature.state.inprogress',
-                    (Feature.STATE_DONE): 'is.feature.state.done'
+                    (Feature.STATE_DRAFT): 'is.feature.state.draft',
+                    (Feature.STATE_WAIT) : 'is.feature.state.wait',
+                    (Feature.STATE_BUSY) : 'is.feature.state.inprogress',
+                    (Feature.STATE_DONE) : 'is.feature.state.done'
             ],
             storyStates            : [
                     (Story.STATE_FROZEN)    : 'is.story.state.frozen',

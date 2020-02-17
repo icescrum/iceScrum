@@ -90,7 +90,13 @@ angular.module('isCore', ['ui.router'])
                     workspacePath: 'project'
                 }
             },
-            portfolio: {}
+            portfolio: {
+                feature: {
+                    arrayName: 'features',
+                    workspacePath: 'portfolio',
+                    sort: 'rank' // TODO REMOVE PFV2
+                }
+            }
         };
     })
     .provider('contextDecorators', function() {
