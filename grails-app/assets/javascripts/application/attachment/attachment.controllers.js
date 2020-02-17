@@ -21,10 +21,10 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', 'project', function($scope, $uibModal, AttachmentService, attachmentable, clazz, project) {
+extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', 'workspace', 'workspaceType', function($scope, $uibModal, AttachmentService, attachmentable, clazz, workspace, workspaceType) {
     // Functions
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
-        AttachmentService.delete(attachment, attachmentable, project.id);
+        AttachmentService.delete(attachment, attachmentable, workspace.id, workspaceType);
     };
     $scope.showEditAttachmentName = function(attachment, attachmentable) {
         $uibModal.open({
@@ -33,7 +33,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
             controller: ['$scope', function($scope) {
                 $scope.editableAttachment = angular.copy(attachment);
                 $scope.submit = function(updatedAttachment) {
-                    AttachmentService.update(updatedAttachment, attachmentable, project.id).then(function() {
+                    AttachmentService.update(updatedAttachment, attachmentable, workspace.id, workspaceType).then(function() {
                         $scope.$close();
                     });
                 };
@@ -160,7 +160,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     // Init
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
-    $scope.attachmentBaseUrl = $scope.serverUrl + '/p/' + project.id + '/attachment/';
+    $scope.attachmentBaseUrl = $scope.serverUrl + '/' + workspaceType + '/' + workspace.id + '/attachment/';
 }]);
 
 // Flow events are triggered by "$scope.$broadcast so they can be received only on controllers that are at the same level or below

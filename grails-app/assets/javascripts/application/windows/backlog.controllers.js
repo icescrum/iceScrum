@@ -50,7 +50,7 @@ extensibleController('backlogChartCtrl', ['$scope', '$controller', '$element', f
 }]);
 
 
-extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$filter', '$timeout', '$state', 'StoryService', 'Story', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($controller, $scope, $q, window, $filter, $timeout, $state, StoryService, Story, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
+extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$filter', '$timeout', '$state', 'StoryService', 'Story', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'WorkspaceType', 'project', 'backlogs', function($controller, $scope, $q, window, $filter, $timeout, $state, StoryService, Story, BacklogService, BacklogCodes, StoryStatesByName, WorkspaceType, project, backlogs) {
     $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from windowCtrl
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
@@ -222,7 +222,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         var createStoryWithFile = function(files, project, selectOnComplet) {
             $flow.files = files;
             var story = new Story();
-            $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', project: project});
+            $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', workspace: project, workspaceType: WorkspaceType.PROJECT});
             story.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
             return StoryService.save(story, project.id).then(function(savedObject) {
                 var onFileSuccess = function(flowFile) {

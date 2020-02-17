@@ -22,7 +22,7 @@
  *
  */
 services.factory('Comment', ['Resource', function($resource) {
-    return $resource('/p/:projectId/comment/:type/:typeId/:id');
+    return $resource('/:workspaceType/:workspaceId/comment/:type/:typeId/:id');
 }]);
 
 services.service("CommentService", ['$q', 'Comment', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', function($q, Comment, Session, IceScrumEventType, CacheService, PushService) {
@@ -43,19 +43,19 @@ services.service("CommentService", ['$q', 'Comment', 'Session', 'IceScrumEventTy
     this.mergeComments = function(comment) {
         _.each(comment, crudMethods[IceScrumEventType.UPDATE]);
     };
-    this.save = function(comment, commentable, projectId) {
+    this.save = function(comment, commentable, workspaceId, workspaceType) {
         comment.class = 'comment';
         comment.commentable = _.pick(commentable, ['id', 'class']);
-        return Comment.save({projectId: projectId}, comment, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return Comment.save({workspaceId: workspaceId, workspaceType: workspaceType}, comment, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this['delete'] = function(comment, commentable, projectId) {
-        return Comment.delete({projectId: projectId}, comment, crudMethods[IceScrumEventType.DELETE]).$promise;
+    this['delete'] = function(comment, commentable, workspaceId, workspaceType) {
+        return Comment.delete({workspaceId: workspaceId, workspaceType: workspaceType}, comment, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
-    this.update = function(comment, commentable, projectId) {
-        return Comment.update({projectId: projectId}, comment, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    this.update = function(comment, commentable, workspaceId, workspaceType) {
+        return Comment.update({workspaceId: workspaceId, workspaceType: workspaceType}, comment, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.list = function(commentable, projectId) {
-        var promise = Comment.query({projectId: projectId, typeId: commentable.id, type: commentable.class.toLowerCase()}, self.mergeComments).$promise;
+    this.list = function(commentable, workspaceId, workspaceType) {
+        var promise = Comment.query({workspaceId: workspaceId, workspaceType: workspaceType, typeId: commentable.id, type: commentable.class.toLowerCase()}, self.mergeComments).$promise;
         return _.isEmpty(commentable.comments) ? promise : $q.when(commentable.comments);
     };
     this.authorizedComment = function(action, comment) {

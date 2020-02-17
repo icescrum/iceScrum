@@ -359,35 +359,6 @@ class UrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        // Attachment
-        "/p/$project/attachment/$type/$attachmentable/flow" {
-            controller = 'attachment'
-            action = [GET: "save", POST: "save"]
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task', 'feature', 'release', 'sprint', 'project'])
-            }
-        }
-        "/p/$project/attachment/$type/$attachmentable" {
-            controller = 'attachment'
-            action = [GET: "index", POST: "save"]
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task', 'feature', 'release', 'sprint', 'project'])
-            }
-        }
-        "/p/$project/attachment/$type/$attachmentable/$id" {
-            controller = 'attachment'
-            action = [GET: "show", POST: "update", DELETE: "delete"]
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                attachmentable(matches: /\d*/)
-                id(matches: /\d*/)
-                type(inList: ['story', 'task', 'feature', 'release', 'sprint', 'project'])
-            }
-        }
         // Team
         "/team" {
             controller = 'team'

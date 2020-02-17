@@ -593,11 +593,11 @@ controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'Session', 'StoryService', 'TaskService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, Session, StoryService, TaskService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'WorkspaceType', 'Session', 'StoryService', 'TaskService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, WorkspaceType, Session, StoryService, TaskService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
-        $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
+        $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', workspace: project, workspaceType: WorkspaceType.PROJECT});
         // Functions
         $scope.searchCreator = function($select) {
             if ($scope.formHolder.editing && $select.open) {

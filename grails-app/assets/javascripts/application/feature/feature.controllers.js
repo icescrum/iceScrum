@@ -88,9 +88,9 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', '$windo
     }
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'ReleaseStatesByName', 'FeatureService', 'StoryService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, ReleaseStatesByName, FeatureService, StoryService, FormService, detailsFeature, StoryStatesByName, features, project) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'ReleaseStatesByName', 'WorkspaceType', 'FeatureService', 'StoryService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, ReleaseStatesByName, WorkspaceType, FeatureService, StoryService, FormService, detailsFeature, StoryStatesByName, features, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature', project: project});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature', workspace: project, workspaceType: WorkspaceType.PROJECT});
     // Functions
     $scope.update = function(feature) {
         FeatureService.update(feature).then(function() {

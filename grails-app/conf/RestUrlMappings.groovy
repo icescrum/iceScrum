@@ -1,3 +1,5 @@
+import org.icescrum.core.domain.WorkspaceType
+
 /*
  * Copyright (c) 2012 Kagilum.
  *
@@ -174,45 +176,39 @@ class RestUrlMappings {
             }
         }
         // Comments
-        "/ws/project/$project/comment/$type" {
+        "/ws/$workspaceType/$workspace/comment/$type" {
             controller = 'comment'
             action = [GET: 'index']
             constraints {
-                project(matches: /[0-9A-Z]*/)
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task', 'feature'])
             }
         }
-        "/ws/project/$project/comment/$type/$commentable" {
+        "/ws/$workspaceType/$workspace/comment/$type/$commentable" {
             controller = 'comment'
-            action = [GET: 'index', POST: 'save'] // "save" is here for legacy support, commentable params are unused a more REST option is available below
+            action = [GET: 'index']
             constraints {
-                project(matches: /[0-9A-Z]*/)
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task', 'feature'])
                 commentable(matches: /\d*/)
             }
         }
-        "/ws/project/$project/comment/$type/$commentable/$id" { // For legacy support, commentable params are unused, more REST options are available below
-            controller = 'comment'
-            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task', 'feature'])
-                id(matches: /\d*/)
-                commentable(matches: /\d*/)
-            }
-        }
-        "/ws/project/$project/comment" {
+        "/ws/$workspaceType/$workspace/comment" {
             controller = 'comment'
             action = [POST: 'save']
             constraints {
-                project(matches: /[0-9A-Z]*/)
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
             }
         }
-        "/ws/project/$project/comment/$id" {
+        "/ws/$workspaceType/$workspace/comment/$id" {
             controller = 'comment'
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
-                project(matches: /[0-9A-Z]*/)
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }

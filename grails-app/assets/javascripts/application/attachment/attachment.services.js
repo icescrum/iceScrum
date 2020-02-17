@@ -22,7 +22,7 @@
  *
  */
 services.factory('Attachment', ['Resource', function($resource) {
-    return $resource('/p/:projectId/attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
+    return $resource('/:workspaceType/:workspaceId/attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
 services.service("AttachmentService", ['Attachment', 'Session', '$q', function(Attachment, Session, $q) {
@@ -35,14 +35,14 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
             attachmentable.attachments_count = attachmentable.attachments.length;
         }
     };
-    this.update = function(attachment, attachmentable, projectId) {
-        return Attachment.update({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, projectId: projectId}, attachment, function(returnedAttachment) {
+    this.update = function(attachment, attachmentable, workspaceId, workspaceType) {
+        return Attachment.update({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, workspaceId: workspaceId, workspaceType: workspaceType}, attachment, function(returnedAttachment) {
             var existingAttachment = _.find(attachmentable.attachments, {id: returnedAttachment.id});
             _.merge(existingAttachment, returnedAttachment);
         }).$promise;
     };
-    this['delete'] = function(attachment, attachmentable, projectId) {
-        return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, projectId: projectId}, function() {
+    this['delete'] = function(attachment, attachmentable, workspaceId, workspaceType) {
+        return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, workspaceId: workspaceId, workspaceType: workspaceType}, function() {
             _.remove(attachmentable.attachments, {id: attachment.id});
             attachmentable.attachments_count = attachmentable.attachments.length;
         }).$promise;
@@ -56,9 +56,9 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
                 return false;
         }
     };
-    this.list = function(attachmentable, projectId) {
+    this.list = function(attachmentable, workspaceId, workspaceType) {
         if (_.isEmpty(attachmentable.attachments) && attachmentable.attachments_count > 0) {
-            return Attachment.query({typeId: attachmentable.id, type: attachmentable.class.toLowerCase(), projectId: projectId}, function(data) {
+            return Attachment.query({typeId: attachmentable.id, type: attachmentable.class.toLowerCase(), workspaceId: workspaceId, workspaceType: workspaceType}, function(data) {
                 attachmentable.attachments = data;
                 attachmentable.attachments_count = attachmentable.attachments.length;
             }).$promise;

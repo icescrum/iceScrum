@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 package org.icescrum.web.presentation.api
@@ -26,31 +27,39 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.User
+import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.security.WorkspaceSecurity
 
-class CommentController implements ControllerErrorHandler {
+@Secured('permitAll()')
+class CommentController implements ControllerErrorHandler, WorkspaceSecurity {
 
     def springSecurityService
     def commentService
 
-    @Secured('stakeHolder() or inProject()')
-    def index(long project, Long commentable, String type) {
+    def index(long workspace, String workspaceType, Long commentable, String type) {
+        if (!checkPermission(
+                project: 'stakeHolder() or inProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
         def comments
         def _commentable
         if (commentable) {
-            _commentable = commentService.withCommentable(project, commentable, type)
+            _commentable = commentService.withCommentable(workspace, workspaceType, commentable, type)
             comments = _commentable.comments
         } else {
             if (type == 'feature') {
-                comments = Feature.recentCommentsInProject(project)
+                if (workspaceType == WorkspaceType.PORTFOLIO) {
+                    comments = Feature.recentCommentsInPortfolio(workspace)
+                } else if (workspaceType == WorkspaceType.PROJECT) {
+                    comments = Feature.recentCommentsInProject(workspace)
+                }
             } else if (type == 'task') {
-                comments = Task.recentCommentsInProject(project)
+                comments = Task.recentCommentsInProject(workspace)
             } else {
-                comments = Story.recentCommentsInProject(project)
+                comments = Story.recentCommentsInProject(workspace)
             }
         }
         render(status: 200, contentType: 'application/json', text: comments.collect { Comment comment ->
@@ -58,27 +67,42 @@ class CommentController implements ControllerErrorHandler {
         } as JSON)
     }
 
-    @Secured('stakeHolder() or inProject()')
-    def show(long id, long project) {
-        Comment comment = commentService.withComment(project, id)
+    def show(long id, long workspace, String workspaceType) {
+        if (!checkPermission(
+                project: 'stakeHolder() or inProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
+        Comment comment = commentService.withComment(workspace, workspaceType, id)
         render(status: 200, contentType: 'application/json', text: commentService.getRenderableComment(comment) as JSON)
     }
 
-    @Secured('((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()')
-    def save(long project) {
+    def save(long workspace, String workspaceType) {
+        if (!checkPermission(
+                project: '((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
         Comment.withTransaction {
             long commentableId = params.long('comment.commentable.id')
             String commentableType = GrailsNameUtils.getPropertyName(params.comment.commentable.class)
-            def _commentable = commentService.withCommentable(project, commentableId, commentableType)
+            def _commentable = commentService.withCommentable(workspace, workspaceType, commentableId, commentableType)
             Comment comment = commentService.save(_commentable, ((User) springSecurityService.currentUser), [body: params.comment.body])
             render(status: 201, contentType: 'application/json', text: commentService.getRenderableComment(comment, _commentable) as JSON)
         }
     }
 
-    @Secured('isAuthenticated() and !archivedProject()')
-    def update(long id, long project) {
+    def update(long id, long workspace, String workspaceType) {
+        if (!checkPermission(
+                project: 'isAuthenticated() and !archivedProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
         Comment.withTransaction {
-            def comment = commentService.withComment(project, id)
+            def comment = commentService.withComment(workspace, workspaceType, id)
             if (comment.posterId != springSecurityService.currentUser.id) {
                 render(status: 403)
                 return
@@ -88,11 +112,16 @@ class CommentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('isAuthenticated() and !archivedProject()')
-    def delete(long id, long project) {
+    def delete(long id, long workspace, String workspaceType) {
+        if (!checkPermission(
+                project: 'isAuthenticated() and !archivedProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
         Comment.withTransaction {
-            def comment = commentService.withComment(project, id)
-            if (!request.productOwner && !request.scrumMaster && comment.posterId != springSecurityService.currentUser.id) {
+            def comment = commentService.withComment(workspace, workspaceType, id)
+            if ((workspaceType == WorkspaceType.PROJECT && !request.productOwner && !request.scrumMaster || workspaceType == WorkspaceType.PORTFOLIO && !request.businessOwner) && comment.posterId != springSecurityService.currentUser.id) {
                 render(status: 403)
                 return
             }

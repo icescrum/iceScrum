@@ -273,10 +273,10 @@ extensibleController('taskNewCtrl', ['$scope', '$state', '$stateParams', '$contr
     });
 }]);
 
-extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, taskContext, detailsTask, project) {
+extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'WorkspaceType', 'TaskService', 'FormService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, WorkspaceType, TaskService, FormService, taskContext, detailsTask, project) {
     $controller('tagCtrl', {$scope: $scope, type: 'task'});
     $controller('taskCtrl', {$scope: $scope});
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task', project: project});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task', workspace: project, workspaceType: WorkspaceType.PROJECT});
     // Functions
     $scope.update = function(task) {
         TaskService.update(task, true).then(function() {

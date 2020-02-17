@@ -115,16 +115,16 @@ angular.module('isCore', ['ui.router'])
             },
             task: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsTask', 'project', function($stateParams, AttachmentService, detailsTask, project) {
+                    resolve: ['$stateParams', 'AttachmentService', 'WorkspaceType', 'detailsTask', 'project', function($stateParams, AttachmentService, WorkspaceType, detailsTask, project) {
                         if (!$stateParams.taskTabId) {
-                            return AttachmentService.list(detailsTask, project.id);
+                            return AttachmentService.list(detailsTask, project.id, WorkspaceType.PROJECT);
                         }
                     }]
                 },
                 comments: {
-                    resolve: ['$stateParams', '$rootScope', 'CommentService', 'detailsTask', 'project', function($stateParams, $rootScope, CommentService, detailsTask, project) {
+                    resolve: ['$stateParams', '$rootScope', 'CommentService', 'WorkspaceType', 'detailsTask', 'project', function($stateParams, $rootScope, CommentService, WorkspaceType, detailsTask, project) {
                         if ($stateParams.taskTabId == 'comments' || $rootScope.application.focusedDetailsView) {
-                            return CommentService.list(detailsTask, project.id);
+                            return CommentService.list(detailsTask, project.id, WorkspaceType.PROJECT);
                         }
                     }],
                     templateUrl: 'comment.list.html',
@@ -142,9 +142,9 @@ angular.module('isCore', ['ui.router'])
             },
             story: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsStory', 'project', function($stateParams, AttachmentService, detailsStory, project) {
+                    resolve: ['$stateParams', 'AttachmentService', 'WorkspaceType', 'detailsStory', 'project', function($stateParams, AttachmentService, WorkspaceType, detailsStory, project) {
                         if (!$stateParams.storyTabId) {
-                            return AttachmentService.list(detailsStory, project.id);
+                            return AttachmentService.list(detailsStory, project.id, WorkspaceType.PROJECT);
                         }
                     }]
                 },
@@ -167,9 +167,9 @@ angular.module('isCore', ['ui.router'])
                     focusTabRight: true
                 },
                 comments: {
-                    resolve: ['$stateParams', 'CommentService', 'detailsStory', 'project', function($stateParams, CommentService, detailsStory, project) {
+                    resolve: ['$stateParams', 'CommentService', 'WorkspaceType', 'detailsStory', 'project', function($stateParams, CommentService, WorkspaceType, detailsStory, project) {
                         if ($stateParams.storyTabId == 'comments') {
-                            return CommentService.list(detailsStory, project.id);
+                            return CommentService.list(detailsStory, project.id, WorkspaceType.PROJECT);
                         }
                     }],
                     templateUrl: 'comment.list.html'
@@ -185,9 +185,9 @@ angular.module('isCore', ['ui.router'])
             },
             feature: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', 'project', function($stateParams, AttachmentService, detailsFeature, project) {
+                    resolve: ['$stateParams', 'AttachmentService', 'WorkspaceType', 'detailsFeature', 'project', function($stateParams, AttachmentService, WorkspaceType, detailsFeature, project) {
                         if (!$stateParams.featureTabId) {
-                            return AttachmentService.list(detailsFeature, project.id);
+                            return AttachmentService.list(detailsFeature, project.id, WorkspaceType.PROJECT);
                         }
                     }]
                 },
@@ -201,9 +201,9 @@ angular.module('isCore', ['ui.router'])
                     focusTabRight: true
                 },
                 comments: {
-                    resolve: ['$stateParams', '$rootScope', 'CommentService', 'detailsFeature', 'project', function($stateParams, $rootScope, CommentService, detailsFeature, project) {
+                    resolve: ['$stateParams', '$rootScope', 'CommentService', 'WorkspaceType', 'detailsFeature', 'project', function($stateParams, $rootScope, CommentService, WorkspaceType, detailsFeature, project) {
                         if ($stateParams.featureTabId == 'comments' || $rootScope.application.focusedDetailsView) {
-                            return CommentService.list(detailsFeature, project.id);
+                            return CommentService.list(detailsFeature, project.id, WorkspaceType.PROJECT);
                         }
                     }],
                     templateUrl: 'comment.list.html',
@@ -220,9 +220,9 @@ angular.module('isCore', ['ui.router'])
             },
             release: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsRelease', 'project', function($stateParams, AttachmentService, detailsRelease, project) {
+                    resolve: ['$stateParams', 'AttachmentService', 'WorkspaceType', 'detailsRelease', 'project', function($stateParams, AttachmentService, WorkspaceType, detailsRelease, project) {
                         if (!$stateParams.releaseTabId) {
-                            return AttachmentService.list(detailsRelease, project.id);
+                            return AttachmentService.list(detailsRelease, project.id, WorkspaceType.PROJECT);
                         }
                     }]
                 },
@@ -237,9 +237,9 @@ angular.module('isCore', ['ui.router'])
             },
             sprint: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsSprint', 'project', function($stateParams, AttachmentService, detailsSprint, project) {
+                    resolve: ['$stateParams', 'AttachmentService', 'WorkspaceType', 'detailsSprint', 'project', function($stateParams, AttachmentService, WorkspaceType, detailsSprint, project) {
                         if (!$stateParams.sprintTabId) {
-                            return AttachmentService.list(detailsSprint, project.id);
+                            return AttachmentService.list(detailsSprint, project.id, WorkspaceType.PROJECT);
                         }
                     }]
                 },

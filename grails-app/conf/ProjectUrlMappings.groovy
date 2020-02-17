@@ -266,31 +266,6 @@ class ProjectUrlMappings {
                 fluxiableId(matches: /\d*/)
             }
         }
-        // Comment
-        "/p/$project/comment/$type/$commentable" {
-            controller = 'comment'
-            action = [GET: 'index']
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task', 'feature'])
-                commentable(matches: /\d*/)
-            }
-        }
-        "/p/$project/comment" {
-            controller = 'comment'
-            action = [POST: 'save']
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-            }
-        }
-        "/p/$project/comment/$id" {
-            controller = 'comment'
-            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
-            }
-        }
         // Acceptance test
         "/p/$project/acceptanceTest/story/$parentStory" {
             controller = 'acceptanceTest'

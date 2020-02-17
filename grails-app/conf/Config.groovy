@@ -384,7 +384,13 @@ grails.assets.enableGzip = true
  Attachmentable section
  */
 grails.attachmentable.storyDir = { Story story -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, story.backlog.id, 'stories', story.id) }
-grails.attachmentable.featureDir = { Feature feature -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, feature.backlog.id, 'features', feature.id) }
+grails.attachmentable.featureDir = { Feature feature ->
+    if (feature.backlog) {
+        ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, feature.backlog.id, 'features', feature.id)
+    } else {
+        ApplicationSupport.getAttachmentPath(WorkspaceType.PORTFOLIO, feature.portfolio.id, 'features', feature.id)
+    }
+}
 grails.attachmentable.releaseDir = { Release release -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, release.parentProject.id, 'releases', release.id) }
 grails.attachmentable.sprintDir = { Sprint sprint -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, sprint.parentRelease.parentProject.id, 'sprints', sprint.id) }
 grails.attachmentable.projectDir = { Project project -> ApplicationSupport.getAttachmentPath(WorkspaceType.PROJECT, project.id, 'project', project.id) }

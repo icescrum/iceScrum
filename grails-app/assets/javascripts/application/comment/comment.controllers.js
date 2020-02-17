@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', function($scope, CommentService, hotkeys) {
+controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', 'WorkspaceType', function($scope, CommentService, hotkeys, WorkspaceType) {
     // Functions
     $scope.resetCommentForm = function() {
         $scope.editableComment = $scope.comment ? $scope.comment : {};
@@ -36,13 +36,13 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         return $scope.comment ? $scope.authorizedComment('delete', $scope.editableComment) : false
     };
     $scope.save = function(comment, commentable) {
-        CommentService.save(comment, commentable, $scope.project.id).then(function() {
+        CommentService.save(comment, commentable, $scope.commentWorkspace.id, $scope.commentWorkspaceType).then(function() {
             $scope.resetCommentForm();
             $scope.notifySuccess('todo.is.ui.comment.saved');
         });
     };
     $scope['delete'] = function(comment, commentable) {
-        CommentService.delete(comment, commentable, $scope.project.id).then(function() {
+        CommentService.delete(comment, commentable, $scope.commentWorkspace.id, $scope.commentWorkspaceType).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
@@ -73,7 +73,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         if (!$scope.formHolder.commentForm.$invalid) {
             $scope.editForm(false);
             if ($scope.formHolder.commentForm.$dirty) {
-                CommentService.update(comment, commentable, $scope.project.id).then(function() {
+                CommentService.update(comment, commentable, $scope.commentWorkspace.id, $scope.commentWorkspaceType).then(function() {
                     $scope.notifySuccess('todo.is.ui.comment.updated');
                 });
             }
@@ -113,5 +113,8 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
     // Init
     $scope.formHolder = {};
     $scope.resetCommentForm();
-    $scope.project = $scope.getProjectFromState();
+    if (!$scope.commentWorkspace) {
+        $scope.commentWorkspace = $scope.getProjectFromState();
+        $scope.commentWorkspaceType = WorkspaceType.PROJECT;
+    }
 }]);

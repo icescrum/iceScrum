@@ -24,22 +24,29 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
-import org.icescrum.core.domain.*
 import org.icescrum.core.error.BusinessException
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.core.security.WorkspaceSecurity
+import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.plugins.attachmentable.domain.Attachment
 
 import javax.servlet.http.HttpServletResponse
 
-class AttachmentController implements ControllerErrorHandler {
+@Secured('permitAll()')
+class AttachmentController implements ControllerErrorHandler, WorkspaceSecurity {
 
     def springSecurityService
     def attachmentableService
 
-    @Secured('stakeHolder() or inProject()')
     def index() {
-        def attachmentable = getAttachmentableObject(params)
+        if (!checkPermission(
+                project: 'stakeHolder() or inProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
+        def attachmentable = ApplicationSupport.getAttachmentableObject(params)
         if (attachmentable) {
             render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON)
         } else {
@@ -47,9 +54,14 @@ class AttachmentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('stakeHolder() or inProject()')
     def show() {
-        def attachmentable = getAttachmentableObject(params)
+        if (!checkPermission(
+                project: 'stakeHolder() or inProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
+        def attachmentable = ApplicationSupport.getAttachmentableObject(params)
         if (attachmentable) {
             def attachment = attachmentable.attachments?.find { it.id == params.long('id') }
             if (attachment) {
@@ -73,9 +85,14 @@ class AttachmentController implements ControllerErrorHandler {
         response.status = HttpServletResponse.SC_NOT_FOUND
     }
 
-    @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
     def save() {
-        def attachmentable = getAttachmentableObject(params)
+        if (!checkPermission(
+                project: '((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()',
+                portfolio: 'businessOwner() or portfolioStakeHolder()'
+        )) {
+            return
+        }
+        def attachmentable = ApplicationSupport.getAttachmentableObject(params)
         def endOfUpload = { uploadInfo ->
             def service = grailsApplication.mainContext[params.type + 'Service']
             service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
@@ -105,9 +122,14 @@ class AttachmentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
     def update() {
-        def attachmentable = getAttachmentableObject(params)
+        if (!checkPermission(
+                project: 'productOwner() or scrumMaster()',
+                portfolio: 'businessOwner()'
+        )) {
+            return
+        }
+        def attachmentable = ApplicationSupport.getAttachmentableObject(params)
         if (attachmentable) {
             Attachment.withTransaction {
                 Attachment attachment = attachmentable.attachments?.find { it.id == params.long('id') }
@@ -121,9 +143,14 @@ class AttachmentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('productOwner() or scrumMaster()')
     def delete() {
-        def attachmentable = getAttachmentableObject(params)
+        if (!checkPermission(
+                project: 'productOwner() or scrumMaster()',
+                portfolio: 'businessOwner()'
+        )) {
+            return
+        }
+        def attachmentable = ApplicationSupport.getAttachmentableObject(params)
         if (attachmentable) {
             def attachment = attachmentable.attachments?.find { it.id == params.long('id') }
             if (attachment) {
@@ -133,34 +160,5 @@ class AttachmentController implements ControllerErrorHandler {
                 render(status: 204)
             }
         }
-    }
-
-    private static getAttachmentableObject(def params) {
-        def attachmentable
-        long project = params.long('project')
-        long attachmentableId = params.long('attachmentable')
-        switch (params.type) {
-            case 'story':
-                attachmentable = Story.getInProject(project, attachmentableId).list()
-                break
-            case 'task':
-                attachmentable = Task.getInProject(project, attachmentableId)
-                break
-            case 'feature':
-                attachmentable = Feature.getInProject(project, attachmentableId).list()
-                break
-            case 'release':
-                attachmentable = Release.getInProject(project, attachmentableId).list()
-                break
-            case 'sprint':
-                attachmentable = Sprint.getInProject(project, attachmentableId).list()
-                break
-            case 'project':
-                attachmentable = Project.get(attachmentableId)
-                break
-            default:
-                attachmentable = null
-        }
-        attachmentable
     }
 }

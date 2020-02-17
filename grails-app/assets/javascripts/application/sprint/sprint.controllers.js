@@ -367,9 +367,9 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'DateService', 'SprintService', 'ReleaseService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsSprint', 'detailsRelease', 'project', function($scope, $controller, SprintStatesByName, DateService, SprintService, ReleaseService, TimeBoxNotesTemplateService, FormService, detailsSprint, detailsRelease, project) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'WorkspaceType', 'DateService', 'SprintService', 'ReleaseService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsSprint', 'detailsRelease', 'project', function($scope, $controller, SprintStatesByName, WorkspaceType, DateService, SprintService, ReleaseService, TimeBoxNotesTemplateService, FormService, detailsSprint, detailsRelease, project) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint', project: project});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint', workspace: project, workspaceType: WorkspaceType.PROJECT});
     // Functions
     $scope.update = function(sprint) {
         SprintService.update(sprint, $scope.release).then(function() {

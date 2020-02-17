@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$filter', '$controller', 'FeatureService', 'FeatureStatesByName', 'Feature', 'project', 'features', function($scope, $q, $state, $timeout, $filter, $controller, FeatureService, FeatureStatesByName, Feature, project, features) {
+extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$filter', '$controller', 'FeatureService', 'FeatureStatesByName', 'WorkspaceType', 'Feature', 'project', 'features', function($scope, $q, $state, $timeout, $filter, $controller, FeatureService, FeatureStatesByName, WorkspaceType, Feature, project, features) {
     // Functions
     $scope.isSelected = function(selectable) {
         if ($state.params.featureId) {
@@ -95,7 +95,7 @@ extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$fi
         var createFeatureWithFile = function(files, project, selectOnComplet) {
             $flow.files = files;
             var feature = new Feature();
-            $controller('attachmentCtrl', {$scope: $scope, attachmentable: feature, clazz: 'feature', project: project});
+            $controller('attachmentCtrl', {$scope: $scope, attachmentable: feature, clazz: 'feature', workspace: project, workspaceType: WorkspaceType.PROJECT});
             feature.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
             return FeatureService.getAvailableColors(project.id).then(function(colors) {
                 feature.color = colors && colors.length ? _.last(colors) : '#0067e8';
