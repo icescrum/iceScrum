@@ -50,9 +50,10 @@ nv.models.line = function() {
         renderWatch.models(scatter);
         selection.each(function(data) {
             container = d3.select(this);
+            var shadowId = 'drop-shadow-' + Math.random().toString(36).substring(2, 10); // Use random ID to make it unique in case several charts are displayed in the same view (e.g. zoom)
             var filter = d3.select(this.ownerSVGElement).append('defs')
                 .append('filter')
-                .attr('id', "drop-shadow")
+                .attr('id', shadowId)
                 .attr('filterUnits','userSpaceOnUse');
             filter.append('feGaussianBlur')
                 .attr('in', 'SourceGraphic')
@@ -165,7 +166,7 @@ nv.models.line = function() {
 
             linePaths.enter().append('path')
                 .attr('class', 'nv-line')
-                .style("filter", "url(#drop-shadow)")
+                .style('filter', 'url(#' + shadowId + ')')
                 .attr('d',
                     d3.svg.line()
                         .interpolate(interpolate)
