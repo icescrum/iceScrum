@@ -1049,10 +1049,12 @@ extensibleController('userRatingCtrl', ['$scope', '$httpParamSerializerJQLike', 
         }
     };
     $scope.showRating = function() {
-        if ($scope.online && Session.user.preferences && Session.user.preferences.lastIceScrumRating) {
-            return moment(Session.user.preferences.lastIceScrumRating).add('90', 'days').isBefore(moment())
-        } else if ($scope.online && Session.user.preferences) {
-            return moment(Session.user.dateCreated).add('15', 'days').isBefore(moment())
+        if ($scope.online && Session.user.preferences) {
+            if (Session.user.preferences.lastIceScrumRating) {
+                return moment(Session.user.preferences.lastIceScrumRating).add('90', 'days').isBefore(moment())
+            } else {
+                return moment(Session.user.dateCreated).add('15', 'days').isBefore(moment())
+            }
         } else {
             return false;
         }

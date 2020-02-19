@@ -110,6 +110,8 @@ icescrum {
         timeout = 5000
     }
 
+    feedback.enable = true
+
     /* Server warnings to display to users */
     warnings = []
 

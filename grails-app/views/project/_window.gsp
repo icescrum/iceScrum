@@ -48,38 +48,40 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div ng-controller="userRatingCtrl">
-                        <div class="rating-container" ng-if=":: online && showRating()">
-                            <a class="btn btn-icon rating-close" href="" ng-if="showReview" ng-click="removeRating()"><span class="icon icon-close"></span></a>
-                            <div class="rating-content">
-                                <div ng-if="!thankYou && !showRatingText">
-                                    <div class="rating-title">
-                                        ${message(code: 'is.ui.rating.text.part.start')}
-                                        <a class="link" href ng-click="showReleaseNotesModal()">iceScrum ${g.meta(name: "app.version")}</a>
-                                        ${message(code: 'is.ui.rating.text.part.end')}
+                    <g:if test="${grailsApplication.config.icescrum.feedback.enable}">
+                        <div ng-controller="userRatingCtrl">
+                            <div class="rating-container" ng-if=":: online && showRating()">
+                                <a class="btn btn-icon rating-close" href="" ng-if="showReview" ng-click="removeRating()"><span class="icon icon-close"></span></a>
+                                <div class="rating-content">
+                                    <div ng-if="!thankYou && !showRatingText">
+                                        <div class="rating-title">
+                                            ${message(code: 'is.ui.rating.text.part.start')}
+                                            <a class="link" href ng-click="showReleaseNotesModal()">iceScrum ${g.meta(name: "app.version")}</a>
+                                            ${message(code: 'is.ui.rating.text.part.end')}
+                                        </div>
+                                        <div star-rating rating-value="currentUser.preferences.iceScrumRating" max="5" on-rating-selected="onSelectRating(rating)"></div>
                                     </div>
-                                    <div star-rating rating-value="currentUser.preferences.iceScrumRating" max="5" on-rating-selected="onSelectRating(rating)"></div>
-                                </div>
-                                <div class="form rating-textarea" ng-if="!thankYou && showRatingText">
-                                    <div class="form-group">
-                                        <label>${g.message(code: 'is.ui.rating.text.label')}</label>
-                                        <textarea class="form-control" ng-model="rating.text"></textarea>
-                                        <button type="button"
-                                                ng-disabled="!rating.text"
-                                                ng-click="submitRating()"
-                                                class="btn btn-primary float-right">
-                                            ${message(code: 'is.ui.rating.submit')}
-                                        </button>
+                                    <div class="form rating-textarea" ng-if="!thankYou && showRatingText">
+                                        <div class="form-group">
+                                            <label>${g.message(code: 'is.ui.rating.text.label')}</label>
+                                            <textarea class="form-control" ng-model="rating.text"></textarea>
+                                            <button type="button"
+                                                    ng-disabled="!rating.text"
+                                                    ng-click="submitRating()"
+                                                    class="btn btn-primary float-right">
+                                                ${message(code: 'is.ui.rating.submit')}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div ng-if="thankYou">
-                                    <h3>${g.message(code: 'is.ui.rating.thankyou')}</h3>
-                                    <br/>
-                                    <h3 ng-if="showReview"><a href="https://www.icescrum.com/rating.php?{{ queryStringRating }}" class="link">${g.message(code: 'is.ui.rating.review')}</a></h3>
+                                    <div ng-if="thankYou">
+                                        <h3>${g.message(code: 'is.ui.rating.thankyou')}</h3>
+                                        <br/>
+                                        <h3 ng-if="showReview"><a href="https://www.icescrum.com/rating.php?{{ queryStringRating }}" class="link">${g.message(code: 'is.ui.rating.review')}</a></h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </g:if>
                     <div class="float-right">
                         <button class="btn btn-icon btn-secondary btn-sm hover-visible text-nowrap"
                                 ng-if="authorizedProject('update', project)"
