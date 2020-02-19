@@ -50,7 +50,7 @@
                 <div class="card-body">
                     <div ng-controller="userRatingCtrl">
                         <div class="rating-container" ng-if=":: online && showRating()">
-                            <a class="btn btn-icon rating-close" href="" ng-click="removeRating()"><span class="icon icon-close"></span></a>
+                            <a class="btn btn-icon rating-close" href="" ng-if="showReview" ng-click="removeRating()"><span class="icon icon-close"></span></a>
                             <div class="rating-content">
                                 <div ng-if="!thankYou && !showRatingText">
                                     <div class="rating-title">${g.message(code:'is.ui.rating.text', args:[g.meta(name:"app.version")])}</div>
