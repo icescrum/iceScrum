@@ -1023,23 +1023,23 @@ extensibleController('tagCtrl', ['$scope', 'TagService', 'type', function($scope
     $scope.itemType = type;
 }]);
 
-extensibleController('userRatingCtrl', ['$scope', '$httpParamSerializerJQLike', '$timeout', 'FormService', 'UserService', 'Session', function($scope, $httpParamSerializerJQLike, $timeout, FormService, UserService, Session) {
+extensibleController('userRatingCtrl', ['$scope', '$timeout', 'FormService', 'UserService', 'Session', function($scope, $timeout, FormService, UserService, Session) {
     // Functions
     $scope.onSelectRating = function(rating) {
         $scope.rating.value = rating;
         $scope.showRatingText = $scope.rating.value <= 3;
-        $scope.queryStringRating = $httpParamSerializerJQLike($scope.rating);
         if (!$scope.showRatingText) {
             $scope.submitRating();
         }
     };
     $scope.submitRating = function() {
         if (Session.user.preferences) {
-            FormService.httpPost("https://www.icescrum.com/rating.php", {data: $scope.rating}).then(function() {
+            FormService.httpPost("https://www.icescrum.com/wp-json/kagilum/v1/rating", $scope.rating).then(function(response) {
                 Session.user.preferences.iceScrumRating = $scope.rating.value;
                 UserService.update(Session.user);
                 $scope.thankYou = true;
                 $scope.showReview = Session.user.preferences.iceScrumRating > 3;
+                $scope.ratingId = response.rating_id;
                 if (!$scope.showReview) {
                     $timeout(function() {
                         $scope.removeRating();

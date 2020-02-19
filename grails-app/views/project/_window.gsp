@@ -76,7 +76,7 @@
                                     <div ng-if="thankYou">
                                         <h3>${g.message(code: 'is.ui.rating.thankyou')}</h3>
                                         <br/>
-                                        <h3 ng-if="showReview"><a href="https://www.icescrum.com/rating.php?{{ queryStringRating }}" class="link">${g.message(code: 'is.ui.rating.review')}</a></h3>
+                                        <h3 ng-if="showReview"><a href="https://www.icescrum.com/wp-json/kagilum/v1/rating/{{ ratingId }}" class="link">${g.message(code: 'is.ui.rating.review')}</a></h3>
                                     </div>
                                 </div>
                             </div>
