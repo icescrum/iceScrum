@@ -261,12 +261,11 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
-        return $http.get("https://www.icescrum.com/check.php?rand=" + Date.now(), paramObj)
-            .then(function(response) {
-                return response.status == 200;
-            }).catch(function() {
-                return false;
-            });
+        return $http.get('https://www.icescrum.com/check.php?rand=' + Date.now(), paramObj).then(function(response) {
+            return response.status === 200;
+        }).catch(function() {
+            return false;
+        });
     };
     this.httpGet = function(path, params, isAbsolute) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;

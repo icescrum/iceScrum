@@ -1540,42 +1540,44 @@ th {
   display: flex;
   background: $is-bg-rating;
   z-index: 2;
+
+  .rating-content {
+    align-items: center;
+    flex-direction: row;
+    flex: 1;
+    align-self: center;
+  }
+
+  .rating-textarea {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+
+    textarea {
+      margin-bottom: 20px;
+    }
+  }
+
+  .rating-close {
+    position: absolute;
+    right: 1.25rem;
+    top: 1rem;
+  }
 }
 
-.rating-container .rating-content {
-  align-items: center;
-  flex-direction: row;
-  flex: 1;
-  align-self: center;
-}
+.rating {
+  > span:before {
+    content: '\2605';
+    color: $is-grey;
+    cursor: pointer;
+    font-size: 3em;
+  }
 
-.rating > span:before {
-  content: '\2605';
-  color: $is-grey;
-  cursor: pointer;
-  font-size: 3em;
-}
+  > span:hover ~ span:before {
+    color: $is-grey;
+  }
 
-.rating:hover > span:before, .rating > span.filled:before {
-  color: $is-red;
-}
-
-.rating > span:hover ~ span:before {
-  color: $is-grey;
-}
-
-.rating-container .rating-textarea {
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: left;
-}
-
-.rating-container .rating-textarea textarea {
-  margin-bottom: 20px;
-}
-
-.rating-container .rating-close {
-  position: absolute;
-  right: 1.25rem;
-  top: 1rem;
+  &:hover > span:before, > span.filled:before {
+    color: $is-red;
+  }
 }

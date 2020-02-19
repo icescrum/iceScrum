@@ -53,13 +53,14 @@
                             <a class="btn btn-icon rating-close" href="" ng-if="showReview" ng-click="removeRating()"><span class="icon icon-close"></span></a>
                             <div class="rating-content">
                                 <div ng-if="!thankYou && !showRatingText">
-                                    <div class="rating-title">${g.message(code:'is.ui.rating.text', args:[g.meta(name:"app.version")])}</div>
+                                    <div class="rating-title">${g.message(code: 'is.ui.rating.text', args: [g.meta(name: "app.version")])}</div>
                                     <div star-rating rating-value="currentUser.preferences.iceScrumRating" max="5" on-rating-selected="onSelectRating(rating)"></div>
-                                    <div class="rating-subtitle"><a class="link" href="https://www.icescrum.com/blog/icescrum-v${g.meta(name: 'app.version').replaceAll('Pro', '').replaceAll('\\.', '-')}">${g.message(code:'is.ui.rating.releaseNotes')}</a></div>
+                                    <div class="rating-subtitle"><a class="link"
+                                                                    href="https://www.icescrum.com/blog/icescrum-v${g.meta(name: 'app.version').replaceAll('Pro', '').replaceAll('\\.', '-')}">${g.message(code: 'is.ui.rating.releaseNotes')}</a></div>
                                 </div>
                                 <div class="form rating-textarea" ng-if="!thankYou && showRatingText">
                                     <div class="form-group">
-                                        <label>${g.message(code:'is.ui.rating.text.label')}</label>
+                                        <label>${g.message(code: 'is.ui.rating.text.label')}</label>
                                         <textarea class="form-control" ng-model="rating.text"></textarea>
                                         <button type="button"
                                                 ng-click="submitRating()"
@@ -69,9 +70,9 @@
                                     </div>
                                 </div>
                                 <div ng-if="thankYou">
-                                    <h3>${g.message(code:'is.ui.rating.thankyou')}</h3>
+                                    <h3>${g.message(code: 'is.ui.rating.thankyou')}</h3>
                                     <br/>
-                                    <h3 ng-if="showReview"><a href="https://www.icescrum.com/rating.php?{{ queryStringRating }}" class="link">${g.message(code:'is.ui.rating.review')}</a></h3>
+                                    <h3 ng-if="showReview"><a href="https://www.icescrum.com/rating.php?{{ queryStringRating }}" class="link">${g.message(code: 'is.ui.rating.review')}</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +87,8 @@
                     </div>
                     <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                     <div class="avatars-and-stats">
-                        <div class="avatars d-flex align-items-center justify-content-center" ng-class="{'avatars-size-sm': allMembers.length >= 12 && allMembers.length < 18, 'avatars-size-xs': allMembers.length >= 18, 'flex-wrap': allMembers.length >= 35}">
+                        <div class="avatars d-flex align-items-center justify-content-center"
+                             ng-class="{'avatars-size-sm': allMembers.length >= 12 && allMembers.length < 18, 'avatars-size-xs': allMembers.length >= 18, 'flex-wrap': allMembers.length >= 35}">
                             <div class="avatar {{ user | userColorRoles }}" ng-repeat="user in allMembers">
                                 <img ng-src="{{:: user | userAvatar }}"
                                      uib-tooltip="{{:: user | userFullName }}"/>

@@ -1024,6 +1024,7 @@ extensibleController('tagCtrl', ['$scope', 'TagService', 'type', function($scope
 }]);
 
 extensibleController('userRatingCtrl', ['$scope', '$httpParamSerializerJQLike', '$timeout', 'FormService', 'UserService', 'Session', function($scope, $httpParamSerializerJQLike, $timeout, FormService, UserService, Session) {
+    // Functions
     $scope.onSelectRating = function(rating) {
         $scope.rating.value = rating;
         $scope.showRatingText = $scope.rating.value <= 3;
@@ -1032,10 +1033,9 @@ extensibleController('userRatingCtrl', ['$scope', '$httpParamSerializerJQLike', 
             $scope.submitRating();
         }
     };
-
     $scope.submitRating = function() {
         if (Session.user.preferences) {
-            var query = FormService.httpPost("https://www.icescrum.com/rating.php", {data: $scope.rating}).then(function(response) {
+            FormService.httpPost("https://www.icescrum.com/rating.php", {data: $scope.rating}).then(function() {
                 Session.user.preferences.iceScrumRating = $scope.rating.value;
                 UserService.update(Session.user);
                 $scope.thankYou = true;
@@ -1048,7 +1048,6 @@ extensibleController('userRatingCtrl', ['$scope', '$httpParamSerializerJQLike', 
             });
         }
     };
-
     $scope.showRating = function() {
         if ($scope.online && Session.user.preferences && Session.user.preferences.lastIceScrumRating) {
             return moment(Session.user.preferences.lastIceScrumRating).add('90', 'days').isBefore(moment())
@@ -1058,18 +1057,16 @@ extensibleController('userRatingCtrl', ['$scope', '$httpParamSerializerJQLike', 
             return false;
         }
     };
-
-    $scope.removeRating = function(){
+    $scope.removeRating = function() {
         angular.element("[ng-controller='userRatingCtrl']").remove();
-    }
-
+    };
     // Init
     $scope.rating = {
         value: null,
         text: null,
         serverID: isSettings.serverID,
         uuid: Session.user.uid
-    }
+    };
     $scope.showReview = false;
     $scope.showThankYou = false;
     $scope.currentUser = Session.user;
