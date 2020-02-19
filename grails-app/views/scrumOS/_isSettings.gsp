@@ -32,6 +32,7 @@
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
         workspace: ${workspace ? workspace as JSON : 'null'},
+        serverID: '${Holders.grailsApplication.config.icescrum.appID}',
         push: {
             enabled: true, // If == false, no atmosphere ressource is created
             transport: "${Holders.config.icescrum.push.transport ?: 'websocket'}",

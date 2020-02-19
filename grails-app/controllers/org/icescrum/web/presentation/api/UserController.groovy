@@ -191,6 +191,9 @@ class UserController implements ControllerErrorHandler {
                                         autoFollow  : params.remove('user.preferences.emailsSettings.autoFollow'),
                                         onUrgentTask: params.remove('user.preferences.emailsSettings.onUrgentTask')]
             }
+            if (params.user.preferences && params.user.preferences['iceScrumRating'] != null) {
+                props.iceScrumRating = params.remove('user.preferences.iceScrumRating').toInteger()
+            }
             userService.update(user, props)
         }
         render(status: 200, contentType: 'application/json', text: user as JSON)

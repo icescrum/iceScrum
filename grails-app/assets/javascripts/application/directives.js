@@ -1129,4 +1129,37 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             $window.on(trackedEvents.join(" "), _.debounce(scopeCheckFunc, 15000));
         }
     };
-});
+}).directive('starRating', function () {
+    return {
+        restrict: 'A',
+        template: '<div class="rating">' +
+                  '<span ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)"></span>' +
+                  '</div>',
+        scope: {
+            ratingValue: '=',
+            max: '=',
+            onRatingSelected: '&'
+        },
+        link: function (scope, elem, attrs) {
+
+            var updateStars = function () {
+                scope.stars = [];
+                for (var i = 0; i < scope.max; i++) {
+                    scope.stars.push({
+                        filled: i < scope.ratingValue
+                    });
+                }
+            };
+
+            scope.toggle = function (index) {
+                scope.ratingValue = index + 1;
+                scope.onRatingSelected({
+                    rating: index + 1
+                });
+                updateStars();
+            };
+
+            updateStars();
+        }
+    }
+});;

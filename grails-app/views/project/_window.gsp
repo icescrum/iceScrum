@@ -48,6 +48,34 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <div ng-controller="userRatingCtrl">
+                        <div class="rating-container" ng-if=":: online && showRating()">
+                            <a class="btn btn-icon rating-close" href="" ng-click="removeRating()"><span class="icon icon-close"></span></a>
+                            <div class="rating-content">
+                                <div ng-if="!thankYou && !showRatingText">
+                                    <div class="rating-title">${g.message(code:'is.ui.rating.text', args:[g.meta(name:"app.version")])}</div>
+                                    <div star-rating rating-value="currentUser.preferences.iceScrumRating" max="5" on-rating-selected="onSelectRating(rating)"></div>
+                                    <div class="rating-subtitle"><a class="link" href="https://www.icescrum.com/blog/icescrum-v${g.meta(name: 'app.version').replaceAll('Pro', '').replaceAll('\\.', '-')}">${g.message(code:'is.ui.rating.releaseNotes')}</a></div>
+                                </div>
+                                <div class="form rating-textarea" ng-if="!thankYou && showRatingText">
+                                    <div class="form-group">
+                                        <label>${g.message(code:'is.ui.rating.text.label')}</label>
+                                        <textarea class="form-control" ng-model="rating.text"></textarea>
+                                        <button type="button"
+                                                ng-click="submitRating()"
+                                                class="btn btn-primary float-right">
+                                            ${message(code: 'is.ui.rating.submit')}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div ng-if="thankYou">
+                                    <h3>${g.message(code:'is.ui.rating.thankyou')}</h3>
+                                    <br/>
+                                    <h3 ng-if="showReview"><a href="https://www.icescrum.com/rating.php?{{ queryStringRating }}" class="link">${g.message(code:'is.ui.rating.review')}</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="float-right">
                         <button class="btn btn-icon btn-secondary btn-sm hover-visible text-nowrap"
                                 ng-if="authorizedProject('update', project)"
