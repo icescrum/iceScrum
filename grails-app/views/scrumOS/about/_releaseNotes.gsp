@@ -1,3 +1,4 @@
+<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
 - Copyright (c) 2017 Kagilum SAS.
 -
@@ -27,7 +28,7 @@
 <div class="text-center mt-3">
     <a class="link"
        target="_blank"
-       href="https://www.icescrum.com/blog/icescrum-v${g.meta(name: 'app.version').replaceAll('Pro', '').replaceAll('\\.', '-')}">
+       href="${ApplicationSupport.getReleaseNotesLink()}">
         ${message(code: 'is.ui.read.more')}
     </a>
 </div>
