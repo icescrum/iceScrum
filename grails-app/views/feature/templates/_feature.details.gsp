@@ -108,7 +108,7 @@
                 <div uib-dropdown-menu ng-init="itemType = 'feature'; viewType = 'details'" template-url="item.menu.html"></div>
             </div>
         </div>
-        <a href="{{ tabUrl('activities') }}"><visual-states ng-model="feature" model-states="featureStatesByName"/></a>
+        <a href="{{ tabUrl('activities') }}" ng-class="{'disabled-link': feature.state < featureStatesByName.TODO}"><visual-states ng-model="feature" model-states="featureStatesByName"/></a>
     </div>
     <div class="details-content-container">
         <div class="details-content details-content-left">

@@ -523,6 +523,11 @@ $state-dot-size-sm: 0.5rem;
   cursor: pointer;
 }
 
+a.disabled-link {
+  pointer-events: none;
+  cursor: default;
+}
+
 .timebox-dates {
   $timebox-dates-padding: 0.625rem;
   $timebox-dates-padding-sm: 0.5rem;

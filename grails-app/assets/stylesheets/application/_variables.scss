@@ -104,6 +104,7 @@ $acceptance-test-states: tocheck, success, failed;
 
 $is-state-colors: (
         "todo": #AAAAAA,
+        "draft": #AAAAAA,
         "frozen": #AAAAAA,
         "suggested": $is-yellow,
         "accepted": $is-orange,
