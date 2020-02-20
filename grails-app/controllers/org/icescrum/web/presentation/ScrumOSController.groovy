@@ -131,7 +131,7 @@ class ScrumOSController implements ControllerErrorHandler {
                               id      : windowDefinitionId,
                               position: userService.getPositionFromUserPreferences(windowDefinition) ?: menu.defaultPosition]
                     menus.sort { it.position }.eachWithIndex { menuEntry, index ->
-                        menuEntry.shortcut = 'ctrl+' + (index + 1)
+                        menuEntry.shortcut = 'shift+' + (index + 1)
                     }
                 }
                 if (windowDefinition.workspace == WorkspaceType.PROJECT && windowDefinition.id != 'project') {
