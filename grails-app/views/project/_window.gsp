@@ -60,6 +60,7 @@
                                             ${message(code: 'is.ui.rating.text.part.end')}
                                         </div>
                                         <div star-rating rating-value="currentUser.preferences.iceScrumRating" max="5" on-rating-selected="onSelectRating(rating)"></div>
+                                        <a href class="small text-muted" ng-click="skipRating()">${message(code: 'is.ui.rating.skip')}</a>
                                     </div>
                                     <div class="form rating-textarea" ng-if="!thankYou && showRatingText">
                                         <div class="form-group">

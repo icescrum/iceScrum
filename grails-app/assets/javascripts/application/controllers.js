@@ -1033,31 +1033,37 @@ extensibleController('userRatingCtrl', ['$scope', '$timeout', 'FormService', 'Us
         }
     };
     $scope.submitRating = function() {
-        if (Session.user.preferences) {
-            FormService.httpPost("https://www.icescrum.com/wp-json/kagilum/v1/rating", $scope.rating).then(function(response) {
-                Session.user.preferences.iceScrumRating = $scope.rating.value;
-                UserService.update(Session.user);
-                $scope.thankYou = true;
-                $scope.showReview = Session.user.preferences.iceScrumRating > 3;
-                $scope.ratingId = response.rating_id;
-                if (!$scope.showReview) {
-                    $timeout(function() {
-                        $scope.removeRating();
-                    }, 3000);
-                }
-            });
-        }
+        FormService.httpPost("https://www.icescrum.com/wp-json/kagilum/v1/rating", $scope.rating).then(function(response) {
+            Session.user.preferences.iceScrumRating = $scope.rating.value;
+            UserService.update(Session.user);
+            $scope.thankYou = true;
+            $scope.showReview = Session.user.preferences.iceScrumRating > 3;
+            $scope.ratingId = response.rating_id;
+            if (!$scope.showReview) {
+                $timeout(function() {
+                    $scope.removeRating();
+                }, 3000);
+            }
+        });
     };
     $scope.showRating = function() {
         if ($scope.online && Session.user.preferences) {
+            var nextRating;
             if (Session.user.preferences.lastIceScrumRating) {
-                return moment(Session.user.preferences.lastIceScrumRating).add('90', 'days').isBefore(moment())
+                var delayBetweenRatings = Session.user.preferences.iceScrumRating === -1 ? 15 : 90;
+                nextRating = moment(Session.user.preferences.lastIceScrumRating).add(delayBetweenRatings, 'days');
             } else {
-                return moment(Session.user.dateCreated).add('15', 'days').isBefore(moment())
+                nextRating = moment(Session.user.dateCreated).add(15, 'days')
             }
+            return nextRating.isBefore(moment())
         } else {
             return false;
         }
+    };
+    $scope.skipRating = function() {
+        $scope.rating.value = -1;
+        $scope.removeRating();
+        $scope.submitRating();
     };
     $scope.removeRating = function() {
         angular.element("[ng-controller='userRatingCtrl']").remove();
