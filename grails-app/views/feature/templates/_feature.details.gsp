@@ -74,7 +74,7 @@
            hotkey-description="${message(code: 'is.ui.window.unfocus')}">
             <span class="icon icon-compress"></span>
         </a>
-        <details-layout-buttons remove-ancestor="!$state.includes('feature.**')"/>
+        <details-layout-buttons remove-ancestor="!$state.includes('feature.**') && !$state.includes('features.**')"/>
     </div>
     <div class="card-header">
         <div class="card-title">
