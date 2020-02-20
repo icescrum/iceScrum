@@ -60,7 +60,7 @@
         <label for="framework">${message(code: 'is.portfolio.framework')}</label>
         <div>
             <div class="btn-group">
-                <label class="btn btn-primary" ng-model="portfolio.framework" uib-btn-radio="'DEFAULT'">LeSS, Nexus...</label>
+                <label class="btn btn-primary" ng-model="portfolio.framework" uib-btn-radio="'DEFAULT'">${message(code: 'is.ui.portfolio.default')}</label>
                 <label class="btn btn-primary" ng-model="portfolio.framework" uib-btn-radio="'SAFE'">SAFe</label>
             </div>
         </div>
