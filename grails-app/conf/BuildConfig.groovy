@@ -74,7 +74,6 @@ grails.project.dependency.resolution = {
         grailsCentral()
         grailsHome()
         mavenCentral()
-        mavenRepo 'https://repo1.maven.org/maven2/' // mavenCentral uses deprecated http
         // To help grails to compile and find jar depencies form icescrum-core, otherwise it's limited to one / day
         mavenRepo("http://repo.spring.io/libs-release") {
             updatePolicy "interval:1"
@@ -104,7 +103,7 @@ grails.project.dependency.resolution = {
         compile 'org.icescrum:entry-points:1.4'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
-            compile 'org.icescrum:standalone:8.5.51.1'
+            compile 'org.icescrum:standalone:8.5.51.2'
         }
     }
 }
