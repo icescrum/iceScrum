@@ -74,6 +74,7 @@ grails.project.dependency.resolution = {
         grailsCentral()
         grailsHome()
         mavenCentral()
+        mavenRepo 'https://repo1.maven.org/maven2/' // mavenCentral uses deprecated http
         // To help grails to compile and find jar depencies form icescrum-core, otherwise it's limited to one / day
         mavenRepo("http://repo.spring.io/libs-release") {
             updatePolicy "interval:1"
