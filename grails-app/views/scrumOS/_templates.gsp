@@ -85,7 +85,7 @@
 
     <script type="text/ng-template" id="select.or.create.team.html">
     <a>
-        <span ng-show="!match.model.id">${message(code: 'todo.is.ui.create.team')}</span> <strong>{{ match.model.name }}</strong>
+        <span ng-show="match.model.name && !match.model.id">${message(code: 'todo.is.ui.create.team')}</span> <strong>{{ match.model.name }}</strong>
     </a>
     </script>
 

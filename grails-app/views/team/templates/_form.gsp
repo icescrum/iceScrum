@@ -51,6 +51,7 @@
                    typeahead-on-select="selectTeam($item, $model, $label)"
                    typeahead-template-url="select.or.create.team.html"
                    typeahead-select-on-blur="true"
+                   typeahead-min-length="0"
                    ng-readonly="team.selected"
                    ng-model="team.name"
                    ng-required="isCurrentStep(2, 'project')">
