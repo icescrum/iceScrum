@@ -21,13 +21,14 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('meetingCtrl', ['$scope', 'AppService', function($scope, AppService) {
+extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', function($scope, $injector, AppService) {
     // Init
-    $scope.selectedProvider = function(provider) {
+    $scope.injector = $injector;
+    $scope.selectedProvider = function(object, provider) {
         if (provider.enabled) {
-            provider.start();
+            provider.start(object, $scope);
         } else {
-            $scope.showAppsModal($scope.message('is.ui.apps.tag.meeting'), true)
+            $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true)
         }
     };
 

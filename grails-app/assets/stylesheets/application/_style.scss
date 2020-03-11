@@ -1601,3 +1601,11 @@ th {
   height: 100%;
   width: 20px;
 }
+
+.meeting-provider-container.disabled .meeting-provider {
+  opacity:0.5;
+}
+
+.meeting-provider-container.disabled .meeting-provider:hover {
+  opacity:1.0;
+}

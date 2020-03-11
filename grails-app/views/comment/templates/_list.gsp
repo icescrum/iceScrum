@@ -24,8 +24,8 @@
 <div class="card-body font-size-sm comments">
     <entry:point id="comments-before-list"/>
     <div class="text-center mb-3" ng-controller="meetingCtrl" ng-if="providers">
-        <div><g:message code="is.ui.meeting.start"/></div>
-        <a href ng-repeat="provider in ::providers" ng-click="selectedProvider(provider)" class="meeting-provider-container" ng-class="{'disabled': !provider.enabled}">
+        <div><b><g:message code="is.ui.collaboration.start"/></b></div>
+        <a href ng-repeat="provider in ::providers" ng-click="selectedProvider(selected, provider)" class="meeting-provider-container" ng-class="{'disabled': !provider.enabled}">
             <span class="meeting-provider meeting-provider-{{ ::provider.id }} mr-2" title="{{ ::provider.name }}"></span>
         </a>
     </div>
