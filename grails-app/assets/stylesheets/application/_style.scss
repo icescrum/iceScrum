@@ -1586,3 +1586,18 @@ th {
     color: $is-yellow;
   }
 }
+
+.attachment-provider-container, .meeting-provider-container {
+  background: no-repeat center;
+  display: inline-block;
+  vertical-align: middle;
+  height: 2rem;
+}
+
+.attachment-provider, .meeting-provider {
+  display: inline-block;
+  background: no-repeat center;
+  background-size: 20px auto;
+  height: 100%;
+  width: 20px;
+}

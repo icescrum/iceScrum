@@ -22,6 +22,14 @@
 --}%
 <script type="text/ng-template" id="comment.list.html">
 <div class="card-body font-size-sm comments">
+    <entry:point id="comments-before-list"/>
+    <div class="text-center mb-3" ng-controller="meetingCtrl" ng-if="providers">
+        <div><g:message code="is.ui.meeting.start"/></div>
+        <a href ng-repeat="provider in ::providers" ng-click="selectedProvider(provider)" class="meeting-provider-container" ng-class="{'disabled': !provider.enabled}">
+            <span class="meeting-provider meeting-provider-{{ ::provider.id }} mr-2" title="{{ ::provider.name }}"></span>
+        </a>
+    </div>
+
     <div ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
         <form name="formHolder.commentForm"
               ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
@@ -37,9 +45,11 @@
                              alt="{{comment.poster | userFullName}}"/>
                     </div>
                 </div>
+
                 <div class="col-6">
                     <span class="form-control-plaintext">{{comment.poster | userFullName}}</span>
                 </div>
+
                 <div class="col-4 text-right">
                     <span class="time-stamp">
                         <time timeago datetime="{{ comment.dateCreated }}">
@@ -48,13 +58,16 @@
                         <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
                     </span>
                 </div>
+
                 <div class="col-1">
                     <div class="btn-group" ng-show="formDeletable() || formEditable()" uib-dropdown>
                         <button type="button" class="btn btn-link btn-sm" uib-dropdown-toggle></button>
+
                         <div uib-dropdown-menu ng-init="itemType = 'comment'" template-url="item.menu.html"></div>
                     </div>
                 </div>
             </div>
+
             <div class="form-group">
                 <textarea at
                           required
@@ -66,6 +79,7 @@
                           is-model-html="editableComment.body_html"
                           ng-show="showCommentBodyTextarea"
                           class="form-control"></textarea>
+
                 <div class="markitup-preview form-control no-fixed-height"
                      ng-show="!showCommentBodyTextarea"
                      ng-focus="editCommentBody()"
@@ -73,6 +87,7 @@
                      bind-html-scope="markitupCheckboxOptions()"
                      bind-html-compile="editableComment.body_html"></div>
             </div>
+
             <div class="btn-toolbar justify-content-end mb-3"
                  ng-if="formHolder.editing">
                 <button class="btn btn-secondary btn-sm"
@@ -90,6 +105,7 @@
         </form>
         <hr ng-if="!$last" class="w-50 mt-2"/>
     </div>
+
     <div ng-show="selected.comments_count === 0"
          class="empty-content">
         <div class="form-text">
@@ -97,6 +113,7 @@
         </div>
     </div>
 </div>
+
 <div class="card-footer" ng-controller="commentCtrl">
     <div ng-include="'comment.editor.html'"></div>
 </div>
