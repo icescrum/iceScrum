@@ -57,7 +57,7 @@
             <td>
                 <i ng-class="['fa', {'fa-eye text-danger': !project.preferences.hidden, 'fa-eye-splash text-success': project.preferences.hidden }]"></i>
                 {{:: project.name }}
-                <div class="bg-success"
+                <div class="bg-success small ml-1"
                      ng-if="project.new"
                      style="display: inline-block; color: #111111; padding-left: 2px;padding-right: 2px;font-weight:bold;">${message(code: 'is.ui.new')}</div>
             </td>
