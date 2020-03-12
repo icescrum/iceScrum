@@ -74,9 +74,7 @@
         isMobile: ${isMobile},
         logoutLink: "${createLink(controller: 'logout')}",
         meeting: {
-            providers: [
-                <entry:point id="scrumOS-isSettings-collaboration" model="[user:user, roles:roles, workspace: workspace]" join=","/>
-            ]
+            providers: [<entry:point id="scrumOS-isSettings-collaboration" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
         },
         <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]" join=","/>
     };
