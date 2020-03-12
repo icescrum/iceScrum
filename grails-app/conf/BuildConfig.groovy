@@ -100,7 +100,7 @@ grails.project.dependency.resolution = {
         runtime ':hibernate4:4.3.10'
         runtime 'org.grails.plugins:database-migration:1.4.1'
         build ':tomcat:7.0.70'
-        compile 'org.icescrum:entry-points:1.4'
+        compile 'org.icescrum:entry-points:1.4.1'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
             compile 'org.icescrum:standalone:8.5.51.2'
