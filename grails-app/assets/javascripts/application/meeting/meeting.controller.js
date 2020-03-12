@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2020 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -22,17 +22,17 @@
  *
  */
 extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', function($scope, $injector, AppService) {
-    // Init
-    $scope.injector = $injector;
+    // Functions
     $scope.selectedProvider = function(object, provider) {
         if (provider.enabled) {
-            var meetingName = object.name ? $scope.message('is.ui.collaboration.meeting') + " " + object.name : $scope.message('is.ui.collaboration.meeting.default')
+            var meetingName = object.name ? $scope.message('is.ui.collaboration.meeting') + ' ' + object.name : $scope.message('is.ui.collaboration.meeting.default');
             provider.start(object, meetingName, $scope);
         } else {
             $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true)
         }
     };
-
+    // Init
+    $scope.injector = $injector;
     $scope.$watch('project.simpleProjectApps', function() {
         $scope.providers = _.each(isSettings.meeting.providers, function(provider) {
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);

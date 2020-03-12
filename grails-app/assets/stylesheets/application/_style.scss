@@ -1597,15 +1597,28 @@ th {
 .attachment-provider, .meeting-provider {
   display: inline-block;
   background: no-repeat center;
-  background-size: 20px auto;
   height: 100%;
+}
+
+.attachment-provider {
+  background-size: 20px auto;
   width: 20px;
 }
 
-.meeting-provider-container.disabled .meeting-provider {
-  opacity:0.5;
+.meeting-provider {
+  background-size: 24px auto;
+  width: 24px;
 }
 
-.meeting-provider-container.disabled .meeting-provider:hover {
-  opacity:1.0;
+.meeting-provider-container {
+  margin-left: 0.5rem;
+  margin-right: 0.25rem;
+
+  &.disabled .meeting-provider {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
 }
