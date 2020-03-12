@@ -26,7 +26,8 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', functi
     $scope.injector = $injector;
     $scope.selectedProvider = function(object, provider) {
         if (provider.enabled) {
-            provider.start(object, $scope);
+            var meetingName = object.name ? $scope.message('is.ui.collaboration.meeting') + " " + object.name : $scope.message('is.ui.collaboration.meeting.default')
+            provider.start(object, meetingName, $scope);
         } else {
             $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true)
         }
