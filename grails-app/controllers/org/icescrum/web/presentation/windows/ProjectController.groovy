@@ -169,9 +169,9 @@ class ProjectController implements ControllerErrorHandler {
     def delete(long project) {
         try {
             Project _project = Project.withProject(project)
-            def team = _project.getTeam()
+            def team = _project.team
             projectService.delete(_project)
-            if(team.projects.size() == 0 && _project.name.startsWith("Peetic")){
+            if (team.projects.size() == 0 && _project.name.startsWith("Peetic")) {
                 teamService.delete(team)
             }
             render(status: 200, contentType: 'application/json', text: [class: 'Project', id: project] as JSON)
