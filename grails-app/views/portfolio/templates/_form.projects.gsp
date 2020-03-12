@@ -59,7 +59,7 @@
                 {{:: project.name }}
                 <div class="bg-success"
                      ng-if="project.new"
-                     style="display: inline-block;padding-left: 2px;padding-right: 2px;font-weight:bold;">${message(code: 'is.ui.new')}</div>
+                     style="display: inline-block; color: #111111; padding-left: 2px;padding-right: 2px;font-weight:bold;">${message(code: 'is.ui.new')}</div>
             </td>
             <td>{{:: project.startDate | dayShort }}</td>
             <td>{{:: project.preferences.estimatedSprintsDuration }} ${g.message(code: 'is.dialog.wizard.project.days').toLowerCase()}</td>
