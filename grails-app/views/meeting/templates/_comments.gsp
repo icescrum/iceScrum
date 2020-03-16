@@ -23,7 +23,7 @@
 <div ng-controller="meetingCtrl" class="meetings-container">
     <div ng-if="providers && authorizedMeeting('create')"
          class="align-items-center"
-         ng-class="{'d-flex': (context && !meetings.length) || (!context && meetings.length), 'd-none': context && meetings, 'justify-content-between': !meetings.length, 'justify-content-end': meetings.length}">
+         ng-class="{'d-flex': (subject && !meetings.length) || (!subject && meetings.length), 'd-none': subject && meetings, 'justify-content-between': !meetings.length, 'justify-content-end': meetings.length}">
         <div class="font-size-sm" ng-if="!meetings.length">
             <b>${message(code: 'is.ui.collaboration.start')}</b>
         </div>

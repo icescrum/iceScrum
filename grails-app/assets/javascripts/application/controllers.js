@@ -577,7 +577,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         if (!Session.owner(meeting)) {
             $scope.notifySuccess($scope.message('is.ui.collaboration.notification', [meeting.provider, meeting.topic]), {
                 button: {
-                    type: 'primary',
+                    type: 'primary gold',
                     name: $scope.message('is.ui.collaboration.join'),
                     link: meeting.videoLink,
                     rel: 'noreferer',

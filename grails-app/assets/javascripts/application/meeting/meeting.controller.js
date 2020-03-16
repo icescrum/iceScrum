@@ -23,23 +23,23 @@
  */
 extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'Meeting', 'Session', function($scope, $injector, AppService, MeetingService, Meeting, Session) {
     // Functions
-    $scope.createMeeting = function(context, provider) {
+    $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
             var meeting = new Meeting();
             meeting.provider = provider.id;
-            meeting.topic = context.name ? context.name : $scope.message('is.ui.collaboration.meeting.default');
+            meeting.topic = subject.name ? subject.name : $scope.message('is.ui.collaboration.meeting.default');
             meeting.startDate = moment().format();
-            if (context) {
-                meeting.contextId = context.id;
-                meeting.contextType = context.class;
+            if (subject) {
+                meeting.subjectId = subject.id;
+                meeting.subjectType = subject.class;
             }
-            provider.createMeeting(context, meeting, $scope).then(function(meetingData) {
+            provider.createMeeting(subject, meeting, $scope).then(function(meetingData) {
                 if (meetingData.videoLink || meetingData.phone) {
                     meeting.videoLink = meetingData.videoLink;
                     meeting.phone = meetingData.phone ? meetingData.phone : null;
                     meeting.pinCode = meetingData.pinCode ? meetingData.pinCode : null;
                     meeting.providerEventId = meetingData.providerEventId;
-                    MeetingService.save(meeting, Session.getWorkspace(), context).then(function(meeting) {
+                    MeetingService.save(meeting, Session.getWorkspace(), subject).then(function(meeting) {
                         $scope.meetings.push(meeting);
                     });
                 }
@@ -65,8 +65,8 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
         });
     }, true);
-    $scope.context = $scope.selected ? $scope.selected : false;
-    MeetingService.list(Session.getWorkspace(), $scope.context).then(function(meetings) {
-        $scope.meetings = _.filter(meetings, {endDate: null});
+    $scope.subject = $scope.selected;
+    MeetingService.list(Session.getWorkspace(), $scope.subject).then(function(meetings) {
+        $scope.meetings = meetings
     });
 }]);

@@ -37,7 +37,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
     def springSecurityService
     def meetingService
 
-    def index(long workspace, String workspaceType, Long contextId, String contextType) {
+    def index(long workspace, String workspaceType, Long subjectId, String subjectType) {
         if (!checkPermission(
                 project: 'stakeHolder() or inProject()',
                 portfolio: 'businessOwner() or portfolioStakeHolder()'
@@ -46,8 +46,8 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         }
         def meetings = []
         Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
-        if (contextId && contextType) {
-            meetings = Meeting."findAllBy${workspaceType.capitalize()}AndContextIdAndContextTypeIlikeAndEndDateIsNull"(WorkspaceClass.load(workspace), contextId, contextType)
+        if (subjectId && subjectType) {
+            meetings = Meeting."findAllBy${workspaceType.capitalize()}AndSubjectIdAndSubjectTypeIlikeAndEndDateIsNull"(WorkspaceClass.load(workspace), subjectId, subjectType)
         } else {
             meetings = Meeting."findAllBy${workspaceType.capitalize()}AndEndDateIsNull"(WorkspaceClass.load(workspace))
         }
@@ -85,7 +85,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         }
         Meeting meeting = new Meeting()
         Meeting.withTransaction {
-            bindData(meeting, meetingParams, [include: ['topic', 'videoLink', 'phone', 'pinCode', 'contextId', 'contextType', 'startDate', 'endDate', 'provider', 'providerEventId']])
+            bindData(meeting, meetingParams, [include: ['topic', 'videoLink', 'phone', 'pinCode', 'subjectId', 'subjectType', 'startDate', 'endDate', 'provider', 'providerEventId']])
             User user = (User) springSecurityService.currentUser
             Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
             meetingService.save(meeting, WorkspaceClass.load(workspace), user)

@@ -22,7 +22,7 @@
  *
  */
 services.factory('Meeting', ['Resource', function($resource) {
-    return $resource('/:workspaceType/:workspaceId/meeting/:type/:typeId/:id');
+    return $resource('/:workspaceType/:workspaceId/meeting/:subjectType/:subjectId/:id');
 }]);
 
 services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', function(Meeting, Session, IceScrumEventType, CacheService, PushService) {
@@ -47,11 +47,11 @@ services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', '
     this.mergeMeetings = function(meeting) {
         _.each(meeting, crudMethods[IceScrumEventType.UPDATE]);
     };
-    this.save = function(meeting, workspace, context) {
+    this.save = function(meeting, workspace, subject) {
         meeting.class = 'meeting';
-        if (context) {
-            meeting.contextId = context.id;
-            meeting.contextType = context.class.toLowerCase();
+        if (subject) {
+            meeting.subjectId = subject.id;
+            meeting.subjectType = subject.class.toLowerCase();
         }
         return Meeting.save({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase()}, meeting, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
@@ -61,8 +61,8 @@ services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', '
     this.update = function(meeting, workspace) {
         return Meeting.update({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase()}, meeting, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.list = function(workspace, context) {
-        return Meeting.query({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase(), typeId: context ? context.id : null, type: context ? context.class.toLowerCase() : null}, self.mergeMeetings).$promise;
+    this.list = function(workspace, subject) {
+        return Meeting.query({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase(), subjectId: subject ? subject.id : null, subjectType: subject ? subject.class.toLowerCase() : null}, self.mergeMeetings).$promise;
     };
     this.authorizedMeeting = function(action, meeting) {
         switch (action) {
