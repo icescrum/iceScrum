@@ -25,7 +25,7 @@ services.factory('Meeting', ['Resource', function($resource) {
     return $resource('/:workspaceType/:workspaceId/meeting/:type/:typeId/:id');
 }]);
 
-services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'I18nService', 'notifications', function(Meeting, Session, IceScrumEventType, CacheService, PushService, I18nService, notifications) {
+services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', function(Meeting, Session, IceScrumEventType, CacheService, PushService) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(meeting) {
@@ -44,21 +44,6 @@ services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', '
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('meeting', eventType, crudMethod);
     });
-    this.displayNotification = function(meeting) {
-        if (!Session.owner(meeting)) {
-            notifications.success('', I18nService.message('is.ui.collaboration.notification', [meeting.provider, meeting.subject]), {
-                button: {
-                    type: 'primary gold',
-                    name: I18nService.message('is.ui.collaboration.join'),
-                    link: meeting.videoLink,
-                    rel: 'noreferer',
-                    target: '_blank',
-                    delay: 15000
-                }
-            });
-        }
-    };
-    PushService.registerListener('meeting', 'CREATE', this.displayNotification);
     this.mergeMeetings = function(meeting) {
         _.each(meeting, crudMethods[IceScrumEventType.UPDATE]);
     };

@@ -573,6 +573,20 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             }
         }
     });
+    PushService.registerListener('meeting', 'CREATE', function(meeting) {
+        if (!Session.owner(meeting)) {
+            $scope.notifySuccess($scope.message('is.ui.collaboration.notification', [meeting.provider, meeting.subject]), {
+                button: {
+                    type: 'primary',
+                    name: $scope.message('is.ui.collaboration.join'),
+                    link: meeting.videoLink,
+                    rel: 'noreferer',
+                    target: '_blank'
+                },
+                delay: 15000
+            });
+        }
+    });
 }]);
 
 controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeout', 'Session', 'CacheService', 'ContextService', function($scope, $location, $state, $timeout, Session, CacheService, ContextService) {
