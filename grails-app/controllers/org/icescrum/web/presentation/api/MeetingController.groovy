@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Kagilum.
+ * Copyright (c) 2020 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -25,14 +25,11 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.util.GrailsNameUtils
 import org.icescrum.core.domain.Meeting
 import org.icescrum.core.domain.User
-import org.icescrum.core.domain.WorkspaceType
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.security.WorkspaceSecurity
 import org.icescrum.core.utils.DateUtils
-
 
 @Secured('permitAll()')
 class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
@@ -40,7 +37,6 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
     def springSecurityService
     def meetingService
 
-    //only get meeting in progress at the moment
     def index(long workspace, String workspaceType, Long contextId, String contextType) {
         if (!checkPermission(
                 project: 'stakeHolder() or inProject()',
@@ -49,7 +45,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
             return
         }
         def meetings = []
-        Class<?> WorkspaceClass = grailsApplication.getDomainClass("org.icescrum.core.domain." + workspaceType.capitalize()).clazz
+        Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
         if (contextId && contextType) {
             meetings = Meeting."findAllBy${workspaceType.capitalize()}AndContextIdAndContextTypeIlikeAndEndDateIsNull"(WorkspaceClass.load(workspace), contextId, contextType)
         } else {
@@ -65,7 +61,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         )) {
             return
         }
-        def meeting = Meeting.withMeetings(params, "id", workspaceType).first()
+        def meeting = Meeting.withMeetings(params, 'id', workspaceType).first()
         render(status: 200, contentType: 'application/json', text: meeting as JSON)
     }
 
@@ -89,10 +85,9 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         }
         Meeting meeting = new Meeting()
         Meeting.withTransaction {
-            def propertiesToBind = ['subject', 'videoLink', 'phone', 'pinCode', 'contextId', 'contextType', 'startDate', 'endDate', 'provider', 'providerEventId']
-            bindData(meeting, meetingParams, [include: propertiesToBind])
+            bindData(meeting, meetingParams, [include: ['subject', 'videoLink', 'phone', 'pinCode', 'contextId', 'contextType', 'startDate', 'endDate', 'provider', 'providerEventId']])
             User user = (User) springSecurityService.currentUser
-            Class<?> WorkspaceClass = grailsApplication.getDomainClass("org.icescrum.core.domain." + workspaceType.capitalize()).clazz
+            Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
             meetingService.save(meeting, WorkspaceClass.load(workspace), user)
             render(status: 201, contentType: 'application/json', text: meeting as JSON)
         }
@@ -105,15 +100,14 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         )) {
             return
         }
-        Meeting meeting = Meeting.withMeetings(params, "id", workspaceType).first()
-        def propertiesToBind = ['subject', 'endDate']
+        // TODO CHECK OWNER OR PO OR SM
+        Meeting meeting = Meeting.withMeetings(params, 'id', workspaceType).first()
         def meetingParams = params.meeting
         if (meetingParams.endDate) {
             meetingParams.endDate = DateUtils.parseDateISO8601(meetingParams.endDate)
         }
         Meeting.withTransaction {
-            bindData(meeting, meetingParams, [include: propertiesToBind])
-            Class<?> WorkspaceClass = grailsApplication.getDomainClass("org.icescrum.core.domain." + workspaceType.capitalize()).clazz
+            bindData(meeting, meetingParams, [include: ['subject', 'endDate']])
             meetingService.update(meeting)
             render(status: 200, contentType: 'application/json', text: meeting as JSON)
         }
