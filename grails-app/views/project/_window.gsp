@@ -269,6 +269,32 @@
                     </div>
                 </div>
             </div>
+            <div class="card"
+                 ng-controller="meetingCtrl"
+                 ng-init="subject = project">
+                <div class="card-header">
+                    <span class="card-title">${message(code: 'is.ui.collaboration.meetings')}</span>
+                </div>
+                <div class="card-body">
+                    <div ng-if="providers && authorizedMeeting('create')"
+                         class="align-items-center d-flex justify-content-between">
+                        <div class="font-size-sm">
+                            <b>${message(code: 'is.ui.collaboration.start')}</b>
+                        </div>
+                        <div>
+                            <a href
+                               ng-repeat="provider in ::providers"
+                               ng-click="createMeeting(subject, provider)"
+                               class="meeting-provider-container"
+                               ng-class="{'disabled': !provider.enabled}">
+                                <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <hr ng-if="hasMeetings()"/>
+                    <div ng-include="'meetings.html'"></div>
+                </div>
+            </div>
             <entry:point id="project-dashboard-before-history"/>
             <div class="card">
                 <div class="card-header">
