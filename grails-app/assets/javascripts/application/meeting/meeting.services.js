@@ -61,8 +61,11 @@ services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', '
     this.update = function(meeting, workspace) {
         return Meeting.update({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase()}, meeting, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.list = function(workspace, subject) {
-        return Meeting.query({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase(), subjectId: subject ? subject.id : null, subjectType: subject ? subject.class.toLowerCase() : null}, self.mergeMeetings).$promise;
+    this.list = function(workspace) {
+        return Meeting.query({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase()}).$promise.then(function(meetings) {
+            self.mergeMeetings(meetings);
+            return workspace.meetings;
+        });
     };
     this.authorizedMeeting = function(action, meeting) {
         switch (action) {

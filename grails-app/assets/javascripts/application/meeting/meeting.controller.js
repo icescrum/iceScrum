@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'Meeting', 'Session', function($scope, $injector, AppService, MeetingService, Meeting, Session) {
+extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, AppService, MeetingService, Meeting, Session, relevantMeetingFilter) {
     // Functions
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
@@ -43,9 +43,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
                     meeting.phone = meetingData.phone ? meetingData.phone : null;
                     meeting.pinCode = meetingData.pinCode ? meetingData.pinCode : null;
                     meeting.providerEventId = meetingData.providerEventId;
-                    MeetingService.save(meeting, Session.getWorkspace(), subject).then(function(meeting) {
-                        $scope.meetings.push(meeting);
-                    });
+                    MeetingService.save(meeting, Session.getWorkspace(), subject);
                 }
             });
         } else {
@@ -56,10 +54,11 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
         var provider = _.find(isSettings.meeting.providers, {id: meeting.provider});
         meeting.endDate = moment().format();
         provider.stopMeeting(meeting, $scope).then(function() {
-            MeetingService.update(meeting, Session.getWorkspace()).then(function() {
-                $scope.meetings = _.filter($scope.meetings, {endDate: null});
-            });
+            MeetingService.update(meeting, Session.getWorkspace());
         });
+    };
+    $scope.hasMeetings = function() {
+        return relevantMeetingFilter($scope.meetings, $scope.subject).length;
     };
     $scope.authorizedMeeting = MeetingService.authorizedMeeting;
     // Init
@@ -69,8 +68,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
         });
     }, true);
-    $scope.subject = $scope.selected;
-    MeetingService.list(Session.getWorkspace(), $scope.subject).then(function(meetings) {
+    MeetingService.list(Session.getWorkspace()).then(function(meetings) {
         $scope.meetings = meetings
     });
 }]);

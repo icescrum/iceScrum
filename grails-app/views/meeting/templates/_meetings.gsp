@@ -19,29 +19,16 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<script type="text/ng-template" id="meeting.comments.html">
-<div ng-controller="meetingCtrl" class="meetings-container">
-    <div ng-if="providers && authorizedMeeting('create')"
-         class="align-items-center"
-         ng-class="{'d-flex': (subject && !meetings.length) || (!subject && meetings.length), 'd-none': subject && meetings, 'justify-content-between': !meetings.length, 'justify-content-end': meetings.length}">
-        <div class="font-size-sm" ng-if="!meetings.length">
-            <b>${message(code: 'is.ui.collaboration.start')}</b>
-        </div>
-        <div ng-class="{'meetings-provider-sm': meetings.length}">
-            <a href
-               ng-repeat="provider in ::providers"
-               ng-click="createMeeting(selected, provider)"
-               class="meeting-provider-container"
-               ng-class="{'disabled': !provider.enabled}">
-                <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
-            </a>
-        </div>
-    </div>
-    <div ng-repeat="meeting in meetings" ng-if="authorizedMeeting('view') && meeting && !meeting.endDate" class="d-flex align-items-center">
+<script type="text/ng-template" id="meetings.html">
+<div ng-repeat="meeting in meetings | relevantMeetings: subject"
+     ng-if="authorizedMeeting('view') && meeting && !meeting.endDate">
+    <div class="d-flex align-items-center">
         <span class="meeting-provider meeting-provider-current float-left mr-2 mt-1 meeting-provider-{{:: meeting.provider }}" title="{{:: provider.name }}"></span>
         <div class="font-size-sm flex-grow-1">
             <div>
-                <a href="{{:: meeting.videoLink }}" class="link"><b>${message(code: 'is.ui.collaboration.meeting.title')} {{:: meeting.topic }}</b></a><br/>
+                <a href="{{:: meeting.videoLink }}" target="_blank" class="link">
+                    <b>${message(code: 'is.ui.collaboration.meeting.title')} {{:: meeting.topic }}</b>
+                </a><br/>
                 <span ng-if="::meeting.phone">
                     ${message(code: 'is.ui.collaboration.join.phone')} <b><a class="link" href="tel:{{:: meeting.phone }}">{{:: meeting.phone }}</a></b>
                 </span>
@@ -57,5 +44,6 @@
            ng-if="authorizedMeeting('update', meeting)"
            ng-click="stopMeeting(meeting)" href>${message(code: 'is.ui.collaboration.stop')}</a>
     </div>
+    <hr ng-if="!$last" class="w-50"/>
 </div>
 </script>

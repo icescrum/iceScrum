@@ -651,4 +651,16 @@ filters
             return 'id-size-sm';
         }
     }
+}).filter('relevantMeetings', function() {
+    return function(meetings, subject) {
+        if (subject.class === 'Project' || subject.class === 'Portfolio') {
+            return meetings;
+        } else {
+            return _.filter(meetings, {
+                subjectId: subject.id,
+                subjectType: subject.class.toLowerCase(),
+                endDate: null
+            })
+        }
+    }
 });

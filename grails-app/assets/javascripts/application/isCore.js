@@ -88,6 +88,10 @@ angular.module('isCore', ['ui.router'])
                 backlog: {
                     arrayName: 'backlogs',
                     workspacePath: 'project'
+                },
+                meeting: {
+                    arrayName: 'meetings',
+                    workspacePath: 'project'
                 }
             },
             portfolio: {
@@ -95,6 +99,10 @@ angular.module('isCore', ['ui.router'])
                     arrayName: 'features',
                     workspacePath: 'portfolio',
                     sort: 'rank' // TODO REMOVE PFV2
+                },
+                meeting: {
+                    arrayName: 'meetings',
+                    workspacePath: 'portfolio'
                 }
             }
         };

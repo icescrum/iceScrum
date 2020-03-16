@@ -97,7 +97,27 @@
         </div>
     </div>
 </div>
-<div ng-include="'meeting.comments.html'"></div>
+<div ng-controller="meetingCtrl"
+     class="meetings-container"
+     ng-init="subject = selected">
+    <div ng-if="providers && authorizedMeeting('create')"
+         class="align-items-center d-flex"
+         ng-class="hasMeetings() ? 'justify-content-end' : 'justify-content-between'">
+        <div class="font-size-sm" ng-if="!hasMeetings()">
+            <b>${message(code: 'is.ui.collaboration.start')}</b>
+        </div>
+        <div ng-class="{'meetings-provider-sm': hasMeetings()}">
+            <a href
+               ng-repeat="provider in ::providers"
+               ng-click="createMeeting(selected, provider)"
+               class="meeting-provider-container"
+               ng-class="{'disabled': !provider.enabled}">
+                <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
+            </a>
+        </div>
+    </div>
+    <div ng-include="'meetings.html'"></div>
+</div>
 <div class="card-footer" ng-controller="commentCtrl">
     <div ng-include="'comment.editor.html'"></div>
 </div>
