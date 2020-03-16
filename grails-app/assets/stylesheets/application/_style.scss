@@ -1609,16 +1609,3 @@ th {
   background-size: 24px auto;
   width: 24px;
 }
-
-.meeting-provider-container {
-  margin-left: 0.5rem;
-  margin-right: 0.25rem;
-
-  &.disabled .meeting-provider {
-    opacity: 0.5;
-
-    &:hover {
-      opacity: 1.0;
-    }
-  }
-}

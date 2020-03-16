@@ -97,19 +97,8 @@
         </div>
     </div>
 </div>
+<div ng-include="'meeting.comments.html'"></div>
 <div class="card-footer" ng-controller="commentCtrl">
-    <div ng-if="providers"
-         ng-controller="meetingCtrl">
-        <div class="font-size-sm"><b>${message(code: 'is.ui.collaboration.start')}</b></div>
-        <a href
-           ng-repeat="provider in ::providers"
-           ng-click="selectedProvider(selected, provider)"
-           class="meeting-provider-container"
-           ng-class="{'disabled': !provider.enabled}">
-            <span class="meeting-provider meeting-provider-{{ ::provider.id }}" title="{{ ::provider.name }}"></span>
-        </a>
-        <hr class="mt-1 mr-1"/>
-    </div>
     <div ng-include="'comment.editor.html'"></div>
 </div>
 </script>

@@ -808,6 +808,58 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
+// Meetings
+////////////////////
+
+.meetings-container {
+  border-top: solid 1px $is-border-color;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.meeting-provider-container:not(:first-of-type) {
+  margin-left: 0.5rem;
+  margin-right: 0.25rem;
+
+  &.disabled .meeting-provider {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+}
+
+.meeting-provider-container {
+  &.disabled .meeting-provider {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+}
+
+.meeting-provider-current {
+  height: 34px;
+  width: 34px;
+  background-size: 30px auto;
+}
+
+.meetings-provider-sm .meeting-provider {
+  height: 20px;
+  width: 20px;
+  background-size: 18px auto;
+}
+
+.meetings-provider-sm .meeting-provider-container {
+  margin-right: 0 !important;
+  margin-left: 0.25rem !important;
+}
+
+////////////////////
 // Attachments
 ////////////////////
 

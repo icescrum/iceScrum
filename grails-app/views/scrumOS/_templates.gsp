@@ -326,6 +326,7 @@
     <g:render template="/attachment/templates"/>
     <g:render template="/activity/templates"/>
     <g:render template="/comment/templates"/>
+    <g:render template="/meeting/templates"/>
     <g:render template="/task/templates"/>
     <g:render template="/acceptanceTest/templates"/>
     <entry:point id="templates"/>

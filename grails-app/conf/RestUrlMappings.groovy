@@ -212,6 +212,43 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
+        // Comments
+        "/ws/$workspaceType/$workspace/meeting/$contextType" {
+            controller = 'meeting'
+            action = [GET: 'index']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+                contextType(inList: ['story', 'task', 'feature'])
+            }
+        }
+        "/ws/$workspaceType/$workspace/meeting/$contextType?/$contextId?" {
+            controller = 'meeting'
+            action = [GET: 'index']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+                contextType(inList: ['story', 'task', 'feature', 'release', 'sprint'])
+                contextId(matches: /\d*/)
+            }
+        }
+        "/ws/$workspaceType/$workspace/meeting" {
+            controller = 'meeting'
+            action = [POST: 'save']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/ws/$workspaceType/$workspace/meeting/$id" {
+            controller = 'meeting'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
         // Story nested actions
         "/ws/project/$project/story/$id/$action" {
             controller = 'story'

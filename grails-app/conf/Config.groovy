@@ -242,7 +242,8 @@ icescrum {
             timeboxnotestemplate: [include: ['configs'],
                                    exclude: ['configsData']],
             invitation          : [include: ['project', 'team', 'portfolio']],
-            hook                : [:]
+            hook                : [:],
+            meeting             : [:]
     ]
 
     resourceBundles = [

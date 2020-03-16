@@ -26,6 +26,34 @@ import org.icescrum.core.domain.WorkspaceType
 class WorkspaceUrlMappings {
 
     static mappings = {
+        // Meeting
+        "/$workspaceType/$workspace/meeting/$contextType?/$contextId?" {
+            controller = 'meeting'
+            action = [GET: 'index']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+                contextType(inList: ['story', 'task', 'feature', 'release', 'sprint'])
+                contextId(matches: /\d*/)
+            }
+        }
+        "/$workspaceType/$workspace/meeting" {
+            controller = 'meeting'
+            action = [POST: 'save']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/$workspaceType/$workspace/meeting/$id" {
+            controller = 'meeting'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
+                workspace(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
         // Comment
         "/$workspaceType/$workspace/comment/$type/$commentable" {
             controller = 'comment'

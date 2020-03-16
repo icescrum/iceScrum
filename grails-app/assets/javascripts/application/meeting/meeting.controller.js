@@ -21,16 +21,50 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', function($scope, $injector, AppService) {
+extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'Meeting', 'Session', function($scope, $injector, AppService, MeetingService, Meeting, Session) {
     // Functions
-    $scope.selectedProvider = function(object, provider) {
+    $scope.createMeeting = function(context, provider) {
         if (provider.enabled) {
-            var meetingName = object.name ? $scope.message('is.ui.collaboration.meeting') + ' ' + object.name : $scope.message('is.ui.collaboration.meeting.default');
-            provider.start(object, meetingName, $scope);
+            var meetingName = context.name ? context.name : $scope.message('is.ui.collaboration.meeting.default');
+            var meeting = new Meeting();
+            meeting.provider = provider.id;
+            meeting.subject = meetingName;
+            meeting.startDate = moment().format();
+            if (context) {
+                meeting.contextId = context.id;
+                meeting.contextType = context.class;
+            }
+            provider.createMeeting(context, meeting, $scope).then(function(meetingData) {
+                if (meetingData.videoLink || meetingData.phone) {
+                    meeting.videoLink = meetingData.videoLink;
+                    meeting.phone = meetingData.phone ? meetingData.phone : null;
+                    meeting.pinCode = meetingData.pinCode ? meetingData.pinCode : null;
+                    meeting.providerEventId = meetingData.providerEventId;
+                    var workspace = Session.getWorkspace();
+                    MeetingService.save(meeting, workspace, context).then(function(meeting) {
+                        $scope.meetings.push(meeting);
+                        $scope.meetings_count = $scope.meetings.length;
+                    });
+                }
+            });
         } else {
             $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true)
         }
     };
+
+    $scope.stopMeeting = function(meeting) {
+        var provider = _.find(isSettings.meeting.providers, {id: meeting.provider});
+        meeting.endDate = moment().format();
+        provider.stopMeeting(meeting, $scope).then(function(meetingData) {
+            var workspace = Session.getWorkspace();
+            MeetingService.update(meeting, workspace).then(function(){
+                meetings = _.filter($scope.meetings, { endDate:null });
+                $scope.meetings = meetings;
+                $scope.meetings_count = meetings.length;
+            });
+        });
+    };
+    $scope.authorizedMeeting = MeetingService.authorizedMeeting;
     // Init
     $scope.injector = $injector;
     $scope.$watch('project.simpleProjectApps', function() {
@@ -38,4 +72,12 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', functi
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
         });
     }, true);
+
+    var workspace = Session.getWorkspace();
+    $scope.context = $scope.selected ? $scope.selected : false;
+    MeetingService.list(workspace, $scope.context).then(function(meetings) {
+        meetings = _.filter(meetings, { endDate:null });
+        $scope.meetings = meetings;
+        $scope.meetings_count = meetings.length;
+    });
 }]);
