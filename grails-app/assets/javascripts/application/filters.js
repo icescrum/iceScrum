@@ -653,16 +653,15 @@ filters
     }
 }).filter('relevantMeetings', function() {
     return function(meetings, subject) {
-        if (subject.class === 'Project' || subject.class === 'Portfolio') {
-            return meetings ? _.filter(meetings, {
-               endDate: null
-            }) : [];
+        if (meetings) {
+            var filter = {endDate: null};
+            if (subject.class !== 'Project' && subject.class !== 'Portfolio') {
+                filter.subjectId = subject.id;
+                filter.subjectType = subject.class.toLowerCase();
+            }
+            return _.filter(meetings, filter);
         } else {
-            return meetings ? _.filter(meetings, {
-                subjectId: subject.id,
-                subjectType: subject.class.toLowerCase(),
-                endDate: null
-            }) : []
+            return []
         }
     }
 });
