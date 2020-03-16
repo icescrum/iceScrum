@@ -21,19 +21,19 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, AppService, MeetingService, Meeting, Session, relevantMeetingFilter) {
+extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, AppService, MeetingService, Meeting, Session, relevantMeetingsFilter) {
     // Functions
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
             var meeting = new Meeting();
             meeting.provider = provider.id;
-            var uniqueIdentifier = Math.random().toString(36).substring(2, 10);
+            var uniqueIdentifier = Math.random().toString(36).replace(/[^a-z]+/g, '').substring(2, 10);
             if (subject) {
                 meeting.topic = $scope.message('is.' + subject.class.toLowerCase()) + (subject.uid ? ' ' + subject.uid + ' ' : '') + ' - ' + subject.name;
             } else {
                 meeting.topic = $scope.message('is.ui.collaboration.meeting.default');
             }
-            meeting.topic += (' (' + uniqueIdentifier + ')');
+            meeting.topic += (' ' + uniqueIdentifier);
             meeting.startDate = moment().format();
             if (subject) {
                 meeting.subjectId = subject.id;
@@ -60,7 +60,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
         });
     };
     $scope.hasMeetings = function() {
-        return relevantMeetingFilter($scope.meetings, $scope.subject).length;
+        return relevantMeetingsFilter($scope.meetings, $scope.subject).length;
     };
     $scope.authorizedMeeting = MeetingService.authorizedMeeting;
     // Init
