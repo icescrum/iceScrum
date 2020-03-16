@@ -27,7 +27,11 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
         if (provider.enabled) {
             var meeting = new Meeting();
             meeting.provider = provider.id;
-            meeting.topic = subject.name ? subject.name : $scope.message('is.ui.collaboration.meeting.default');
+            if (subject) {
+                meeting.topic = $scope.message('is.' + subject.class.toLowerCase()) + (subject.uid ? ' ' + subject.uid + ' ' : '') + ' - ' + subject.name;
+            } else {
+                meeting.topic = $scope.message('is.ui.collaboration.meeting.default');
+            }
             meeting.startDate = moment().format();
             if (subject) {
                 meeting.subjectId = subject.id;
