@@ -819,20 +819,12 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   padding-bottom: 0.75rem;
 }
 
-.meeting-provider-container:not(:first-of-type) {
-  margin-left: 0.5rem;
-  margin-right: 0.25rem;
-
-  &.disabled .meeting-provider {
-    opacity: 0.5;
-
-    &:hover {
-      opacity: 1.0;
-    }
-  }
-}
-
 .meeting-provider-container {
+  &:not(:first-of-type) {
+    margin-left: 0.5rem;
+    margin-right: 0.25rem;
+  }
+
   &.disabled .meeting-provider {
     opacity: 0.5;
 
@@ -848,15 +840,17 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   background-size: 30px auto;
 }
 
-.meetings-provider-sm .meeting-provider {
-  height: 20px;
-  width: 20px;
-  background-size: 18px auto;
-}
+.meetings-provider-sm {
+  .meeting-provider {
+    height: 20px;
+    width: 20px;
+    background-size: 18px auto;
+  }
 
-.meetings-provider-sm .meeting-provider-container {
-  margin-right: 0 !important;
-  margin-left: 0.25rem !important;
+  .meeting-provider-container {
+    margin-right: 0 !important;
+    margin-left: 0.25rem !important;
+  }
 }
 
 ////////////////////
