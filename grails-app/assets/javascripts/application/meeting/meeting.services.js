@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2020 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -44,24 +44,21 @@ services.service("MeetingService", ['$q', 'Meeting', 'Session', 'IceScrumEventTy
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('meeting', eventType, crudMethod);
     });
-
     this.displayNotification = function(meeting) {
-        if(meeting.owner.id != Session.user.id){
+        if (meeting.owner.id !== Session.user.id) {
             notifications.success('', I18nService.message("is.ui.collaboration.notification", [meeting.provider, meeting.subject]), {
                 button: {
                     type: "primary gold",
                     name: I18nService.message("is.ui.collaboration.join"),
                     link: meeting.videoLink,
-                    rel:"noreferer",
-                    target:"_blank",
-                    delay:15000
+                    rel: "noreferer",
+                    target: "_blank",
+                    delay: 15000
                 }
             });
         }
     };
-
     PushService.registerListener('meeting', "CREATE", this.displayNotification);
-
     this.mergeMeetings = function(meeting) {
         _.each(meeting, crudMethods[IceScrumEventType.UPDATE]);
     };

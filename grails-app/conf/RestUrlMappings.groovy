@@ -212,7 +212,7 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
-        // Comments
+        // Meetings
         "/ws/$workspaceType/$workspace/meeting/$contextType" {
             controller = 'meeting'
             action = [GET: 'index']

@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2020 Kagilum.
 -
 - This file is part of iceScrum.
 -
