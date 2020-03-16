@@ -23,11 +23,11 @@
 <div ng-controller="meetingCtrl" class="meetings-container">
     <div ng-if="providers && authorizedMeeting('create')"
          class="align-items-center"
-         ng-class="{'d-flex':(context && !meetings_count) || (!context && meetings_count), 'd-none':context && meetings,'justify-content-between':!meetings_count, 'justify-content-end':meetings_count}">
-        <div class="font-size-sm" ng-if="!meetings_count">
+         ng-class="{'d-flex':(context && !meetings.length) || (!context && meetings.length), 'd-none':context && meetings,'justify-content-between':!meetings.length, 'justify-content-end':meetings.length}">
+        <div class="font-size-sm" ng-if="!meetings.length">
             <b>${message(code: 'is.ui.collaboration.start')}</b>
         </div>
-        <div ng-class="{'meetings-provider-sm': meetings_count}">
+        <div ng-class="{'meetings-provider-sm': meetings.length}">
             <a href
                ng-repeat="provider in ::providers"
                ng-click="createMeeting(selected, provider)"

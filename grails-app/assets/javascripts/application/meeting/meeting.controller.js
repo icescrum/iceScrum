@@ -40,10 +40,8 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
                     meeting.phone = meetingData.phone ? meetingData.phone : null;
                     meeting.pinCode = meetingData.pinCode ? meetingData.pinCode : null;
                     meeting.providerEventId = meetingData.providerEventId;
-                    var workspace = Session.getWorkspace();
-                    MeetingService.save(meeting, workspace, context).then(function(meeting) {
+                    MeetingService.save(meeting, Session.getWorkspace(), context).then(function(meeting) {
                         $scope.meetings.push(meeting);
-                        $scope.meetings_count = $scope.meetings.length;
                     });
                 }
             });
@@ -51,16 +49,12 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
             $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true)
         }
     };
-
     $scope.stopMeeting = function(meeting) {
         var provider = _.find(isSettings.meeting.providers, {id: meeting.provider});
         meeting.endDate = moment().format();
-        provider.stopMeeting(meeting, $scope).then(function(meetingData) {
-            var workspace = Session.getWorkspace();
-            MeetingService.update(meeting, workspace).then(function(){
-                meetings = _.filter($scope.meetings, { endDate:null });
-                $scope.meetings = meetings;
-                $scope.meetings_count = meetings.length;
+        provider.stopMeeting(meeting, $scope).then(function() {
+            MeetingService.update(meeting, Session.getWorkspace()).then(function() {
+                $scope.meetings = _.filter($scope.meetings, {endDate: null});
             });
         });
     };
@@ -72,12 +66,8 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
         });
     }, true);
-
-    var workspace = Session.getWorkspace();
     $scope.context = $scope.selected ? $scope.selected : false;
-    MeetingService.list(workspace, $scope.context).then(function(meetings) {
-        meetings = _.filter(meetings, { endDate:null });
-        $scope.meetings = meetings;
-        $scope.meetings_count = meetings.length;
+    MeetingService.list(Session.getWorkspace(), $scope.context).then(function(meetings) {
+        $scope.meetings = _.filter(meetings, {endDate: null});
     });
 }]);
