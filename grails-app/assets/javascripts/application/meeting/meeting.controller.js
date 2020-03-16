@@ -25,10 +25,9 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
     // Functions
     $scope.createMeeting = function(context, provider) {
         if (provider.enabled) {
-            var meetingName = context.name ? context.name : $scope.message('is.ui.collaboration.meeting.default');
             var meeting = new Meeting();
             meeting.provider = provider.id;
-            meeting.subject = meetingName;
+            meeting.topic = context.name ? context.name : $scope.message('is.ui.collaboration.meeting.default');
             meeting.startDate = moment().format();
             if (context) {
                 meeting.contextId = context.id;

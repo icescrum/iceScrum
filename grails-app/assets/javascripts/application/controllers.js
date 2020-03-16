@@ -575,7 +575,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
     PushService.registerListener('meeting', 'CREATE', function(meeting) {
         if (!Session.owner(meeting)) {
-            $scope.notifySuccess($scope.message('is.ui.collaboration.notification', [meeting.provider, meeting.subject]), {
+            $scope.notifySuccess($scope.message('is.ui.collaboration.notification', [meeting.provider, meeting.topic]), {
                 button: {
                     type: 'primary',
                     name: $scope.message('is.ui.collaboration.join'),

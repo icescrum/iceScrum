@@ -85,7 +85,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         }
         Meeting meeting = new Meeting()
         Meeting.withTransaction {
-            bindData(meeting, meetingParams, [include: ['subject', 'videoLink', 'phone', 'pinCode', 'contextId', 'contextType', 'startDate', 'endDate', 'provider', 'providerEventId']])
+            bindData(meeting, meetingParams, [include: ['topic', 'videoLink', 'phone', 'pinCode', 'contextId', 'contextType', 'startDate', 'endDate', 'provider', 'providerEventId']])
             User user = (User) springSecurityService.currentUser
             Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
             meetingService.save(meeting, WorkspaceClass.load(workspace), user)
@@ -107,7 +107,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
             meetingParams.endDate = DateUtils.parseDateISO8601(meetingParams.endDate)
         }
         Meeting.withTransaction {
-            bindData(meeting, meetingParams, [include: ['subject', 'endDate']])
+            bindData(meeting, meetingParams, [include: ['topic', 'endDate']])
             meetingService.update(meeting)
             render(status: 200, contentType: 'application/json', text: meeting as JSON)
         }
