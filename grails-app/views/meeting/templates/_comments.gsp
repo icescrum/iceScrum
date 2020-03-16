@@ -23,7 +23,7 @@
 <div ng-controller="meetingCtrl" class="meetings-container">
     <div ng-if="providers && authorizedMeeting('create')"
          class="align-items-center"
-         ng-class="{'d-flex':(context && !meetings.length) || (!context && meetings.length), 'd-none':context && meetings,'justify-content-between':!meetings.length, 'justify-content-end':meetings.length}">
+         ng-class="{'d-flex': (context && !meetings.length) || (!context && meetings.length), 'd-none': context && meetings, 'justify-content-between': !meetings.length, 'justify-content-end': meetings.length}">
         <div class="font-size-sm" ng-if="!meetings.length">
             <b>${message(code: 'is.ui.collaboration.start')}</b>
         </div>
@@ -42,10 +42,12 @@
         <div class="font-size-sm flex-grow-1">
             <div>
                 <a href="{{:: meeting.videoLink }}" class="link"><b>${message(code: 'is.ui.collaboration.meeting.title')} {{:: meeting.subject}}</b></a><br/>
-                <span ng-if="::meeting.phone">${message(code: 'is.ui.collaboration.join.phone')} <b><a class="link" href="tel:{{:: meeting.phone }}">{{:: meeting.phone }}</b></a></span>
+                <span ng-if="::meeting.phone">
+                    ${message(code: 'is.ui.collaboration.join.phone')} <b><a class="link" href="tel:{{:: meeting.phone }}">{{:: meeting.phone }}</a></b>
+                </span>
                 <span ng-if="::meeting.pinCode">- {{:: meeting.pinCode }}#</span>
             </div>
-            ${message(code: 'is.ui.collaboration.by')} {{:: meeting.owner.firstName }} {{:: meeting.owner.lastName }} (<span class="time-stamp"><time timeago datetime="{{ meeting.startDate }}">{{ meeting.startDate | dateTime }}</time></span>)
+            ${message(code: 'is.ui.collaboration.by')} {{:: meeting.owner | userFullName }} (<span class="time-stamp"><time timeago datetime="{{ meeting.startDate }}">{{ meeting.startDate | dateTime }}</time></span>)
         </div>
         <a class="btn btn-secondary btn-sm hover-display"
            target="_blank"

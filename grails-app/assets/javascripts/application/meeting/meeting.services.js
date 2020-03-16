@@ -25,17 +25,17 @@ services.factory('Meeting', ['Resource', function($resource) {
     return $resource('/:workspaceType/:workspaceId/meeting/:type/:typeId/:id');
 }]);
 
-services.service("MeetingService", ['$q', 'Meeting', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'I18nService', 'notifications', function($q, Meeting, Session, IceScrumEventType, CacheService, PushService, I18nService, notifications) {
+services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'I18nService', 'notifications', function(Meeting, Session, IceScrumEventType, CacheService, PushService, I18nService, notifications) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(meeting) {
-        meeting.startDate = meeting.startDate ? meeting.startDate.toISOString() : null; //prevent to be a date object
-        meeting.endDate = meeting.endDate ? meeting.endDate.toISOString() : null; //prevent to be a date object
+        meeting.startDate = meeting.startDate ? meeting.startDate.toISOString() : null; // Timeago requires ISO string
+        meeting.endDate = meeting.endDate ? meeting.endDate.toISOString() : null; // Timeago requires ISO string
         CacheService.addOrUpdate('meeting', meeting);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(meeting) {
-        meeting.startDate = meeting.startDate ? meeting.startDate.toISOString() : null; //prevent to be a date object
-        meeting.endDate = meeting.endDate ? meeting.endDate.toISOString() : null; //prevent to be a date object
+        meeting.startDate = meeting.startDate ? meeting.startDate.toISOString() : null; // Timeago requires ISO string
+        meeting.endDate = meeting.endDate ? meeting.endDate.toISOString() : null; // Timeago requires ISO string
         CacheService.addOrUpdate('meeting', meeting);
     };
     crudMethods[IceScrumEventType.DELETE] = function(meeting) {
@@ -45,20 +45,20 @@ services.service("MeetingService", ['$q', 'Meeting', 'Session', 'IceScrumEventTy
         PushService.registerListener('meeting', eventType, crudMethod);
     });
     this.displayNotification = function(meeting) {
-        if (meeting.owner.id !== Session.user.id) {
-            notifications.success('', I18nService.message("is.ui.collaboration.notification", [meeting.provider, meeting.subject]), {
+        if (!Session.owner(meeting)) {
+            notifications.success('', I18nService.message('is.ui.collaboration.notification', [meeting.provider, meeting.subject]), {
                 button: {
-                    type: "primary gold",
-                    name: I18nService.message("is.ui.collaboration.join"),
+                    type: 'primary gold',
+                    name: I18nService.message('is.ui.collaboration.join'),
                     link: meeting.videoLink,
-                    rel: "noreferer",
-                    target: "_blank",
+                    rel: 'noreferer',
+                    target: '_blank',
                     delay: 15000
                 }
             });
         }
     };
-    PushService.registerListener('meeting', "CREATE", this.displayNotification);
+    PushService.registerListener('meeting', 'CREATE', this.displayNotification);
     this.mergeMeetings = function(meeting) {
         _.each(meeting, crudMethods[IceScrumEventType.UPDATE]);
     };
@@ -77,8 +77,7 @@ services.service("MeetingService", ['$q', 'Meeting', 'Session', 'IceScrumEventTy
         return Meeting.update({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase()}, meeting, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.list = function(workspace, context) {
-        var promise = Meeting.query({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase(), typeId: context ? context.id : null, type: context ? context.class.toLowerCase() : null}, self.mergeMeetings).$promise;
-        return promise;
+        return Meeting.query({workspaceId: workspace.id, workspaceType: workspace.class.toLowerCase(), typeId: context ? context.id : null, type: context ? context.class.toLowerCase() : null}, self.mergeMeetings).$promise;
     };
     this.authorizedMeeting = function(action, meeting) {
         switch (action) {
@@ -87,7 +86,7 @@ services.service("MeetingService", ['$q', 'Meeting', 'Session', 'IceScrumEventTy
                 return Session.inProject() || Session.bo();
             case 'update':
             case 'delete':
-                return Session.user.id == meeting.owner.id || Session.poOrSm();
+                return Session.owner(meeting) || Session.poOrSm();
             default:
                 return false;
         }
