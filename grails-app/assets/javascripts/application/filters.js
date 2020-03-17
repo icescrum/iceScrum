@@ -664,4 +664,15 @@ filters
             return []
         }
     }
-});
+}).filter('imageByScheme', ['$rootScope', function($rootScope) {
+    return function(imageUrl) {
+        if (imageUrl && $rootScope.getColorScheme() === 'dark') {
+            var indexOfLastDot = imageUrl.lastIndexOf('.');
+            var fileName = imageUrl.substring(0, indexOfLastDot);
+            var fileExtension = imageUrl.substring(indexOfLastDot);
+            return fileName + '-dark' + fileExtension;
+        } else {
+            return imageUrl;
+        }
+    }
+}]);

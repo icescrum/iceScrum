@@ -69,7 +69,7 @@
                  ng-repeat="screenshot in appDefinition.screenshots">
                 <a href
                    ng-click="showScreenshot(appDefinition, screenshot)">
-                    <img ng-src="{{ screenshot }}"
+                    <img ng-src="{{ screenshot | imageByScheme }}"
                          class="img-fluid"/>
                 </a>
             </div>
