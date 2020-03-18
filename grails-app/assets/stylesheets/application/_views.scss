@@ -1059,8 +1059,12 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     right: 20px;
   }
 
-  .announcement-text a {
-    text-decoration: underline;
+  .announcement-text {
+    font-size: 0.9375rem;
+
+    a {
+      text-decoration: underline;
+    }
   }
 }
 
