@@ -213,22 +213,13 @@ class RestUrlMappings {
             }
         }
         // Meetings
-        "/ws/$workspaceType/$workspace/meeting/$subjectType" {
-            controller = 'meeting'
-            action = [GET: 'index']
-            constraints {
-                workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
-                workspace(matches: /[0-9A-Z]*/)
-                subjectType(inList: ['story', 'task', 'feature'])
-            }
-        }
         "/ws/$workspaceType/$workspace/meeting/$subjectType?/$subjectId?" {
             controller = 'meeting'
             action = [GET: 'index']
             constraints {
                 workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
                 workspace(matches: /[0-9A-Z]*/)
-                subjectType(inList: ['story', 'task', 'feature', 'release', 'sprint'])
+                subjectType(inList: ['story', 'task', 'feature'])
                 subjectId(matches: /\d*/)
             }
         }

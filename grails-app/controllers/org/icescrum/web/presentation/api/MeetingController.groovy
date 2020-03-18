@@ -47,10 +47,11 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         }
         def meetings = []
         Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
+        def _workspace = WorkspaceClass.load(workspace)
         if (subjectId && subjectType) {
-            meetings = Meeting."findAllBy${workspaceType.capitalize()}AndSubjectIdAndSubjectTypeIlikeAndEndDateIsNull"(WorkspaceClass.load(workspace), subjectId, subjectType)
+            meetings = Meeting."findAllBy${workspaceType.capitalize()}AndSubjectIdAndSubjectTypeIlikeAndEndDateIsNull"(_workspace, subjectId, subjectType)
         } else {
-            meetings = Meeting."findAllBy${workspaceType.capitalize()}AndEndDateIsNull"(WorkspaceClass.load(workspace))
+            meetings = Meeting."findAllBy${workspaceType.capitalize()}AndEndDateIsNull"(_workspace)
         }
         render(status: 200, contentType: 'application/json', text: meetings as JSON)
     }
@@ -62,7 +63,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         )) {
             return
         }
-        def meeting = Meeting.withMeetings(params, 'id', workspaceType).first()
+        Meeting meeting = Meeting.withMeeting(workspace, id, workspaceType)
         render(status: 200, contentType: 'application/json', text: meeting as JSON)
     }
 
@@ -101,7 +102,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
         )) {
             return
         }
-        Meeting meeting = Meeting.withMeetings(params, 'id', workspaceType).first()
+        Meeting meeting = Meeting.withMeeting(workspace, id, workspaceType)
         if (workspaceType == WorkspaceType.PROJECT && !request.productOwner && !request.scrumMaster && meeting.owner.id != springSecurityService.currentUser.id) {
             render(status: 403)
             return
@@ -115,5 +116,21 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
             meetingService.update(meeting)
             render(status: 200, contentType: 'application/json', text: meeting as JSON)
         }
+    }
+
+    def delete(long id, long workspace, String workspaceType) {
+        if (!checkPermission(
+                project: 'inProject() and !archivedProject()',
+                portfolio: 'businessOwner()'
+        )) {
+            return
+        }
+        Meeting meeting = Meeting.withMeeting(workspace, id, workspaceType)
+        if (workspaceType == WorkspaceType.PROJECT && !request.productOwner && !request.scrumMaster && meeting.owner.id != springSecurityService.currentUser.id) {
+            render(status: 403)
+            return
+        }
+        meetingService.delete(meeting)
+        render(status: 204)
     }
 }

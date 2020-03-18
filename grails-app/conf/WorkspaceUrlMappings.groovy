@@ -33,7 +33,7 @@ class WorkspaceUrlMappings {
             constraints {
                 workspaceType(inList: [WorkspaceType.PROJECT, WorkspaceType.PORTFOLIO])
                 workspace(matches: /[0-9A-Z]*/)
-                subjectType(inList: ['story', 'task', 'feature', 'release', 'sprint'])
+                subjectType(inList: ['story', 'task', 'feature'])
                 subjectId(matches: /\d*/)
             }
         }
