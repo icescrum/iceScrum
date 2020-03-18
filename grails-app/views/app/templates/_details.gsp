@@ -104,6 +104,7 @@
             </div>
         </div>
     </div>
+    <entry:point id="app-details-after-details"></entry:point>
 </div>
 <div class="btn-toolbar align-self-end">
     <a href="{{ appDefinition.docUrl }}"

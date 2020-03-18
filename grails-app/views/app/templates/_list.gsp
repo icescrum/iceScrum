@@ -28,6 +28,7 @@
            class="form-control search-input"
            placeholder="${message(code: 'todo.is.ui.search.action')}">
 </div>
+<entry:point id="app-list-before-list"></entry:point>
 <div class="app-list text-center">
     <div class="align-self-start" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
         <div ng-click="openAppDefinition(currentAppDefinition)"
