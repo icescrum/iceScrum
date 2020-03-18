@@ -1026,4 +1026,7 @@ var isApplication = angular.module('isApplication', [
             callback: $rootScope.toggleColorScheme,
             description: $rootScope.message('is.ui.colorScheme.toggle')
         });
+        $rootScope.getMeetingProviders = function() {
+            return isSettings.meeting.providers;
+        }
     }]);

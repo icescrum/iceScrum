@@ -271,6 +271,7 @@
             </div>
             <div class="card"
                  ng-controller="meetingCtrl"
+                 ng-if="getMeetingProviders().length"
                  ng-init="subject = project">
                 <div class="card-header">
                     <span class="card-title">${message(code: 'is.ui.collaboration.meetings')}</span>

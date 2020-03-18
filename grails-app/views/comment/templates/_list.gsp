@@ -98,6 +98,7 @@
     </div>
 </div>
 <div ng-controller="meetingCtrl"
+     ng-if="getMeetingProviders().length"
      class="meetings-container"
      ng-init="subject = selected">
     <div ng-if="providers && authorizedMeeting('create')"

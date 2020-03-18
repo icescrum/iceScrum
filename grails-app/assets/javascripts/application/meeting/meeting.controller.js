@@ -51,7 +51,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
         }
     };
     $scope.stopMeeting = function(meeting) {
-        var provider = _.find(isSettings.meeting.providers, {id: meeting.provider});
+        var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
         meeting.endDate = moment().format();
         provider.stopMeeting(meeting, $scope).then(function() {
             MeetingService.update(meeting, Session.getWorkspace());
@@ -64,7 +64,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
     // Init
     $scope.injector = $injector;
     $scope.$watch('project.simpleProjectApps', function() {
-        $scope.providers = _.each(isSettings.meeting.providers, function(provider) {
+        $scope.providers = _.each($scope.getMeetingProviders(), function(provider) {
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
         });
     }, true);
