@@ -69,12 +69,13 @@ services.service('MeetingService', ['Meeting', 'Session', 'IceScrumEventType', '
     };
     this.authorizedMeeting = function(action, meeting) {
         switch (action) {
-            case 'create':
             case 'view':
+                return (Session.authenticated() && Session.stakeHolder()) || Session.inProject() || Session.bo() || Session.psh();
+            case 'create':
                 return Session.inProject() || Session.bo();
             case 'update':
             case 'delete':
-                return Session.owner(meeting) || Session.poOrSm();
+                return Session.owner(meeting) || Session.poOrSm() || Session.bo();
             default:
                 return false;
         }

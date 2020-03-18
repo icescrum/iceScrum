@@ -27,6 +27,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Meeting
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.WorkspaceType
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.security.WorkspaceSecurity
 import org.icescrum.core.utils.DateUtils
@@ -39,7 +40,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
 
     def index(long workspace, String workspaceType, Long subjectId, String subjectType) {
         if (!checkPermission(
-                project: 'stakeHolder() or inProject()',
+                project: '(isAuthenticated() and stakeHolder()) or inProject()',
                 portfolio: 'businessOwner() or portfolioStakeHolder()'
         )) {
             return
@@ -56,7 +57,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
 
     def show(long id, long workspace, String workspaceType) {
         if (!checkPermission(
-                project: 'stakeHolder() or inProject()',
+                project: '(isAuthenticated() and stakeHolder()) or inProject()',
                 portfolio: 'businessOwner() or portfolioStakeHolder()'
         )) {
             return
@@ -67,8 +68,8 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
 
     def save(long workspace, String workspaceType) {
         if (!checkPermission(
-                project: '((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()',
-                portfolio: 'businessOwner() or portfolioStakeHolder()'
+                project: 'inProject() and !archivedProject()',
+                portfolio: 'businessOwner()'
         )) {
             return
         }
@@ -95,13 +96,16 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
 
     def update(long id, long workspace, String workspaceType) {
         if (!checkPermission(
-                project: 'isAuthenticated() and !archivedProject()',
-                portfolio: 'businessOwner() or portfolioStakeHolder()'
+                project: 'inProject() and !archivedProject()',
+                portfolio: 'businessOwner()'
         )) {
             return
         }
-        // TODO CHECK OWNER OR PO OR SM
         Meeting meeting = Meeting.withMeetings(params, 'id', workspaceType).first()
+        if (workspaceType == WorkspaceType.PROJECT && !request.productOwner && !request.scrumMaster && meeting.owner.id != springSecurityService.currentUser.id) {
+            render(status: 403)
+            return
+        }
         def meetingParams = params.meeting
         if (meetingParams.endDate) {
             meetingParams.endDate = DateUtils.parseDateISO8601(meetingParams.endDate)
