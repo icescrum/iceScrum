@@ -24,10 +24,12 @@
 <g:if test="${isOutdatedBrowser}">
     <div class="announcement bg-warning font-size-sm">${message(code: 'is.ui.outdatedBrowser')}</div>
 </g:if>
-<div class="announcement bg-{{:: application.announcement.type }}" ng-if="application.announcement">
-    <strong ng-bind-html="application.announcement.text" class="announcement-text"></strong>
-    <a href class="announcement-hide" ng-click="hideAnnouncement()"><small>${message(code: 'is.ui.announcement.hide')}</small></a>
-</div>
+<g:if test="${grailsApplication.config.icescrum.announcement.enable}">
+    <div class="announcement bg-{{:: application.announcement.type }}" ng-if="application.announcement">
+        <strong ng-bind-html="application.announcement.text" class="announcement-text"></strong>
+        <a href class="announcement-hide" ng-click="hideAnnouncement()"><small>${message(code: 'is.ui.announcement.hide')}</small></a>
+    </div>
+</g:if>
 <g:if test="${workspace && workspace.name == WorkspaceType.PROJECT && workspace.object.preferences.archived}">
     <div class="announcement bg-danger">${message(code: "is.ui.${workspace.name}.archived")}</div>
 </g:if>

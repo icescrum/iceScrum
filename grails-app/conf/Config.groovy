@@ -47,6 +47,7 @@ icescrum {
     invitation.enable = false
     user.search.enable = true
     gravatar.enable = true
+    announcement.enable = true
 
     alerts {
         subject_prefix = "[icescrum]"
