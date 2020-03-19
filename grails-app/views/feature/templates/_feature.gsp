@@ -47,7 +47,7 @@
                         icon="fa-tags"
                         max="3"
                         hide="true"
-                        count="{{:: feature.tags.length }}"/>
+                        count="{{:: feature.tags.length }}"></icon-badge>
             <a ng-repeat="tag in ::feature.tags"
                href="{{ tagContextUrl(tag) }}">
                 <span class="tag {{ getTagColor(tag) | contrastColor }}"
@@ -58,17 +58,17 @@
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="{{:: openFeatureUrl(feature) }}"
                         icon="attach"
-                        count="{{:: feature.attachments_count }}"/>
+                        count="{{:: feature.attachments_count }}"></icon-badge>
             <icon-badge classes="comments"
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="{{:: openFeatureUrl(feature) }}/comments"
                         icon="comment"
-                        count="{{:: feature.comments_count }}"/>
+                        count="{{:: feature.comments_count }}"></icon-badge>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                         href="{{:: openFeatureUrl(feature) }}/stories"
                         ng-if="feature.state >= featureStatesByName.TODO"
                         icon="story"
-                        count="{{:: feature.stories_ids.length }}"/>
+                        count="{{:: feature.stories_ids.length }}"></icon-badge>
             <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
         </div>
         <div class="sticky-note-state-progress">

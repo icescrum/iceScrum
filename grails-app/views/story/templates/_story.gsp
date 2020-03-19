@@ -57,7 +57,7 @@
                         icon="fa-tags"
                         max="3"
                         hide="true"
-                        count="{{:: story.tags.length }}"/>
+                        count="{{:: story.tags.length }}"></icon-badge>
             <a ng-repeat="tag in ::story.tags"
                href="{{:: tagContextUrl(tag) }}">
                 <span class="tag {{ getTagColor(tag) | contrastColor }}"
@@ -68,21 +68,21 @@
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="{{:: openStoryUrl(story.id)}}"
                         icon="attach"
-                        count="{{:: story.attachments_count }}"/>
+                        count="{{:: story.attachments_count }}"></icon-badge>
             <icon-badge classes="comments"
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="{{:: openStoryUrl(story.id) }}/comments"
                         icon="comment"
-                        count="{{:: story.comments_count }}"/>
+                        count="{{:: story.comments_count }}"></icon-badge>
             <icon-badge classes="acceptances-tests"
                         tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                         href="{{:: openStoryUrl(story.id) }}/tests"
                         icon="test"
-                        count="{{:: story.acceptanceTests_count }}"/>
+                        count="{{:: story.acceptanceTests_count }}"></icon-badge>
             <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
                         href="{{:: openStoryUrl(story.id) }}/tasks"
                         icon="task"
-                        count="{{:: story.tasks_count }}"/>
+                        count="{{:: story.tasks_count }}"></icon-badge>
             <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
         </div>
         <div class="sticky-note-state-progress">
