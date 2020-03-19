@@ -500,7 +500,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   .modal-body {
     .app-split {
-      height: 615px;
+      height: 625px;
       overflow: auto;
     }
 
@@ -528,7 +528,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       flex: 1 0 auto;
       display: flex;
       flex-direction: column;
-      height: 615px;
+      height: 625px;
 
       .app-list {
         flex: 1 1 auto;

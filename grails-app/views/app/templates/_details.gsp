@@ -70,7 +70,7 @@
                 <a href
                    ng-click="showScreenshot(appDefinition, screenshot)">
                     <img ng-src="{{ screenshot | imageByScheme }}"
-                         class="img-fluid"/>
+                         style="max-width: 375px"/>
                 </a>
             </div>
         </div>
