@@ -622,6 +622,12 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
+.app-screenshot-full {
+  width: 752px;
+  cursor:pointer;
+  box-shadow: $is-shadow;
+}
+
 ////////////////////
 // Workspace dialog
 ////////////////////

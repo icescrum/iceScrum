@@ -138,9 +138,9 @@
 <script type="text/ng-template" id="app.details.screenshot.html">
 <is:modal title="{{ title }}">
     <div class="text-center">
-        <img ng-src="{{ srcURL }}"
+        <img ng-src="{{ srcURL | imageByScheme }}"
              ng-click="$close()"
-             style="width: 752px; border: 1px solid #ccc; cursor:pointer;"
+             class="app-screenshot-full"
              title="{{ title }}"/>
     </div>
 </is:modal>
