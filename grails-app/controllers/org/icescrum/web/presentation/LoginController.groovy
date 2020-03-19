@@ -26,6 +26,7 @@ package org.icescrum.web.presentation
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ApplicationSupport
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.authentication.AccountExpiredException
 import org.springframework.security.authentication.CredentialsExpiredException
@@ -55,6 +56,9 @@ class LoginController implements ControllerErrorHandler {
     def auth(String username, String redirectTo) {
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
+            if (redirectTo && !redirectTo.startsWith(ApplicationSupport.serverURL())) {
+                redirectTo = null
+            }
             redirect(uri: redirectTo ?: config.successHandler.defaultTargetUrl)
             return
         }
