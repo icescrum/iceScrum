@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'FormService', 'AttachmentService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, AppService, MeetingService, FormService, AttachmentService , Meeting, Session, relevantMeetingsFilter) {
+extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'FormService', 'AttachmentService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, AppService, MeetingService, FormService, AttachmentService, Meeting, Session, relevantMeetingsFilter) {
     // Functions
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
@@ -53,18 +53,23 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
     $scope.stopMeeting = function(meeting) {
         var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
         meeting.endDate = moment().format();
-        if (provider.saveAsAttachment && confirm($scope.message('is.ui.collaboration.meeting.saveAsAttachment'))) {
-            var clazz = meeting.subjectType ? meeting.subjectType : Session.workspaceType;
-            var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
-            var file = {
-                    url: meeting.videoLink,
-                    name: meeting.topic,
-                    provider: meeting.provider,
-                    length: 0
-            };
-            FormService.httpPost(attachmentBaseUrl + meeting.subjectType +'/' + $scope.attachmentable.id + '/flow', file).then(function(attachment) {
-                AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
-            });
+        if (provider.saveAsAttachment) {
+            $scope.confirm({
+                message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment'),
+                callback: function() {
+                    var clazz = meeting.subjectType ? meeting.subjectType : Session.workspaceType;
+                    var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
+                    var file = {
+                        url: meeting.videoLink,
+                        name: meeting.topic,
+                        provider: meeting.provider,
+                        length: 0
+                    };
+                    FormService.httpPost(attachmentBaseUrl + meeting.subjectType + '/' + $scope.attachmentable.id + '/flow', file).then(function(attachment) {
+                        AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
+                    });
+                }
+            })
         }
         provider.stopMeeting(meeting, $scope).then(function() {
             MeetingService.update(meeting, Session.getWorkspace());
