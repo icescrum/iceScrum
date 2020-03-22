@@ -38,6 +38,7 @@
         </div>
         <a class="btn btn-secondary btn-sm hover-display"
            target="_blank"
+           rel="noreferrer"
            href="{{:: meeting.videoLink }}">${message(code: 'is.ui.collaboration.join')}</a>
         <a class="btn btn-secondary btn-danger ml-2 btn-sm hover-display"
            target="_blank"
