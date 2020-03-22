@@ -1013,6 +1013,33 @@ services.service('TagService', ['FormService', function(FormService) {
     }
 }]);
 
+services.service('ClientOauthService', ['FormService', '$auth', function(FormService, $auth) {
+    var self = this;
+    this.authenticate = function(providerId, autosave) {
+        return $auth.authenticate(providerId).then(function(response) {
+            if (autosave) {
+                return self.save(providerId, {oauth: response.data}).then(function(response) {
+                    return response;
+                });
+            } else {
+                return {oauth: response.data};
+            }
+        });
+    }
+    this.save = function(providerId, tokenData) {
+        return FormService.httpPost('clientOauth/' + providerId, tokenData); // Workspace sensitive
+    }
+    this.get = function(providerId) {
+        return FormService.httpGet('clientOauth/' + providerId); // Workspace sensitive
+    }
+    this.delete = function(providerId) {
+        return FormService.httpDelete('clientOauth/' + providerId); // Workspace sensitive
+    }
+    this.refresh = function(providerId) {
+        return FormService.httpGet('clientOauth/' + providerId + '/refresh'); // Workspace sensitive
+    }
+}]);
+
 services.service('stickyNoteSize', ['screenSize', '$localStorage', function(screenSize, $localStorage) {
     this.currentStickyNoteSize = function(viewName, defaultSize) {
         if (screenSize.is('xs, sm')) {

@@ -98,5 +98,12 @@ class PortfolioUrlMappings {
                 portfolio(matches: /[0-9A-Z]*/)
             }
         }
+        "/f/$portfolio/clientOauth/$providerId" {
+            controller = 'clientOauth'
+            action = [GET: 'show', PUT: 'save', POST: 'save', DELETE: 'delete']
+            constraints {
+                providerId(matches: /[0-9A-Za-z]*/)
+            }
+        }
     }
 }

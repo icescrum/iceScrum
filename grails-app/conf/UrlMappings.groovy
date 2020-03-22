@@ -421,6 +421,21 @@ class UrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
+        "/clientOauth/token/$providerId" {
+            controller = 'clientOauth'
+            action = [POST: 'token']
+            constraints {
+                providerId(matches: /[0-9A-Za-z]*/)
+            }
+        }
+        "/clientOauth/redirectUri" {
+            controller = 'clientOauth'
+            action = [GET: 'redirectUri']
+        }
+        "/clientOauth/refresh" {
+            controller = 'clientOauth'
+            action = [GET: 'refresh']
+        }
         // Errors mapping
         "401"(controller: "errors", action: "error401")
         "403"(controller: "errors", action: "error403")

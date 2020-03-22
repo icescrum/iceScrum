@@ -26,8 +26,8 @@
         <span class="meeting-provider meeting-provider-current float-left mr-2 mt-1 meeting-provider-{{:: meeting.provider }}" title="{{:: provider.name }}"></span>
         <div class="font-size-sm flex-grow-1">
             <div>
-                <a href="{{:: meeting.videoLink }}" target="_blank" class="link">
-                    <b>${message(code: 'is.ui.collaboration.meeting.title')} {{:: meeting.topic }}</b>
+                <a href="{{:: meeting.videoLink }}" target="_blank" class="link" rel="noreferrer">
+                    <b>{{:: meeting.topic }}</b>
                 </a><br/>
                 <span ng-if="::meeting.phone">
                     ${message(code: 'is.ui.collaboration.join.phone')} <b><a class="link" href="tel:{{:: meeting.phone }}">{{:: meeting.phone }}</a></b>

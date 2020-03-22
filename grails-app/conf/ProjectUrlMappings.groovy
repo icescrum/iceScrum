@@ -418,5 +418,13 @@ class ProjectUrlMappings {
                 id(matches: /\d+/)
             }
         }
+        "/p/$project/clientOauth/$providerId" {
+            controller = 'clientOauth'
+            action = [GET: 'show', PUT: 'save', POST: 'save', DELETE: 'delete']
+            constraints {
+                providerId(matches: /[0-9A-Za-z]*/)
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }
