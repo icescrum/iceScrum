@@ -88,12 +88,16 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         if (!clientOauthData) {
             return false
         }
+
+
+
+        def method = clientOauthData.method?:'POST'
         def grant_type = refresh ? "refresh_token" : "authorization_code";
         def redirect_uri = ApplicationSupport.serverURL() + "/clientOauth/redirectUri"
         def queryString = (refresh ? "refreshToken" : "code") + "=${code}&client_id=${clientOauthData.client_id}&client_secret=${clientOauthData.client_secret}&grant_type=${grant_type}&redirect_uri=${redirect_uri}"
 
-        def url = "${clientOauthData.url}"
-        if (clientOauthData.forceQueryParams || clientOauthData.method == 'GET') {
+        def url = "${clientOauthData.tokenUrl}"
+        if (clientOauthData.forceQueryParams || method == 'GET') {
             url += "?" + queryString
         }
 
@@ -101,8 +105,8 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         def connection = baseUrl.openConnection()
         connection.with {
             doOutput = true
-            requestMethod = clientOauthData.method
-            if (!clientOauthData.forceQueryParams || clientOauthData.method == 'POST') {
+            requestMethod = method?:'POST'
+            if (!clientOauthData.forceQueryParams || method == 'POST') {
                 outputStream.withWriter { writer ->
                     writer << queryString
                 }

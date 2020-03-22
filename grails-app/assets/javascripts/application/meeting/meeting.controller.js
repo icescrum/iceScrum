@@ -38,7 +38,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
                 meeting.subjectType = subject.class;
             }
             provider.createMeeting(subject, meeting, $scope).then(function(meetingData) {
-                if (meetingData.videoLink || meetingData.phone) {
+                if (meetingData && (meetingData.videoLink || meetingData.phone)) {
                     meeting.videoLink = meetingData.videoLink;
                     meeting.phone = meetingData.phone ? meetingData.phone : null;
                     meeting.pinCode = meetingData.pinCode ? meetingData.pinCode : null;
