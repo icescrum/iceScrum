@@ -55,7 +55,9 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
         meeting.endDate = moment().format();
         if (provider.saveAsAttachment) {
             $scope.confirm({
-                message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment'),
+                confirmTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.title'),
+                buttonTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.save'),
+                message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.description'),
                 callback: function() {
                     var clazz = meeting.subjectType ? meeting.subjectType : Session.workspaceType;
                     var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';

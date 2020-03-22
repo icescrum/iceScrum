@@ -828,7 +828,6 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 .meeting-provider-container {
   &:not(:first-of-type) {
     margin-left: 0.5rem;
-    margin-right: 0.25rem;
   }
 
   &.disabled .meeting-provider {

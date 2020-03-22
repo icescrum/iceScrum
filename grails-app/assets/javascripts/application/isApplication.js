@@ -628,6 +628,7 @@ var isApplication = angular.module('isApplication', [
                 templateUrl: 'confirm.modal.html',
                 size: 'sm',
                 controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+                    $scope.confirmTitle = $scope.message(options.confirmTitle ? options.confirmTitle : 'todo.is.ui.confirm.title');
                     $scope.buttonColor = options.buttonColor ? options.buttonColor : 'primary';
                     $scope.buttonTitle = $scope.message(options.buttonTitle ? options.buttonTitle : 'todo.is.ui.confirm');
                     $scope.message = options.message;
