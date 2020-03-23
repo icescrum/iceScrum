@@ -350,9 +350,7 @@ icescrum {
     security {
         authorizedTokenHeaders = ['X-Gitlab-Token', 'X-Auth-Token']
     }
-    clientsOauth {
-        //need to be set for plugins
-    }
+    clientsOauth {} // Needs to be set for plugins
 }
 
 println "| Server Timezone: ${icescrum.timezone.default}"

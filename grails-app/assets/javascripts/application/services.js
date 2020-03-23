@@ -1025,16 +1025,16 @@ services.service('ClientOauthService', ['FormService', '$auth', function(FormSer
                 return {oauth: response.data};
             }
         });
-    }
+    };
     this.save = function(providerId, tokenData) {
         return FormService.httpPost('clientOauth/' + providerId, tokenData); // Workspace sensitive
-    }
+    };
     this.get = function(providerId) {
         return FormService.httpGet('clientOauth/' + providerId); // Workspace sensitive
-    }
+    };
     this.delete = function(providerId) {
         return FormService.httpDelete('clientOauth/' + providerId); // Workspace sensitive
-    }
+    };
     this.refresh = function(providerId) {
         return FormService.httpGet('clientOauth/' + providerId + '/refresh'); // Workspace sensitive
     }

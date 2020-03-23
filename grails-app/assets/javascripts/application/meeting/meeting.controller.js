@@ -59,7 +59,6 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
                 buttonTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.save'),
                 message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.description'),
                 callback: function() {
-                    var clazz = meeting.subjectType ? meeting.subjectType : Session.workspaceType;
                     var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
                     var file = {
                         url: meeting.videoLink,

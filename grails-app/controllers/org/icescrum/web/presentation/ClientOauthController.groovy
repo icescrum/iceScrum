@@ -37,7 +37,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         Class<?> WorkspaceClass = grailsApplication.getDomainClass('org.icescrum.core.domain.' + workspaceType.capitalize()).clazz
         def _workspace = WorkspaceClass.load(workspace)
         def data = metaDataService.getMetadata(_workspace, "oauth-${providerId}", true)
-        //maybe refresh token so refresh if needed
+        // Maybe refresh token so refresh if needed
         if (data?.oauth?.expires_on && data?.oauth?.refresh_token) {
             if (new Date().getTime() >= data.oauth.expires_on.toLong()) {
                 def result = getToken(providerId, data.oauth.refresh_token, true)
@@ -88,24 +88,19 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         if (!clientOauthData) {
             return false
         }
-
-
-
-        def method = clientOauthData.method?:'POST'
+        def method = clientOauthData.method ?: 'POST'
         def grant_type = refresh ? "refresh_token" : "authorization_code";
         def redirect_uri = ApplicationSupport.serverURL() + "/clientOauth/redirectUri"
         def queryString = (refresh ? "refreshToken" : "code") + "=${code}&client_id=${clientOauthData.client_id}&client_secret=${clientOauthData.client_secret}&grant_type=${grant_type}&redirect_uri=${redirect_uri}"
-
         def url = "${clientOauthData.tokenUrl}"
         if (clientOauthData.forceQueryParams || method == 'GET') {
             url += "?" + queryString
         }
-
         def baseUrl = new URL(url)
         def connection = baseUrl.openConnection()
         connection.with {
             doOutput = true
-            requestMethod = method?:'POST'
+            requestMethod = method ?: 'POST'
             if (!clientOauthData.forceQueryParams || method == 'POST') {
                 outputStream.withWriter { writer ->
                     writer << queryString
