@@ -52,7 +52,7 @@ class AppController implements ControllerErrorHandler {
                 message(code: 'is.ui.apps.tag.' + it)
             }
             marshalledAppDefinition.screenshots = appDefinition.screenshots.take(3).collect { String screenshot ->
-                return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
+                return [light: asset.assetPath([src: appDefinition.getAssetPath(screenshot)]), dark: asset.assetPath([src: appDefinition.getAssetPath(screenshot.replace(".png", "-dark.png"))])]
             }
             def assetLogoAppPath = appDefinition.getAssetPath(appDefinition.logo)
             marshalledAppDefinition.logo = asset.assetPathExists([src: assetLogoAppPath]) ? asset.assetPath([src: assetLogoAppPath]) : asset.assetPath([src: 'application/logo-app.png'])
