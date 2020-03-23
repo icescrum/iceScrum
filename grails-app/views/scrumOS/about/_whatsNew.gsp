@@ -22,6 +22,6 @@
 --}%
 
 <div class="d-flex flex-column align-items-center">
-    <asset:image src="/whatsNew/whatsNew.png" style="width: 656px" class="img-shadow m-3"/>
-    <h4 class="mt-1 text-center" style="width: 600px">Jitsi Meet and Miro Apps: Improve remote collaboration by creating videoconferences and virtual boards from iceScrum</h4>
+    <asset:image src="/whatsNew/whatsNew.png" style="width: 831px" class="img-shadow m-3"/>
+    <h4 class="mt-1 text-center" style="width: 620px">New Apps: Improve remote collaboration by creating videoconferences and virtual boards from iceScrum with Jitsi Meet, Google Meets, Google Jamboards and Miro.</h4>
 </div>
