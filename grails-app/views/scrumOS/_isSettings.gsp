@@ -77,10 +77,11 @@
             providers: [<entry:point id="scrumOS-isSettings-collaboration" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
         },
         clientsOauth: {
-            <g:each in="${grailsApplication.config.icescrum.clientsOauth.findAll{ it.value.clientSecret }}" var="clientOauth">
-                ${clientOauth.key}: ${clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON},
-            </g:each>
-        },
-        <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]" join=","/>
-    };
+    <g:each in="${grailsApplication.config.icescrum.clientsOauth.findAll{ it.value.clientSecret }}" var="clientOauth">
+    ${clientOauth.key}: ${clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON},
+    </g:each>
+    },
+    <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]" join=","/>
+    }
+    ;
 </script>

@@ -506,13 +506,13 @@ var isApplication = angular.module('isApplication', [
     }])
     .config(['$authProvider', function($authProvider) {
         var providers = isSettings.clientsOauth;
-        _.each(providers, function(opts, key){
+        _.each(providers, function(opts, key) {
             var options = {
                 name: key,
                 url: '/clientOauth/token/' + key,
                 redirectUri: isSettings.serverUrl + "/clientOauth/redirectUri",
             }
-            _.each(opts, function(value, key){
+            _.each(opts, function(value, key) {
                 options[key] = value;
             });
             $authProvider.oauth2(options);
