@@ -504,6 +504,20 @@ var isApplication = angular.module('isApplication', [
     .config(['$animateProvider', function($animateProvider) {
         $animateProvider.classNameFilter(/ng-animate-enabled/);
     }])
+    .config(['$authProvider', function($authProvider) {
+        var providers = isSettings.clientsOauth;
+        _.each(providers, function(opts, key){
+            var options = {
+                name: key,
+                url: '/clientOauth/token/' + key,
+                redirectUri: isSettings.serverUrl + "/clientOauth/redirectUri",
+            }
+            _.each(opts, function(value, key){
+                options[key] = value;
+            });
+            $authProvider.oauth2(options);
+        });
+    }])
     .factory('ErrorInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function($rootScope, $q, SERVER_ERRORS) {
         return {
             responseError: function(response) {
