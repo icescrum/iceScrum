@@ -262,7 +262,7 @@ class StoryController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         Story story = Story.findByBacklogAndUid(_project, uid)
         if (story) {
-            redirect(uri: "/p/$_project.pkey/#/" + getStoryHash(story))
+            redirect(uri: "/p/$_project.pkey/#/" + getStoryHash(story)  + (params.tab ? '/' + params.tab : ''))
         } else {
             redirect(controller: 'errors', action: 'error404')
         }

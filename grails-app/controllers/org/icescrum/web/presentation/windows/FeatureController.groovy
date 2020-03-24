@@ -198,7 +198,7 @@ class FeatureController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         Feature feature = Feature.findByBacklogAndUid(_project, uid)
         if (feature) {
-            redirect(uri: "/p/$_project.pkey/#/feature/$feature.id")
+            redirect(uri: "/p/$_project.pkey/#/feature/$feature.id" + (params.tab ? '/' + params.tab : ''))
         } else {
             redirect(controller: 'errors', action: 'error404')
         }

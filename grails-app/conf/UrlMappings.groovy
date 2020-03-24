@@ -60,28 +60,31 @@ class UrlMappings {
             }
         }
         // Permalinks
-        "/$project-F$uid/" {
+        "/$project-F$uid/$tab?" {
             controller = 'feature'
             action = 'permalink'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
+                tab(inList: ['activities', 'comments', 'stories'])
             }
         }
-        "/$project-T$uid/" {
+        "/$project-T$uid/$tab?" {
             controller = 'task'
             action = 'permalink'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
+                tab(inList: ['activities', 'comments'])
             }
         }
-        "/$project-$uid/" {
+        "/$project-$uid/$tab?" {
             controller = 'story'
             action = 'permalink'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
+                tab(inList: ['tasks', 'tests', 'comments', 'activities'])
             }
         }
         // Legacy permalinks

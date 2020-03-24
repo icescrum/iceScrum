@@ -294,7 +294,7 @@ class TaskController implements ControllerErrorHandler {
                 }
                 uri += "/tasks/task/$task.id"
             }
-            redirect(uri: uri)
+            redirect(uri: uri + (params.tab ? '/' + params.tab : ''))
         } else {
             redirect(controller: 'errors', action: 'error404')
         }
