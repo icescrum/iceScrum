@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'MeetingService', 'FormService', 'AttachmentService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, AppService, MeetingService, FormService, AttachmentService, Meeting, Session, relevantMeetingsFilter) {
+extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppService', 'MeetingService', 'FormService', 'AttachmentService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, $uibModal, AppService, MeetingService, FormService, AttachmentService, Meeting, Session, relevantMeetingsFilter) {
     // Functions
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
@@ -74,6 +74,38 @@ extensibleController('meetingCtrl', ['$scope', '$injector', 'AppService', 'Meeti
         }
         provider.stopMeeting(meeting, $scope).then(function() {
             MeetingService.update(meeting, Session.getWorkspace());
+        });
+    };
+    $scope.renameMeeting = function(meeting) {
+        var ctrlScope = $scope;
+        var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
+        if (provider.renameMeeting) {
+            var modal = $uibModal.open({
+                templateUrl: 'renameMeeting.modal.html',
+                size: 'sm',
+                controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+                    $scope.newTopic = meeting.topic;
+                    $scope.submit = function() {
+                        meeting.topic = $scope.newTopic;
+                        provider.renameMeeting(meeting, ctrlScope).then(function() {
+                            MeetingService.update(meeting, Session.getWorkspace());
+                        });
+                        $scope.$close(true);
+                    };
+                }]
+            });
+        }
+    };
+    $scope.editableMeetingTopic = function(providerId) {
+        return _.find($scope.getMeetingProviders(), function(provider) {
+            return provider.id == providerId
+        }).renameMeeting ? true : false;
+    };
+    $scope.copyLink = function(meeting) {
+        FormService.copyToClipboard(meeting.videoLink).then(function() {
+            $scope.notifySuccess('is.ui.colloboration.meeting.link.success');
+        }, function(text) {
+            $scope.notifyError(message('is.ui.colloboration.meeting.link.error', [text]));
         });
     };
     $scope.hasMeetings = function() {
