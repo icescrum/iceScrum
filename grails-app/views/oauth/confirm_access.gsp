@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.support.ApplicationSupport; org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException" %>
+<%@ page import="org.icescrum.core.support.ApplicationSupport; org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;  grails.converters.JSON;grails.util.Holders;" %>
 <head>
     <meta name='layout' content='simple-without-ng'/>
     <title>${message(code: 'is.ui.oauth.confirm')}</title>
@@ -26,7 +26,7 @@
                     </g:if>
                     <div class="d-flex justify-content-center mt-3 mb-3">
                         <div class="m-2">
-                            <img src="${client.additionalInformation.clientIcon ? (client.additionalInformation.clientIcon.startsWith('http') ? client.additionalInformation.clientIcon : (ApplicationSupport.serverURL() + client.additionalInformation.clientIcon)) : ''}"
+                            <img src="${client.additionalInformation.clientIcon ? (client.additionalInformation.clientIcon.startsWith('http') ? client.additionalInformation.clientIcon : assetPath(src: client.additionalInformation.clientIcon)) : ''}"
                                  height="60px" width="60px"/>
                         </div>
                         <div class="m-2">
@@ -59,6 +59,7 @@
                         </g:each>
                     </ul>
                     <div class="pb-4 pt-2"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
+                    <div class="pb-4 pt-2"><small><a href="${Holders.config.grails.plugin.springsecurity.saml.active ? createLink(controller: 'saml', action: 'logout') : createLink(controller: 'logout')}">${message(code: 'is.change.account')}</a></small></div>
                     <div class="d-flex justify-content-end">
                         <div class="mr-2">
                             <form method='POST' id='denialForm'>
