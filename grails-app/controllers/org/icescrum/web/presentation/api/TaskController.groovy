@@ -25,7 +25,6 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.apache.commons.lang.time.DateUtils
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.utils.ServicesUtils

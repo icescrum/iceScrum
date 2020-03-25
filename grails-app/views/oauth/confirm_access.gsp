@@ -59,7 +59,11 @@
                         </g:each>
                     </ul>
                     <div class="pb-4 pt-2"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
-                    <div class="pb-4 pt-2"><small><a href="${Holders.config.grails.plugin.springsecurity.saml.active ? createLink(controller: 'saml', action: 'logout') : createLink(controller: 'logout')}">${message(code: 'is.change.account')}</a></small></div>
+                    <div class="pb-4 pt-2">
+                        <small><a href="${Holders.config.grails.plugin.springsecurity.saml.active ? createLink(controller: 'saml', action: 'logout') : createLink(controller: 'logout')}">
+                            ${message(code: 'is.change.account')}
+                        </a></small>
+                    </div>
                     <div class="d-flex justify-content-end">
                         <div class="mr-2">
                             <form method='POST' id='denialForm'>
