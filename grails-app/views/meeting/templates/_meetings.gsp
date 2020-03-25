@@ -27,7 +27,7 @@
 
         <div class="font-size-sm flex-grow-1">
             <div>
-                <a href="{{:: meeting.videoLink }}" target="_blank" class="link">
+                <a href="{{:: meeting.videoLink }}" target="_blank" class="link" rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}" referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}">
                     <b>{{ meeting.topic }}</b>
                 </a><br/>
                 <span ng-if="::meeting.phone">
@@ -46,6 +46,8 @@
            href>${message(code: 'is.ui.collaboration.meeting.link')}</a>
         <a class="btn btn-secondary btn-sm hover-display"
            target="_blank"
+           rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}"
+           referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}"
            href="{{:: meeting.videoLink }}">${message(code: 'is.ui.collaboration.join')}</a>
         <a class="btn btn-secondary btn-danger ml-2 btn-sm hover-display"
            target="_blank"

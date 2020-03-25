@@ -573,13 +573,22 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             }
         }
     });
+    var linkAttributeMeeting = function(providerId, attribute) {
+        var linkAttribute = _.find($scope.getMeetingProviders(), function(provider) {
+            return provider.id == providerId
+        }).link;
+        return linkAttribute && linkAttribute[attribute] ? linkAttribute[attribute] : "";
+    };
     PushService.registerListener('meeting', 'CREATE', function(meeting) {
+        debugger;
         if (!Session.owner(meeting)) {
             $scope.notifySuccess($scope.message('is.ui.collaboration.notification', [meeting.provider, meeting.topic]), {
                 button: {
                     type: 'primary gold',
                     name: $scope.message('is.ui.collaboration.join'),
                     link: meeting.videoLink,
+                    rel: linkAttributeMeeting(meeting.provider, "rel"),
+                    referrerpolicy: linkAttributeMeeting(meeting.provider, "referrerpolicy"),
                     target: '_blank'
                 },
                 delay: 15000

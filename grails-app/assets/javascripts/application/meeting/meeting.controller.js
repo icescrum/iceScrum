@@ -101,6 +101,12 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
             return provider.id == providerId
         }).renameMeeting ? true : false;
     };
+    $scope.linkAttributeMeeting = function(providerId, attribute) {
+        var linkAttribute = _.find($scope.getMeetingProviders(), function(provider) {
+            return provider.id == providerId
+        }).link;
+        return linkAttribute && linkAttribute[attribute] ? linkAttribute[attribute] : "";
+    };
     $scope.copyLink = function(meeting) {
         FormService.copyToClipboard(meeting.videoLink).then(function() {
             $scope.notifySuccess('is.ui.colloboration.meeting.link.success');

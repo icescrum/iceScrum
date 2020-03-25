@@ -39,7 +39,7 @@ angular.module('notification-templates', []).run(['$templateCache', function($te
                                      '       <a href ng-click="button.action(); $event.stopPropagation()" class="btn btn-sm btn-{{::button.type}} float-right">{{::button.name}}</a>' +
                                      '   </div>' +
                                      '   <div class="mt-2" ng-if="::button && button.link">' +
-                                     '       <a href="{{:: button.link}}" target="{{:: button.target }}" rel="{{:: button.rel }}" class="btn btn-sm btn-{{::button.type}} float-right">{{::button.name}}</a>' +
+                                     '       <a href="{{:: button.link}}" target="{{:: button.target }}" rel="{{:: button.rel }}" referrerpolicy="{{:: button.referrerpolicy }}" class="btn btn-sm btn-{{::button.type}} float-right">{{::button.name}}</a>' +
                                      '   </div>' +
                                      '</div>');
 }]);
