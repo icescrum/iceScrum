@@ -580,7 +580,6 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
                     type: 'primary gold',
                     name: $scope.message('is.ui.collaboration.join'),
                     link: meeting.videoLink,
-                    rel: 'noreferrer',
                     target: '_blank'
                 },
                 delay: 15000

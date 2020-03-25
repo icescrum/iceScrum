@@ -77,7 +77,7 @@
             providers: [<entry:point id="scrumOS-isSettings-collaboration" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
         },
         clientsOauth: {
-    <g:each in="${grailsApplication.config.icescrum.clientsOauth.findAll{ it.value.clientSecret }}" var="clientOauth">
+    <g:each in="${grailsApplication.config.icescrum.clientsOauth}" var="clientOauth">
     ${clientOauth.key}: ${clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON},
     </g:each>
     },

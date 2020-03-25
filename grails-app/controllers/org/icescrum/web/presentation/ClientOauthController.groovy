@@ -88,10 +88,14 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         if (!clientOauthData) {
             return false
         }
+        def oauthTokenAuth = clientOauthData.oauthTokenAuth ?: 'params'
         def method = clientOauthData.method ?: 'POST'
         def grant_type = refresh ? "refresh_token" : "authorization_code";
         def redirect_uri = ApplicationSupport.serverURL() + "/clientOauth/redirectUri"
-        def queryString = (refresh ? "refreshToken" : "code") + "=${code}&client_id=${clientOauthData.clientId}&client_secret=${clientOauthData.clientSecret}&grant_type=${grant_type}&redirect_uri=${redirect_uri}"
+        def queryString = (refresh ? "refreshToken" : "code") + "=${code}&client_id=${clientOauthData.clientId}&grant_type=${grant_type}&redirect_uri=${redirect_uri}"
+        if (clientOauthData.clientSecret) {
+            queryString += "&client_secret=${clientOauthData.clientSecret}"
+        }
         def url = "${clientOauthData.tokenUrl}"
         if (clientOauthData.forceQueryParams || method == 'GET') {
             url += "?" + queryString
@@ -100,6 +104,10 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         def connection = baseUrl.openConnection()
         connection.with {
             doOutput = true
+            if (oauthTokenAuth == 'basic') {
+                String basicAuth = "Basic " + new String(Base64.encoder.encode("${clientOauthData.clientId}:${clientOauthData.clientSecret?:''}".bytes))
+                setRequestProperty("Authorization", basicAuth)
+            }
             requestMethod = method ?: 'POST'
             if (!clientOauthData.forceQueryParams || method == 'POST') {
                 outputStream.withWriter { writer ->
