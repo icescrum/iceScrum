@@ -580,7 +580,6 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         return linkAttribute && linkAttribute[attribute] ? linkAttribute[attribute] : "";
     };
     PushService.registerListener('meeting', 'CREATE', function(meeting) {
-        debugger;
         if (!Session.owner(meeting)) {
             $scope.notifySuccess($scope.message('is.ui.collaboration.notification', [meeting.provider, meeting.topic]), {
                 button: {
