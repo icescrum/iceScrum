@@ -90,9 +90,9 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         }
         def oauthTokenAuth = clientOauthData.oauthTokenAuth ?: 'params'
         def method = clientOauthData.method ?: 'POST'
-        def grant_type = refresh ? "refresh_token" : "authorization_code";
+        def grant_type = refresh ? 'refresh_token' : 'authorization_code'
         def redirect_uri = ApplicationSupport.serverURL() + "/clientOauth/redirectUri"
-        def queryString = (refresh ? "refreshToken" : "code") + "=${code}&client_id=${clientOauthData.clientId}&grant_type=${grant_type}&redirect_uri=${redirect_uri}"
+        def queryString = (refresh ? 'refreshToken' : 'code') + "=${code}&client_id=${clientOauthData.clientId}&grant_type=${grant_type}&redirect_uri=${redirect_uri}"
         if (clientOauthData.clientSecret) {
             queryString += "&client_secret=${clientOauthData.clientSecret}"
         }
