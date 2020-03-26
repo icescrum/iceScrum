@@ -647,30 +647,31 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 render(); // To update selected items
             }
 
+            function renderAndReinitializeBrush() {
+                render();
+                reinitializeBrush();
+            }
+
             function onBrushEnd() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
                 selectedItems = findSprintsOrAReleaseInRange(getBrushRanges());
                 if (selectedItems.length > 0) {
                     scope.onSelect(selectedItems);
                 }
-                reinitializeBrush();
-                render(); // To update selected items
+                renderAndReinitializeBrush(); // Update selected items
             }
 
             // Register render on model change
-            var removeTimelineWatcher = scope.$watch('timeline', function() {
-                render();
-                reinitializeBrush(); // Init brush on first loading or after creating first release
-            }, true);
+            var removeTimelineWatcher = scope.$watch('timeline', renderAndReinitializeBrush, true);
             var removeSelectedWatcher = scope.$watch('selected', function(newSelected) {
                 selectedItems = newSelected;
                 render(); // To update selected items
             }, true);
-            // Register render on width change (either by resize or opening / closing of details view)
-            d3.select(window).on('resize', _.throttle(render, 200));
+            // Register render on size change (either by resize or opening / closing of details view)
+            d3.select(window).on('resize', _.throttle(renderAndReinitializeBrush, 200));
             var unregisterRenderOnDetailsChanged = scope.$root.$on('$viewContentLoaded', function(event, viewConfig) {
                 if (viewConfig.indexOf('@planning') != -1) {
-                    $timeout(render, 100);
+                    $timeout(renderAndReinitializeBrush, 100);
                 }
             });
             // Unregister event listener & watchers when state change & scope destroy
