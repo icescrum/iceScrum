@@ -1152,7 +1152,7 @@ services.service("ColorService", [function() {
     };
     this.brightness = function(rgb) { // Luminance / Luma in YIQ
         return ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
-    }
+    };
     this.rgbStringToRgb = function(rgbString) {
         return rgbString.replace(/^(rgb|rgba)\(/, '').replace(/\)$/, '').replace(/\s/g, '').split(',');
     };

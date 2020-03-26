@@ -177,11 +177,19 @@ filters
                     }
                     return targetH;
                 };
-                var lCoef = originalHex === '#ffcc01' ? 0.01 : 0.05; // Hack to preserve task yellow
                 var originalHsl = ColorService.rgbToHsl(originalRgb);
+                // Target S
                 var targetS = originalHsl[1];
-                var targetL = originalHsl[2] + lCoef;
-                var targetH = shiftH(originalHsl[0], targetS, targetL, 7);
+                // Target L
+                var lOffset = originalHex === '#ffcc01' ? 0.01 : 0.05; // Hack to preserve task yellow
+                var targetL = originalHsl[2] + lOffset;
+                if (targetL > 1) {
+                    targetL = originalHsl[2] - lOffset;
+                }
+                // Target H
+                var hOffset = 7;
+                var targetH = shiftH(originalHsl[0], targetS, targetL, hOffset);
+                // Target RGB
                 var targetRgb = ColorService.hslToRgb(targetH, targetS, targetL);
                 gradientCache[originalHex] = ColorService.rgbToHex(targetRgb);
             }
