@@ -711,6 +711,9 @@ var isApplication = angular.module('isApplication', [
                 keyboard: false,
                 backdrop: 'static',
                 controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+                    $scope.confirmTitle = $scope.message(options.confirmTitle ? options.confirmTitle : 'todo.is.ui.dirty.confirm.title');
+                    $scope.confirmSaveButton = $scope.message(options.confirmSaveButton ? options.confirmSaveButton : 'todo.is.ui.dirty.confirm.save');
+                    $scope.confirmDontSaveButton = $scope.message(options.confirmDontSaveButton ? options.confirmDontSaveButton : 'todo.is.ui.dirty.confirm.dontsave');
                     $scope.message = options.message;
                     $scope.saveChanges = function() {
                         if (options.args) {
@@ -739,6 +742,7 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
             var callCloseCallback = function(confirmed) {
+                debugger;
                 if (!confirmed && options.cancelChangesCallback) {
                     options.cancelChangesCallback();
                 }

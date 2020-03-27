@@ -32,9 +32,7 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', '$injector
     };
 
     PushService.registerListener('attachment', IceScrumEventType.CREATE, function(attachment) {
-        self.getAttachmentable(attachment).then(function(attachmentable) {
-            self.addToAttachmentable(attachment, attachmentable);
-        });
+        _addToAttachmentable(attachment)
     });
 
     PushService.registerListener('attachment', IceScrumEventType.UPDATE, function(attachment) {
@@ -50,6 +48,12 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', '$injector
             attachmentable.attachments_count = attachmentable.attachments.length;
         });
     });
+
+    this._addToAttachmentable = function(attachment) {
+        self.getAttachmentable(attachment).then(function(attachmentable) {
+            self.addToAttachmentable(attachment, attachmentable);
+        });
+    };
 
     this.addToAttachmentable = function(attachment, attachmentable) {
         if (!_.find(attachmentable.attachments, {id: attachment.id})) {

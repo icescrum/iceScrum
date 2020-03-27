@@ -52,13 +52,21 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     };
     $scope.stopMeeting = function(meeting) {
         var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
-        meeting.endDate = moment().format();
+        var stopMeetingFunction = function() {
+            meeting.endDate = moment().format();
+            if (provider.stopMeeting) {
+                provider.stopMeeting(meeting, $scope).then(function() {
+                    MeetingService.update(meeting, Session.getWorkspace());
+                });
+            } else {
+                MeetingService.update(meeting, Session.getWorkspace());
+            }
+        };
         if (provider.saveAsAttachment) {
-            $scope.confirm({
+            $scope.dirtyChangesConfirm({
                 confirmTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.title'),
-                buttonTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.save'),
                 message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.description'),
-                callback: function() {
+                saveChangesCallback: function() {
                     if (provider.saveAsAttachment === true) {
                         var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
                         var file = {
@@ -73,15 +81,12 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                     } else {
                         provider.saveAsAttachment(meeting, $scope);
                     }
+                    stopMeetingFunction();
+                },
+                dontSaveChangesCallback: function() {
+                    stopMeetingFunction();
                 }
-            })
-        }
-        if (provider.stopMeeting) {
-            provider.stopMeeting(meeting, $scope).then(function() {
-                MeetingService.update(meeting, Session.getWorkspace());
             });
-        } else {
-            MeetingService.update(meeting, Session.getWorkspace());
         }
     };
     $scope.renameMeeting = function(meeting) {

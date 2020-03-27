@@ -39,6 +39,8 @@ import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
 
+grails.app.context = '/'
+
 icescrum {
 
     /* Administration */
