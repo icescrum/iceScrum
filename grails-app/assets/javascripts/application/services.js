@@ -1013,16 +1013,26 @@ services.service('TagService', ['FormService', function(FormService) {
     }
 }]);
 
-services.service('ClientOauthService', ['FormService', '$auth', function(FormService, $auth) {
+services.service('ClientOauthService', ['FormService', '$auth', 'SatellizerConfig', function(FormService, $auth, SatellizerConfig) {
     var self = this;
-    this.authenticate = function(providerId, autosave) {
-        return $auth.authenticate(providerId).then(function(response) {
+    this.authenticate = function(providerId, baseUrl, autosave) {
+        if (baseUrl) {
+            if (!SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint) { //keep default
+                SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint = SatellizerConfig.providers[providerId].authorizationEndpoint;
+            }
+            SatellizerConfig.providers[providerId].authorizationEndpoint = baseUrl + SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint; //put full authorization url
+        }
+        return $auth.authenticate(providerId, (baseUrl ? {baseTokenUrl: baseUrl} : null)).then(function(response) {
+            var result = {oauth: response.data};
+            if (baseUrl) {
+                result.oauth.baseUrl = baseUrl;
+            }
             if (autosave) {
-                return self.save(providerId, {oauth: response.data}).then(function(response) {
+                return self.save(providerId, result).then(function(response) {
                     return response;
                 });
             } else {
-                return {oauth: response.data};
+                return result;
             }
         });
     };

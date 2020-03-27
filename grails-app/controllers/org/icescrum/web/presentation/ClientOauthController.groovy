@@ -40,7 +40,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         // Maybe refresh token so refresh if needed
         if (data?.oauth?.expires_on && data?.oauth?.refresh_token) {
             if (new Date().getTime() >= data.oauth.expires_on.toLong()) {
-                def result = getToken(providerId, data.oauth.refresh_token, true)
+                def result = getToken(providerId, data.oauth.refresh_token, , data.oauth.baseUrl, true)
                 if (result) {
                     data.oauth.expires_in = result.expires_in
                     data.oauth.access_token = result.access_token
@@ -68,7 +68,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
 
     def token(String providerId) {
         def posted = request.JSON
-        def result = getToken(providerId, posted.code ?: params.code, false)
+        def result = getToken(providerId, posted.code, posted.baseTokenUrl ?: "", false)
         if (result) {
             result.expires_on = new Date().getTime() + (result.expires_in * 1000)
             render(status: 200, contentType: 'application/json', text: result)
@@ -81,7 +81,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         render(status: 200, text: '')
     }
 
-    private def getToken(String providerId, String code, boolean refresh) {
+    private def getToken(String providerId, String code, String baseTokenUrl, boolean refresh) {
         def clientOauthData = grailsApplication.config.icescrum.clientsOauth.find { key, values ->
             key == providerId
         }?.value
@@ -96,7 +96,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         if (clientOauthData.clientSecret) {
             queryString += "&client_secret=${clientOauthData.clientSecret}"
         }
-        def url = "${clientOauthData.tokenUrl}"
+        def url = "${baseTokenUrl ?: ''}${clientOauthData.tokenUrl}"
         if (clientOauthData.forceQueryParams || method == 'GET') {
             url += "?" + queryString
         }
@@ -105,7 +105,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         connection.with {
             doOutput = true
             if (oauthTokenAuth == 'basic') {
-                String basicAuth = "Basic " + new String(Base64.encoder.encode("${clientOauthData.clientId}:${clientOauthData.clientSecret?:''}".bytes))
+                String basicAuth = "Basic " + new String(Base64.encoder.encode("${clientOauthData.clientId}:${clientOauthData.clientSecret ?: ''}".bytes))
                 setRequestProperty("Authorization", basicAuth)
             }
             requestMethod = method ?: 'POST'

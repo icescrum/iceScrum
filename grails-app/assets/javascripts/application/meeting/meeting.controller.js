@@ -59,22 +59,30 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                 buttonTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.save'),
                 message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.description'),
                 callback: function() {
-                    var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
-                    var file = {
-                        url: meeting.videoLink,
-                        name: meeting.topic,
-                        provider: meeting.provider,
-                        length: 0
-                    };
-                    FormService.httpPost(attachmentBaseUrl + meeting.subjectType + '/' + $scope.attachmentable.id + '/flow', file).then(function(attachment) {
-                        AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
-                    });
+                    if (provider.saveAsAttachment === true) {
+                        var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
+                        var file = {
+                            url: meeting.videoLink,
+                            name: meeting.topic,
+                            provider: meeting.provider,
+                            length: 0
+                        };
+                        FormService.httpPost(attachmentBaseUrl + meeting.subjectType + '/' + $scope.attachmentable.id + '/flow', file).then(function(attachment) {
+                            AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
+                        });
+                    } else {
+                        provider.saveAsAttachment(meeting, $scope);
+                    }
                 }
             })
         }
-        provider.stopMeeting(meeting, $scope).then(function() {
+        if (provider.stopMeeting) {
+            provider.stopMeeting(meeting, $scope).then(function() {
+                MeetingService.update(meeting, Session.getWorkspace());
+            });
+        } else {
             MeetingService.update(meeting, Session.getWorkspace());
-        });
+        }
     };
     $scope.renameMeeting = function(meeting) {
         var ctrlScope = $scope;

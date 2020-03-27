@@ -25,7 +25,32 @@ services.factory('Attachment', ['Resource', function($resource) {
     return $resource('/:workspaceType/:workspaceId/attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
-services.service("AttachmentService", ['Attachment', 'Session', '$q', function(Attachment, Session, $q) {
+services.service("AttachmentService", ['Attachment', 'Session', '$q', '$injector', 'PushService', 'IceScrumEventType', function(Attachment, Session, $q, $injector, PushService, IceScrumEventType) {
+    var self = this;
+    this.getAttachmentable = function(attachment) {
+        return $injector.get(attachment.attachmentable.class + 'Service').get(attachment.attachmentable.id);
+    };
+
+    PushService.registerListener('attachment', IceScrumEventType.CREATE, function(attachment) {
+        self.getAttachmentable(attachment).then(function(attachmentable) {
+            self.addToAttachmentable(attachment, attachmentable);
+        });
+    });
+
+    PushService.registerListener('attachment', IceScrumEventType.UPDATE, function(attachment) {
+        self.getAttachmentable(attachment).then(function(attachmentable) {
+            var existingAttachment = _.find(attachmentable.attachments, {id: attachment.id});
+            _.merge(existingAttachment, attachment);
+        });
+    });
+
+    PushService.registerListener('attachment', IceScrumEventType.DELETE, function(attachment) {
+        self.getAttachmentable(attachment).then(function(attachmentable) {
+            _.remove(attachmentable.attachments, {id: attachment.id});
+            attachmentable.attachments_count = attachmentable.attachments.length;
+        });
+    });
+
     this.addToAttachmentable = function(attachment, attachmentable) {
         if (!_.find(attachmentable.attachments, {id: attachment.id})) {
             attachment.type = attachmentable.class.toLowerCase();

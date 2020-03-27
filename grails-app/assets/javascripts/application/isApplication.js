@@ -509,7 +509,7 @@ var isApplication = angular.module('isApplication', [
         _.each(providers, function(opts, key) {
             var options = {
                 name: key,
-                url: '/clientOauth/token/' + key,
+                url: isSettings.serverUrl + "/clientOauth/token/" + key,
                 redirectUri: isSettings.serverUrl + "/clientOauth/redirectUri",
             }
             _.each(opts, function(value, key) {
