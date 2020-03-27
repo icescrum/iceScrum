@@ -1017,20 +1017,20 @@ services.service('ClientOauthService', ['FormService', '$auth', 'SatellizerConfi
     var self = this;
     this.authenticate = function(providerId, options, autosave) {
         var data = {};
-        if (options.baseUrl) {
+        if (options && options.baseUrl) {
             if (!SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint) { //keep default
                 SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint = SatellizerConfig.providers[providerId].authorizationEndpoint;
             }
             SatellizerConfig.providers[providerId].authorizationEndpoint = options.baseUrl + SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint; //put full authorization url
             data.baseTokenUrl = options.baseUrl;
         }
-        if (options.clientId) {
+        if (options && options.clientId) {
             SatellizerConfig.providers[providerId].clientId = options.clientId;
             data.clientId = options.clientId;
         }
         return $auth.authenticate(providerId, data).then(function(response) {
             var result = {oauth: response.data};
-            if (options.baseUrl) {
+            if (options) {
                 result.oauth.baseUrl = options.baseUrl;
                 result.oauth.clientId = options.clientId;
             }

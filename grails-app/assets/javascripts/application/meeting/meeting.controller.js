@@ -87,6 +87,8 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                     stopMeetingFunction();
                 }
             });
+        } else {
+            stopMeetingFunction();
         }
     };
     $scope.renameMeeting = function(meeting) {
