@@ -742,7 +742,6 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
             var callCloseCallback = function(confirmed) {
-                debugger;
                 if (!confirmed && options.cancelChangesCallback) {
                     options.cancelChangesCallback();
                 }

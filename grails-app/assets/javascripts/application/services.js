@@ -1015,17 +1015,24 @@ services.service('TagService', ['FormService', function(FormService) {
 
 services.service('ClientOauthService', ['FormService', '$auth', 'SatellizerConfig', function(FormService, $auth, SatellizerConfig) {
     var self = this;
-    this.authenticate = function(providerId, baseUrl, autosave) {
-        if (baseUrl) {
+    this.authenticate = function(providerId, options, autosave) {
+        var data = {};
+        if (options.baseUrl) {
             if (!SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint) { //keep default
                 SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint = SatellizerConfig.providers[providerId].authorizationEndpoint;
             }
-            SatellizerConfig.providers[providerId].authorizationEndpoint = baseUrl + SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint; //put full authorization url
+            SatellizerConfig.providers[providerId].authorizationEndpoint = options.baseUrl + SatellizerConfig.providers[providerId].defaultAuthorizationEndpoint; //put full authorization url
+            data.baseTokenUrl = options.baseUrl;
         }
-        return $auth.authenticate(providerId, (baseUrl ? {baseTokenUrl: baseUrl} : null)).then(function(response) {
+        if (options.clientId) {
+            SatellizerConfig.providers[providerId].clientId = options.clientId;
+            data.clientId = options.clientId;
+        }
+        return $auth.authenticate(providerId, data).then(function(response) {
             var result = {oauth: response.data};
-            if (baseUrl) {
-                result.oauth.baseUrl = baseUrl;
+            if (options.baseUrl) {
+                result.oauth.baseUrl = options.baseUrl;
+                result.oauth.clientId = options.clientId;
             }
             if (autosave) {
                 return self.save(providerId, result).then(function(response) {
