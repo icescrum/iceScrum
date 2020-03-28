@@ -858,6 +858,24 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 }
 
+.meeting-icon {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.meeting-copy-grey {
+  background-image: url("remove-red.svg");
+  display: inline-block;
+}
+
+.meeting-stop-red {
+  background-image: url("remove-red.svg");
+  display: inline-block;
+}
+
 ////////////////////
 // Attachments
 ////////////////////
@@ -962,9 +980,9 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
       background-image: url("attachment-type-default.svg");
     }
 
-    .attachment-remove-grey {
+    .attachment-remove-red {
       margin-left: 1.25rem;
-      background-image: url("attachment-remove-grey.svg");
+      background-image: url("remove-red.svg");
     }
 
     .attachment-pause-grey {

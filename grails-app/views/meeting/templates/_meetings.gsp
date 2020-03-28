@@ -38,21 +38,26 @@
             ${message(code: 'is.ui.collaboration.by')} {{:: meeting.owner | userFullName }} (<span class="time-stamp"><time timeago datetime="{{ meeting.startDate }}">{{ meeting.startDate | dateTime }}</time></span>)
         </div>
         <a class="btn btn-secondary btn-sm hover-display mr-2"
+           ng-if="saveableMeeting(meeting.provider) && authorizedMeeting('update', meeting)"
+           ng-click="saveMeeting(meeting)"
+           href>${message(code: 'is.ui.collaboration.meeting.save')}</a>
+        <a class="btn btn-secondary btn-sm hover-display mr-2"
            ng-if="editableMeetingTopic(meeting.provider) && authorizedMeeting('update', meeting)"
            ng-click="renameMeeting(meeting)"
            href>${message(code: 'is.ui.collaboration.meeting.rename')}</a>
         <a class="btn btn-secondary btn-sm hover-display mr-2"
            ng-click="copyLink(meeting)"
            href>${message(code: 'is.ui.collaboration.meeting.link')}</a>
-        <a class="btn btn-secondary btn-sm hover-display"
+        <a class="btn btn-secondary btn-sm hover-display mr-2"
            target="_blank"
            rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}"
            referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}"
            href="{{:: meeting.videoLink }}">${message(code: 'is.ui.collaboration.join')}</a>
-        <a class="btn btn-secondary btn-danger ml-2 btn-sm hover-display"
+        <a class="meeting-icon meeting-stop-red ml-2 hover-display"
            target="_blank"
            ng-if="authorizedMeeting('update', meeting)"
-           ng-click="stopMeeting(meeting)" href>${message(code: 'is.ui.collaboration.stop')}</a>
+           title="${message(code: 'is.ui.collaboration.stop')}"
+           ng-click="stopMeeting(meeting)" href></a>
     </div>
     <hr ng-if="!$last" class="w-50"/>
 </div>

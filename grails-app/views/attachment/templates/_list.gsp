@@ -50,7 +50,7 @@
                    href="{{:: getUrl(clazz, attachmentable, attachment) }}">View</a>
                 <div ng-if=":: attachment.length > 0" class="size">{{:: attachment.length | filesize }}</div>
                 <a ng-if=":: authorizedAttachment('delete', attachment)"
-                   class="attachment-action attachment-remove-grey hover-display"
+                   class="attachment-action attachment-remove-red hover-display"
                    ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
                    href></a>
             </div>
@@ -84,7 +84,7 @@
                    ng-click="file.retry()"
                    href></a>
                 <a ng-if=":: authorizedAttachment('delete', attachment)"
-                   class="attachment-action attachment-remove-grey hidden"></a>
+                   class="attachment-action attachment-remove-red hidden"></a>
             </div>
         </div>
     </div>

@@ -62,33 +62,13 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                 MeetingService.update(meeting, Session.getWorkspace());
             }
         };
-        if (provider.saveAsAttachment) {
-            $scope.dirtyChangesConfirm({
-                confirmTitle: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.title'),
-                message: $scope.message('is.ui.collaboration.meeting.saveAsAttachment.description'),
-                saveChangesCallback: function() {
-                    if (provider.saveAsAttachment === true) {
-                        var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
-                        var file = {
-                            url: meeting.videoLink,
-                            name: meeting.topic,
-                            provider: meeting.provider,
-                            length: 0
-                        };
-                        FormService.httpPost(attachmentBaseUrl + meeting.subjectType + '/' + $scope.attachmentable.id + '/flow', file).then(function(attachment) {
-                            AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
-                        });
-                    } else {
-                        provider.saveAsAttachment(meeting, $scope);
-                    }
-                    stopMeetingFunction();
-                },
-                dontSaveChangesCallback: function() {
-                    stopMeetingFunction();
-                }
-            });
+        if (provider.saveMeeting) {
+            $scope.saveMeeting(meeting, stopMeetingFunction);
         } else {
-            stopMeetingFunction();
+            $scope.confirm({
+                message: $scope.message('is.ui.collaboration.stop.confirm'),
+                callback: stopMeetingFunction
+            });
         }
     };
     $scope.renameMeeting = function(meeting) {
@@ -110,6 +90,49 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                 }]
             });
         }
+    };
+    $scope.saveMeeting = function(meeting, stopMeetingFunction) {
+        var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
+        var saveMeetingFunction = function(){
+            if (provider.saveMeeting === true) {
+                var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
+                var file = {
+                    url: meeting.videoLink,
+                    name: meeting.topic,
+                    provider: meeting.provider,
+                    length: 0
+                };
+                FormService.httpPost(attachmentBaseUrl + meeting.subjectType + '/' + $scope.attachmentable.id + '/flow', file).then(function(attachment) {
+                    AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
+                });
+            } else {
+                provider.saveMeeting(meeting, $scope);
+            }
+        }
+        if(stopMeetingFunction){
+            $scope.dirtyChangesConfirm({
+                confirmTitle: $scope.message('is.ui.collaboration.meeting.saveStopMeeting.title'),
+                message: $scope.message('is.ui.collaboration.meeting.saveStopMeeting.description'),
+                saveChangesCallback: function() {
+                    saveMeetingFunction();
+                    stopMeetingFunction();
+                },
+                dontSaveChangesCallback: function() {
+                    stopMeetingFunction();
+                }
+            });
+        } else {
+            $scope.confirm({
+                confirmTitle: $scope.message('is.ui.collaboration.meeting.saveMeeting.title'),
+                message: $scope.message('is.ui.collaboration.meeting.saveMeeting.description'),
+                callback:saveMeetingFunction
+            });
+        }
+    };
+    $scope.saveableMeeting = function(providerId) {
+        return _.find($scope.getMeetingProviders(), function(provider) {
+            return provider.id == providerId;
+        }).saveMeeting ? true : false;
     };
     $scope.editableMeetingTopic = function(providerId) {
         return _.find($scope.getMeetingProviders(), function(provider) {
@@ -136,9 +159,12 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     // Init
     $scope.injector = $injector;
     $scope.$watch('project.simpleProjectApps', function() {
-        $scope.providers = _.each($scope.getMeetingProviders(), function(provider) {
-            provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
-        });
+        $scope.providers = _.chain($scope.getMeetingProviders())
+            .each(function(provider) {
+                provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
+            })
+            .sortBy([function(o) { return !o.enabled; }])
+            .value();
     }, true);
     MeetingService.list(Session.getWorkspace()).then(function(meetings) {
         $scope.meetings = meetings
