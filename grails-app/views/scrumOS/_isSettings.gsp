@@ -74,13 +74,16 @@
         isMobile: ${isMobile},
         logoutLink: "${createLink(controller: 'logout')}",
         meeting: {
-            providers: [<entry:point id="scrumOS-isSettings-collaboration" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
+            providers: [<entry:point id="scrumOS-isSettings-meeting" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
+        },
+        attachment: {
+            providers: [<entry:point id="scrumOS-isSettings-attachment" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
         },
         clientsOauth: {
-    <g:each in="${grailsApplication.config.icescrum.clientsOauth}" var="clientOauth">
-    ${clientOauth.key}: ${clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON},
-    </g:each>
-    },
+            <g:each in="${grailsApplication.config.icescrum.clientsOauth}" var="clientOauth">
+            ${clientOauth.key}: ${clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON},
+            </g:each>
+        },
     <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]" join=","/>
     }
     ;
