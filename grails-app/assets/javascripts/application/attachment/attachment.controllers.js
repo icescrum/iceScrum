@@ -114,7 +114,6 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', '$injector', 'Att
     };
     $scope.showPreview = function(attachment, attachmentable, type) {
         var previewType = $scope.isPreviewable(attachment);
-        debugger;
         var attachmentBaseUrl = $scope.attachmentBaseUrl;
         if (previewType == 'pdf') {
             $uibModal.open({
