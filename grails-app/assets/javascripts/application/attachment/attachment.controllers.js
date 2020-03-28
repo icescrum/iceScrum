@@ -21,13 +21,17 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'AppService', 'attachmentable', 'clazz', 'workspace', 'workspaceType', function($scope, $uibModal, AttachmentService, AppService, attachmentable, clazz, workspace, workspaceType) {
+extensibleController('attachmentCtrl', ['$scope', '$uibModal', '$injector', 'AttachmentService', 'AppService', 'attachmentable', 'clazz', 'workspace', 'workspaceType', function($scope, $uibModal, $injector, AttachmentService, AppService, attachmentable, clazz, workspace, workspaceType) {
     // Functions
-    $scope.providersPromoteList = function(){
+    $scope.providersPromoteList = function() {
         return _.map($scope.getAttachmentProviders(), 'id');
     }
     $scope.selectedProvider = function(provider) {
-        provider.select($scope, $uibModal);
+        if (provider.enabled) {
+            provider.select($scope, $uibModal);
+        } else {
+            $scope.showAppsModal($scope.message('is.ui.apps.tag.attachments'), true);
+        }
     };
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable, workspace.id, workspaceType);
@@ -50,7 +54,8 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     $scope.getMethod = function(attachment, method) {
         var methodExt = $scope[method + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)];
         var methodWithoutExt = $scope[method + _.capitalize(attachment.provider)];
-        return methodExt ? methodExt : (methodWithoutExt ? methodWithoutExt : null);
+        var methodProviderConfig = _.find($scope.getAttachmentProviders(), ['id', attachment.provider])[method];
+        return methodExt ? methodExt : (methodWithoutExt ? methodWithoutExt : (methodProviderConfig ? methodProviderConfig : null));
     };
     $scope.getUrl = function(clazz, attachmentable, attachment) {
         if (attachment.provider && $scope.getMethod(attachment, 'getUrl')) {
@@ -109,6 +114,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
     $scope.showPreview = function(attachment, attachmentable, type) {
         var previewType = $scope.isPreviewable(attachment);
+        debugger;
         var attachmentBaseUrl = $scope.attachmentBaseUrl;
         if (previewType == 'pdf') {
             $uibModal.open({
@@ -164,6 +170,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
         $flow.upload();
     };
     // Init
+    $scope.injector = $injector;
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
     $scope.attachmentBaseUrl = $scope.serverUrl + '/' + workspaceType + '/' + workspace.id + '/attachment/';
@@ -177,7 +184,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
 
     $scope.$watch('project.simpleProjectApps', function() {
-        _.each($scope.getMeetingProviders(), function(provider) {
+        _.each($scope.getAttachmentProviders(), function(provider) {
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
         });
         $scope.providers = $scope.getAttachmentProviders();

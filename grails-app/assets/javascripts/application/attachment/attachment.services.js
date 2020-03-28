@@ -32,7 +32,7 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', '$injector
     };
 
     PushService.registerListener('attachment', IceScrumEventType.CREATE, function(attachment) {
-        _addToAttachmentable(attachment)
+        self._addToAttachmentable(attachment)
     });
 
     PushService.registerListener('attachment', IceScrumEventType.UPDATE, function(attachment) {
