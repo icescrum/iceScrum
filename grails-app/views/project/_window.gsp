@@ -185,7 +185,7 @@
                             <span class="attachment-icon"></span><span flow-btn class="link">${message(code: 'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code: 'todo.is.ui.attachment.drop')}</span>
                         </div>
                         <div class="upload-apps col-6">
-                            <entry:point id="attachment-add-buttons"/>
+                            <g:include view="attachment/_buttons.gsp"/>
                         </div>
                     </div>
                     <div ng-include="'attachment.list.html'"></div>
@@ -271,25 +271,33 @@
             </div>
             <div class="card"
                  ng-controller="meetingCtrl"
-                 ng-if="getMeetingProviders().length"
                  ng-init="subject = project">
                 <div class="card-header">
                     <span class="card-title">${message(code: 'is.ui.collaboration.meetings')}</span>
                 </div>
                 <div class="card-body">
-                    <div ng-if="providers && authorizedMeeting('create')"
+                    <div ng-if=":: authorizedMeeting('create')"
                          class="align-items-center d-flex justify-content-between">
                         <div class="font-size-sm">
                             <b>${message(code: 'is.ui.collaboration.start')}</b>
                         </div>
                         <div>
-                            <a href
-                               ng-repeat="provider in ::providers"
-                               ng-click="createMeeting(subject, provider)"
-                               class="meeting-provider-container"
-                               ng-class="{'disabled': !provider.enabled}">
-                                <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
-                            </a>
+                            <div class="d-flex justify-content-end">
+                                <div ng-if="!creating">
+                                    <a href
+                                       ng-repeat="provider in getFilteredProviders()"
+                                       ng-click="createMeeting(subject, provider)"
+                                       ng-class="{'disabled': !provider.enabled}"
+                                       class="meeting-provider-container ml-2">
+                                        <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
+                                    </a>
+                                </div>
+                                <div class="dot-elastic align-middle align-self-center mr-4" ng-if="creating"></div>
+                                <a ng-if="providers.length != 0"
+                                   class="btn btn-secondary btn-sm plus-app"
+                                   ng-click="showAppsModal(message('is.ui.apps.tag.collaboration'), true)"
+                                   href></a>
+                            </div>
                         </div>
                     </div>
                     <hr ng-if="hasMeetings()"/>

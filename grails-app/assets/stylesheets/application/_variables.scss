@@ -49,6 +49,7 @@ $is-bg-color-role-sm: $is-bg-color !default;
 $is-bg-color-role-po: $is-bg-color !default;
 $is-bg-color-role-po-sm: $is-bg-color !default;
 $is-bg-rating: rgba(255, 255, 255, 0.9) !default;
+
 // Timelines
 $is-release-todo: $is-outline-color !default;
 $is-release-inprogress-right: #d1e6f0 !default;
@@ -114,6 +115,12 @@ $is-state-colors: (
         "inReview": #00bae8,
         "done": $is-green
 );
+
+// Three dots
+$dot-width: 7px;
+$dot-height: 7px;
+$dot-radius: $dot-width/2;
+$dot-color: $is-blue;
 
 %is-title {
   font-size: 1.25rem;

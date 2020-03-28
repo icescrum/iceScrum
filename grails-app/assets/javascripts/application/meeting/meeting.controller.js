@@ -23,8 +23,12 @@
  */
 extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppService', 'MeetingService', 'FormService', 'AttachmentService', 'Meeting', 'Session', 'relevantMeetingsFilter', function($scope, $injector, $uibModal, AppService, MeetingService, FormService, AttachmentService, Meeting, Session, relevantMeetingsFilter) {
     // Functions
+    $scope.providersPromoteList = function() {
+        return _.map($scope.getMeetingProviders(), 'id');
+    }
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
+            $scope.creating = true;
             var meeting = new Meeting();
             meeting.provider = provider.id;
             if (subject) {
@@ -43,15 +47,19 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                     meeting.phone = meetingData.phone ? meetingData.phone : null;
                     meeting.pinCode = meetingData.pinCode ? meetingData.pinCode : null;
                     meeting.providerEventId = meetingData.providerEventId;
-                    MeetingService.save(meeting, Session.getWorkspace(), subject);
+                    MeetingService.save(meeting, Session.getWorkspace(), subject).then(function() {
+                        $scope.creating = false;
+                    });
+                } else {
+                    $scope.creating = false;
                 }
             });
         } else {
-            $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true)
+            $scope.showAppsModal($scope.message('is.ui.apps.tag.collaboration'), true);
         }
     };
     $scope.stopMeeting = function(meeting) {
-        var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
+        var provider = $scope.getMeetingProvider(meeting.provider);
         var stopMeetingFunction = function() {
             meeting.endDate = moment().format();
             if (provider.stopMeeting) {
@@ -73,7 +81,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     };
     $scope.renameMeeting = function(meeting) {
         var ctrlScope = $scope;
-        var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
+        var provider = $scope.getMeetingProvider(meeting.provider);
         if (provider.renameMeeting) {
             var modal = $uibModal.open({
                 templateUrl: 'renameMeeting.modal.html',
@@ -92,8 +100,8 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
         }
     };
     $scope.saveMeeting = function(meeting, stopMeetingFunction) {
-        var provider = _.find($scope.getMeetingProviders(), {id: meeting.provider});
-        var saveMeetingFunction = function(){
+        var provider = $scope.getMeetingProvider(meeting.provider);
+        var saveMeetingFunction = function() {
             if (provider.saveMeeting === true) {
                 var attachmentBaseUrl = $scope.serverUrl + '/' + Session.workspaceType + '/' + Session.workspace.id + '/attachment/';
                 var file = {
@@ -109,7 +117,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                 provider.saveMeeting(meeting, $scope);
             }
         }
-        if(stopMeetingFunction){
+        if (stopMeetingFunction) {
             $scope.dirtyChangesConfirm({
                 confirmTitle: $scope.message('is.ui.collaboration.meeting.saveStopMeeting.title'),
                 message: $scope.message('is.ui.collaboration.meeting.saveStopMeeting.description'),
@@ -125,24 +133,18 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
             $scope.confirm({
                 confirmTitle: $scope.message('is.ui.collaboration.meeting.saveMeeting.title'),
                 message: $scope.message('is.ui.collaboration.meeting.saveMeeting.description'),
-                callback:saveMeetingFunction
+                callback: saveMeetingFunction
             });
         }
     };
     $scope.saveableMeeting = function(providerId) {
-        return _.find($scope.getMeetingProviders(), function(provider) {
-            return provider.id == providerId;
-        }).saveMeeting ? true : false;
+        return $scope.getMeetingProvider(providerId).saveMeeting ? true : false;
     };
     $scope.editableMeetingTopic = function(providerId) {
-        return _.find($scope.getMeetingProviders(), function(provider) {
-            return provider.id == providerId;
-        }).renameMeeting ? true : false;
+        return $scope.getMeetingProvider(providerId).renameMeeting ? true : false;
     };
     $scope.linkAttributeMeeting = function(providerId, attribute) {
-        var linkAttribute = _.find($scope.getMeetingProviders(), function(provider) {
-            return provider.id == providerId
-        }).link;
+        var linkAttribute = $scope.getMeetingProvider(providerId).link;
         return linkAttribute && linkAttribute[attribute] ? linkAttribute[attribute] : '';
     };
     $scope.copyLink = function(meeting) {
@@ -158,15 +160,22 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     $scope.authorizedMeeting = MeetingService.authorizedMeeting;
     // Init
     $scope.injector = $injector;
-    $scope.$watch('project.simpleProjectApps', function() {
-        $scope.providers = _.chain($scope.getMeetingProviders())
-            .each(function(provider) {
-                provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
-            })
-            .sortBy([function(o) { return !o.enabled; }])
-            .value();
-    }, true);
     MeetingService.list(Session.getWorkspace()).then(function(meetings) {
         $scope.meetings = meetings
     });
+
+    $scope.getFilteredProviders = function() {
+        var filteredProviders = _.filter($scope.getMeetingProviders(), ['enabled', true]);
+        if (filteredProviders.length <= 3) {
+            filteredProviders = _.take(_.sortBy($scope.getMeetingProviders(), [function(o) { return !o.enabled; }]), 3);
+        }
+        return filteredProviders;
+    };
+
+    $scope.$watch('project.simpleProjectApps', function() {
+        _.each($scope.getMeetingProviders(), function(provider) {
+            provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
+        });
+        $scope.providers = $scope.getMeetingProviders();
+    }, true);
 }]);

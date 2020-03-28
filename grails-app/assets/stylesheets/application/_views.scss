@@ -825,12 +825,12 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   padding-bottom: 0.75rem;
 }
 
-.meeting-provider-container {
+.meeting-provider-container, .attachment-provider-container {
   &:not(:first-of-type) {
     margin-left: 0.5rem;
   }
 
-  &.disabled .meeting-provider {
+  &.disabled .meeting-provider, &.disabled .attachment-provider {
     opacity: 0.5;
 
     &:hover {
@@ -847,14 +847,24 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
 .meetings-provider-sm {
   .meeting-provider {
-    height: 20px;
-    width: 20px;
+    height: 1.2rem;
+    width: 1.2rem;
     background-size: 18px auto;
+    align-self: flex-start;
+  }
+
+  .plus-app {
+    height: 1.2rem !important;
+    width: 1.2rem !important;
+    background-size: 0.6025rem 0.6025rem !important;
+    margin-left: 0.25rem !important;
+    padding: 0.25rem !important;
+    align-self: flex-start;
   }
 
   .meeting-provider-container {
-    margin-right: 0 !important;
-    margin-left: 0.25rem !important;
+    height: 1.2rem;
+    vertical-align: top;
   }
 }
 
@@ -901,6 +911,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 
   > .card-body {
     padding-top: 0;
+    padding-bottom: 0;
   }
 
   .upload-file, .upload-apps {

@@ -203,7 +203,7 @@
                     <span class="attachment-icon"></span><span flow-btn class="link">${message(code: 'todo.is.ui.attachment.add')}</span>&nbsp;<span class="d-none d-md-inline">${message(code: 'todo.is.ui.attachment.drop')}</span>
                 </div>
                 <div class="upload-apps col-6">
-                    <entry:point id="attachment-add-buttons"/>
+                    <g:include view="attachment/_buttons.gsp"/>
                 </div>
             </div>
             <div ng-include="'attachment.list.html'"></div>

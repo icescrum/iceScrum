@@ -1601,11 +1601,21 @@ th {
 }
 
 .attachment-provider {
-  background-size: 20px auto;
-  width: 20px;
+  background-size: 24px auto;
+  width: 24px;
 }
 
 .meeting-provider {
   background-size: 24px auto;
   width: 24px;
+}
+
+.plus-app {
+  background: url("small-plus-#{$theme}.svg") no-repeat center center !important;
+  background-size: 0.7125rem 0.7125rem !important;
+  padding: 10px !important;
+  width: 26px;
+  height: 26px;
+  align-self: center;
+  margin-left:0.5rem !important;
 }

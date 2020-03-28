@@ -21,8 +21,14 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', 'workspace', 'workspaceType', function($scope, $uibModal, AttachmentService, attachmentable, clazz, workspace, workspaceType) {
+extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'AppService', 'attachmentable', 'clazz', 'workspace', 'workspaceType', function($scope, $uibModal, AttachmentService, AppService, attachmentable, clazz, workspace, workspaceType) {
     // Functions
+    $scope.providersPromoteList = function(){
+        return _.map($scope.getAttachmentProviders(), 'id');
+    }
+    $scope.selectedProvider = function(provider) {
+        provider.select($scope, $uibModal);
+    };
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable, workspace.id, workspaceType);
     };
@@ -161,6 +167,21 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
     $scope.attachmentBaseUrl = $scope.serverUrl + '/' + workspaceType + '/' + workspace.id + '/attachment/';
+
+    $scope.getFilteredProviders = function() {
+        var filteredProviders = _.filter($scope.getAttachmentProviders(), ['enabled', true]);
+        if (filteredProviders.length <= 3) {
+            filteredProviders = _.take(_.sortBy($scope.getAttachmentProviders(), [function(o) { return !o.enabled; }]), 3);
+        }
+        return filteredProviders;
+    };
+
+    $scope.$watch('project.simpleProjectApps', function() {
+        _.each($scope.getMeetingProviders(), function(provider) {
+            provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);
+        });
+        $scope.providers = $scope.getAttachmentProviders();
+    }, true);
 }]);
 
 // Flow events are triggered by "$scope.$broadcast so they can be received only on controllers that are at the same level or below
@@ -177,4 +198,3 @@ extensibleController('attachmentNestedCtrl', ['$scope', 'AttachmentService', fun
         $flow.removeFile(flowFile);
     });
 }]);
-

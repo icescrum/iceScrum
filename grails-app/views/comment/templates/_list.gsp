@@ -98,23 +98,34 @@
     </div>
 </div>
 <div ng-controller="meetingCtrl"
-     ng-if="getMeetingProviders().length && workspaceType != workspaceTypes.PORTFOLIO"
+     ng-if="providers && workspaceType != workspaceTypes.PORTFOLIO"
      class="meetings-container"
      ng-init="subject = selected">
-    <div ng-if="providers && authorizedMeeting('create')"
+    <div ng-if="::providers && authorizedMeeting('create')"
          class="align-items-center d-flex"
          ng-class="hasMeetings() ? 'justify-content-end' : 'justify-content-between'">
         <div class="font-size-sm" ng-if="!hasMeetings()">
             <b>${message(code: 'is.ui.collaboration.start')}</b>
         </div>
         <div ng-class="{'meetings-provider-sm': hasMeetings()}">
-            <a href
-               ng-repeat="provider in ::providers"
-               ng-click="createMeeting(selected, provider)"
-               class="meeting-provider-container"
-               ng-class="{'disabled': !provider.enabled}">
-                <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
-            </a>
+            <div class="text-truncate" ng-if="::!providers || providers.length == 0" ng-click="showAppsModal(message('is.ui.apps.tag.collaboration'), true)">
+                {{:: providersPromoteList() | randomPromote }}
+            </div>
+            <div class="d-flex justify-content-end">
+                <div ng-if="!creating">
+                    <a href
+                       ng-repeat="provider in getFilteredProviders()"
+                       ng-click="createMeeting(subject, provider)"
+                       class="meeting-provider-container mr-2">
+                        <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
+                    </a>
+                </div>
+                <div class="dot-elastic align-middle align-self-center mr-4" ng-if="creating"></div>
+                <a ng-if="::providers && providers.length != 0"
+                   class="btn btn-secondary btn-sm plus-app"
+                   ng-click="showAppsModal(message('is.ui.apps.tag.collaboration'), true)"
+                   href></a>
+            </div>
         </div>
     </div>
     <div ng-include="'meetings.html'"></div>

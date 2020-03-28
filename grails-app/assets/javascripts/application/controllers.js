@@ -574,9 +574,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         }
     });
     var linkAttributeMeeting = function(providerId, attribute) {
-        var linkAttribute = _.find($scope.getMeetingProviders(), function(provider) {
-            return provider.id == providerId;
-        }).link;
+        var linkAttribute = $scope.getMeetingProvider(providerId).link;
         return linkAttribute && linkAttribute[attribute] ? linkAttribute[attribute] : '';
     };
     PushService.registerListener('meeting', 'CREATE', function(meeting) {
