@@ -159,7 +159,8 @@ icescrum {
                                     "release.create", "release.update", "release.delete", "release.state",
                                     "sprint.create", "sprint.update", "sprint.delete", "sprint.state",
                                     "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete", "acceptanceTest.state",
-                                    "actor.create", "actor.update", "actor.delete"
+                                    "actor.create", "actor.update", "actor.delete",
+                                    "meeting.create", "meeting.update", "meeting.delete"
                             ],
                             defaultEvents: ["story.create", "story.update", "story.delete", "story.state"],
                     ]

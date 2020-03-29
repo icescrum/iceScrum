@@ -116,7 +116,8 @@
                     <a href
                        ng-repeat="provider in getFilteredProviders()"
                        ng-click="createMeeting(subject, provider)"
-                       class="meeting-provider-container mr-2">
+                       ng-class="hasMeetings() ? 'ml-1' : 'ml-2'"
+                       class="meeting-provider-container ml-2">
                         <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
                     </a>
                 </div>
