@@ -25,7 +25,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     // Functions
     $scope.providersPromoteList = function() {
         return _.map($scope.getMeetingProviders(), 'id');
-    }
+    };
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
             $scope.creating = true;
@@ -116,7 +116,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
             } else {
                 provider.saveMeeting(meeting, $scope);
             }
-        }
+        };
         if (stopMeetingFunction) {
             $scope.dirtyChangesConfirm({
                 confirmTitle: $scope.message('is.ui.collaboration.meeting.saveStopMeeting.title'),
@@ -163,7 +163,6 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     MeetingService.list(Session.getWorkspace()).then(function(meetings) {
         $scope.meetings = meetings
     });
-
     $scope.getFilteredProviders = function() {
         var filteredProviders = _.filter($scope.getMeetingProviders(), ['enabled', true]);
         if (filteredProviders.length <= 3) {
@@ -171,7 +170,6 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
         }
         return filteredProviders;
     };
-
     $scope.$watch('project.simpleProjectApps', function() {
         _.each($scope.getMeetingProviders(), function(provider) {
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);

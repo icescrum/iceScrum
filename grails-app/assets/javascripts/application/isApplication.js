@@ -1046,14 +1046,14 @@ var isApplication = angular.module('isApplication', [
         });
         $rootScope.getMeetingProviders = function() {
             return isSettings.meeting.providers;
-        }
+        };
         $rootScope.getMeetingProvider = function(providerId) {
             return _.find($rootScope.getMeetingProviders(), ['id', providerId]);
-        }
+        };
         $rootScope.getAttachmentProviders = function() {
             return isSettings.attachment.providers;
-        }
+        };
         $rootScope.getAttachmentProvider = function(providerId) {
             return _.find($rootScope.getAttachmentProviders(), ['id', providerId]);
-        }
+        };
     }]);
