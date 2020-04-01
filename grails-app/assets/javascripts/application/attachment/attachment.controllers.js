@@ -54,7 +54,10 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', '$injector', 'Att
     $scope.getMethod = function(attachment, method) {
         var methodExt = $scope[method + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)];
         var methodWithoutExt = $scope[method + _.capitalize(attachment.provider)];
-        var methodProviderConfig = _.find($scope.getAttachmentProviders(), ['name', attachment.provider])[method];
+        var provider = _.find($scope.getAttachmentProviders(), function(p) {
+            return p.id == attachment.provider || p.name || attachment.provider
+        });
+        var methodProviderConfig = provider ? provider[method] : null;
         return methodExt ? methodExt : (methodWithoutExt ? methodWithoutExt : (methodProviderConfig ? methodProviderConfig : null));
     };
     $scope.getUrl = function(clazz, attachmentable, attachment) {
