@@ -20,8 +20,9 @@
  *
  */
 
-
 import grails.plugin.springsecurity.SpringSecurityUtils
+import org.codehaus.groovy.grails.web.converters.exceptions.ConverterException
+import org.codehaus.groovy.grails.web.json.JSONException
 import org.geeks.browserdetection.ComparisonType
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
@@ -147,11 +148,18 @@ class IceScrumFilters {
             before = {
                 request.withFormat {
                     json {
-                        // Project cannot be provided in body, it must be provided in URL
-                        def data = request.JSON
-                        data.remove("project")
-                        params << request.JSON
-                        request.restAPI = true
+                        try {
+                            def data = request.JSON
+                            data.remove('project') // Project cannot be provided in body, it must be provided in URL
+                            params << data
+                            request.restAPI = true
+                        } catch (ConverterException e) {
+                            if (e.cause instanceof JSONException) {
+                                throw e.cause
+                            } else {
+                                throw e
+                            }
+                        }
                     }
                 }
             }
