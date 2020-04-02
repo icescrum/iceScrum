@@ -177,27 +177,30 @@
         <entry:point id="user-dialog-profile-tab"/>
         <uib-tab heading="${message(code: 'is.dialog.profile.tokensSettings')}">
             <div class="token-tab" ng-controller="UserTokenCtrl">
-                <div class="form-group">
-                    <label for="userToken.name">${message(code: 'is.user.token.name')}</label>
-                    <div class="input-group" hotkey="{'return': save }" hotkey-allow-in="INPUT">
-                        <input type="text"
-                               name="userToken.name"
-                               autocomplete="off"
-                               class="form-control"
-                               placeholder="${message(code: 'is.user.token.name.placeholder')}"
-                               ng-model="editableUserToken.name">
-                        <span class="input-group-append">
-                            <button type="button"
-                                    ng-click="save()"
-                                    ng-disabled="!editableUserToken.name"
-                                    class="btn btn-primary btn-sm">
-                                ${message(code: 'is.ui.token.generate')}
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-text">
+                <p class="form-text">
                     ${message(code: 'is.dialog.profile.tokensSettings.description')}
+                    <documentation doc-url="rest-api"/>
+                </p>
+                <div class="row is-form-row">
+                    <div class="form-half">
+                        <label for="userToken.name">${message(code: 'is.user.token.name')}</label>
+                        <div class="input-group" hotkey="{'return': save }" hotkey-allow-in="INPUT">
+                            <input type="text"
+                                   name="userToken.name"
+                                   autocomplete="off"
+                                   class="form-control"
+                                   placeholder="${message(code: 'is.user.token.name.placeholder')}"
+                                   ng-model="editableUserToken.name">
+                            <span class="input-group-append">
+                                <button type="button"
+                                        ng-click="save()"
+                                        ng-disabled="!editableUserToken.name"
+                                        class="btn btn-primary btn-sm">
+                                    ${message(code: 'is.ui.token.generate')}
+                                </button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <table class="table table-bordered table-striped" ng-if="user.tokens_count > 0">
                     <thead>
