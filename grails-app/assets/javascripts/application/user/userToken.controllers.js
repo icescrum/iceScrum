@@ -36,7 +36,7 @@ controllers.controller('UserTokenCtrl', ['$scope', 'UserTokenService', 'Session'
             }
             UserTokenService.save($scope.editableUserToken, Session.user).then(function() {
                 $scope.resetUserTokenForm();
-                $scope.notifySuccess('todo.is.ui.userToken.saved');
+                $scope.notifySuccess('is.ui.token.save.success');
             });
         }
     };

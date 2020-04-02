@@ -175,10 +175,10 @@
             </div>
         </uib-tab>
         <entry:point id="user-dialog-profile-tab"/>
-        <uib-tab heading="${message(code: 'is.dialog.profile.tokensSettings')}">
+        <uib-tab heading="${message(code: 'is.ui.token.title')}">
             <div class="token-tab" ng-controller="UserTokenCtrl">
                 <p class="form-text">
-                    ${message(code: 'is.dialog.profile.tokensSettings.description')}
+                    ${message(code: 'is.ui.token.title.description')}
                     <documentation doc-url="rest-api"/>
                 </p>
                 <div class="row is-form-row">
@@ -199,6 +199,12 @@
                                     ${message(code: 'is.ui.token.generate')}
                                 </button>
                             </span>
+                        </div>
+                    </div>
+                    <div class="form-half">
+                        <label for="userToken.sampleURL">${message(code: 'is.ui.token.sampleUrl')}</label>
+                        <div class="form-control-plaintext text-break">
+                            {{:: serverUrl + '/ws/project/YOURPROJ' }}
                         </div>
                     </div>
                 </div>
