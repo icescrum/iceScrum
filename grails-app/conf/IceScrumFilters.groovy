@@ -155,7 +155,8 @@ class IceScrumFilters {
                             request.restAPI = true
                         } catch (ConverterException e) {
                             if (e.cause instanceof JSONException) {
-                                throw e.cause
+                                render(status: 400, text: e.cause.message)
+                                return false
                             } else {
                                 throw e
                             }
