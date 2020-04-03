@@ -1,6 +1,7 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
+import org.codehaus.groovy.runtime.ProcessGroovyMethods
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.security.WorkspaceSecurity
 import org.icescrum.core.support.ApplicationSupport
@@ -41,13 +42,17 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         if (data?.oauth?.expires_on && data?.oauth?.refresh_token) {
             if (new Date().getTime() >= data.oauth.expires_on.toLong()) {
                 def result = getToken(providerId, data.oauth.refresh_token, data.oauth.baseUrl ?: null, data.oauth.clientId ?: null, data.oauth.clientSecret ?: null, true)
-                if (result) {
-                    data.oauth.expires_in = result.expires_in
-                    data.oauth.access_token = result.access_token
-                    data.oauth.refresh_token = result.refresh_token ?: data.oauth.refresh_token
-                    data.oauth.expires_on = new Date().getTime() + (result.expires_in * 1000)
+                if (result.status == 200) {
+                    data.oauth.expires_in = result.content.expires_in
+                    data.oauth.access_token = result.content.access_token
+                    data.oauth.refresh_token = result.content.refresh_token ?: data.oauth.refresh_token
+                    data.oauth.expires_on = new Date().getTime() + (result.content.expires_in * 1000)
                     metaDataService.addOrUpdateMetadata(_workspace, "oauth-${providerId}", data)
+                    render(status: 200, contentType: 'application/json', text: result.content)
+                } else {
+                    render(status: result.status, contentType: 'application/json', text: [text: result.content] as JSON)
                 }
+                return
             }
         }
         render(status: 200, contentType: 'application/json', text: data as JSON)
@@ -69,11 +74,11 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
     def token(String providerId) {
         def posted = request.JSON
         def result = getToken(providerId, posted.code, posted.baseTokenUrl ?: null, posted.clientId ?: null, posted.clientSecret ?: null, false)
-        if (result) {
-            result.expires_on = new Date().getTime() + (result.expires_in * 1000)
-            render(status: 200, contentType: 'application/json', text: result)
+        if (result.status == 200) {
+            result.content.expires_on = new Date().getTime() + (result.content.expires_in * 1000)
+            render(status: 200, contentType: 'application/json', text: result.content)
         } else {
-            render(status: 400)
+            render(status: result.status, contentType: 'application/json', text: [text: result.content] as JSON)
         }
     }
 
@@ -102,6 +107,9 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         if (!refresh) {
             queryString += "&redirect_uri=${redirect_uri}"
         }
+        if (clientOauthData.tokenOptionalQueryString) {
+            queryString += clientOauthData.tokenOptionalQueryString
+        }
         def url = "${baseTokenUrl ?: ''}${clientOauthData.tokenUrl}"
         if (clientOauthData.forceQueryParams || method == 'GET') {
             url += "?" + queryString
@@ -113,17 +121,21 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
             if (oauthTokenAuth == 'basic') {
                 String basicAuth = "Basic " + new String(Base64.encoder.encode("${clientId ?: clientOauthData.clientId}:${clientSecret ?: clientOauthData.clientSecret ?: ''}".bytes))
                 setRequestProperty("Authorization", basicAuth)
+            } else {
+                setRequestProperty("Content-Type", 'application/x-www-form-urlencoded')
             }
+            setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0")
+            setRequestProperty("Connection", "keep-alive")
             requestMethod = method ?: 'POST'
             if (!clientOauthData.forceQueryParams || method == 'POST') {
                 outputStream.withWriter { writer ->
                     writer << queryString
                 }
             }
-            if (responseCode == 200) {
-                return JSON.parse(content.text)
+            if (responseCode != 200) {
+                return [status: responseCode, content: errorStream.text]
             } else {
-                return false
+                return [status: responseCode, content: JSON.parse(inputStream.text)]
             }
         }
     }
