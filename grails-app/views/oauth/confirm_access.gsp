@@ -60,7 +60,7 @@
                     </ul>
                     <div class="pb-4 pt-2"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
                     <div class="pb-4 pt-2">
-                        <small><a href="${Holders.config.grails.plugin.springsecurity.saml.active ? createLink(controller: 'saml', action: 'logout') : createLink(controller: 'logout')}">
+                        <small><a href="${Holders.config.grails.plugin.springsecurity.saml.active ? createLink(controller: 'saml', action: 'logout') : createLink(uri:'j_spring_security_logout', params:[redirectTo: request.getHeader('referer')])}">
                             ${message(code: 'is.change.account')}
                         </a></small>
                     </div>
