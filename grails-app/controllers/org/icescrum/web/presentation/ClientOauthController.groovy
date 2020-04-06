@@ -46,9 +46,9 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
                     data.oauth.expires_in = result.content.expires_in
                     data.oauth.access_token = result.content.access_token
                     data.oauth.refresh_token = result.content.refresh_token ?: data.oauth.refresh_token
-                    data.oauth.expires_on = new Date().getTime() + (result.content.expires_in * 1000)
+                    data.oauth.expires_on = new Date().getTime() + (result.content.expires_in.toLong() * 1000)
                     metaDataService.addOrUpdateMetadata(_workspace, "oauth-${providerId}", data)
-                    render(status: 200, contentType: 'application/json', text: result.content)
+                    render(status: 200, contentType: 'application/json', text: data as JSON)
                 } else {
                     render(status: result.status, contentType: 'application/json', text: [text: result.content] as JSON)
                 }
@@ -75,7 +75,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         def posted = request.JSON
         def result = getToken(providerId, posted.code, posted.baseTokenUrl ?: null, posted.clientId ?: null, posted.clientSecret ?: null, false)
         if (result.status == 200) {
-            result.content.expires_on = new Date().getTime() + (result.content.expires_in * 1000)
+            result.content.expires_on = new Date().getTime() + (result.content.expires_in.toLong() * 1000)
             render(status: 200, contentType: 'application/json', text: result.content)
         } else {
             render(status: result.status, contentType: 'application/json', text: [text: result.content] as JSON)
@@ -133,7 +133,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
                 }
             }
             if (responseCode != 200) {
-                return [status: responseCode, content: errorStream.text]
+                return [status: responseCode, content: errorStream?.text?:"error from remote server"]
             } else {
                 return [status: responseCode, content: JSON.parse(inputStream.text)]
             }

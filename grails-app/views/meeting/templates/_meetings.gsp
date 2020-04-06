@@ -24,11 +24,10 @@
      ng-if="authorizedMeeting('view') && meeting && !meeting.endDate">
     <div class="d-flex align-items-center hover-container">
         <span class="meeting-provider meeting-provider-current float-left mr-2 mt-1 meeting-provider-{{:: meeting.provider }}" title="{{:: provider.name }}"></span>
-
         <div class="font-size-sm flex-grow-1">
             <div>
-                <a href="{{:: meeting.videoLink }}" target="_blank" class="link" rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}" referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}">
-                    <b>{{ meeting.topic }}</b>
+                <a href="{{:: meeting.videoLink }}" title="{{ meeting.topic }}" target="_blank" class="link" rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}" referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}">
+                    <b>{{ meeting.topic |ellipsis:60 }}</b>
                 </a><br/>
                 <span ng-if="::meeting.phone">
                     ${message(code: 'is.ui.collaboration.join.phone')} <b><a class="link" href="tel:{{:: meeting.phone }}">{{:: meeting.phone }}</a></b>
@@ -38,11 +37,11 @@
             ${message(code: 'is.ui.collaboration.by')} {{:: meeting.owner | userFullName }} (<span class="time-stamp"><time timeago datetime="{{ meeting.startDate }}">{{ meeting.startDate | dateTime }}</time></span>)
         </div>
         <a class="btn btn-secondary btn-sm hover-display mr-2"
-           ng-if="saveableMeeting(meeting.provider) && authorizedMeeting('update', meeting)"
+           ng-if="saveableMeeting(meeting) && authorizedMeeting('update', meeting)"
            ng-click="saveMeeting(meeting)"
            href>${message(code: 'is.ui.collaboration.meeting.save')}</a>
         <a class="btn btn-secondary btn-sm hover-display mr-2"
-           ng-if="editableMeetingTopic(meeting.provider) && authorizedMeeting('update', meeting)"
+           ng-if="editableMeetingTopic(meeting) && authorizedMeeting('update', meeting)"
            ng-click="renameMeeting(meeting)"
            href>${message(code: 'is.ui.collaboration.meeting.rename')}</a>
         <a class="btn btn-secondary btn-sm hover-display mr-2"

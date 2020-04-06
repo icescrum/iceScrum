@@ -383,24 +383,10 @@ extensibleController('editProjectCtrl', ['$scope', 'Session', 'ProjectService', 
         }).sortBy('title').value();
     };
     $scope['delete'] = function(project) {
-        $scope.confirm({
-            message: $scope.message('todo.is.ui.projectmenu.submenu.project.delete.confirm'),
-            buttonColor: 'danger',
-            buttonTitle: 'is.projectmenu.submenu.project.delete',
-            callback: function() {
-                ProjectService.delete(project);
-            }
-        })
+        ProjectService.delete(project);
     };
     $scope.archive = function(project) {
-        $scope.confirm({
-            message: $scope.message('is.dialog.project.archive.confirm'),
-            buttonColor: 'danger',
-            buttonTitle: 'is.dialog.project.archive.button',
-            callback: function() {
-                ProjectService.archive(project);
-            }
-        });
+        ProjectService.archive(project);
     };
     $scope.unArchive = function(project) {
         ProjectService.unArchive(project)

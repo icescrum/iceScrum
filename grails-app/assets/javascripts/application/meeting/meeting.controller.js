@@ -70,7 +70,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
                 MeetingService.update(meeting, Session.getWorkspace());
             }
         };
-        if (provider.saveMeeting) {
+        if ($scope.saveableMeeting(meeting)) {
             $scope.saveMeeting(meeting, stopMeetingFunction);
         } else {
             $scope.confirm({
@@ -137,11 +137,17 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
             });
         }
     };
-    $scope.saveableMeeting = function(providerId) {
-        return $scope.getMeetingProvider(providerId).saveMeeting ? true : false;
+    $scope.saveableMeeting = function(meeting) {
+        if ($scope.getMeetingProvider(meeting.provider).saveableMeeting) {
+            return (typeof $scope.getMeetingProvider(meeting.provider).saveableMeeting == "boolean" ? $scope.getMeetingProvider(meeting.provider).saveableMeeting : $scope.getMeetingProvider(meeting.provider).saveableMeeting(meeting));
+        }
+        return $scope.getMeetingProvider(meeting.provider).saveMeeting ? true : false;
     };
-    $scope.editableMeetingTopic = function(providerId) {
-        return $scope.getMeetingProvider(providerId).renameMeeting ? true : false;
+    $scope.editableMeetingTopic = function(meeting) {
+        if ($scope.getMeetingProvider(meeting.provider).editableMeetingTopic) {
+            return (typeof $scope.getMeetingProvider(meeting.provider).editableMeetingTopic == "boolean" ? $scope.getMeetingProvider(meeting.provider).editableMeetingTopic : $scope.getMeetingProvider(meeting.provider).editableMeetingTopic(meeting));
+        }
+        return $scope.getMeetingProvider(meeting.provider).renameMeeting ? true : false;
     };
     $scope.linkAttributeMeeting = function(providerId, attribute) {
         var linkAttribute = $scope.getMeetingProvider(providerId).link;

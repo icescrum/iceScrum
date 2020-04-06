@@ -1159,4 +1159,41 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             updateStars();
         }
     }
-});
+}).directive('deleteButtonClick', ['$timeout', '$rootScope', function($timeout, $rootScope) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var timeout;
+            element.on('click', function($event) {
+                if (!element.hasClass("confirm-delete-action")) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    element.addClass("confirm-delete-action");
+                    element.data('text', element.html());
+                    element.html($rootScope.message('is.ui.delete.confirm'));
+                } else {
+                    element.attr('disabled', 'disabled');
+                    scope.$eval(attrs.deleteButtonClick);
+                }
+            })
+            element.on('mouseenter', function() {
+                if (element.hasClass("confirm-delete-action") && timeout) {
+                    $timeout.cancel(timeout);
+                }
+            });
+            element.on('mouseleave', function() {
+                if (element.hasClass("confirm-delete-action")) {
+                    timeout = $timeout(function() {
+                        element.html(element.data('text'));
+                        element.removeClass("confirm-delete-action");
+                    }, 2000);
+                }
+            });
+            scope.$on('$destroy', function() {
+                if (timeout) {
+                    $timeout.cancel(timeout);
+                }
+            });
+        }
+    }
+}]);

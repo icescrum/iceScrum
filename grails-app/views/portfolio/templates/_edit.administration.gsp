@@ -35,7 +35,7 @@
                 type="button"
                 role="button"
                 class="btn btn-danger btn-sm"
-                ng-click="delete(portfolio)">
+                delete-button-click="delete(portfolio)">
             ${message(code: 'is.ui.portfolio.delete')}
         </button>
     </div>
