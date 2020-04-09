@@ -34,6 +34,10 @@ import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache
+import org.springframework.security.web.savedrequest.RequestCache
+import org.springframework.security.web.savedrequest.SavedRequest
 
 import javax.servlet.http.HttpServletResponse
 
@@ -42,6 +46,7 @@ class LoginController implements ControllerErrorHandler {
 
     def authenticationTrustResolver
     def springSecurityService
+    RequestCache requestCache
 
     // Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise
     def index() {
@@ -56,14 +61,25 @@ class LoginController implements ControllerErrorHandler {
     def auth(String username, String redirectTo) {
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
+            redirectTo = redirectTo ?: (session["redirectTo"] ?: null)
             if (redirectTo && !redirectTo.startsWith(ApplicationSupport.serverURL())) {
                 redirectTo = null
             }
+            session["redirectTo"] = null
             redirect(uri: redirectTo ?: config.successHandler.defaultTargetUrl)
             return
+        } else {
+            if (redirectTo) {
+                session["redirectTo"] = redirectTo
+            } else if (!redirectTo && params.login_error == null) {
+                session["redirectTo"] = null
+            } else {
+                redirectTo = session["redirectTo"]
+            }
         }
         render(view: 'auth', model: [noJS               : true,
                                      username           : username,
+                                     redirectTo         : redirectTo,
                                      postUrl            : "${request.contextPath}${config.apf.filterProcessesUrl}",
                                      rememberMeParameter: config.rememberMe.parameter])
     }
