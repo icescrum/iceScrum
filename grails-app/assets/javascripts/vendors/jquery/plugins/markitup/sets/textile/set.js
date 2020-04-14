@@ -40,7 +40,7 @@ textileSettings = {
             {name: 'Checkbox with check', icon: 'fa fa-check-square-o', key: 'M', openWith: '[x] '}
         ],
         [
-            {name: 'Picture', icon: 'fa fa-picture-o', key: 'T', replaceWith: '![![Source:!:http://]!]([![Alternative text]!])!'},
+            {name: 'Picture', icon: 'fa fa-picture-o', key: 'T', replaceWith: '![![Source:!:http://]!]([![Alternative text:!:...]!])!'},
             {name: 'Link', icon: 'fa fa-link', key: 'U', openWith: '"', closeWith: '([![Title]!])":[![Link:!:http://]!]', placeHolder: 'Your text to link here...'},
             {name: 'Quotes', icon: 'fa fa-quote-left', key: 'Q', openWith: 'bq(!(([![Class]!]))!). '},
             {name: 'Code', icon: 'fa fa-code', key: 'O', openWith: '@', closeWith: '@'},
