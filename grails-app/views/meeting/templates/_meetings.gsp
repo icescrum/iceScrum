@@ -26,7 +26,12 @@
         <span class="meeting-provider meeting-provider-current float-left mr-2 mt-1 meeting-provider-{{:: meeting.provider }}" title="{{:: provider.name }}"></span>
         <div class="font-size-sm flex-grow-1">
             <div>
-                <a href="{{:: meeting.videoLink }}" title="{{ meeting.topic }}" target="_blank" class="link" rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}" referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}">
+                <a href="{{:: meeting.videoLink }}"
+                   title="{{ meeting.topic }}"
+                   target="_blank"
+                   class="link"
+                   rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}"
+                   referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}">
                     <b>{{ meeting.topic |ellipsis:60 }}</b>
                 </a><br/>
                 <span ng-if="::meeting.phone">
