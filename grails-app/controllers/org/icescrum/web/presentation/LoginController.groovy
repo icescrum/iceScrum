@@ -34,10 +34,7 @@ import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache
 import org.springframework.security.web.savedrequest.RequestCache
-import org.springframework.security.web.savedrequest.SavedRequest
 
 import javax.servlet.http.HttpServletResponse
 

@@ -1,7 +1,6 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
-import org.codehaus.groovy.runtime.ProcessGroovyMethods
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.security.WorkspaceSecurity
 import org.icescrum.core.support.ApplicationSupport
@@ -133,7 +132,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
                 }
             }
             if (responseCode != 200) {
-                return [status: responseCode, content: errorStream?.text?:"error from remote server"]
+                return [status: responseCode, content: errorStream?.text ?: "error from remote server"]
             } else {
                 return [status: responseCode, content: JSON.parse(inputStream.text)]
             }
