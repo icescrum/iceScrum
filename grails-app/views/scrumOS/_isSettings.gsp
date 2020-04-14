@@ -72,6 +72,7 @@
         enableEmojis: ${ApplicationSupport.isUTF8Database()},
         announcement: ${announcement as JSON},
         isMobile: ${isMobile},
+        loginLink: "${createLink(controller: 'login', action: 'auth')}",
         logoutLink: "${createLink(controller: 'logout')}",
         meeting: {
             providers: [<entry:point id="scrumOS-isSettings-meeting" model="[user:user, roles:roles, workspace: workspace]" join=","/>]

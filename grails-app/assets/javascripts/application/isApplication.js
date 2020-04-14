@@ -800,7 +800,7 @@ var isApplication = angular.module('isApplication', [
             });
         };
         $rootScope.logIn = function() {
-            document.location = $rootScope.serverUrl + '/login/auth?redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'));
+            document.location = $rootScope.loginLink + '?redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'));
         };
         $rootScope.showNotEnabledFeature = function() {
             $rootScope.alert({
@@ -905,6 +905,7 @@ var isApplication = angular.module('isApplication', [
             $rootScope.warning = isSettings.warning;
             $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
             $rootScope.workspaceType = Session.workspaceType;
+            $rootScope.loginLink = isSettings.loginLink;
             $rootScope.logoutLink = isSettings.logoutLink;
             if (isSettings.announcement && isSettings.announcement.code && !$localStorage['hideAnnouncement-' + isSettings.announcement.code]) {
                 $rootScope.application.announcement = isSettings.announcement;
