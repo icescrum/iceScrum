@@ -39,8 +39,8 @@
             }, 3000);
         }
     </script>
+    <entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
     <script type="text/javascript">
         redirectToLogin();
     </script>
-    <entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
 </body>
