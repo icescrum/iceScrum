@@ -802,8 +802,8 @@ var isApplication = angular.module('isApplication', [
         $rootScope.logIn = function() {
             document.location = $rootScope.loginLink + '?redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'));
         };
-        $rootScope.logOut = function() {
-            document.location = $rootScope.logoutLink + '?redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'));
+        $rootScope.logOut = function(redirect) {
+            document.location = $rootScope.logoutLink + (redirect ? '?redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_')) : '');
         };
         $rootScope.showNotEnabledFeature = function() {
             $rootScope.alert({
