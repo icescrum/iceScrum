@@ -25,7 +25,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', '$injector', 'Att
     // Functions
     $scope.providersPromoteList = function() {
         return _.map($scope.getAttachmentProviders(), 'id');
-    }
+    };
     $scope.selectedProvider = function(provider) {
         if (provider.enabled) {
             provider.select($scope, $uibModal);
