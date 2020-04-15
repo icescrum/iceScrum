@@ -24,15 +24,17 @@
     <meta name='layout' content='error'/>
 </head>
 <body>
+    <entry:point id="icescrum-401-header" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
     <h1>Oops!</h1>
     <h2>${message(code: 'todo.is.ui.404')}</h2>
     <div class="mt-4 mb-4">
         ${message(code: 'todo.is.ui.404.details')}
     </div>
     <div class="btn-toolbar justify-content-center">
-        <a href="${homeUrl.encodeAsHTML()}" class="btn btn-primary btn-lg">
+        <a href="${homeUrl.encodeAsHTML()}" class="btn btn-primary btn-lg btn-home-40x">
             <i class="fa fa-home"></i> ${message(code: 'todo.is.ui.40x.home')}</a>
-        <a href="mailto:${supportEmail.encodeAsHTML()}" class="btn btn-secondary btn-lg">
+        <a href="mailto:${supportEmail.encodeAsHTML()}" class="btn btn-secondary btn-lg btn-support-40x">
             <i class="fa fa-envelope"></i> ${message(code: 'todo.is.ui.40x.support')}</a>
     </div>
+    <entry:point id="icescrum-404-footer" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
 </body>

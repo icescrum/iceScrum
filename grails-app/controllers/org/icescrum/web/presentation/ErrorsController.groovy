@@ -33,6 +33,7 @@ class ErrorsController implements ControllerErrorHandler {
     def grailsApplication
     def springSecurityService
     def notificationEmailService
+    def helper = new org.springframework.web.util.UrlPathHelper()
 
     def error401() {
         if (springSecurityService.isAjax(request)) {
@@ -40,7 +41,8 @@ class ErrorsController implements ControllerErrorHandler {
         } else {
             withFormat {
                 html {
-                    render(status: 401, view: '401.gsp', model: [homeUrl: ApplicationSupport.serverURL()])
+                    render(status: 401, view: '401.gsp', model: [homeUrl    : ApplicationSupport.serverURL(),
+                                                                 originalUrl: helper.getOriginatingRequestUri(request) + '?' + helper.getOriginatingQueryString(request)])
                 }
                 json {
                     render(status: 401)
@@ -55,7 +57,9 @@ class ErrorsController implements ControllerErrorHandler {
         } else {
             withFormat {
                 html {
-                    render(status: 403, view: '403.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+                    render(status: 403, view: '403.gsp', model: [homeUrl     : ApplicationSupport.serverURL(),
+                                                                 supportEmail: grailsApplication.config.icescrum.alerts.errors.to,
+                                                                 originalUrl : helper.getOriginatingRequestUri(request) + '?' + helper.getOriginatingQueryString(request)])
                 }
                 json {
                     render(status: 403)
@@ -70,7 +74,9 @@ class ErrorsController implements ControllerErrorHandler {
         } else {
             withFormat {
                 html {
-                    render(status: 404, view: '404.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+                    render(status: 404, view: '404.gsp', model: [homeUrl     : ApplicationSupport.serverURL(),
+                                                                 supportEmail: grailsApplication.config.icescrum.alerts.errors.to,
+                                                                 originalUrl : helper.getOriginatingRequestUri(request) + '?' + helper.getOriginatingQueryString(request)])
                 }
                 json {
                     render(status: 404)

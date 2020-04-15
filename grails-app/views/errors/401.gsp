@@ -24,6 +24,7 @@
     <meta name='layout' content='error'/>
 </head>
 <body>
+    <entry:point id="icescrum-401-header" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
     <h1>Oops!</h1>
     <h2>${message(code: 'todo.is.ui.401')}</h2>
     <div class="mt-4 mb-4">
@@ -38,8 +39,8 @@
             }, 3000);
         }
     </script>
-    <entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl]"/>
     <script type="text/javascript">
         redirectToLogin();
     </script>
+    <entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
 </body>
