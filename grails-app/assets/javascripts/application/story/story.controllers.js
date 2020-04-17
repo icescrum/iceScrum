@@ -809,8 +809,9 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
+        var defaultState = $state.includes("backlog.backlog", {elementId: 'backlog'}) && $scope.authorizedStory('createAccepted') ? StoryStatesByName.ACCEPTED : StoryStatesByName.SUGGESTED;
         $scope.story = {
-            state: $scope.story ? $scope.story.state : StoryStatesByName.SUGGESTED,
+            state: $scope.story ? $scope.story.state : defaultState,
             feature: $scope.story && $scope.story.feature ? $scope.story.feature : undefined
         };
         $scope.resetFormValidation($scope.formHolder.storyForm);
