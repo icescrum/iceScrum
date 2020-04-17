@@ -51,7 +51,7 @@
                    name="project.preferences.autoDoneStory"
                    id="autoDoneStory"
                    ng-model="project.preferences.autoDoneStory">
-            {{ message('is.project.preferences.sprint.autoDoneStory', [(storyStatesByName.DONE | i18n: 'StoryStates')]) }}
+            {{ message('is.project.preferences.sprint.autoStateStory', [(storyStatesByName.DONE | i18n: 'StoryStates')]) }}
         </label>
     </div>
     <div class="form-half">
