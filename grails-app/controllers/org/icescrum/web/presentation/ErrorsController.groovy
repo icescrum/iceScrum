@@ -57,7 +57,8 @@ class ErrorsController implements ControllerErrorHandler {
         } else {
             withFormat {
                 html {
-                    render(status: 403, view: '403.gsp', model: [homeUrl     : ApplicationSupport.serverURL(),
+                    render(status: 403, view: '403.gsp', model: [user        : springSecurityService.currentUser,
+                                                                 homeUrl     : ApplicationSupport.serverURL(),
                                                                  supportEmail: grailsApplication.config.icescrum.alerts.errors.to,
                                                                  originalUrl : helper.getOriginatingRequestUri(request) + '?' + helper.getOriginatingQueryString(request)])
                 }
@@ -74,9 +75,10 @@ class ErrorsController implements ControllerErrorHandler {
         } else {
             withFormat {
                 html {
-                    render(status: 404, view: '404.gsp', model: [homeUrl     : ApplicationSupport.serverURL(),
+                    render(status: 404, view: '404.gsp', model: [user        : springSecurityService.currentUser ?: null,
+                                                                 homeUrl     : ApplicationSupport.serverURL(),
                                                                  supportEmail: grailsApplication.config.icescrum.alerts.errors.to,
-                                                                 originalUrl : helper.getOriginatingRequestUri(request) + '?' + helper.getOriginatingQueryString(request)])
+                                                                 originalUrl : (ApplicationSupport.serverURL() - helper.getOriginatingContextPath(request)) + helper.getOriginatingRequestUri(request) + '?' + helper.getOriginatingQueryString(request)])
                 }
                 json {
                     render(status: 404)

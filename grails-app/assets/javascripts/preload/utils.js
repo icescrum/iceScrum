@@ -52,3 +52,23 @@ function b64DecodeUnicode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
+
+var login = function(redirectTo) {
+    redirectTo = redirectTo ? redirectTo : document.location.href;
+    redirectTo = redirectTo.replace('#', '_HASH_');
+    var query = isSettings.loginLink.indexOf('?') > 0 ? '&' : '?';
+    redirectTo = query + isSettings.redirectToParameter + '=' + redirectTo;
+    document.location.href = isSettings.loginLink + redirectTo;
+    return false;
+}
+
+var logout = function(redirectTo) {
+    if (redirectTo) {
+        redirectTo = redirectTo ? redirectTo : document.location.href;
+        redirectTo = redirectTo.replace('#', '_HASH_');
+        var query = isSettings.logoutLink.indexOf('?') > 0 ? '&' : '?';
+        redirectTo = query + isSettings.redirectToParameter + '=' + redirectTo;
+    }
+    document.location.href = isSettings.logoutLink + (redirectTo ? redirectTo : "");
+    return false;
+}

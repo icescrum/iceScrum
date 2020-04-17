@@ -34,7 +34,6 @@ import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
-import org.springframework.security.web.savedrequest.RequestCache
 
 import javax.servlet.http.HttpServletResponse
 
@@ -43,7 +42,6 @@ class LoginController implements ControllerErrorHandler {
 
     def authenticationTrustResolver
     def springSecurityService
-    RequestCache requestCache
 
     // Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise
     def index() {

@@ -24,7 +24,7 @@
     <meta name='layout' content='error'/>
 </head>
 <body>
-    <entry:point id="icescrum-401-header" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
+    <entry:point id="icescrum-404-header" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
     <h1>Oops!</h1>
     <h2>${message(code: 'todo.is.ui.404')}</h2>
     <div class="mt-4 mb-4">

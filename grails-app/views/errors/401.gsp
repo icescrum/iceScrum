@@ -30,17 +30,8 @@
     <div class="mt-4 mb-4">
         ${message(code: 'todo.is.ui.401.details')}
     </div>
-    <script type="text/javascript">
-        var redirectToLogin = function() {
-            setTimeout(function() {
-                //replace # => _HASH_ to preserve it in the redirect
-                var redirectTo = document.location.href.replace('#', '_HASH_');
-                document.location = '${homeUrl}/login/auth/?redirectTo=' + encodeURI(redirectTo);
-            }, 3000);
-        }
-    </script>
     <entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl, originalUrl: originalUrl]"/>
     <script type="text/javascript">
-        redirectToLogin();
+        setTimeout(function() { login(); }, 3000);
     </script>
 </body>

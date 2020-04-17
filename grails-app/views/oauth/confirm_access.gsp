@@ -17,7 +17,7 @@
         <div id="oauth-confirm" class="d-flex align-items-center justify-content-center">
             <div class="card">
                 <div class="card-body">
-                    <a href="/">
+                    <a href="/" target="_blank">
                         <img alt="iceScrum" src="${assetPath(src: 'application/logo.png')}" height="34px" width="34px">
                         <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum">
                     </a>
@@ -60,7 +60,7 @@
                     </ul>
                     <div class="pb-4 pt-2"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
                     <div class="pb-4 pt-2">
-                        <small><a href="${Holders.config.grails.plugin.springsecurity.saml.active ? createLink(controller: 'saml', action: 'logout') : createLink(uri: 'j_spring_security_logout', params: [redirectTo: request.getHeader('referer')])}">
+                        <small><a href onclick="return logout('${ApplicationSupport.serverURL()}' + '/oauth/authorize/?' + encodeURIComponent('${request.queryString}'));">
                             ${message(code: 'is.change.account')}
                         </a></small>
                     </div>

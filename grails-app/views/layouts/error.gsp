@@ -36,11 +36,13 @@
         <!-- end iOS web app-->
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <asset:stylesheet href="application.css"/>
+        <asset:javascript src="preload/utils.js"/>
         <g:layoutHead/>
     </head>
     <body class="text-center">
         <div style="margin-top: 100px;">
             <g:layoutBody/>
         </div>
+        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
     </body>
 </html>

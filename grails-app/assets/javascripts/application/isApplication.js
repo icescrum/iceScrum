@@ -799,11 +799,11 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
         };
-        $rootScope.logIn = function() {
-            document.location = $rootScope.loginLink + ($rootScope.loginLink.indexOf('?') > 0 ? '&' : '?') + 'redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'));
+        $rootScope.logIn = function(redirectTo) {
+            login(redirectTo);
         };
-        $rootScope.logOut = function(redirect) {
-            document.location = $rootScope.logoutLink + (redirect ? (($rootScope.logoutLink.indexOf('?') > 0 ? '&' : '?') + 'redirectTo=' + encodeURI(document.location.href.replace('#', '_HASH_'))) : '');
+        $rootScope.logOut = function(redirectTo) {
+            logout(redirectTo);
         };
         $rootScope.showNotEnabledFeature = function() {
             $rootScope.alert({

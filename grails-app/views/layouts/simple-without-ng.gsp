@@ -43,6 +43,7 @@
         <div class="is-container-fluid">
             <g:layoutBody/>
         </div>
+        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <asset:javascript src="preload-footer.js"/>
         <entry:point id="simple-without-ng-layout"/>
     </body>

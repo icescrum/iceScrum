@@ -74,6 +74,7 @@
         isMobile: ${isMobile},
         loginLink: "${createLink(controller: 'login', action: 'auth')}",
         logoutLink: "${createLink(controller: 'logout')}",
+        redirectToParameter: "redirectTo",
         meeting: {
             providers: [<entry:point id="scrumOS-isSettings-meeting" model="[user:user, roles:roles, workspace: workspace]" join=","/>]
         },
@@ -86,6 +87,5 @@
             </g:each>
         },
     <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]" join=","/>
-    }
-    ;
+    };
 </script>
