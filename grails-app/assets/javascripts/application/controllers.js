@@ -713,7 +713,7 @@ extensibleController('registerCtrl', ['$scope', '$uibModal', '$timeout', 'User',
         UserService.save(angular.copy($scope.user)).then(function() {
             var loginUrl = $scope.serverUrl + '/login/auth?username=' + $scope.user.username;
             if ($scope.redirectTo) {
-                loginUrl += ('&redirectTo=' + $scope.redirectTo);
+                loginUrl += ('&' + isSettings.redirectTo + '=' + $scope.redirectTo);
             }
             document.location = loginUrl;
         });
