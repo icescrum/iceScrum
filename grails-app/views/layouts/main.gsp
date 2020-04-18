@@ -43,6 +43,7 @@
             isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
             darkOrLightMode(${colorScheme ? "'$colorScheme'" : null });
         </script>
+        <entry:point id="icescrum-header" model="[workspace: workspace, user: user]"/>
         <g:layoutHead/>
     </head>
 

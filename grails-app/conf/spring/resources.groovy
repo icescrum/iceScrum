@@ -47,11 +47,6 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    redirectStrategy(IceScrumRedirectStrategy) {
-        useHeaderCheckChannelSecurity = SpringSecurityUtils.securityConfig.secureChannel.useHeaderCheckChannelSecurity // false
-        portResolver = ref('portResolver')
-    }
-
     messageSource(IceScrumMessageSource) {
         basenames = "WEB-INF/grails-app/i18n/messages"
     }
