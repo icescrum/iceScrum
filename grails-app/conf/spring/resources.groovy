@@ -26,7 +26,6 @@ import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.resource.CompositeResourceAccessor
 import liquibase.resource.FileSystemResourceAccessor
 import org.icescrum.core.security.IceScrumRedirectStrategy
-import org.icescrum.core.security.IceScrumSimpleUrlLogoutSuccessHandler
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.utils.TimeoutHttpSessionListener
@@ -48,13 +47,6 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    logoutSuccessHandler(IceScrumSimpleUrlLogoutSuccessHandler) {
-        redirectStrategy = ref('redirectStrategy')
-        defaultTargetUrl = SpringSecurityUtils.securityConfig.logout.afterLogoutUrl // '/'
-        alwaysUseDefaultTargetUrl = SpringSecurityUtils.securityConfig.logout.alwaysUseDefaultTargetUrl // false
-        targetUrlParameter = SpringSecurityUtils.securityConfig.logout.targetUrlParameter // null
-        useReferer = SpringSecurityUtils.securityConfig.logout.redirectToReferer // false
-    }
     redirectStrategy(IceScrumRedirectStrategy) {
         useHeaderCheckChannelSecurity = SpringSecurityUtils.securityConfig.secureChannel.useHeaderCheckChannelSecurity // false
         portResolver = ref('portResolver')
