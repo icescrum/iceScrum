@@ -108,7 +108,6 @@ services.service("ReleaseService", ['$q', '$state', '$injector', 'Release', 'Rel
             case 'generateSprints':
             case 'autoPlan':
             case 'unPlan':
-            case 'updateDates':
                 return Session.poOrSm() && release.state != ReleaseStatesByName.DONE;
             case 'activate':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.TODO && release.activable;

@@ -60,13 +60,13 @@
         <div class="row is-form-row">
             <div class="form-half">
                 <label for="release.startDate">${message(code: 'is.release.startDate')}</label>
-                <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">
+                <div ng-class="{'input-group': authorizedRelease('update', release)}">
                     <input type="text"
                            class="form-control"
                            required
                            ng-focus="editForm(true)"
                            name="startDate"
-                           ng-disabled="!authorizedRelease('updateDates', release)"
+                           ng-disabled="!authorizedRelease('update', release)"
                            ng-model="editableRelease.startDate"
                            ng-model-options="{timezone: 'utc'}"
                            custom-validate="validateStartDate"
@@ -75,7 +75,7 @@
                            datepicker-options="startDateOptions"
                            is-open="startDateOptions.opened"/>
                     <span class="input-group-append"
-                          ng-if="authorizedRelease('updateDates', release)">
+                          ng-if="authorizedRelease('update', release)">
                         <button type="button"
                                 class="btn btn-secondary btn-sm"
                                 ng-focus="editForm(true)"
@@ -87,13 +87,13 @@
             </div>
             <div class="form-half">
                 <label for="release.endDate">${message(code: 'is.release.endDate')}</label>
-                <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">
+                <div ng-class="{'input-group': authorizedRelease('update', release)}">
                     <input type="text"
                            class="form-control"
                            required
                            ng-focus="editForm(true)"
                            name="endDate"
-                           ng-disabled="!authorizedRelease('updateDates', release)"
+                           ng-disabled="!authorizedRelease('update', release)"
                            ng-model="editableRelease.endDate"
                            ng-model-options="{timezone: 'utc'}"
                            custom-validate="validateEndDate"
@@ -102,7 +102,7 @@
                            datepicker-options="endDateOptions"
                            is-open="endDateOptions.opened"/>
                     <span class="input-group-append"
-                          ng-if="authorizedRelease('updateDates', release)">
+                          ng-if="authorizedRelease('update', release)">
                         <button type="button"
                                 class="btn btn-secondary btn-sm"
                                 ng-focus="editForm(true)"
