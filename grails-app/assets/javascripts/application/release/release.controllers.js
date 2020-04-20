@@ -198,9 +198,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
     };
     var initReleaseDates = function(releases) {
         if (!_.isUndefined(releases)) {
-            if (_.isEmpty(releases)) {
-                $scope.startDateOptions.minDate = $scope.project.startDate;
-            } else {
+            if (!_.isEmpty(releases)) {
                 $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
             }
             $scope.release.startDate = $scope.startDateOptions.minDate;
@@ -241,12 +239,8 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     $scope.authorizedTimeboxNotes = TimeBoxNotesTemplateService.authorizedTimeboxNotes;
     // Init
     $scope.$watchCollection('project.releases', function(releases) {
-        if (!_.isUndefined(releases)) {
-            if (_.isEmpty($scope.previousRelease)) {
-                $scope.startDateOptions.minDate = $scope.project.startDate;
-            } else {
-                $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
-            }
+        if (!_.isUndefined(releases) && !_.isEmpty($scope.previousRelease)) {
+            $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
         }
     });
     $scope.$watchCollection('[editableRelease.startDate, editableRelease.endDate]', function(newValues) {
