@@ -198,10 +198,12 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
     };
     var initReleaseDates = function(releases) {
         if (!_.isUndefined(releases)) {
-            if (!_.isEmpty(releases)) {
-                $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
+            if (_.isEmpty(releases)) {
+                $scope.release.startDate = $scope.project.startDate;
+            } else {
+                $scope.release.startDate = DateService.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
+                $scope.startDateOptions.minDate = $scope.release.startDate;
             }
-            $scope.release.startDate = $scope.startDateOptions.minDate;
             $scope.release.endDate = DateService.immutableAddMonthsToDate($scope.release.startDate, 3);
         }
     };
