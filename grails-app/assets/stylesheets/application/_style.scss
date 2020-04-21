@@ -865,7 +865,7 @@ img.img-shadow {
 .icon {
   display: inline-block;
   @include square-background(0.875rem);
-  @each $icon in (caret-left, caret-right, compress, details, edit, expand, grid-group, grid-group-sm, list-group, rss, save, small-plus) {
+  @each $icon in (caret-left, caret-right, camera, compress, details, edit, expand, grid-group, grid-group-sm, list-group, rss, save, small-plus) {
     &.icon-#{$icon} {
       background-image: url("#{$icon}-#{$theme}.svg") !important;
     }
