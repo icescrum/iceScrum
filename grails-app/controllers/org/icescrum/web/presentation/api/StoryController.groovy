@@ -490,7 +490,7 @@ class StoryController implements ControllerErrorHandler {
         def groupedStories = [:]
         if (field == "effort") {
             groupedStories = projectStories.groupBy {
-                new BigDecimal(it.effort) // Hack: Normalize scale because BigDecimal 'equals' compares by value AND scale. Just after updating an effort it may have 0 digit while others have 2 digits -> 2 entries, one for 3 and one for 3.00
+                it.effort != null ? new BigDecimal(it.effort) : null // Hack: Normalize scale because BigDecimal 'equals' compares by value AND scale. Just after updating an effort it may have 0 digit while others have 2 digits -> 2 entries, one for 3 and one for 3.00
             }
         } else if (field == "value") {
             groupedStories = projectStories.groupBy { it.value }
