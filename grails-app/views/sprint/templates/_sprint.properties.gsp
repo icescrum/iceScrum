@@ -127,16 +127,6 @@
                 <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
             </div>
         </div>
-        <div class="form-group">
-            <label for="deliveredVersion">${message(code: 'is.sprint.deliveredVersion')}</label>
-            <input name="deliveredVersion"
-                   ng-focus="editForm(true)"
-                   ng-model="editableSprint.deliveredVersion"
-                   type="text"
-                   ng-maxlength="255"
-                   class="form-control"
-                   placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
-        </div>
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.IN_PROGRESS">
             <label for="retrospective" class="d-flex align-items-center justify-content-between">
                 <div>${message(code: 'is.sprint.retrospective')}</div>
@@ -195,6 +185,16 @@
                  tabindex="0"
                  bind-html-scope="markitupCheckboxOptions('doneDefinition')"
                  bind-html-compile="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
+        </div>
+        <div class="form-group">
+            <label for="deliveredVersion">${message(code: 'is.sprint.deliveredVersion')}</label>
+            <input name="deliveredVersion"
+                   ng-focus="editForm(true)"
+                   ng-model="editableSprint.deliveredVersion"
+                   type="text"
+                   ng-maxlength="255"
+                   class="form-control"
+                   placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
         </div>
         <label>${message(code: 'is.backlogelement.attachment')} {{ sprint.attachments_count > 0 ? '(' + sprint.attachments_count + ')' : '' }}</label>
         <div class="attachments attachments-bordered">
