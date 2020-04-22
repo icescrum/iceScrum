@@ -49,7 +49,12 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
                     metaDataService.addOrUpdateMetadata(_workspace, "oauth-${providerId}", data)
                     render(status: 200, contentType: 'application/json', text: data as JSON)
                 } else {
-                    render(status: result.status, contentType: 'application/json', text: [text: result.content] as JSON)
+                    def text
+                    try {
+                        def jsonError = JSON.parse(result.content)
+                        text = jsonError.reason ?: (jsonError.text ?: (jsonError.error ?: result.content))
+                    } catch (Exception e) {}
+                    render(status: 400, contentType: 'application/json', text: [text: text ?: result.content] as JSON)
                 }
                 return
             }
