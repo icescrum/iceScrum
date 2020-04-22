@@ -111,21 +111,22 @@ class StoryController implements ControllerErrorHandler {
             def propertiesToBind = ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'origin']
             Project _project = Project.withProject(project)
             entry.hook(id: 'story-before-save', model: [story: story, propertiesToBind: propertiesToBind, project: _project])
-            def tasks = storyParams.remove('tasks')
-            def acceptanceTests = storyParams.remove('acceptanceTests')
+            def tasksParams = storyParams.remove('tasks')
+            def acceptanceTestsParams = storyParams.remove('acceptanceTests')
             bindData(story, storyParams, [include: propertiesToBind])
             User user = (User) springSecurityService.currentUser
             storyService.save(story, _project, user)
             story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
-            tasks.each {
+            tasksParams.each { taskParams ->
                 def task = new Task()
-                bindData(task, it, [include: ['color', 'description', 'estimation', 'name', 'notes', 'tags']])
+                bindData(task, taskParams, [include: ['color', 'description', 'estimation', 'name', 'notes']])
                 story.addToTasks(task)
                 taskService.save(task, user)
+                task.tags = tasksParams.tags instanceof String ? tasksParams.tags.split(',') : (tasksParams.tags instanceof String[] || tasksParams.tags instanceof List) ? tasksParams.tags : null
             }
-            acceptanceTests.each {
+            acceptanceTestsParams.each { acceptanceTestParams ->
                 def acceptanceTest = new AcceptanceTest()
-                bindData(acceptanceTest, it, [include: ['description', 'name']])
+                bindData(acceptanceTest, acceptanceTestParams, [include: ['description', 'name']])
                 acceptanceTestService.save(acceptanceTest, story, user)
             }
             if (storyParams.state && storyParams.state.toInteger() == Story.STATE_ACCEPTED && request.productOwner) {
