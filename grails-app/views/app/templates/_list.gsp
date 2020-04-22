@@ -32,7 +32,7 @@
 <div class="app-list text-center">
     <div class="align-self-start" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
         <div ng-click="openAppDefinition(currentAppDefinition)"
-             class="app-logo">
+             class="app-logo app-{{:: currentAppDefinition.id}}">
             <div class="app-enabled" ng-if="isEnabledApp(currentAppDefinition)" title="${message(code: 'is.ui.apps.enabled')}"></div>
             <div class="app-new" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
             <img ng-src="{{:: currentAppDefinition.logo }}"
