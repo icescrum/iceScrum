@@ -811,6 +811,7 @@ var isApplication = angular.module('isApplication', [
                 } else {
                     scope.defaultAppDefinitionId = appDefinitionId;
                 }
+                scope.closeModalOnEnableApp = true;
             }
             $uibModal.open({
                 keyboard: false,

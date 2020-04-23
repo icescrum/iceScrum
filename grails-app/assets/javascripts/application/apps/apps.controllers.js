@@ -40,6 +40,10 @@ extensibleController('appsCtrl', ['$scope', 'AppService', 'Session', '$window', 
                 $timeout(function() {
                     $window.location.reload();
                 }, 600);
+            } else if($scope.closeModalOnEnableApp){
+                $timeout(function() {
+                    $scope.$close();
+                }, 200);
             }
         });
     };
