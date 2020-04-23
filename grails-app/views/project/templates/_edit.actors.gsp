@@ -92,7 +92,7 @@
                     <a class="text-danger float-right mr-3"
                        href
                        ng-if="authorizedActor('delete', actor)"
-                       ng-click="confirmDelete({ callback: delete, args: [actor] })">
+                       delete-button-click="delete(actor)">
                         <i class="fa fa-close"></i>
                     </a>
                 </td>

@@ -697,13 +697,6 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
         };
-        $rootScope.confirmDelete = function(options) {
-            $rootScope.confirm(_.assign({ // Don't use merge, we want to keep the original references and avoid object copy
-                buttonColor: 'danger',
-                buttonTitle: 'default.button.delete.label',
-                message: $rootScope.message('is.confirm.delete')
-            }, options));
-        };
         $rootScope.dirtyChangesConfirm = function(options) {
             var modal = $uibModal.open({
                 templateUrl: 'confirm.dirty.modal.html',

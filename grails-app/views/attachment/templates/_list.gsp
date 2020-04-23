@@ -51,7 +51,7 @@
                 <div ng-if=":: attachment.length > 0" class="size">{{:: attachment.length | filesize }}</div>
                 <a ng-if=":: authorizedAttachment('delete', attachment)"
                    class="attachment-action attachment-remove-red hover-display"
-                   ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
+                   delete-button-click="deleteAttachment(attachment, attachmentable)"
                    href></a>
             </div>
         </div>

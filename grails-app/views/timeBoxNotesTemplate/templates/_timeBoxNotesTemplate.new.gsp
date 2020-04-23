@@ -127,7 +127,7 @@
                     <button class="btn btn-danger btn-sm float-right"
                             type="button"
                             name="delete"
-                            ng-click="confirmDelete({callback: deleteSection, args: [timeBoxNotesTemplate, config]});">
+                            delete-button-click="deleteSection(timeBoxNotesTemplate, config)">
                         ${message(code: 'default.button.delete.label')}
                     </button>
                 </div>

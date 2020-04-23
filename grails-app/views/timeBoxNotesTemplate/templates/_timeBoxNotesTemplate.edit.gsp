@@ -32,7 +32,7 @@
                 tabindex="-1"
                 type="button"
                 name="delete"
-                ng-click="confirmDelete({callback: delete, args: [editableTimeBoxNotesTemplate]})">
+                delete-button-click="delete(editableTimeBoxNotesTemplate)">
             ${message(code: 'default.button.delete.label')}
         </button>
     </div>
@@ -144,7 +144,7 @@
                     <button class="btn btn-danger btn-sm float-right"
                             type="button"
                             name="delete"
-                            ng-click="confirmDelete({callback: deleteSection, args: [editableTimeBoxNotesTemplate, config]});">
+                            delete-button-click="deleteSection(editableTimeBoxNotesTemplate, config)">
                         ${message(code: 'default.button.delete.label')}
                     </button>
                 </div>

@@ -112,7 +112,7 @@
                          class="btn-group">
                         <button type="button"
                                 class="btn btn-danger btn-sm"
-                                ng-click="confirmDelete({ callback: deleteMultiple })">
+                                delete-button-click="deleteMultiple()">
                             ${message(code: 'default.button.delete.label')}
                         </button>
                     </div>

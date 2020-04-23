@@ -190,7 +190,7 @@
                         <button ng-if="authorizedTeam('delete', team) && team.projects_count == 0"
                                 class="btn btn-danger"
                                 type="button"
-                                ng-click="confirmDelete({ callback: delete, args: [team] })">
+                                delete-button-click="delete(team)">
                             ${message(code: 'default.button.delete.label')}
                         </button>
                         <button class="btn btn-primary"

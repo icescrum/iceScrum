@@ -130,7 +130,7 @@
                     <button type="button"
                             ng-if="authorizedStories('delete', stories)"
                             class="btn btn-danger btn-sm"
-                            ng-click="confirmDelete({ callback: deleteMultiple })">
+                            delete-button-click="deleteMultiple()">
                         ${message(code: 'is.ui.backlog.menu.delete')}
                     </button>
                     <entry:point id="story-multiple-toolbar"/>
