@@ -92,7 +92,7 @@ icescrum {
 
     cors {
         enable = true
-        url.pattern = '/ws/*'
+        url.pattern = ['/ws/*', '/assets/*']
     }
 
     check {
