@@ -45,6 +45,7 @@
 </div>
 <h4 class="mb-1">${message(code: "is.dialog.wizard.section.practices.sprint")}</h4>
 <div class="row">
+    <entry:point id="project-practices-sprint-before"/>
     <div class="form-half">
         <label for="autoDoneStory">
             <input type="checkbox"

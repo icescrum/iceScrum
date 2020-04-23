@@ -231,7 +231,7 @@ icescrum {
             usertoken           : [:],
             userpreferences     : [include: ['emailsSettings'],
                                    exclude: ['user', 'menu', 'emailsSettingsData', 'widgets']],
-            projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'autoDoneFeature', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+            projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'autoDoneFeature', 'autoInReviewStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                              'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
             attachment          : [include: ['filename']],
             acceptancetest      : [include: ['parentProject'],
