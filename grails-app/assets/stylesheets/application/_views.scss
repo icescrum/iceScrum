@@ -1037,6 +1037,13 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
         border-color: #687583;
       }
     }
+
+    .attachment-remove-red.confirm-delete-action {
+      background-image: none;
+      width: auto;
+      height: auto;
+      color: $is-red;
+    }
   }
 }
 
