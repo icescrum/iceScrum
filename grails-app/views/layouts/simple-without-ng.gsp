@@ -37,13 +37,13 @@
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <asset:javascript src="preload-header.js"/>
         <asset:stylesheet href="application.css"/>
+        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <g:layoutHead/>
     </head>
     <body class="simple-without-ng-layout ${bodyClasses}">
         <div class="is-container-fluid">
             <g:layoutBody/>
         </div>
-        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <asset:javascript src="preload-footer.js"/>
         <entry:point id="simple-without-ng-layout"/>
     </body>

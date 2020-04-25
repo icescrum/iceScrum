@@ -41,6 +41,7 @@
             isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
             darkOrLightMode('light');
         </script>
+        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <g:layoutHead/>
     </head>
     <body ng-controller="applicationCtrl"
@@ -51,7 +52,6 @@
             <g:layoutBody/>
         </div>
         <asset:javascript src="preload-footer.js"/>
-        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <g:render template="/scrumOS/templates"/>
         <asset:javascript src="application.js"/>
         <entry:point id="icescrum-footer-simple" model="[workspace: workspace, user: user]"/>

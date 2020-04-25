@@ -43,6 +43,7 @@
             isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
             darkOrLightMode(${colorScheme ? "'$colorScheme'" : null });
         </script>
+        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <entry:point id="icescrum-header" model="[workspace: workspace, user: user]"/>
         <g:layoutHead/>
     </head>
@@ -58,7 +59,6 @@
             <g:layoutBody/>
         </div>
         <asset:javascript src="preload-footer.js"/>
-        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <asset:javascript src="application.js"/>
         <g:render template="/scrumOS/templates"/>
         <entry:point id="icescrum-footer" model="[workspace: workspace, user: user]"/>
