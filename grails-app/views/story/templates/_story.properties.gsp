@@ -161,8 +161,7 @@
                        class="link"
                        ui-sref=".({storyId: dependence.id})"
                        title="{{ dependence | storyLabel }}">
-                        {{ dependence.name | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
-                    <a ng-if="!hasSameProject(editableStory, dependence)"
+                        {{ dependence.name | ellipsis: 30 }}</a><a ng-if="!hasSameProject(editableStory, dependence)"
                        class="link"
                        ng-href="{{:: dependence.permalink }}"
                        title="{{ dependence | storyLabel : false : true }}">
