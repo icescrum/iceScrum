@@ -51,7 +51,7 @@ extensibleController('appsCtrl', ['$scope', 'AppService', 'Session', '$window', 
         var search = $scope.holder.appSearch;
         if (search) {
             var containsText = function(text, subText) {
-                return text.toLowerCase().indexOf(subText.toLowerCase()) != -1;
+                return _.deburr(text).toLowerCase().indexOf(_.deburr(subText).toLowerCase()) !== -1;
             };
             var textContainsSearch = _.some(['name', 'baseline'], function(attributeName) {
                 return containsText(appDefinition[attributeName], search);
