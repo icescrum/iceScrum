@@ -805,7 +805,7 @@ var isApplication = angular.module('isApplication', [
         };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
-            if (appDefinitionId) {
+            if (appDefinitionId && (typeof(appDefinitionId) === 'string' || appDefinitionId instanceof String)) {
                 if (isTerm) {
                     scope.defaultSearchTerm = appDefinitionId;
                 } else {
