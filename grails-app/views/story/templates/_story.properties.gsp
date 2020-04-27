@@ -162,10 +162,10 @@
                        ui-sref=".({storyId: dependence.id})"
                        title="{{ dependence | storyLabel }}">
                         {{ dependence.name | ellipsis: 30 }}</a><a ng-if="!hasSameProject(editableStory, dependence)"
-                       class="link"
-                       ng-href="{{:: dependence.permalink }}"
-                       title="{{ dependence | storyLabel : false : true }}">
-                        {{ (dependence.name + ' (' +  dependence.project.name + ')') | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
+                                                                   class="link"
+                                                                   ng-href="{{:: dependence.permalink }}"
+                                                                   title="{{ dependence | storyLabel : false : true }}">
+                    {{ (dependence.name + ' (' +  dependence.project.name + ')') | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
                 </span>
             </div>
         </div>
