@@ -30,6 +30,7 @@
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
                 <input required
+                       autofocus
                        type="text"
                        ng-maxlength="100"
                        name="name"
