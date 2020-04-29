@@ -23,6 +23,7 @@
  */
 package org.icescrum.web.presentation.api
 
+import com.newrelic.api.agent.Trace
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
@@ -280,6 +281,7 @@ class StoryController implements ControllerErrorHandler {
         }
     }
 
+    @Trace
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def plan(long id, long project) {
         // Separate method to manage changing the rank and the state at the same time (too complicated to manage them properly in the update method)
