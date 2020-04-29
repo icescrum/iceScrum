@@ -23,6 +23,7 @@
  */
 package org.icescrum.web.presentation.api
 
+import com.newrelic.api.agent.Trace
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.io.FilenameUtils
@@ -229,6 +230,14 @@ class UserController implements ControllerErrorHandler {
         } else {
             render(status: 200, view: 'register', model: [token: token])
         }
+    }
+
+    @Trace
+    def test() {
+        def user = springSecurityService.currentUser
+        bindData(user.preferences, [activity: 'testing newRelic'], [include: ['activity']])
+        userService.update(user, [:])
+        render(status: 200, text: 'ok')
     }
 
     def avatar(Long id) {
