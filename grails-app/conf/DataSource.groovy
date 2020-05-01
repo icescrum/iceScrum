@@ -94,8 +94,8 @@ environments {
     }
     test {
         dataSource {
-            dbCreate = "create-drop"
-            url = "jdbc:h2:mem:testDb"
+            dbCreate = "update"
+            url = "jdbc:h2:testDb"
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
