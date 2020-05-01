@@ -694,12 +694,38 @@ environments {
         println "(*) grails.config.locations = ${grails.config.locations}"
         println "--------------------------------------------------------"
     }
-    development {
-        icescrum.beta.enable = true
-    }
     test {
         icescrum.beta.enable = true
         grails.mail.overrideAddress = "testing@kagilum.com"
+        def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
+        def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
+        def homeConfig = "${userHome}${File.separator}.icescrum${File.separator}config.groovy"
+        println "--------------------------------------------------------"
+        if (systemConfig && new File(systemConfig).exists()) {  // 1. System variable passed to the JVM : -Dicescrum.config.file=.../config.groovy
+            println "Use configuration file provided a JVM system variable: " + systemConfig
+            grails.config.locations = ["file:" + systemConfig]
+        } else if (envConfig && new File(envConfig).exists()) { // 2. Environment variable icescrum.config.file=.../config.groovy
+            println("Use configuration file provided by an environment variable: " + envConfig)
+            grails.config.locations = ["file:" + envConfig]
+        } else if (new File(homeConfig).exists()) {             // 3. Default location home/.icescrum/config.groovy
+            println "Use configuration file from the iceScrum home: " + homeConfig
+            grails.config.locations = ["file:" + homeConfig]
+        } else {
+            println "No configuration file found"
+            grails.config.locations = []
+        }
+        try {
+            String extConfFile = (String) new InitialContext().lookup('java:comp/env/' + ApplicationSupport.CONFIG_ENV_NAME)
+            if (extConfFile) {
+                grails.config.locations << extConfFile
+                println "Use configuration file provided by JNDI: ${extConfFile}"
+            }
+        } catch (Exception e) {}
+        println "(*) grails.config.locations = ${grails.config.locations}"
+        println "--------------------------------------------------------"
+    }
+    development {
+        icescrum.beta.enable = true
     }
 }
 
