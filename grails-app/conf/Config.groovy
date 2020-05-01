@@ -697,6 +697,10 @@ environments {
     development {
         icescrum.beta.enable = true
     }
+    test {
+        icescrum.beta.enable = true
+        grails.mail.overrideAddress = "testing@kagilum.com"
+    }
 }
 
 JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
