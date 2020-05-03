@@ -44,9 +44,14 @@ class IceScrumFilters {
                 if (userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')) {
                     response.setHeader('Expires', '-1')
                 }
+                if (params.profiler || request.getHeader('x-icescrum-profiler')) {
+                    def ajax = request.getHeader('x-icescrum-profiler') ? true : false;
+                    ApplicationSupport.enableProfiling(ajax)
+                }
             }
             after = {
                 pushService.resumePushForThisThread()
+                ApplicationSupport.reportProfiling()
             }
         }
 

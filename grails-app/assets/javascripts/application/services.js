@@ -274,6 +274,9 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
+        if (isSettings.profilerEnable) {
+            paramObj.headers['x-icescrum-profiler'] = 'true';
+        }
         return $http.get(fullPath, paramObj).then(function(response) {
             return response.data;
         });
@@ -285,6 +288,9 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
+        if (isSettings.profilerEnable) {
+            paramObj.headers['x-icescrum-profiler'] = 'true';
+        }
         return $http.delete(fullPath, paramObj).then(function(response) {
             return response.data;
         });
@@ -301,6 +307,9 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
+        if (isSettings.profilerEnable) {
+            paramObj.headers['x-icescrum-profiler'] = 'true';
+        }
         return $http.post(fullPath, data, paramObj).then(function(response) {
             return response.data;
         });
@@ -822,6 +831,14 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
         if (url.indexOf('/') == 0) {
             url = isSettings.serverUrl + url;
         }
+        _.each(defaultMethods, function(defaultMethod) {
+            if (isSettings.enableProfiler) {
+                if (!defaultMethod.headers) {
+                    defaultMethod.headers = {};
+                }
+                defaultMethod.headers['x-icescrum-profiler'] = 'true';
+            }
+        });
         _.each(methods, function(method) {
             method.transformRequest = transformRequest;
             method.then = transformQueryParams;
@@ -830,6 +847,12 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
             }
             if (method.url && method.url.indexOf('/') == 0) {
                 method.url = isSettings.serverUrl + method.url;
+            }
+            if (isSettings.enableProfiler) {
+                if (!method.headers) {
+                    method.headers = {};
+                }
+                method.headers['x-icescrum-profiler'] = 'true';
             }
         });
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));

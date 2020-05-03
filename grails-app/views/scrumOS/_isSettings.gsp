@@ -70,6 +70,7 @@
         warning: ${ApplicationSupport.getLastWarning() as JSON},
         workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}",
         enableEmojis: ${ApplicationSupport.isUTF8Database()},
+        enableProfiler: ${params.profiler ? true : false},
         announcement: ${announcement as JSON},
         isMobile: ${isMobile},
         loginLink: "${createLink(controller: 'login', action: 'auth')}",
