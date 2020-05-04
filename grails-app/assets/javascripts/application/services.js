@@ -473,7 +473,7 @@ services.service('CacheService', ['$injector', function($injector) {
         }
         if (!isAllowed) {
             self.remove(cacheName, itemFromServer.id);
-        } else if (!oldItem) {
+        } else if (!oldItem && newItem && !newItem.messageId) {
             self.getCache(cacheName).push(newItem);
         }
         return newItem;
