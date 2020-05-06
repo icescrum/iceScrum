@@ -27,6 +27,7 @@ import org.geeks.browserdetection.ComparisonType
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.support.ProfilingSupport
 import org.springframework.web.servlet.support.RequestContextUtils
 
 class IceScrumFilters {
@@ -45,13 +46,13 @@ class IceScrumFilters {
                     response.setHeader('Expires', '-1')
                 }
                 if (params.profiler || request.getHeader('x-icescrum-profiler')) {
-                    def ajax = request.getHeader('x-icescrum-profiler') ? true : false;
-                    ApplicationSupport.enableProfiling(ajax)
+                    def ajax = request.getHeader('x-icescrum-profiler') ? true : false
+                    ProfilingSupport.enableProfiling(ajax, controllerName, actionName)
                 }
             }
             after = {
                 pushService.resumePushForThisThread()
-                ApplicationSupport.reportProfiling()
+                ProfilingSupport.reportProfiling()
             }
         }
 
