@@ -274,7 +274,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
-        if (isSettings.profilerEnable) {
+        if (isSettings.enableProfiler) {
             paramObj.headers['x-icescrum-profiler'] = 'true';
         }
         return $http.get(fullPath, paramObj).then(function(response) {
@@ -288,7 +288,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
-        if (isSettings.profilerEnable) {
+        if (isSettings.enableProfiler) {
             paramObj.headers['x-icescrum-profiler'] = 'true';
         }
         return $http.delete(fullPath, paramObj).then(function(response) {
@@ -307,7 +307,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             paramObj.headers = {};
         }
         paramObj.headers['x-icescrum-client'] = 'webclient';
-        if (isSettings.profilerEnable) {
+        if (isSettings.enableProfiler) {
             paramObj.headers['x-icescrum-profiler'] = 'true';
         }
         return $http.post(fullPath, data, paramObj).then(function(response) {
