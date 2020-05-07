@@ -391,25 +391,21 @@ class StoryController implements ControllerErrorHandler {
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def done() {
-        ProfilingSupport.startProfiling("ctrlDone1", "controller")
+        ProfilingSupport.startProfiling("ctrlDone", "controller")
         def stories = Story.withStories(params)
-        ProfilingSupport.endProfiling("ctrlDone1", "controller")
-        ProfilingSupport.startProfiling("ctrlDone2", "controller")
         storyService.done(stories)
-        ProfilingSupport.endProfiling("ctrlDone2", "controller")
         def returnData = stories.size() > 1 ? stories : stories.first()
+        ProfilingSupport.endProfiling("ctrlDone", "controller")
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def unDone() {
-        ProfilingSupport.startProfiling("ctrlDone1", "controller")
+        ProfilingSupport.startProfiling("ctrlUnDone", "controller")
         def stories = Story.withStories(params)
-        ProfilingSupport.endProfiling("ctrlDone1", "controller")
-        ProfilingSupport.startProfiling("ctrlDone2", "controller")
         storyService.unDone(stories)
         def returnData = stories.size() > 1 ? stories : stories.first()
-        ProfilingSupport.endProfiling("ctrlDone2", "controller")
+        ProfilingSupport.endProfiling("ctrlUnDone", "controller")
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
