@@ -27,6 +27,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ProfilingSupport
 import org.icescrum.core.utils.ServicesUtils
 
 class StoryController implements ControllerErrorHandler {
@@ -390,17 +391,25 @@ class StoryController implements ControllerErrorHandler {
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def done() {
+        ProfilingSupport.startProfiling("ctrlDone1", "controller")
         def stories = Story.withStories(params)
+        ProfilingSupport.endProfiling("ctrlDone1", "controller")
+        ProfilingSupport.startProfiling("ctrlDone2", "controller")
         storyService.done(stories)
+        ProfilingSupport.endProfiling("ctrlDone2", "controller")
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def unDone() {
+        ProfilingSupport.startProfiling("ctrlDone1", "controller")
         def stories = Story.withStories(params)
+        ProfilingSupport.endProfiling("ctrlDone1", "controller")
+        ProfilingSupport.startProfiling("ctrlDone2", "controller")
         storyService.unDone(stories)
         def returnData = stories.size() > 1 ? stories : stories.first()
+        ProfilingSupport.endProfiling("ctrlDone2", "controller")
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
