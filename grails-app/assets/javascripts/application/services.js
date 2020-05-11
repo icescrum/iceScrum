@@ -74,8 +74,10 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
         if (self.listeners.activity) {
             self.listeners.activity.unregister();
         }
-        self.listeners.activity = PushService.registerListener('activity', IceScrumEventType.CREATE, function() {
-            self.unreadActivitiesCount += 1;
+        self.listeners.activity = PushService.registerListener('activity', IceScrumEventType.CREATE, function(activity) {
+            if (activity.poster && self.user && activity.poster.id !== self.user.id) {
+                self.unreadActivitiesCount += 1;
+            }
         });
         if (self.listeners.user) {
             self.listeners.user.unregister();
