@@ -86,8 +86,9 @@ class CommentController implements ControllerErrorHandler, WorkspaceSecurity {
             return
         }
         Comment.withTransaction {
-            long commentableId = params.long('comment.commentable.id')
-            String commentableType = GrailsNameUtils.getPropertyName(params.comment.commentable.class)
+            def commentableParams = params.comment.commentable
+            long commentableId = commentableParams.id.toLong()
+            String commentableType = GrailsNameUtils.getPropertyName(commentableParams.class)
             def _commentable = commentService.withCommentable(workspace, workspaceType, commentableId, commentableType)
             Comment comment = commentService.save(_commentable, ((User) springSecurityService.currentUser), [body: params.comment.body])
             render(status: 201, contentType: 'application/json', text: commentService.getRenderableComment(comment, _commentable) as JSON)
