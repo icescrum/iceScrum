@@ -80,10 +80,15 @@ class TagController implements ControllerErrorHandler {
             WHERE tagLink.type = 'feature'
             AND tagLink.tag.name LIKE :term
             AND tagLink.tagRef = feature.id
-            AND feature.backlog.id = project.id
-            AND project.portfolio.id = :portfolio
+            AND (
+                (
+                    feature.backlog.id = project.id
+                    AND project.portfolio.id = :portfolio
+                )
+                OR feature.portfolio.id = :portfolio
+            )
             ORDER BY tagLink.tag.name
         """, [term: (term ?: '%') + '%', portfolio: _portfolio.id], [cache: true])
-        render(status: 200, contentType: 'application/json', text: tags as JSON)
+        render(status: 200, contentType: 'application/json', text: tags.unique() as JSON)
     }
 }
