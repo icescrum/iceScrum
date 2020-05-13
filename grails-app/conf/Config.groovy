@@ -484,6 +484,9 @@ log4j = {
     def config = Holders.config
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
+//    trace 'org.hibernate.type.descriptor.sql' // Uncomment to trace SQL variables bindings
+//    debug 'org.hibernate.SQL'                 // Uncomment to trace SQL queries (or use logSql/formatSql in DataSource.groovy)
+
     error 'org.codehaus.groovy.grails.plugins',
             'org.grails.plugin',
             'grails.app'

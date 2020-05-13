@@ -33,6 +33,7 @@ hibernate {
 dataSource {
     configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
 //    logSql = true
+//    formatSql = true
 }
 
 environments {
