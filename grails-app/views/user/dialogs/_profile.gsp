@@ -212,17 +212,28 @@
                     <thead>
                         <tr>
                             <th>${message(code: 'is.user.token')}</th>
-                            <th class="text-right">${message(code: 'is.ui.token.actions')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="token in user.tokens">
-                            <td>{{ token.id }}<div class="small">{{ token.name }}</div>
-                            </td>
-                            <td class="text-right">
-                                <button type="button" class="btn btn-danger btn-sm" ng-click="delete(token)" defer-tooltip="${message(code: 'is.ui.token.revoke')}">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                            <td>
+                                <div class="float-left">
+                                    {{ token.id }}<div class="small">{{ token.name }}</div>
+                                </div>
+                                <div class="float-right">
+                                    <button type="button"
+                                            class="btn btn-secondary btn-sm"
+                                            defer-tooltip="${message(code: 'is.ui.copy.to.clipboard')}"
+                                            ng-click="copyToClipboard(token.id)">
+                                        <i class="fa fa-clipboard"></i>
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm"
+                                            ng-click="delete(token)"
+                                            defer-tooltip="${message(code: 'is.ui.token.revoke')}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
