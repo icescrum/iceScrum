@@ -748,6 +748,13 @@ grails {
             provider {
                 name uniqueCacheManagerName // unique name when configuring caches
             }
+            sizeOfPolicy {
+                maxDepth 100
+                maxDepthExceededBehavior 'abort'
+            }
+            defaultCache {
+                maxElementsInMemory 10000
+            }
         }
     }
     // To improve perf
