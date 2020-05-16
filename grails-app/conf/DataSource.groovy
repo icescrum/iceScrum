@@ -21,7 +21,7 @@
  *
  */
 hibernate {
-    jdbc.batch_size = 30
+    jdbc.batch_size = 50
     order_inserts = true
     order_updates = true
     batch_versioned_data = true
