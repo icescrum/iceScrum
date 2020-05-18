@@ -97,7 +97,7 @@ grails.project.dependency.resolution = {
         compile ':asset-pipeline:2.14.1.1'
         compile 'org.icescrum:sass-asset-pipeline:2.14.3'
         compile ':browser-detection:2.9.0'
-        runtime ':hibernate4:latest'
+        runtime ':hibernate4:4.3.10'
         runtime 'org.grails.plugins:database-migration:1.4.1'
         build ':tomcat:7.0.70'
         compile 'org.icescrum:entry-points:1.4.2'
