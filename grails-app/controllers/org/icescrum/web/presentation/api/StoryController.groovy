@@ -27,7 +27,6 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.support.ProfilingSupport
 import org.icescrum.core.utils.ServicesUtils
 
 class StoryController implements ControllerErrorHandler {
@@ -391,21 +390,17 @@ class StoryController implements ControllerErrorHandler {
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def done() {
-        ProfilingSupport.startProfiling("ctrlDone", "controller")
         def stories = Story.withStories(params)
         storyService.done(stories)
         def returnData = stories.size() > 1 ? stories : stories.first()
-        ProfilingSupport.endProfiling("ctrlDone", "controller")
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def unDone() {
-        ProfilingSupport.startProfiling("ctrlUnDone", "controller")
         def stories = Story.withStories(params)
         storyService.unDone(stories)
         def returnData = stories.size() > 1 ? stories : stories.first()
-        ProfilingSupport.endProfiling("ctrlUnDone", "controller")
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
@@ -495,7 +490,8 @@ class StoryController implements ControllerErrorHandler {
         def groupedStories = [:]
         if (field == "effort") {
             groupedStories = projectStories.groupBy {
-                it.effort != null ? new BigDecimal(it.effort) : null // Hack: Normalize scale because BigDecimal 'equals' compares by value AND scale. Just after updating an effort it may have 0 digit while others have 2 digits -> 2 entries, one for 3 and one for 3.00
+                it.effort != null ? new BigDecimal(it.effort) : null
+                // Hack: Normalize scale because BigDecimal 'equals' compares by value AND scale. Just after updating an effort it may have 0 digit while others have 2 digits -> 2 entries, one for 3 and one for 3.00
             }
         } else if (field == "value") {
             groupedStories = projectStories.groupBy { it.value }
