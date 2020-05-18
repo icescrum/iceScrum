@@ -729,6 +729,10 @@ environments {
     }
     development {
         icescrum.beta.enable = true
+        grails.mail.overrideAddress = "testing@kagilum.com"
+        grails.plugins.hibernateMetrics.enabled = true
+        grails.plugins.hibernateMetrics.logSqlToConsole = false
+        grails.plugin.springsecurity.controllerAnnotations.staticRules['/hibernateMetrics/**'] = ['permitAll']
     }
 }
 

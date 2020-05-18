@@ -536,10 +536,11 @@ var isApplication = angular.module('isApplication', [
             }
         };
     }])
-    .factory('SubmittingInterceptor', ['$rootScope', '$q', function($rootScope, $q) {
+    .factory('SubmittingInterceptor', ['$rootScope', '$q', '$timeout', function($rootScope, $q, $timeout) {
         var isSubmitting = function(config) {
             return _.includes(['POST', 'DELETE'], config.method) && !config.isBackground;
         };
+        var metricProfiler = null;
         return {
             request: function(config) {
                 if (isSubmitting(config)) {
@@ -551,10 +552,27 @@ var isApplication = angular.module('isApplication', [
                 if (isSubmitting(response.config)) {
                     $rootScope.application.submitting = false;
                 }
+                if (isSettings.enableProfiler && !response.config.url.endsWith('.html')) {
+                    if (metricProfiler) {
+                        $timeout.cancel(metricProfiler);
+                    }
+                    metricProfiler = $timeout(function() {
+                        getMetrics(1);
+                    }, 200);
+                }
                 return response; // Required to mimic default interceptor
             },
             responseError: function(response) {
                 $rootScope.application.submitting = false; // In case of any error, always give back the control to the user
+                if (isSettings.enableProfiler && !response.config.url.endsWith('.html')) {
+                    if (metricProfiler) {
+                        $timeout.cancel(metricProfiler);
+                    }
+                    metricProfiler = $timeout(function() {
+                        clearStats();
+                        getMetrics(1);
+                    }, 200);
+                }
                 return $q.reject(response); // Required to mimic default interceptor
             }
         };
@@ -805,7 +823,7 @@ var isApplication = angular.module('isApplication', [
         };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
-            if (appDefinitionId && (typeof(appDefinitionId) === 'string' || appDefinitionId instanceof String)) {
+            if (appDefinitionId && (typeof (appDefinitionId) === 'string' || appDefinitionId instanceof String)) {
                 if (isTerm) {
                     scope.defaultSearchTerm = appDefinitionId;
                 } else {
