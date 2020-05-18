@@ -20,6 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<%@ page import="grails.util.Environment;grails.util.Holders;" %>
 <!DOCTYPE html>
 <html lang="en" ng-app="isApplication" ng-strict-di>
     <head>
@@ -62,7 +63,7 @@
         <asset:javascript src="application.js"/>
         <g:render template="/scrumOS/templates"/>
         <entry:point id="icescrum-footer" model="[workspace: workspace, user: user]"/>
-        <g:if test="${grails.util.Environment.currentEnvironment == grails.util.Environment.DEVELOPMENT && params.profiler}">
+        <g:if test="${Environment.currentEnvironment == Environment.DEVELOPMENT && Holders.grailsApplication.config.icescrum.profiling.enable && params.profiler}">
             <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" type="text/css">
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
             <hibernateMetrics:metrics/>

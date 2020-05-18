@@ -184,6 +184,7 @@ icescrum {
 
     securitydebug.enable = false
     pushdebug.enable = false
+    profiling.enable = false
     log.dir = null // Fix ilog dir due to lazy object initialization - init object
 
     marshaller = [
@@ -699,6 +700,7 @@ environments {
     }
     test {
         icescrum.beta.enable = true
+        icescrum.profiling.enable = true
         grails.mail.overrideAddress = "testing@kagilum.com"
         def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
         def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
@@ -729,6 +731,7 @@ environments {
     }
     development {
         icescrum.beta.enable = true
+        icescrum.profiling.enable = true
         grails.mail.overrideAddress = "testing@kagilum.com"
         grails.plugins.hibernateMetrics.enabled = true
         grails.plugins.hibernateMetrics.logSqlToConsole = false

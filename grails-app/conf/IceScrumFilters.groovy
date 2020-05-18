@@ -45,14 +45,16 @@ class IceScrumFilters {
                 if (userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')) {
                     response.setHeader('Expires', '-1')
                 }
-                if (params.profiler || request.getHeader('x-icescrum-profiler')) {
+                if (grailsApplication.config.icescrum.profiling.enable && (params.profiler || request.getHeader('x-icescrum-profiler'))) {
                     def ajax = request.getHeader('x-icescrum-profiler') ? true : false
                     ProfilingSupport.enableProfiling(ajax, controllerName, actionName)
                 }
             }
             after = {
                 pushService.resumePushForThisThread()
-                ProfilingSupport.reportProfiling()
+                if (grailsApplication.config.icescrum.profiling.enable) {
+                    ProfilingSupport.reportProfiling()
+                }
             }
         }
 
