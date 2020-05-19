@@ -152,6 +152,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.copy = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
+    this.shiftRankInList = function(story, ids, index) {
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'shiftRankInList'}, {ids: ids.join(','), index: index}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
     this.getMultiple = function(ids, projectId) {
         ids = _.map(ids, function(id) {
             return parseInt(id);
@@ -218,11 +221,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.rankMultiple = function(ids, rank, projectId) {
         return Story.updateArray({projectId: projectId, id: ids, rank: rank, action: 'rank'}, {}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
-        }).$promise;
-    };
-    this.shiftRankInList = function(ids, story, index) {
-        return Story.updateArray({projectId: story.backlog.id, id: ids, action: 'shiftRankInList'}, {story: {id: story.id}, index: index}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };

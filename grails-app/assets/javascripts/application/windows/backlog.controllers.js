@@ -323,7 +323,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
             } else {
                 var newIndex = event.dest.index;
                 var stories = backlog.stories;
-                StoryService.shiftRankInList(_.map(stories, 'id'), story, newIndex).catch(function() {
+                StoryService.shiftRankInList(story, _.map(stories, 'id'), newIndex).catch(function() {
                     $scope.revertSortable(event);
                 });
             }

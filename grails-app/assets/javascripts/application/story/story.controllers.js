@@ -892,7 +892,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
             var story = event.source.itemScope.modelValue;
             var newIndex = event.dest.index;
             var stories = event.dest.sortableScope.modelValue;
-            StoryService.shiftRankInList(_.map(stories, 'id'), story, newIndex).catch(function() {
+            StoryService.shiftRankInList(story, _.map(stories, 'id'), newIndex).catch(function() {
                 $scope.revertSortable(event);
             });
         },
