@@ -552,7 +552,7 @@ var isApplication = angular.module('isApplication', [
                 if (isSubmitting(response.config)) {
                     $rootScope.application.submitting = false;
                 }
-                if (isSettings.enableProfiler && !response.config.url.endsWith('.html')) {
+                if (isSettings.enableProfiler && !response.config.url.endsWith('.html') && typeof getMetrics === 'function') {
                     if (metricProfiler) {
                         $timeout.cancel(metricProfiler);
                     }
@@ -564,7 +564,7 @@ var isApplication = angular.module('isApplication', [
             },
             responseError: function(response) {
                 $rootScope.application.submitting = false; // In case of any error, always give back the control to the user
-                if (isSettings.enableProfiler && !response.config.url.endsWith('.html')) {
+                if (isSettings.enableProfiler && !response.config.url.endsWith('.html') && typeof getMetrics === 'function') {
                     if (metricProfiler) {
                         $timeout.cancel(metricProfiler);
                     }
