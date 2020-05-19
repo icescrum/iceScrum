@@ -194,6 +194,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         if (this.enabled) {
             var object = jsonBody.content;
             var namespace = jsonBody.namespace.toLowerCase();
+            console.log(namespace, jsonBody.eventType, object);
             if (!_.isEmpty(self.listeners[namespace])) {
                 var eventType = jsonBody.eventType;
                 _.each(self.listeners[namespace][eventType], function(listener) {
