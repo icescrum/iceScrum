@@ -192,7 +192,7 @@
                         <span class="icon icon-close"></span>
                     </a>
                 </div>
-                <div ng-class="{'loading': !backlogContainer.storiesLoaded}">
+                <div>
                     <div class="sticky-notes grey-sticky-notes {{ currentStickyNoteSize(viewName, 'grid-group size-sm') }}"
                          ng-class="{'sortable-moving': application.sortableMoving, 'sortable-multiple': application.sortableMultiple}"
                          ng-controller="storyBacklogCtrl"

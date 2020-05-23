@@ -22,10 +22,11 @@
  *
  */
 
-extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', '$timeout', 'WindowService', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, $timeout, WindowService, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
+extensibleController('chartCtrl', ['$rootScope', '$scope', '$element', '$filter', '$uibModal', '$timeout', 'WindowService', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($rootScope, $scope, $element, $filter, $uibModal, $timeout, WindowService, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
     $scope.defaultOptions = {
         chart: {
-            height: 350
+            height: 350,
+            noData: $rootScope.message('is.loading')
         }
     };
     $scope.chartLoaders = {
@@ -234,6 +235,8 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 if (angular.isFunction($scope.options.chart.height)) {
                     $scope.options.chart.height = $scope.options.chart.height($element);
                 }
+                $scope.options.chart.noData = $rootScope.message('is.chart.error.no.values');
+                $scope.chartLoaded = true;
                 return chart;
             });
         });
@@ -310,6 +313,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
         $scope.labelsX = [];
         $scope.labelsY = [];
         $scope.options = {};
+        $scope.chartLoaded = false;
     };
     // Init
     $scope.cleanData();

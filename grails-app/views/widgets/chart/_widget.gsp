@@ -24,7 +24,10 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-if="widgetReady(widget)">
         <div ng-init="display(widget)">
-            <nvd3 options="options" ng-if="options.chart.type" data="data" config="{refreshDataOnly: false}"></nvd3>
+            <div ng-switch="chartLoaded">
+                <nvd3 ng-switch-when="true" options="options" ng-if="options.chart.type" data="data" config="{refreshDataOnly: false}"></nvd3>
+                <div ng-switch-default class="chart-loading loading-dot dot-elastic align-middle align-self-center"></div>
+            </div>
         </div>
     </div>
     <div ng-if="!widgetReady(widget) && authorizedWidget('update', widget)">

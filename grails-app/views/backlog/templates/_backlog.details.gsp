@@ -44,7 +44,10 @@
             </div>
             <div class="col-md-6 chart" ng-controller="backlogChartCtrl">
                 <entry:point id="backlog-details-chart-before"/>
-                <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+                <div ng-switch="chartLoaded">
+                    <nvd3 ng-switch-when="true" options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+                    <div ng-switch-default class="chart-loading loading-dot dot-elastic align-middle align-self-center"></div>
+                </div>
             </div>
         </div>
     </div>

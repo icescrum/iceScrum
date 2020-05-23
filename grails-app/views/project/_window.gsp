@@ -243,7 +243,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item, dashboardChartOptions)">
+                <div class="card-body" ng-if=":: userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item, dashboardChartOptions)">
                     <div class="clearfix mb-2">
                         <div class="float-right">
                             <div class="btn-group">
@@ -261,7 +261,10 @@
                             </div>
                         </div>
                     </div>
-                    <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+                    <div ng-switch="chartLoaded">
+                        <nvd3 ng-switch-when="true" options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+                        <div ng-switch-default class="chart-loading loading-dot dot-elastic align-middle align-self-center"></div>
+                    </div>
                     <div class="clearfix mt-2">
                         <div class="float-right">
                             <documentation doc-url="indicators-and-reporting" title=""/>
@@ -292,7 +295,7 @@
                                         <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
                                     </a>
                                 </div>
-                                <div class="dot-elastic align-middle align-self-center mr-4" ng-if="creating"></div>
+                                <div class="loading-dot dot-elastic align-middle align-self-center mr-4" ng-if="creating"></div>
                                 <a ng-if="providers.length != 0"
                                    class="btn btn-secondary btn-sm plus-app"
                                    ng-click="showAppsModal(message('is.ui.apps.tag.collaboration'), true)"

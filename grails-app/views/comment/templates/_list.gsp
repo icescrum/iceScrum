@@ -121,7 +121,7 @@
                         <span class="meeting-provider meeting-provider-{{:: provider.id }}" title="{{:: provider.name }}"></span>
                     </a>
                 </div>
-                <div class="dot-elastic align-middle align-self-center mr-4" ng-if="creating"></div>
+                <div class="loading-dot dot-elastic align-middle align-self-center mr-4" ng-if="creating"></div>
                 <a ng-if="::providers && providers.length != 0"
                    class="btn btn-secondary btn-sm plus-app"
                    ng-click="showAppsModal(message('is.ui.apps.tag.collaboration'), true)"

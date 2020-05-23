@@ -148,7 +148,10 @@
                        ng-click="openChart('release', chart.id, release)">{{ message(chart.name) }}</a>
                 </div>
             </div>
-            <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
+            <div ng-switch="chartLoaded">
+                <nvd3 ng-switch-when="true" options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
+                <div ng-switch-default class="chart-loading loading-dot dot-elastic align-middle align-self-center"></div>
+            </div>
         </div>
         <div class="form-group">
             <label for="vision">${message(code: 'is.ui.releasePlan.toolbar.vision')}</label>

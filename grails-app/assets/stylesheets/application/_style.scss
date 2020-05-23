@@ -1620,8 +1620,13 @@ th {
   margin-left: 0.5rem !important;
 }
 
-.sticky-notes .dot-elastic {
+.sticky-notes .loading-dot {
   margin-left: calc(50% - (7px / 2));
   margin-top: 5rem;
   margin-bottom: 5rem;
+}
+
+.chart-loading.loading-dot {
+  margin-left: calc(50% - (7px / 2));
+  margin-top: calc(50% - (7px / 2));
 }

@@ -45,7 +45,7 @@
                  class="empty-view">
                 <div ng-include="'story.backlog.' + backlog.code + '.empty.html'"></div>
             </div>
-            <div class="dot-elastic align-middle align-self-center m-5" ng-if="!backlog.storiesLoaded"></div>
+            <div class="loading-dot dot-elastic align-middle align-self-center m-5" ng-if="!backlog.storiesLoaded"></div>
             <table class="table table-bordered table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
                 <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state" ng-click="selectedIds[story.id] = !selectedIds[story.id]">
                     <td is-watch="story" class="pt-0 pb-0">

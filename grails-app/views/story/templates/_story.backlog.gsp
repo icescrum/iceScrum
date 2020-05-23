@@ -40,7 +40,7 @@
 <div ng-if="backlog.storiesLoaded && backlog.stories.length == 0" class="empty-view">
     <div ng-include="emptyBacklogTemplate"></div>
 </div>
-<div class="dot-elastic align-middle align-self-center" ng-if="!backlog.storiesLoaded"></div>
+<div class="loading-dot dot-elastic align-middle align-self-center" ng-if="!backlog.storiesLoaded"></div>
 </script>
 
 <script type="text/ng-template" id="story.backlog.close.empty.html">

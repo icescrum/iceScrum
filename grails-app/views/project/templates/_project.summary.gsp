@@ -9,7 +9,10 @@
 <div class="row project-desc-chart">
     <div class="col-md-5" ng-bind-html="project.description_html ? project.description_html : ''"></div>
     <div class="col-md-7" ng-controller="chartCtrl" ng-init="openChart('project', 'burnup', project)">
-        <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
+        <div ng-switch="chartLoaded">
+            <nvd3 ng-switch-when="true" options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
+            <div ng-switch-default class="chart-loading loading-dot dot-elastic align-middle align-self-center"></div>
+        </div>
     </div>
 </div>
 <div>
