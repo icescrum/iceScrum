@@ -1619,3 +1619,9 @@ th {
   align-self: center;
   margin-left: 0.5rem !important;
 }
+
+.sticky-notes .dot-elastic {
+  margin-left: calc(50% - (7px / 2));
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}

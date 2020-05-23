@@ -30,34 +30,44 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
     };
     $scope.authorizedSprint = SprintService.authorizedSprint;
     $scope.activate = function(sprint) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         SprintService.activate(sprint, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.activated');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope.reactivate = function(sprint) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         SprintService.reactivate(sprint, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.reactivated');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope.autoPlan = function(sprint, plannedVelocity) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         SprintService.autoPlan(sprint, plannedVelocity, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope.unPlan = function(sprint) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         SprintService.unPlan(sprint, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope['delete'] = function(sprint) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         SprintService.delete(sprint, $scope.release).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope.tabUrl = function(sprintTabId) {
         var stateName = $state.params.sprintTabId ? (sprintTabId ? '.' : '^') : (sprintTabId ? '.tab' : '.');
@@ -95,7 +105,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     });
                 };
                 $scope.closeSprint = function() {
-                    $rootScope.uiWorking();
+                    $rootScope.uiWorking(true, true);
                     var getStory = function(id) {
                         return _.find($scope.backlog.stories, {id: id});
                     };
@@ -129,7 +139,9 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                         return SprintService.close(sprint, project).then(function() {
                             $scope.notifySuccess('todo.is.ui.sprint.closed');
                             $scope.$close(true);
-                        }).finally($rootScope.uiReady);
+                        }).finally(function() {
+                            $rootScope.uiReady(true);
+                        });
                     });
                 };
                 // Init
@@ -152,11 +164,13 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             },
             submit: function(selectedIds) {
                 if (selectedIds.length > 0) {
-                    $rootScope.uiWorking();
+                    $rootScope.uiWorking(true, true);
                     // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
                     return StoryService.planMultiple(selectedIds, sprint, $scope.project.id).then(function() {
                         $scope.notifySuccess('todo.is.ui.story.multiple.updated');
-                    }).finally($rootScope.uiReady);
+                    }).finally(function() {
+                        $rootScope.uiReady(true);
+                    });
                 } else {
                     return $q.when();
                 }
@@ -291,9 +305,10 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$rootScope', '$controlle
     $scope.sortableId = 'sprint';
     $scope.backlogCodes = BacklogCodes;
     $scope.sprintStatesByName = SprintStatesByName;
-    $scope.backlog = {stories: [], code: 'sprint'};
+    $scope.backlog = {stories: [], code: 'sprint', storiesLoaded: false};
     StoryService.listByType($scope.sprint, $scope.getProjectFromState().id).then(function() {
         $scope.backlog.stories = $scope.sprint.stories;
+        $scope.backlog.storiesLoaded = true;
     });
 }]);
 

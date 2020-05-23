@@ -51,16 +51,20 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         });
     };
     $scope.autoPlan = function(release, plannedVelocity) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         ReleaseService.autoPlan(release, plannedVelocity).then(function() {
             $scope.notifySuccess('todo.is.ui.release.autoPlanned');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope.unPlan = function(release) {
-        $rootScope.uiWorking();
+        $rootScope.uiWorking(true, true);
         ReleaseService.unPlan(release).then(function() {
             $scope.notifySuccess('todo.is.ui.release.unPlanned');
-        }).finally($rootScope.uiReady);
+        }).finally(function() {
+            $rootScope.uiReady(true);
+        });
     };
     $scope['delete'] = function(release) {
         ReleaseService.delete(release, $scope.project).then(function() {

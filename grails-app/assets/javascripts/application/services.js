@@ -338,7 +338,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
                         dontSaveChangesCallback();
                     },
                     cancelChangesCallback: function() {
-                        $scope.uiReady();
+                        $scope.uiReady(true);
                         $scope.mustConfirmStateChange = true;
                     }
                 });

@@ -21,10 +21,6 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div id="templates">
-    <script type="text/ng-template" id="loading.html">
-    <div class="logo-loading"></div>
-    </script>
-
     <script type="text/ng-template" id="chart.modal.html">
     <is:modal title="{{ chartTitle }}">
         <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>

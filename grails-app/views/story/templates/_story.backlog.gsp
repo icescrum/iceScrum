@@ -30,18 +30,17 @@
      class="sticky-note-container sticky-note-story">
     <div ng-include="'story.html'"></div>
 </div>
-<div ng-if="application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"
-     class="empty-view">
+<div ng-if="backlog.storiesLoaded && application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0" class="empty-view">
     <p class="form-text">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ application.search }}</strong></p>
     <button class="btn btn-secondary"
             ng-click="application.search = null">
         ${message(code: 'todo.is.ui.search.clear')}
     </button>
 </div>
-<div ng-if="backlog.stories.length == 0"
-     class="empty-view">
+<div ng-if="backlog.storiesLoaded && backlog.stories.length == 0" class="empty-view">
     <div ng-include="emptyBacklogTemplate"></div>
 </div>
+<div class="dot-elastic align-middle align-self-center" ng-if="!backlog.storiesLoaded"></div>
 </script>
 
 <script type="text/ng-template" id="story.backlog.close.empty.html">

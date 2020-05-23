@@ -79,7 +79,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         var filteredStories = BacklogService.filterStories(backlog, $scope.project.stories);
         backlog.stories = $filter('orderBy')(filteredStories, 'rank'); // This will be the model for the sortable directive so it must be in sort order, regardless of current display order
         if (backlog.stories && backlog.stories.length > 0) {
-            backlogContainer.storiesLoaded = true; // Render stories already there in the client cache
+            backlogContainer.backlog.storiesLoaded = true; // Render stories already there in the client cache
         }
         backlogContainer.sortable = StoryService.authorizedStory('rank') && ((BacklogService.isBacklog(backlog) && !$scope.hasContextOrSearch()) || BacklogService.isSandbox(backlog) || BacklogService.isSortableFromState(backlog));
         $timeout(function() { // Timeout to wait for story rendering
@@ -150,9 +150,10 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
     $scope.showBacklog = function(backlogCode) {
         var backlogContainer = $scope.getBacklogContainer(backlogCode);
         if (!backlogContainer) {
+            var backlog = _.find($scope.availableBacklogs, {code: backlogCode});
+            backlog.storiesLoaded = false;
             backlogContainer = {
-                backlog: _.find($scope.availableBacklogs, {code: backlogCode}),
-                storiesLoaded: false,
+                backlog: backlog,
                 orderBy: {
                     values: _.sortBy($scope.sortOptions, 'name')
                 }
@@ -160,7 +161,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
             $scope.orderBacklogByRank(backlogContainer);
             $scope.refreshSingleBacklog(backlogContainer); // Init the backlog from client data (storyService.list) + init sortable variable
             var setStoriesLoaded = function() {
-                backlogContainer.storiesLoaded = true;
+                backlog.storiesLoaded = true;
             };
             var retrieveServerStories = function() { // Retrieve server data, stories that were missing will be automatically added
                 StoryService.listByBacklog(backlogContainer.backlog, project.id).then(function(stories) {

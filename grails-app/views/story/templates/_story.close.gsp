@@ -29,7 +29,6 @@
        ng-bind-html="message('todo.is.ui.story.selector.close.description', [(storyStatesByName.DONE | i18n: 'StoryStates')])">
     </p>
     <div class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
-        <div class="loading-logo" ng-include="'loading.html'"></div>
         <div class="sticky-notes list-group"
              ng-controller="storyBacklogCtrl"
              ng-model="backlog.stories">

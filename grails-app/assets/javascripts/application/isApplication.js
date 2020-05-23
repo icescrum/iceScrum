@@ -581,22 +581,28 @@ var isApplication = angular.module('isApplication', [
         return jstz.determine();
     })
     .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', 'FormService', 'WorkspaceType', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', 'hotkeys', function(Session, I18nService, PushService, UserService, WidgetService, AppService, FormService, WorkspaceType, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize, hotkeys) {
-        $rootScope.uiWorking = function(message) {
-            $rootScope.loaders.menu.play();
-            $rootScope.loaders.menu.loop = true;
-            $rootScope.application.loading = true;
-            $rootScope.application.loadingText = $rootScope.message((message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
-            if ($rootScope.application.loadingText) {
-                $rootScope.loaders.main.play();
-                $rootScope.loaders.main.loop = true;
+        //when an ui has requested the uiWorking only ui can stop it...
+        $rootScope.uiWorking = function(message, fromUi) {
+            if (!$rootScope.application.uiAction || ($rootScope.application.uiAction && fromUi)) {
+                $rootScope.loaders.menu.play();
+                $rootScope.loaders.menu.loop = true;
+                $rootScope.application.loading = true;
+                $rootScope.application.uiAction = fromUi === true;
+                $rootScope.application.loadingText = $rootScope.message((message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
+                if ($rootScope.application.loadingText) {
+                    $rootScope.loaders.main.play();
+                    $rootScope.loaders.main.loop = true;
+                }
             }
         };
         $rootScope.uiReadyTimeout = null;
-        $rootScope.uiReady = function() {
-            $rootScope.loaders.menu.loop = false;
-            $rootScope.loaders.main.loop = false;
-            $rootScope.application.loading = false;
-            $rootScope.application.loadingText = null;
+        $rootScope.uiReady = function(fromUi) {
+            if (!$rootScope.application.uiAction || ($rootScope.application.uiAction && fromUi)) {
+                $rootScope.loaders.menu.loop = false;
+                $rootScope.loaders.main.loop = false;
+                $rootScope.application.loading = false;
+                $rootScope.application.loadingText = null;
+            }
         };
         $rootScope.hotkeyClick = function(event, hotkey) {
             if (hotkey.el && (hotkey.el.is("a") || hotkey.el.is("button"))) {
