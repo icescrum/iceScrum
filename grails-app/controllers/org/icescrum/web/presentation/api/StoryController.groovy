@@ -287,10 +287,6 @@ class StoryController implements ControllerErrorHandler {
         def storyParams = params.story
         def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
         def sprint = Sprint.withSprint(project, sprintId)
-        if (!sprint) {
-            returnError(code: 'is.sprint.error.not.exist')
-            return
-        }
         def rank
         if (storyParams?.rank) {
             rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
@@ -334,11 +330,7 @@ class StoryController implements ControllerErrorHandler {
         if (stories.size() == 1 && params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
-        Story.withTransaction {
-            stories.sort { it.rank }.each { Story story ->
-                storyService.acceptToBacklog(story, rank)
-            }
-        }
+        storyService.acceptToBacklog(stories, rank)
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
@@ -375,11 +367,7 @@ class StoryController implements ControllerErrorHandler {
         if (stories.size() == 1 && params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
-        Story.withTransaction {
-            stories.sort { -it.rank }.each { Story story ->
-                storyService.returnToSandbox(story, rank)
-            }
-        }
+        storyService.returnToSandbox(stories, rank)
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
