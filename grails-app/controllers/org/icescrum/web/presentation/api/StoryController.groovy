@@ -300,7 +300,7 @@ class StoryController implements ControllerErrorHandler {
         def stories = Story.withStories(params)
         def sprintId = params.'parentSprint.id'?.toLong() ?: params.parentSprint?.id?.toLong()
         def sprint = Sprint.withSprint(project, sprintId)
-        storyService.planMultiple(sprint, stories)
+        storyService.plan(stories, sprint)
         render(status: 200, contentType: 'application/json', text: stories as JSON)
     }
 
