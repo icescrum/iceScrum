@@ -198,7 +198,7 @@ class StoryController implements ControllerErrorHandler {
                 def sprintId = storyParams.parentSprint == 'null' ? storyParams.parentSprint : storyParams.parentSprint?.id?.toLong()
                 if (sprintId instanceof Long && story.parentSprint?.id != sprintId) {
                     def sprint = Sprint.withSprint(project, sprintId)
-                    storyService.plan(sprint, story)
+                    storyService.plan(story, sprint)
                 } else if (sprintId == "null") {
                     storyService.unPlan(story)
                 }
@@ -291,7 +291,7 @@ class StoryController implements ControllerErrorHandler {
         if (storyParams?.rank) {
             rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
         }
-        storyService.plan(sprint, story, rank)
+        storyService.plan(story, sprint, rank)
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
@@ -319,7 +319,7 @@ class StoryController implements ControllerErrorHandler {
             returnError(code: 'is.sprint.error.not.exist')
             return
         }
-        storyService.plan(nextSprint, story, 1)
+        storyService.plan(story, nextSprint, 1)
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
