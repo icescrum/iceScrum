@@ -123,11 +123,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'plan'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.planMultiple = function(ids, sprint, projectId) {
-        return Story.updateArray({projectId: projectId, id: ids, action: 'planMultiple'}, {parentSprint: {id: sprint.id}}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
-        }).$promise;
-    };
     this.unPlan = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
@@ -211,6 +206,11 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.followMultiple = function(ids, follow, projectId) {
         return Story.updateArray({projectId: projectId, id: ids, action: 'follow'}, {follow: follow}, function(stories) {
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
+        }).$promise;
+    };
+    this.planMultiple = function(ids, sprint, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'plan'}, {parentSprint: {id: sprint.id}}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };

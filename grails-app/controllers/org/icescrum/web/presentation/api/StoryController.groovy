@@ -281,34 +281,26 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
-    def plan(long id, long project) {
-        // Separate method to manage changing the rank and the state at the same time (too complicated to manage them properly in the update method)
-        def story = Story.withStory(project, id)
-        def storyParams = params.story
+    def plan(long project) {
+        def stories = Story.withStories(params)
+        def storyParams = stories.size() == 1 ? params.story : params
         def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
         def sprint = Sprint.withSprint(project, sprintId)
         def rank
         if (storyParams?.rank) {
             rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
         }
-        storyService.plan(story, sprint, rank)
-        render(status: 200, contentType: 'application/json', text: story as JSON)
+        storyService.plan(stories, sprint, rank)
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
-    def planMultiple(long project) {
+    def unPlan() {
         def stories = Story.withStories(params)
-        def sprintId = params.'parentSprint.id'?.toLong() ?: params.parentSprint?.id?.toLong()
-        def sprint = Sprint.withSprint(project, sprintId)
-        storyService.plan(stories, sprint)
-        render(status: 200, contentType: 'application/json', text: stories as JSON)
-    }
-
-    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
-    def unPlan(long id, long project) {
-        def story = Story.withStory(project, id)
-        storyService.unPlan(story)
-        render(status: 200, contentType: 'application/json', text: story as JSON)
+        storyService.unPlan(stories)
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
