@@ -295,7 +295,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def planMultiple(long project) {
         def stories = Story.withStories(params)
         def sprintId = params.'parentSprint.id'?.toLong() ?: params.parentSprint?.id?.toLong()
