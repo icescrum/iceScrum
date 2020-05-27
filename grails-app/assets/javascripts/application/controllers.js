@@ -91,6 +91,8 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
         $uibModal.open({
             templateUrl: 'story.selector.html',
             size: 'md',
+            keyboard: false,
+            backdrop: 'static',
             controller: ["$scope", "$filter", "StoryService", function($scope, $filter, StoryService) {
                 // Functions
                 $scope.isSelected = function(story) {
