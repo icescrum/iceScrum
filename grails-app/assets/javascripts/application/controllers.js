@@ -112,7 +112,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
                 $scope.filterStories = function() {
                     var previousSelectedIds = $scope.selectedIds ? $scope.selectedIds : {};
                     $scope.backlog.storiesLoaded = false;
-                    StoryService.filter($scope.selectorOptions.filter, $scope.getProjectFromState()).then(function(stories) {
+                    StoryService.filter($scope.selectorOptions.filter, $scope.getProjectFromState(), false).then(function(stories) {
                         $scope.backlog.stories = $scope.selectorOptions.order ? $filter('orderBy')(stories, $scope.selectorOptions.order) : stories;
                         $scope.backlog.storiesLoaded = true;
                         $scope.selectedIds = _.transform(stories, function(selectedIds, story) {

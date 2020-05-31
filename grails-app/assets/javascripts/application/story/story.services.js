@@ -91,8 +91,11 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
         return obj.stories.length == 0 ? promise : $q.when(obj.stories);
     };
-    this.filter = function(filter, project) {
-        var existingStories = self.filterStories(project.stories, filter);
+    this.filter = function(filter, project, useCache) { //maybe a temporary fix
+        var existingStories = []
+        if (angular.isUndefined(useCache) || useCache !== false) {
+            var existingStories = self.filterStories(project.stories, filter);
+        }
         var promise = Story.query({projectId: project.id, filter: {story: filter}}, function(stories) {
             self.mergeStories(stories);
             _.each(stories, function(story) {
