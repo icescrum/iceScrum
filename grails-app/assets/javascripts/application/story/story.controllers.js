@@ -343,7 +343,9 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
                     };
                     $scope.setEffort = function(effort) {
                         $scope.editableStory.effort = effort;
-                        $scope.sliderEffort.labelValue = $scope.effortSuiteValues.indexOf(effort);
+                        if (!$scope.isEffortCustom()) {
+                            $scope.sliderEffort.labelValue = $scope.effortSuiteValues.indexOf(effort);
+                        }
                         $scope.updateTable();
                     };
                     $scope.submit = function(story) {

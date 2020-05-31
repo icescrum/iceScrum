@@ -111,7 +111,7 @@
            ng-repeat="menuElement in menus | visibleMenuElement: getItem(): viewType"
            href="{{ menuElement.url(getItem()) | orElse: '' }}"
            ng-click="menuClick(menuElement, getItem(), $event)">
-            <span class="name">{{:: menuElement | menuElementName }}</span>
+            <span class="name">{{:: menuElement | menuElementName:getItem() }}</span>
         </a>
     </div>
     </script>

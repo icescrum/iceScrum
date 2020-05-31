@@ -242,9 +242,9 @@ filters
         }
     }])
     .filter('menuElementName', ['$rootScope', function($rootScope) {
-        return function(menuElement) {
+        return function(menuElement, item) {
             if (menuElement) {
-                return _.isFunction(menuElement.name) ? menuElement.name() : $rootScope.message(menuElement.name);
+                return _.isFunction(menuElement.name) ? menuElement.name(item) : $rootScope.message(menuElement.name);
             }
         };
     }])
