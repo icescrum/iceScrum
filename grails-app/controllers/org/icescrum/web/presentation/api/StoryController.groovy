@@ -334,11 +334,13 @@ class StoryController implements ControllerErrorHandler {
         def rank = params.rank instanceof Number ? params.rank : params.rank.toInteger()
         def (beforeRank, afterRank) = stories.split { it.rank <= rank }
         Story.withTransaction {
-            afterRank.reverse().each { Story story ->
-                storyService.update(story, [rank: rank])
+            beforeRank.reverse().eachWithIndex { Story story, def index ->
+                def calcultatedRank = (rank - (index + 1)) + 1
+                storyService.update(story, [rank: calcultatedRank])
             }
-            beforeRank.each { Story story ->
-                storyService.update(story, [rank: afterRank.size() ? rank - 1 : rank])
+            afterRank.eachWithIndex { Story story, def index ->
+                def calcultatedRank = rank + index + beforeRank.size()
+                storyService.update(story, [rank: calcultatedRank])
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
