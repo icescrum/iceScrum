@@ -37,7 +37,7 @@
                     <div class="sticky-note-container sticky-note-story stack twisted">
                         <div sticky-note-color-watch="{{ storyPreview | storyColor }}"
                              class="sticky-note {{ ((storyPreview | storyColor) | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
-                            <div class="sticky-note-head">
+                            <div class="sticky-note-head" ng-class="topStory | idSizeClass">
                                 <span class="id">{{ topStory.uid }}</span>
                                 <div class="sticky-note-type-icon"></div>
                             </div>
