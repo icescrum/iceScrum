@@ -283,7 +283,7 @@ class StoryController implements ControllerErrorHandler {
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def plan(long project) {
         def stories = Story.withStories(params)
-        def uniquePlan = stories.size() == 1 && params.story //2 cases: api or plan from the story => uniquePlan OR from storySelector
+        def uniquePlan = stories.size() == 1 && params.story // Check also if params.story to make planMultiple work with a single story
         def storyParams = uniquePlan ? params.story : params
         def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
         def sprint = Sprint.withSprint(project, sprintId)
@@ -335,10 +335,10 @@ class StoryController implements ControllerErrorHandler {
         def (beforeRank, afterRank) = stories.split { it.rank <= rank }
         Story.withTransaction {
             beforeRank.reverse().eachWithIndex { Story story, def index ->
-                storyService.update(story, [rank: ((rank - (index + 1)) + 1)])
+                storyService.update(story, [rank: rank - index])
             }
             afterRank.eachWithIndex { Story story, def index ->
-                storyService.update(story, [rank: (rank + index + beforeRank.size())])
+                storyService.update(story, [rank: rank + index + beforeRank.size()])
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
