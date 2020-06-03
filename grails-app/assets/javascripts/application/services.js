@@ -300,7 +300,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     this.httpPost = function(path, data, isAbsolute, params) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-icescrum-client': 'webclient'},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
             transformRequest: function(data) {
                 return self.formObjectData(data, '');
             }
@@ -794,37 +794,46 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
             this.then = null;
             resolve(this);
         };
+        var defaultHeaders = {'x-icescrum-client': 'webclient'};
+        if (isSettings.enableProfiler) {
+            defaultHeaders['x-icescrum-profiler'] = 'true';
+        }
+        var defaultPostHeaders = _.assign({}, defaultHeaders, {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'});
         var defaultMethods = {
             save: {
                 method: 'post',
                 isArray: false,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-icescrum-client': 'webclient'},
+                headers: _.clone(defaultPostHeaders),
                 transformRequest: transformRequest,
                 interceptor: getInterceptor(false)
             },
             saveArray: {
                 method: 'post',
                 isArray: true,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'x-icescrum-client': 'webclient'},
+                headers: _.clone(defaultPostHeaders),
                 transformRequest: transformRequest,
                 interceptor: getInterceptor(true)
             },
             get: {
                 method: 'get',
                 interceptor: getInterceptor(false),
-                headers: {'x-icescrum-client': 'webclient'},
+                headers: _.clone(defaultHeaders),
                 then: transformQueryParams
             },
             query: {
                 method: 'get',
                 isArray: true,
-                headers: {'x-icescrum-client': 'webclient'},
+                headers: _.clone(defaultHeaders),
                 interceptor: getInterceptor(true),
                 then: transformQueryParams
             },
+            delete: {
+                method: 'delete',
+                headers: _.clone(defaultHeaders)
+            },
             deleteArray: {
                 method: 'delete',
-                headers: {'x-icescrum-client': 'webclient'},
+                headers: _.clone(defaultHeaders),
                 isArray: true
             }
         };
@@ -833,28 +842,12 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
         if (url.indexOf('/') == 0) {
             url = isSettings.serverUrl + url;
         }
-        _.each(defaultMethods, function(defaultMethod) {
-            if (isSettings.enableProfiler) {
-                if (!defaultMethod.headers) {
-                    defaultMethod.headers = {};
-                }
-                defaultMethod.headers['x-icescrum-profiler'] = 'true';
-            }
-        });
         _.each(methods, function(method) {
             method.transformRequest = transformRequest;
             method.then = transformQueryParams;
-            if (method.method == 'post') {
-                method.headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
-            }
+            method.headers = method.method.toLowerCase() === 'post' ? _.clone(defaultPostHeaders) : _.clone(defaultHeaders);
             if (method.url && method.url.indexOf('/') == 0) {
                 method.url = isSettings.serverUrl + method.url;
-            }
-            if (isSettings.enableProfiler) {
-                if (!method.headers) {
-                    method.headers = {};
-                }
-                method.headers['x-icescrum-profiler'] = 'true';
             }
         });
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
