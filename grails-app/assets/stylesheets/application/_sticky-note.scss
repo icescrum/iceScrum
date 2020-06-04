@@ -80,8 +80,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     }
 
     .status {
+      line-height: 1rem; // Cancel bootstrap line-height: 0
       position: absolute;
-      top: 0;
       font-size: 0.625rem;
     }
   }
@@ -219,6 +219,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       .status {
+        line-height: 1.125rem; // Cancel bootstrap line-height: 0
         left: 1.25rem;
         font-size: 0.75rem;
       }
@@ -900,10 +901,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       .status {
-        opacity: 0;
+        display: none;
       }
 
-      .state, .status {
+      .state {
         top: -2px;
       }
     }

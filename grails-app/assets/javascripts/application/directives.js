@@ -366,7 +366,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}).directive('selectOnFocus', function() {
+}).directive('selectOnFocus', function() { // Only on inputs, otherwise use bootstrap user-select-all
     return {
         restrict: 'A',
         link: function(scope, element) {

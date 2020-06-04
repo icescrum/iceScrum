@@ -185,6 +185,7 @@ $btn-padding-x: 1rem;
 $btn-padding-y: 0.5625rem;
 $btn-padding-x-sm: 0.8rem;
 $btn-disabled-opacity: 0.3;
+$btn-white-space: nowrap;
 
 $input-bg: $is-bg-color;
 $input-disabled-bg: $is-bg-color-alt;
@@ -221,7 +222,7 @@ $modal-content-border-radius: 0;
 $modal-header-border-width: 1px;
 $modal-header-border-color: $is-border-color-alt;
 $modal-content-bg: $is-bg-color;
-$modal-inner-padding: 15px; // So that row negative padding work properly
+$modal-inner-padding: 0.9375rem; // So that row negative padding work properly
 
 $dropdown-bg: $is-bg-color;
 $dropdown-link-hover-bg: $is-bg-color;
