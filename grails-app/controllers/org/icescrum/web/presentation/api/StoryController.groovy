@@ -27,7 +27,6 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.support.ProfilingSupport
 import org.icescrum.core.utils.ServicesUtils
 
 class StoryController implements ControllerErrorHandler {
@@ -101,36 +100,22 @@ class StoryController implements ControllerErrorHandler {
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def save(long project) {
-        ProfilingSupport.startProfiling("save1", "storyController")
         def storyParams = params.story
         if (!storyParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        ProfilingSupport.endProfiling("save1", "storyController")
-        ProfilingSupport.startProfiling("save2", "storyController")
         Story story = new Story()
         Story.withTransaction {
-            ProfilingSupport.endProfiling("save2", "storyController")
-            ProfilingSupport.startProfiling("save3", "storyController")
             cleanBeforeBindData(storyParams, ['feature', 'dependsOn'])
             def propertiesToBind = ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'origin']
             Project _project = Project.withProject(project)
-            ProfilingSupport.endProfiling("save3", "storyController")
-            ProfilingSupport.startProfiling("save4", "storyController")
             entry.hook(id: 'story-before-save', model: [story: story, propertiesToBind: propertiesToBind, project: _project])
-            ProfilingSupport.endProfiling("save4", "storyController")
-            ProfilingSupport.startProfiling("save5", "storyController")
             def tasksParams = storyParams.remove('tasks')
             def acceptanceTestsParams = storyParams.remove('acceptanceTests')
             bindData(story, storyParams, [include: propertiesToBind])
             User user = (User) springSecurityService.currentUser
-            ProfilingSupport.endProfiling("save5", "storyController")
-            ProfilingSupport.startProfiling("save6", "storyController")
-
             storyService.save(story, _project, user)
-            ProfilingSupport.endProfiling("save6", "storyController")
-            ProfilingSupport.startProfiling("save7", "storyController")
             story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
             tasksParams.each { taskParams ->
                 def task = new Task()
@@ -139,19 +124,14 @@ class StoryController implements ControllerErrorHandler {
                 taskService.save(task, user)
                 task.tags = tasksParams.tags instanceof String ? tasksParams.tags.split(',') : (tasksParams.tags instanceof String[] || tasksParams.tags instanceof List) ? tasksParams.tags : null
             }
-            ProfilingSupport.endProfiling("save7", "storyController")
-            ProfilingSupport.startProfiling("save8", "storyController")
             acceptanceTestsParams.each { acceptanceTestParams ->
                 def acceptanceTest = new AcceptanceTest()
                 bindData(acceptanceTest, acceptanceTestParams, [include: ['description', 'name']])
                 acceptanceTestService.save(acceptanceTest, story, user)
             }
-            ProfilingSupport.endProfiling("save8", "storyController")
-            ProfilingSupport.startProfiling("save9", "storyController")
             if (storyParams.state && storyParams.state.toInteger() == Story.STATE_ACCEPTED && request.productOwner) {
                 storyService.acceptToBacklog(story)
             }
-            ProfilingSupport.endProfiling("save9", "storyController")
             render(status: 201, contentType: 'application/json', text: story as JSON)
         }
     }
