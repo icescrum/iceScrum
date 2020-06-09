@@ -414,10 +414,8 @@ class RestUrlMappings {
         }
         // Portfolio
         "/ws/portfolio" {
+            controller = 'portfolio'
             action = [GET: 'index', POST: 'save']
-            constraints {
-                controller(inList: ['hook', 'portfolio'])
-            }
         }
         "/ws/portfolio/$portfolio/$controller/$id?" {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
