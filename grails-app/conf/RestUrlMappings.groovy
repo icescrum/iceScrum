@@ -85,7 +85,6 @@ class RestUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
-            method = 'GET'
         }
         // Project (token must be admin for index)
         "/ws/project" {
@@ -100,7 +99,6 @@ class RestUrlMappings {
         "/ws/project/user/$id?" {
             controller = 'project'
             action = 'listByUser'
-            method = 'GET'
         }
         // (token must be admin is $id != currentUser.id
         "/ws/project/user/$id/$role" {
@@ -110,7 +108,6 @@ class RestUrlMappings {
                 id(matches: /\d*/)
                 role(inList: ['scrumMaster', 'productOwner', 'stakeHolder', 'teamMember'])
             }
-            method = 'GET'
         }
         "/ws/project/$project" {
             controller = 'project'
@@ -126,7 +123,6 @@ class RestUrlMappings {
                 project(matches: /[0-9A-Z]*/)
                 format(inList: ['zip', 'xml'])
             }
-            method = 'GET'
         }
         "/ws/project/$project/$action" {
             controller = 'project'
@@ -259,7 +255,6 @@ class RestUrlMappings {
                 type(inList: ['backlog', 'actor', 'sprint', 'feature'])
                 typeId(matches: /\d*/)
             }
-            method = 'GET'
         }
         "/ws/project/$project/story/backlog/$id/print/$format" {
             controller = 'backlog'
@@ -268,7 +263,6 @@ class RestUrlMappings {
                 action(inList: ['printByBacklog'])
                 id(matches: /\d*/)
             }
-            method = 'GET'
         }
         "/ws/project/$project/story/backlog/$id/printPostits" {
             controller = 'story'
@@ -301,7 +295,6 @@ class RestUrlMappings {
                 project(matches: /[0-9A-Z]*/)
                 action(inList: ['print'])
             }
-            method = 'GET'
         }
         // release nested actions
         "/ws/project/$project/release/$id/$action" {
@@ -332,7 +325,6 @@ class RestUrlMappings {
                 id(matches: /\d+/)
                 templateId(matches: /\d+/)
             }
-            method = 'GET'
         }
         // Sprint nested actions
         "/ws/project/$project/sprint/$id/$action" {
