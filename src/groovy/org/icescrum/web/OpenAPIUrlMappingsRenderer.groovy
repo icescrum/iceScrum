@@ -53,32 +53,40 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 combinations.each { combination ->
                     def controllerName = combination[0]
                     def actionName = combination[1]
-                    Map fixedParameters = [controller: controllerName, action: actionName, workspaceType: combination[2]]
-                    String urlPattern = establishUrlPattern(mapping, fixedParameters)
-                    def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
-                    String tag = controllerName
-                    tags << tag
-                    if (mapping.actionName instanceof String) {
-                        throwError(mapping, 'An HTTP method must be specified')
-                    }
-                    def methodNames
-                    if (mapping.actionName) {
-                        def actionMap = (Map) mapping.actionName
-                        methodNames = actionMap.keySet().collect { it.toLowerCase() }
-                        if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
-                            methodNames.remove('post')
+                    Map globalFixedParameters = [controller: controllerName, action: actionName, workspaceType: combination[2]]
+                    def optionalParametersCombinations = getOptionalParameterCombinations(mapping.constraints.findAll { it.nullable })
+                    optionalParametersCombinations.each { optionalParametersCombination ->
+                        def fixedParameters = globalFixedParameters + optionalParametersCombination
+                        String urlPattern = establishUrlPattern(mapping, fixedParameters)
+                        def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
+                        String tag = controllerName
+                        tags << tag
+                        if (mapping.actionName instanceof String) {
+                            throwError(mapping, 'An HTTP method must be specified')
                         }
-                    } else {
-                        methodNames = ['get']
-                    }
-                    paths[urlPattern] = methodNames.collectEntries { methodName ->
-                        if (!actionName) {
-                            actionName = mapping.actionName instanceof  String ? mapping.actionName : mapping.actionName[methodName.toUpperCase()]
+                        def methodNames
+                        if (mapping.actionName) {
+                            def actionMap = (Map) mapping.actionName
+                            methodNames = actionMap.keySet().collect { it.toLowerCase() }
+                            if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
+                                methodNames.remove('post')
+                            }
+                        } else {
+                            methodNames = ['get']
                         }
-                        if (!isControllerActionExist(controllerName, actionName)) {
-                            throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
+                        Map methods = methodNames.collectEntries { methodName ->
+                            if (!actionName) {
+                                actionName = mapping.actionName instanceof String ? mapping.actionName : mapping.actionName[methodName.toUpperCase()]
+                            }
+                            if (!isControllerActionExist(controllerName, actionName)) {
+                                throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
+                            }
+                            return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
                         }
-                        return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
+                        if (!paths.containsKey(urlPattern)) {
+                            paths[urlPattern] = [:]
+                        }
+                        paths[urlPattern].putAll(methods)
                     }
                 }
             }
@@ -134,39 +142,42 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         if (mapping instanceof ResponseCodeUrlMapping) {
             throwError(mapping, "Don't know what to do with double ResponseCodeUrlMapping")
         }
-        final constraints = mapping.constraints
-        final tokens = mapping.urlData.tokens
-        StringBuilder urlPattern = new StringBuilder(UrlMapping.SLASH)
+        List urlPattern = []
         int constraintIndex = 0
-        tokens.eachWithIndex { String token, int i ->
-            boolean hasTokens = token.contains(UrlMapping.CAPTURED_WILDCARD) || token.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
-            if (hasTokens) {
+        mapping.urlData.tokens.eachWithIndex { String token, int i ->
+            boolean containsParameter = token.contains(UrlMapping.CAPTURED_WILDCARD) || token.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
+            if (containsParameter) {
                 String finalToken = token
-                while (hasTokens) {
+                boolean stop = false
+                while (containsParameter && !stop) {
                     if (finalToken.contains(UrlMapping.CAPTURED_WILDCARD)) {
-                        def constraint = constraints[constraintIndex++]
-                        if (fixedParameters[constraint.propertyName]) {
-                            finalToken = fixedParameters[constraint.propertyName]
+                        def constraint = mapping.constraints[constraintIndex++]
+                        if (fixedParameters.containsKey(constraint.propertyName) && fixedParameters[constraint.propertyName] == null) {
+                            stop = true
                         } else {
-                            finalToken = finalToken.replaceFirst(/\(\*\)/, '\\{' + getParameterName(constraint.propertyName, fixedParameters) + '}')
+                            if (fixedParameters[constraint.propertyName]) {
+                                finalToken = fixedParameters[constraint.propertyName]
+                            } else {
+                                finalToken = finalToken.replaceFirst(/\(\*\)/, '\\{' + getParameterName(constraint.propertyName, fixedParameters) + '}')
+                            }
                         }
                     } else if (finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)) {
                         throwError(mapping, "Don't know what to do with double wildCard")
                     }
-                    hasTokens = finalToken.contains(UrlMapping.CAPTURED_WILDCARD) || finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
+                    containsParameter = finalToken.contains(UrlMapping.CAPTURED_WILDCARD) || finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
+                }
+                if (stop) {
+                    return
                 }
                 urlPattern << finalToken
             } else {
                 urlPattern << token
             }
-            if (i < (tokens.length - 1)) {
-                urlPattern << UrlMapping.SLASH
-            }
         }
         if (mapping.urlData.hasOptionalExtension()) {
             throwError(mapping, "Don't know what to do with optional extension")
         }
-        return urlPattern.toString().replaceAll('\\?', '')
+        return UrlMapping.SLASH + urlPattern.join(UrlMapping.SLASH).replaceAll('\\?', '')
     }
 
     private String getParameterName(String propertyName, Map fixedParameters) {
@@ -185,5 +196,15 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     private isControllerActionExist(String controllerName, String actionName) {
         def controllerMetaClass = Holders.grailsApplication.getArtefactByLogicalPropertyName('Controller', controllerName).metaClass
         return controllerMetaClass.metaMethodIndex.getMethods(controllerMetaClass.theClass, actionName) != null
+    }
+
+    // For a list of optional parameters [a, b, c] generate combinations [[:], [c: null], [c: null, b: null], [c: null, b: null, a: null]]
+    private List getOptionalParameterCombinations(List<ConstrainedProperty> optionalParameters) {
+        optionalParameters = optionalParameters.reverse()
+        List combinations = [[:]]
+        optionalParameters.size().times { index ->
+            combinations << optionalParameters.take(index + 1).collectEntries { [(it.propertyName): null] }
+        }
+        combinations
     }
 }
