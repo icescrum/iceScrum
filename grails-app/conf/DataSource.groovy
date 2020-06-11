@@ -39,24 +39,24 @@ dataSource {
 environments {
     development {
 //      -- H2
-//        dataSource {
-//            dbCreate = "create-drop"
-//            username = "sa"
-//            password = ""
-//            driverClassName = "org.h2.Driver"
-//            url = "jdbc:h2:mem:devDb"
-//        }
+        dataSource {
+            dbCreate = "create-drop"
+            username = "sa"
+            password = ""
+            driverClassName = "org.h2.Driver"
+            url = "jdbc:h2:mem:devDb"
+        }
 ////      -- MySQL
 ////      /Applications/MAMP/Library/bin/mysql -uroot -proot < dump.sql
-        dataSource {
-            dbCreate = "update"
-            username = "root"
-            password = "root"
-            driverClassName = "com.mysql.jdbc.Driver"
-            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
-            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
-            // docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=icescrum -p 3306:3306 -d mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        }
+//        dataSource {
+//            dbCreate = "update"
+//            username = "root"
+//            password = "root"
+//            driverClassName = "com.mysql.jdbc.Driver"
+//            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+//            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
+//            // docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=icescrum -p 3306:3306 -d mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+//        }
 ////      -- PostgreSQL
 ////      /Applications/Postgres.app/Contents/Versions/9.6/bin/psql -p5432 db < dump.sql
 //        dataSource {

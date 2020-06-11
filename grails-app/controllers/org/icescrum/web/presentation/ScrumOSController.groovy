@@ -322,9 +322,29 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def openAPI() {
-        def mappings = (new OpenAPIUrlMappingsRenderer()).getOpenApi(grailsUrlMappingsHolder.urlMappings as List)
-        render(status: 200, contentType: 'application/json', text: mappings as JSON)
+    def api() {
+        withCacheHeaders {
+            delegate.lastModified {
+                new Date(1575371594)
+            }
+            generate {
+                render(status: 200, view: "api")
+            }
+        }
+    }
+
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def swagger() {
+        withCacheHeaders {
+            delegate.lastModified {
+                new Date(1575371594)
+            }
+            generate {
+                cache shared:true, validFor: 3600  // 1hr on content
+                def mappings = (new OpenAPIUrlMappingsRenderer()).getOpenApi(grailsUrlMappingsHolder.urlMappings as List)
+                render(status: 200, contentType: 'application/json', text: mappings as JSON)
+            }
+        }
     }
 
     @Secured(['isAuthenticated()'])
