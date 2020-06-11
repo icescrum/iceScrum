@@ -67,7 +67,16 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                     def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
                     String tag = controllerName
                     tags << tag
-                    def methodNames = !mapping.actionName || mapping.actionName instanceof String ? ['get'] : ((Map) mapping.actionName).keySet().collect { it.toLowerCase() }
+                    def methodNames
+                    if (!mapping.actionName || mapping.actionName instanceof String) {
+                       methodNames = ['get']
+                    } else {
+                        def actionMap = (Map) mapping.actionName
+                        methodNames = actionMap.keySet().collect { it.toLowerCase() }
+                        if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
+                            methodNames.remove('post')
+                        }
+                    }
                     api.paths[urlPattern] = methodNames.collectEntries { methodName ->
                         return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
                     }
