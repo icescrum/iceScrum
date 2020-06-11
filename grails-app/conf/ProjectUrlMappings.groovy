@@ -293,14 +293,14 @@ class ProjectUrlMappings {
         // Backlog
         "/p/$project/backlog" {
             controller = 'backlog'
-            action = "index"
+            action = 'index'
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
         }
         "/p/$project/backlog/$id" {
             controller = 'backlog'
-            action = "show"
+            action = 'show'
             constraints {
                 id(matches: /\d*/)
                 project(matches: /[0-9A-Z]*/)
