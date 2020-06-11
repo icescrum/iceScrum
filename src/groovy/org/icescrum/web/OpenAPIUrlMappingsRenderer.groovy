@@ -52,30 +52,36 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 ],
                 paths  : new TreeMap<String, Map>()
         ]
-        def restUrlMappings = urlMappings.findAll { it.urlData.tokens[0] == 'ws' }
+        def restUrlMappings = urlMappings.findAll {
+            it.urlData.tokens[0] == 'ws' && !it.parameterValues.oapi?.hide
+        }
         def tags = []
         restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
             mappings.each { mapping ->
                 def controllerNames = controllerAttribute ? [controllerAttribute] : mapping.constraints.find { it.propertyName == 'controller' }.inList
-                def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['defaultAction']
-                def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['defaultWorkspaceType']
+                def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['']
+                def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['']
                 def combinations = [controllerNames, actions, workspaceTypes].combinations()
                 combinations.each { combination ->
                     def controllerName = combination[0]
-                    Map fixedParameters = [controller: controllerName, action: combination[1], workspaceType: combination[2]]
+                    def actionName = combination[1]
+                    Map fixedParameters = [controller: controllerName, action: actionName, workspaceType: combination[2]]
                     String urlPattern = establishUrlPattern(mapping, fixedParameters)
                     def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
                     String tag = controllerName
                     tags << tag
+                    if (mapping.actionName instanceof String) {
+                        throwError(mapping, 'An HTTP method must be specified')
+                    }
                     def methodNames
-                    if (!mapping.actionName || mapping.actionName instanceof String) {
-                       methodNames = ['get']
-                    } else {
+                    if (mapping.actionName) {
                         def actionMap = (Map) mapping.actionName
                         methodNames = actionMap.keySet().collect { it.toLowerCase() }
                         if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
                             methodNames.remove('post')
                         }
+                    } else {
+                        methodNames = ['get']
                     }
                     api.paths[urlPattern] = methodNames.collectEntries { methodName ->
                         return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
@@ -121,7 +127,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
     private String establishUrlPattern(UrlMapping mapping, Map fixedParameters) {
         if (mapping instanceof ResponseCodeUrlMapping) {
-            throw new IllegalArgumentException('Error generating OpenAPI: dont know what to do with double ResponseCodeUrlMapping')
+            throwError(mapping, "Don't know what to do with double ResponseCodeUrlMapping")
         }
         final constraints = mapping.constraints
         final tokens = mapping.urlData.tokens
@@ -140,7 +146,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                             finalToken = finalToken.replaceFirst(/\(\*\)/, '\\{' + getParameterName(constraint.propertyName, fixedParameters) + '}')
                         }
                     } else if (finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)) {
-                        throw new IllegalArgumentException('Error generating OpenAPI: dont know what to do with double wildCard')
+                        throwError(mapping, "Don't know what to do with double wildCard")
                     }
                     hasTokens = finalToken.contains(UrlMapping.CAPTURED_WILDCARD) || finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)
                 }
@@ -153,7 +159,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
             }
         }
         if (mapping.urlData.hasOptionalExtension()) {
-            throw new IllegalArgumentException('Error generating OpenAPI: dont know what to do with optional extension')
+            throwError(mapping, "Don't know what to do with optional extension")
         }
         return urlPattern.toString().replaceAll('\\?', '')
     }
@@ -164,5 +170,9 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         } else {
             return propertyName
         }
+    }
+
+    private throwError(UrlMapping mapping, String message) {
+        throw new IllegalArgumentException('Error generating OpenAPI - ' + mapping.urlData.tokens.join('/') + ' - ' + message)
     }
 }
