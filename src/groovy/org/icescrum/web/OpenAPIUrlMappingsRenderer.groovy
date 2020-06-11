@@ -53,59 +53,57 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 paths  : [:]
         ]
         def restUrlMappings = urlMappings.findAll { it.urlData.tokens[0] == 'ws' }
-        def mappingsByController = restUrlMappings.findAll { it.controllerName }.groupBy { it.controllerName }
-        restUrlMappings.findAll { !it.controllerName }.each { mapping ->
-            def controllerConstraint = mapping.constraints.find { it.propertyName == 'controller' }
-            def controllerNames = controllerConstraint.inList
-            controllerNames.each { controllerName ->
-                if (!mappingsByController.containsKey(controllerName)) {
-                    mappingsByController[controllerName] = []
-                }
-                mappingsByController[controllerName] << mapping
-            }
-        }
-        mappingsByController.keySet().sort().each { controllerName ->
-            api.tags << [name: controllerName]
-            mappingsByController[controllerName].each { mapping ->
-                def urlPattern = establishUrlPattern(mapping, controllerName)
-                def methods = !mapping.actionName || mapping.actionName instanceof String ? ['get'] : ((Map) mapping.actionName).keySet().collect { it.toLowerCase() }
-                api.paths[urlPattern] = methods.collectEntries { method ->
-                    def methodDescription = [
-                            tags     : [controllerName],
-                            responses: [
-                                    '200': [
-                                            description: 'successful operation'
-                                    ]
-                            ]
-                    ]
-                    if (mapping.constraints) {
-                        methodDescription.parameters = mapping.constraints.findAll { it.propertyName != 'controller' }.collect { constraint ->
-                            def parameter = [
-                                    name    : constraint.propertyName,
-                                    in      : 'path',
-                                    required: !constraint.nullable,
-                                    schema  : [:]
-                            ]
-                            if (constraint.matches == '\\d*') {
-                                parameter.schema.type = 'integer'
-                                parameter.schema.format = 'int64'
-                            } else {
-                                parameter.schema.type = 'string'
-                                if (constraint.inList) {
-                                    parameter.schema.enum = constraint.inList
-                                }
-                            }
-                            return parameter
-                        }
+        restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
+            mappings.each { mapping ->
+                def controllerNames = controllerAttribute ? [controllerAttribute] : mapping.constraints.find { it.propertyName == 'controller' }.inList
+                controllerNames.each { controllerName ->
+                    Map fixedParameters = [controller: controllerName]
+                    String urlPattern = establishUrlPattern(mapping, fixedParameters)
+                    def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
+                    String tag = controllerName
+                    def methodNames = !mapping.actionName || mapping.actionName instanceof String ? ['get'] : ((Map) mapping.actionName).keySet().collect { it.toLowerCase() }
+                    api.paths[urlPattern] = methodNames.collectEntries { methodName ->
+                        return [(methodName): getMethodDescription(tag, constraints)]
                     }
-                    return [(method): methodDescription]
                 }
             }
         }
         return api
     }
 
-    private String establishUrlPattern(UrlMapping mapping, String controllerName) {
+    private Map getMethodDescription(String tag, List<ConstrainedProperty> constraints) {
+        def methodDescription = [
+                tags     : [tag],
+                responses: [
+                        '200': [
+                                description: 'successful operation'
+                        ]
+                ]
+        ]
+        if (constraints) {
+            methodDescription.parameters = constraints.collect { constraint ->
+                def parameter = [
+                        name    : constraint.propertyName,
+                        in      : 'path',
+                        required: true,
+                        schema  : [:]
+                ]
+                if (constraint.matches == '\\d*') {
+                    parameter.schema.type = 'integer'
+                    parameter.schema.format = 'int64'
+                } else {
+                    parameter.schema.type = 'string'
+                    if (constraint.inList) {
+                        parameter.schema.enum = constraint.inList
+                    }
+                }
+                return parameter
+            }
+        }
+        return methodDescription
+    }
+
+    private String establishUrlPattern(UrlMapping mapping, Map fixedParameters) {
         if (mapping instanceof ResponseCodeUrlMapping) {
             throw new IllegalArgumentException('Error generating OpenAPI: dont know what to do with double ResponseCodeUrlMapping')
         }
@@ -120,8 +118,8 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 while (hasTokens) {
                     if (finalToken.contains(UrlMapping.CAPTURED_WILDCARD)) {
                         def constraint = constraints[constraintIndex++]
-                        if (constraint.propertyName == 'controller') {
-                            finalToken = controllerName
+                        if (fixedParameters[constraint.propertyName]) {
+                            finalToken = fixedParameters[constraint.propertyName]
                         } else {
                             finalToken = finalToken.replaceFirst(/\(\*\)/, '\\{' + constraint.propertyName + '}')
                         }
