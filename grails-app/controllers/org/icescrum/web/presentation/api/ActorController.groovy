@@ -85,4 +85,15 @@ class ActorController implements ControllerErrorHandler {
             render(status: 204)
         }
     }
+
+    def uid(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Actor actor = Actor.findByParentProjectAndUid(_project, uid)
+        if (actor) {
+            params.id = actor.id.toString()
+            forward(action: "show")
+        } else {
+            render(status: 404)
+        }
+    }
 }
