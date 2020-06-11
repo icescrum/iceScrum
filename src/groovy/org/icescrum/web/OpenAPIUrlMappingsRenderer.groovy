@@ -24,6 +24,7 @@
 
 package org.icescrum.web
 
+import grails.util.Holders
 import groovy.json.JsonOutput
 import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
@@ -32,30 +33,17 @@ import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
 
 class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
-    PrintStream out = System.out
-
     @Override
     void render(List<UrlMapping> urlMappings) {
-        out.println(JsonOutput.prettyPrint(JsonOutput.toJson(getOpenApi(urlMappings))))
+        println(JsonOutput.prettyPrint(JsonOutput.toJson(getOpenApi(urlMappings))))
     }
 
     Map getOpenApi(List<UrlMapping> urlMappings) {
-        def api = [
-                openapi: '3.0.2',
-                info   : [
-                        title      : 'iceScrum REST API',
-                        description: 'Access iceScrum programmatically',
-                        version    : '1',
-                        contact    : [
-                                email: 'support@kagilum.com'
-                        ]
-                ],
-                paths  : new TreeMap<String, Map>()
-        ]
         def restUrlMappings = urlMappings.findAll {
             it.urlData.tokens[0] == 'ws' && !it.parameterValues.oapi?.hide
         }
         def tags = []
+        def paths = new TreeMap<String, Map>()
         restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
             mappings.each { mapping ->
                 def controllerNames = controllerAttribute ? [controllerAttribute] : mapping.constraints.find { it.propertyName == 'controller' }.inList
@@ -83,14 +71,31 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                     } else {
                         methodNames = ['get']
                     }
-                    api.paths[urlPattern] = methodNames.collectEntries { methodName ->
+                    paths[urlPattern] = methodNames.collectEntries { methodName ->
+                        if (!actionName) {
+                            actionName = mapping.actionName instanceof  String ? mapping.actionName : mapping.actionName[methodName.toUpperCase()]
+                        }
+                        if (!isControllerActionExist(controllerName, actionName)) {
+                            throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
+                        }
                         return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
                     }
                 }
             }
         }
-        api.tags = tags.unique().sort().collect { [name: it] }
-        return api
+        return [
+                openapi: '3.0.2',
+                info   : [
+                        title      : 'iceScrum REST API',
+                        description: 'Access iceScrum programmatically',
+                        version    : '1',
+                        contact    : [
+                                email: 'support@kagilum.com'
+                        ]
+                ],
+                tags   : tags.unique().sort().collect { [name: it] },
+                paths  : paths
+        ]
     }
 
     private Map getMethodDescription(String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
@@ -173,6 +178,12 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     private throwError(UrlMapping mapping, String message) {
-        throw new IllegalArgumentException('Error generating OpenAPI - ' + mapping.urlData.tokens.join('/') + ' - ' + message)
+        println('Error generating OpenAPI - ' + mapping.urlData.tokens.join('/') + ' - ' + message)
+//        throw new IllegalArgumentException('Error generating OpenAPI - ' + mapping.urlData.tokens.join('/') + ' - ' + message)
+    }
+
+    private isControllerActionExist(String controllerName, String actionName) {
+        def controllerMetaClass = Holders.grailsApplication.getArtefactByLogicalPropertyName('Controller', controllerName).metaClass
+        return controllerMetaClass.metaMethodIndex.getMethods(controllerMetaClass.theClass, actionName) != null
     }
 }
