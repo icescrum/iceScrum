@@ -25,6 +25,7 @@
 package org.icescrum.web
 
 import groovy.json.JsonOutput
+import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
 import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
@@ -49,29 +50,35 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 email: 'support@kagilum.com'
                         ]
                 ],
-                tags   : [],
-                paths  : [:]
+                paths  : new TreeMap<String, Map>()
         ]
         def restUrlMappings = urlMappings.findAll { it.urlData.tokens[0] == 'ws' }
+        def tags = []
         restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
             mappings.each { mapping ->
                 def controllerNames = controllerAttribute ? [controllerAttribute] : mapping.constraints.find { it.propertyName == 'controller' }.inList
-                controllerNames.each { controllerName ->
-                    Map fixedParameters = [controller: controllerName]
+                def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['defaultAction']
+                def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['defaultWorkspaceType']
+                def combinations = [controllerNames, actions, workspaceTypes].combinations()
+                combinations.each { combination ->
+                    def controllerName = combination[0]
+                    Map fixedParameters = [controller: controllerName, action: combination[1], workspaceType: combination[2]]
                     String urlPattern = establishUrlPattern(mapping, fixedParameters)
                     def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
                     String tag = controllerName
+                    tags << tag
                     def methodNames = !mapping.actionName || mapping.actionName instanceof String ? ['get'] : ((Map) mapping.actionName).keySet().collect { it.toLowerCase() }
                     api.paths[urlPattern] = methodNames.collectEntries { methodName ->
-                        return [(methodName): getMethodDescription(tag, constraints)]
+                        return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
                     }
                 }
             }
         }
+        api.tags = tags.unique().sort().collect { [name: it] }
         return api
     }
 
-    private Map getMethodDescription(String tag, List<ConstrainedProperty> constraints) {
+    private Map getMethodDescription(String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
         def methodDescription = [
                 tags     : [tag],
                 responses: [
@@ -83,7 +90,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         if (constraints) {
             methodDescription.parameters = constraints.collect { constraint ->
                 def parameter = [
-                        name    : constraint.propertyName,
+                        name    : getParameterName(constraint.propertyName, fixedParameters),
                         in      : 'path',
                         required: true,
                         schema  : [:]
@@ -121,7 +128,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         if (fixedParameters[constraint.propertyName]) {
                             finalToken = fixedParameters[constraint.propertyName]
                         } else {
-                            finalToken = finalToken.replaceFirst(/\(\*\)/, '\\{' + constraint.propertyName + '}')
+                            finalToken = finalToken.replaceFirst(/\(\*\)/, '\\{' + getParameterName(constraint.propertyName, fixedParameters) + '}')
                         }
                     } else if (finalToken.contains(UrlMapping.CAPTURED_DOUBLE_WILDCARD)) {
                         throw new IllegalArgumentException('Error generating OpenAPI: dont know what to do with double wildCard')
@@ -140,5 +147,13 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
             throw new IllegalArgumentException('Error generating OpenAPI: dont know what to do with optional extension')
         }
         return urlPattern.toString().replaceAll('\\?', '')
+    }
+
+    private String getParameterName(String propertyName, Map fixedParameters) {
+        if (propertyName == 'workspace' && fixedParameters.workspaceType) {
+            return fixedParameters.workspaceType
+        } else {
+            return propertyName
+        }
     }
 }
