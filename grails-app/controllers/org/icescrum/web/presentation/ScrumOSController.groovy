@@ -328,6 +328,7 @@ class ScrumOSController implements ControllerErrorHandler {
                 new Date(1575371594)
             }
             generate {
+                cache shared:true, validFor: 3600  // 1hr on content
                 render(status: 200, view: "api")
             }
         }

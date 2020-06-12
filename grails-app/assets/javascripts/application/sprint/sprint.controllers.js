@@ -46,7 +46,6 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
         });
     };
     $scope.autoPlan = function(sprint, plannedVelocity) {
-        debugger;
         $rootScope.uiWorking("todo.is.ui.sprint.being.autoPlanned", true);
         SprintService.autoPlan(sprint, plannedVelocity, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
