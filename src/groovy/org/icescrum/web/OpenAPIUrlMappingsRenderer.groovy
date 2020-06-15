@@ -74,7 +74,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 methodNames.remove('post')
                             }
                         } else {
-                            methodNames = ['get']
+                            methodNames = [customParameters?.method ? customParameters?.method.toLowerCase() : 'get']
                         }
                         Map methods = methodNames.collectEntries { methodName ->
                             if (!actionName) {
@@ -83,7 +83,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                             if (!isControllerActionExist(controllerName, actionName)) {
                                 throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
                             }
-                            return [(methodName): getMethodDescription(tag, constraints, fixedParameters)]
+                            return [(methodName): getMethodDescription(methodName, tag, constraints, fixedParameters)]
                         }
                         if (!paths.containsKey(urlPattern)) {
                             paths[urlPattern] = [:]
@@ -108,11 +108,11 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         ]
     }
 
-    private Map getMethodDescription(String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
+    private Map getMethodDescription(String methodName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
         def methodDescription = [
                 tags     : [tag],
                 responses: [
-                        '200': [
+                        (methodName == 'delete' ? '204' : '200'): [
                                 description: 'successful operation'
                         ]
                 ]
