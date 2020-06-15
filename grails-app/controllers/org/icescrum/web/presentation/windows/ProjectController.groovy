@@ -174,7 +174,14 @@ class ProjectController implements ControllerErrorHandler {
             if (team.projects.size() == 0 && _project.name.startsWith("Peetic")) {
                 teamService.delete(team)
             }
-            render(status: 200, contentType: 'application/json', text: [class: 'Project', id: project] as JSON)
+            withFormat {
+                html {
+                    render(status: 200, contentType: 'application/json', text: [class: 'Project', id: project] as JSON)
+                }
+                json {
+                    render(status: 204)
+                }
+            }
         } catch (RuntimeException re) {
             returnError(code: 'is.project.error.not.deleted', exception: re)
         }

@@ -138,8 +138,15 @@ class FeatureController implements ControllerErrorHandler {
             features.each { feature ->
                 featureService.delete(feature)
             }
-            def returnData = features.size() > 1 ? features.collect { [id: it.id] } : (features ? [id: features.first().id] : [:])
-            render(status: 200, text: returnData as JSON)
+            withFormat {
+                html {
+                    def returnData = features.size() > 1 ? features.collect { [id: it.id] } : (features ? [id: features.first().id] : [:])
+                    render(status: 200, text: returnData as JSON)
+                }
+                json {
+                    render(status: 204)
+                }
+            }
         }
     }
 
