@@ -40,12 +40,14 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
     Map getOpenApi(List<UrlMapping> urlMappings) {
         def restUrlMappings = urlMappings.findAll {
-            it.urlData.tokens[0] == 'ws' && !it.parameterValues.oapi?.hide
+            def customParameters = it.parameterValues.oapi
+            it.urlData.tokens[0] == 'ws' && !customParameters?.hide
         }
         def tags = []
         def paths = new TreeMap<String, Map>()
         restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
             mappings.each { mapping ->
+                def customParameters = mapping.parameterValues.oapi
                 def controllerNames = controllerAttribute ? [controllerAttribute] : mapping.constraints.find { it.propertyName == 'controller' }.inList
                 def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['']
                 def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['']
@@ -59,7 +61,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         def fixedParameters = globalFixedParameters + optionalParametersCombination
                         String urlPattern = establishUrlPattern(mapping, fixedParameters)
                         def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
-                        String tag = controllerName
+                        String tag = customParameters?.tag ?: controllerName
                         tags << tag
                         if (mapping.actionName instanceof String) {
                             throwError(mapping, 'An HTTP method must be specified')
