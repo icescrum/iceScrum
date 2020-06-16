@@ -335,7 +335,7 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def openApi() {
+    def openAPI() {
         withCacheHeaders {
             delegate.lastModified {
                 new Date(1575371594)

@@ -13,7 +13,7 @@
             window.onload = function() {
                 // Build a system
                 const ui = SwaggerUIBundle({
-                    url: "${createLink(controller: 'scrumOS', action: 'openApi', absolute: true)}",
+                    url: "${createLink(controller: 'scrumOS', action: 'openAPI', absolute: true)}",
                     dom_id: '#swagger-ui',
                     deepLinking: true,
                     presets: [
