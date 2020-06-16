@@ -602,6 +602,9 @@ var isApplication = angular.module('isApplication', [
                 $rootScope.loaders.main.loop = false;
                 $rootScope.application.loading = false;
                 $rootScope.application.loadingText = null;
+                $timeout(function() {
+                    angular.element($window).triggerHandler('resize'); // For timeline in planning
+                });
             }
         };
         $rootScope.hotkeyClick = function(event, hotkey) {

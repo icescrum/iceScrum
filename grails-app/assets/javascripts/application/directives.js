@@ -455,7 +455,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}).directive('timeline', ['$timeout', 'ReleaseService', 'SprintStatesByName', 'DateService', function($timeout, ReleaseService, SprintStatesByName, DateService) {
+}).directive('timeline', ['$timeout', 'ReleaseService', 'SprintStatesByName', 'DateService', '$window', function($timeout, ReleaseService, SprintStatesByName, DateService, $window) {
     return {
         restrict: 'A',
         scope: {
@@ -668,7 +668,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 render(); // To update selected items
             }, true);
             // Register render on size change (either by resize or opening / closing of details view)
-            d3.select(window).on('resize', _.throttle(renderAndReinitializeBrush, 200));
+            var resizeCallback = _.throttle(renderAndReinitializeBrush, 200);
+            angular.element($window).on('resize', resizeCallback);
             var unregisterRenderOnDetailsChanged = scope.$root.$on('$viewContentLoaded', function(event, viewConfig) {
                 if (viewConfig.indexOf('@planning') != -1) {
                     $timeout(renderAndReinitializeBrush, 100);
@@ -682,7 +683,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 }
             });
             scope.$on('$destroy', function() {
-                d3.select(window).on('resize', null);
+                angular.element($window).off('resize', resizeCallback);
                 unregisterRemoveWatchersOnWindowChanged();
                 unregisterRenderOnDetailsChanged();
             });
