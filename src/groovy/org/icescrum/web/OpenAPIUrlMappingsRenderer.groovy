@@ -83,9 +83,9 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         }
                         Map methods = methodNames.collectEntries { methodName ->
                             def actionName = mapping.actionName ? mapping.actionName[methodName.toUpperCase()] : actionNameFromParameter
-                            if (!isControllerActionExist(controllerName, actionName)) {
-                                throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
-                            }
+//                            if (!isControllerActionExist(controllerName, actionName)) {
+//                                throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
+//                            }
                             return [(methodName): getMethodDescription(methodName, actionName, tag, constraints, fixedParameters)]
                         }
                         if (!paths.containsKey(urlPattern)) {
