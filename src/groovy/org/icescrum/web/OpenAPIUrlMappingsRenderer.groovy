@@ -33,6 +33,11 @@ import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
 
 class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
+    static final String GET = 'get'
+    static final String PUT = 'put'
+    static final String POST = 'post'
+    static final String DELETE = 'delete'
+
     @Override
     void render(List<UrlMapping> urlMappings) {
         println(JsonOutput.prettyPrint(JsonOutput.toJson(getOpenApi(urlMappings))))
@@ -54,36 +59,34 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 def combinations = [controllerNames, actions, workspaceTypes].combinations()
                 combinations.each { combination ->
                     def controllerName = combination[0]
-                    def actionName = combination[1]
-                    Map globalFixedParameters = [controller: controllerName, action: actionName, workspaceType: combination[2]]
+                    def actionNameFromParameter = combination[1]
+                    Map globalFixedParameters = [controller: controllerName, action: actionNameFromParameter, workspaceType: combination[2]]
                     def optionalParametersCombinations = getOptionalParameterCombinations(mapping.constraints.findAll { it.nullable })
                     optionalParametersCombinations.each { optionalParametersCombination ->
                         def fixedParameters = globalFixedParameters + optionalParametersCombination
-                        String urlPattern = establishUrlPattern(mapping, fixedParameters)
+                        String urlPattern = getUrlPattern(mapping, fixedParameters)
                         def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
                         String tag = customParameters?.tag ?: controllerName
                         tags << tag
-                        if (mapping.actionName instanceof String) {
-                            throwError(mapping, 'An HTTP method must be specified')
-                        }
                         def methodNames
                         if (mapping.actionName) {
+                            if (mapping.actionName instanceof String) {
+                                throwError(mapping, 'An HTTP method must be specified')
+                            }
                             def actionMap = (Map) mapping.actionName
                             methodNames = actionMap.keySet().collect { it.toLowerCase() }
                             if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
-                                methodNames.remove('post')
+                                methodNames.remove(POST)
                             }
                         } else {
-                            methodNames = [customParameters?.method ? customParameters?.method.toLowerCase() : 'get']
+                            methodNames = [customParameters?.method ? customParameters?.method.toLowerCase() : GET]
                         }
                         Map methods = methodNames.collectEntries { methodName ->
-                            if (!actionName) {
-                                actionName = mapping.actionName instanceof String ? mapping.actionName : mapping.actionName[methodName.toUpperCase()]
-                            }
+                            def actionName = mapping.actionName ? mapping.actionName[methodName.toUpperCase()] : actionNameFromParameter
                             if (!isControllerActionExist(controllerName, actionName)) {
                                 throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
                             }
-                            return [(methodName): getMethodDescription(methodName, tag, constraints, fixedParameters)]
+                            return [(methodName): getMethodDescription(methodName, actionName, tag, constraints, fixedParameters)]
                         }
                         if (!paths.containsKey(urlPattern)) {
                             paths[urlPattern] = [:]
@@ -108,22 +111,49 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         ]
     }
 
-    private Map getMethodDescription(String methodName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
+    private Map getMethodDescription(String methodName, String actionName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
+        def description
+        def responses = [:]
+        if (actionName == 'save' && methodName == POST) {
+            responses['201'] = 'Created - Sucessful creation'
+            description = "Create a new $tag"
+        } else if (actionName == 'update' && methodName == PUT) {
+            responses['200'] = 'OK - Sucessful update'
+            description = "Update the $tag located at this URL"
+        } else if (actionName == 'delete' && methodName == DELETE) {
+            responses['204'] = 'No Content - Sucessful deletion'
+            description = "Delete the $tag located at this URL"
+        } else if (actionName == 'show' && methodName == GET) {
+            responses['200'] = 'OK - Sucessful get'
+            description = "Get the $tag located at this URL"
+        } else if (actionName == 'index' && methodName == GET) {
+            responses['200'] = 'OK - Sucessful list'
+            description = "Get the list of $tag"
+        } else {
+            responses['200'] = 'OK - Sucessful operation'
+            description = ''
+        }
+        responses.putAll([
+                '400': 'Bad Request - The request content is invalid',
+                '401': 'Unauthorized - The provided user token is missing or invalid',
+                '403': 'Forbidden - The provided user does not have sufficient permissions to perform this action',
+                '404': 'Not Found - The requested ressource was not found on the server',
+                '500': 'Internal Server Error - Unhandled validation error or server bug'
+        ])
         def methodDescription = [
-                tags     : [tag],
-                responses: [
-                        (methodName == 'delete' ? '204' : '200'): [
-                                description: 'successful operation'
-                        ]
-                ]
+                tags       : [tag],
+                description: description,
+                responses  : responses.collectEntries { key, value -> [(key): [description: value]] }
         ]
         if (constraints) {
             methodDescription.parameters = constraints.collect { constraint ->
+                def parameterName = getParameterName(constraint.propertyName, fixedParameters)
                 def parameter = [
-                        name    : getParameterName(constraint.propertyName, fixedParameters),
-                        in      : 'path',
-                        required: true,
-                        schema  : [:]
+                        name       : parameterName,
+                        description: getParameterDescription(tag, parameterName),
+                        in         : 'path',
+                        required   : true,
+                        schema     : [:]
                 ]
                 if (constraint.matches == '\\d*') {
                     parameter.schema.type = 'integer'
@@ -140,7 +170,21 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         return methodDescription
     }
 
-    private String establishUrlPattern(UrlMapping mapping, Map fixedParameters) {
+    private String getParameterDescription(String tag, String parameterName) {
+        def descriptions = [
+                project  : 'Project ID (integer) or Key (alphanumeric)',
+                portfolio: 'Portfolio ID (integer) or Key (alphanumeric)',
+                id       : "Technical ID of the $tag",
+                uid      : "Business ID of the $tag"
+        ]
+        if (descriptions.containsKey(parameterName)) {
+            return descriptions[parameterName]
+        } else {
+            return ''
+        }
+    }
+
+    private String getUrlPattern(UrlMapping mapping, Map fixedParameters) {
         if (mapping instanceof ResponseCodeUrlMapping) {
             throwError(mapping, "Don't know what to do with double ResponseCodeUrlMapping")
         }
