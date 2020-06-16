@@ -322,7 +322,7 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def api() {
+    def swagger() {
         withCacheHeaders {
             delegate.lastModified {
                 new Date(1575371594)
@@ -335,7 +335,7 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def swagger() {
+    def openApi() {
         withCacheHeaders {
             delegate.lastModified {
                 new Date(1575371594)
