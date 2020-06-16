@@ -11,9 +11,8 @@
         <asset:javascript src="swagger-ui/swagger-ui-bundle.js"/>
         <script>
             window.onload = function() {
-                // Build a system
-                const ui = SwaggerUIBundle({
-                    url: "${createLink(controller: 'scrumOS', action: 'openAPI', absolute: true)}",
+                window.ui = SwaggerUIBundle({
+                    url: "${createLink(mapping: 'openAPI', absolute: true)}",
                     dom_id: '#swagger-ui',
                     deepLinking: true,
                     presets: [
@@ -23,9 +22,8 @@
                     plugins: [
                         SwaggerUIBundle.plugins.DownloadUrl
                     ],
-                    layout: "StandaloneLayout",
-                })
-                window.ui = ui
+                    layout: "StandaloneLayout"
+                });
             }
         </script>
     </body>

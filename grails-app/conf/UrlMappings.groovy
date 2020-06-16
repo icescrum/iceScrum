@@ -44,6 +44,10 @@ class UrlMappings {
             controller = 'scrumOS'
             action = 'swagger'
         }
+        name openAPI: "/openapi.json" {
+            controller = 'scrumOS'
+            action = 'openAPI'
+        }
         "/robots.txt" {
             controller = 'scrumOS'
             action = 'robots'

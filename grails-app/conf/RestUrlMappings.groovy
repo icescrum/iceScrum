@@ -28,7 +28,7 @@ class RestUrlMappings {
 
     static mappings = {
 
-        "/ws/openAPI" {
+        "/ws/openapi.json" {
             controller = 'scrumOS'
             action = [GET: 'openAPI']
         }
