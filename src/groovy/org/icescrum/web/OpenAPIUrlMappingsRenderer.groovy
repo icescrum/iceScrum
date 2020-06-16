@@ -30,6 +30,7 @@ import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
 import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
+import org.icescrum.core.support.ApplicationSupport
 
 class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
@@ -97,17 +98,56 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
             }
         }
         return [
-                openapi: '3.0.2',
-                info   : [
+                openapi     : '3.0.2',
+                info        : [
                         title      : 'iceScrum REST API',
                         description: 'Access iceScrum programmatically',
-                        version    : '1',
+                        version    : '1.0',
                         contact    : [
                                 email: 'support@kagilum.com'
                         ]
                 ],
-                tags   : tags.unique().sort().collect { [name: it] },
-                paths  : paths
+                servers     : [
+                        [
+                                url: ApplicationSupport.serverURL() + '/ws'
+                        ]
+                ],
+                paths       : paths,
+                components  : [
+                        responses      : [
+                                '200'       : [description: 'OK - Sucessful operation'],
+                                '201'       : [description: 'Created - Sucessful creation'],
+                                '204-DELETE': [description: 'No Content - Sucessful deletion'],
+                                '400'       : [description: 'Bad Request - The request content is invalid'],
+                                '401'       : [description: 'Unauthorized - The provided user token is missing or invalid'],
+                                '403'       : [description: 'Forbidden - The provided user does not have sufficient permissions to perform this action'],
+                                '404'       : [description: 'Not Found - The requested ressource was not found on the server'],
+                                '500'       : [description: 'Internal Server Error - Unhandled validation error or server bug']
+                        ],
+                        securitySchemes: [
+                                api_key         : [
+                                        type: 'apiKey',
+                                        name: 'x-icescrum-token',
+                                        in  : 'header'
+                                ],
+                                api_key_unsecure: [
+                                        type: 'apiKey',
+                                        name: 'icescrum-token',
+                                        in  : 'query'
+                                ]
+                        ]
+                ],
+                security    : [
+                        [
+                                'api_key'         : [],
+                                'api_key_unsecure': []
+                        ]
+                ],
+                tags        : tags.unique().sort().collect { [name: it] },
+                externalDocs: [
+                        description: 'Learn more on the offical website',
+                        url        : 'https://www.icescrum.com/documentation/rest-api/'
+                ]
         ]
     }
 
@@ -115,35 +155,35 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         def description
         def responses = [:]
         if (actionName == 'save' && methodName == POST) {
-            responses['201'] = 'Created - Sucessful creation'
+            responses['201'] = [description: 'Created - Sucessful creation']
             description = "Create a new $tag"
         } else if (actionName == 'update' && methodName == PUT) {
-            responses['200'] = 'OK - Sucessful update'
+            responses['200'] = [description: 'OK - Sucessful update']
             description = "Update the $tag located at this URL"
         } else if (actionName == 'delete' && methodName == DELETE) {
-            responses['204'] = 'No Content - Sucessful deletion'
+            responses['204'] = [$ref: '#/components/responses/204-DELETE']
             description = "Delete the $tag located at this URL"
         } else if (actionName == 'show' && methodName == GET) {
-            responses['200'] = 'OK - Sucessful get'
+            responses['200'] = [description: 'OK - Sucessful get']
             description = "Get the $tag located at this URL"
         } else if (actionName == 'index' && methodName == GET) {
-            responses['200'] = 'OK - Sucessful list'
+            responses['200'] = [description: 'OK - Sucessful list']
             description = "Get the list of $tag"
         } else {
-            responses['200'] = 'OK - Sucessful operation'
+            responses['200'] = [$ref: '#/components/responses/200']
             description = ''
         }
         responses.putAll([
-                '400': 'Bad Request - The request content is invalid',
-                '401': 'Unauthorized - The provided user token is missing or invalid',
-                '403': 'Forbidden - The provided user does not have sufficient permissions to perform this action',
-                '404': 'Not Found - The requested ressource was not found on the server',
-                '500': 'Internal Server Error - Unhandled validation error or server bug'
+                '400': [$ref: '#/components/responses/400'],
+                '401': [$ref: '#/components/responses/401'],
+                '403': [$ref: '#/components/responses/403'],
+                '404': [$ref: '#/components/responses/404'],
+                '500': [$ref: '#/components/responses/500']
         ])
         def methodDescription = [
                 tags       : [tag],
                 description: description,
-                responses  : responses.collectEntries { key, value -> [(key): [description: value]] }
+                responses  : responses
         ]
         if (constraints) {
             methodDescription.parameters = constraints.collect { constraint ->
@@ -216,7 +256,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                     return
                 }
                 urlPattern << finalToken
-            } else {
+            } else if (i > 0 || token != 'ws') {
                 urlPattern << token
             }
         }
