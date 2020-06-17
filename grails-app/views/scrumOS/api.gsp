@@ -21,8 +21,8 @@
                     ],
                     plugins: [
                         SwaggerUIBundle.plugins.DownloadUrl
-                    ],
-                    layout: "StandaloneLayout"
+                    ]
+                    // ,layout: "StandaloneLayout"
                 });
             }
         </script>
