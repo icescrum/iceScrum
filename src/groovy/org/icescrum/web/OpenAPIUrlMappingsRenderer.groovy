@@ -30,6 +30,7 @@ import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
 import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
+import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.support.ApplicationSupport
 
 class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
@@ -97,6 +98,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 }
             }
         }
+        def uniqueTags = tags.unique().sort()
         return [
                 openapi     : '3.0.2',
                 info        : [
@@ -114,6 +116,11 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 ],
                 paths       : paths,
                 components  : [
+                        schemas        : uniqueTags.collectEntries { tag ->
+                            [
+                                    (tag): getObjectSchema(tag)
+                            ]
+                        },
                         responses      : [
                                 '200'       : [description: 'OK - Sucessful operation'],
                                 '201'       : [description: 'Created - Sucessful creation'],
@@ -143,7 +150,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 'api_key_unsecure': []
                         ]
                 ],
-                tags        : tags.unique().sort().collect { [name: it] },
+                tags        : uniqueTags.collect { [name: it] },
                 externalDocs: [
                         description: 'Learn more on the offical website',
                         url        : 'https://www.icescrum.com/documentation/rest-api/'
@@ -154,20 +161,37 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     private Map getMethodDescription(String methodName, String actionName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
         def description
         def responses = [:]
+        def requestBody
         if (actionName == 'save' && methodName == POST) {
-            responses['201'] = [description: 'Created - Sucessful creation']
+            requestBody = [
+                    content : ['application/json': [schema: [type: 'object', properties: [(tag): [$ref: "#/components/schemas/$tag"]]]]],
+                    required: true
+            ]
+            responses['201'] = [
+                    description: 'Created - Sucessful creation',
+                    content    : ['application/json': [schema: [$ref: "#/components/schemas/$tag"]]]
+            ]
             description = "Create a new $tag"
         } else if (actionName == 'update' && methodName == PUT) {
-            responses['200'] = [description: 'OK - Sucessful update']
+            responses['200'] = [
+                    description: 'OK - Sucessful update',
+                    content    : ['application/json': [schema: [$ref: "#/components/schemas/$tag"]]]
+            ]
             description = "Update the $tag located at this URL"
         } else if (actionName == 'delete' && methodName == DELETE) {
             responses['204'] = [$ref: '#/components/responses/204-DELETE']
             description = "Delete the $tag located at this URL"
         } else if (actionName == 'show' && methodName == GET) {
-            responses['200'] = [description: 'OK - Sucessful get']
+            responses['200'] = [
+                    description: 'OK - Sucessful get',
+                    content    : ['application/json': [schema: [$ref: "#/components/schemas/$tag"]]]
+            ]
             description = "Get the $tag located at this URL"
         } else if (actionName == 'index' && methodName == GET) {
-            responses['200'] = [description: 'OK - Sucessful list']
+            responses['200'] = [
+                    description: 'OK - Sucessful list',
+                    content    : ['application/json': [schema: [type: 'array', items: [$ref: "#/components/schemas/$tag"]]]]
+            ]
             description = "Get the list of $tag"
         } else {
             responses['200'] = [$ref: '#/components/responses/200']
@@ -181,9 +205,8 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 '500': [$ref: '#/components/responses/500']
         ])
         def methodDescription = [
-                tags       : [tag],
-                description: description,
-                responses  : responses
+                tags   : [tag],
+                summary: description
         ]
         if (constraints) {
             methodDescription.parameters = constraints.collect { constraint ->
@@ -192,14 +215,12 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         name       : parameterName,
                         description: getParameterDescription(tag, parameterName),
                         in         : 'path',
-                        required   : true,
-                        schema     : [:]
+                        required   : true
                 ]
                 if (constraint.matches == '\\d*') {
-                    parameter.schema.type = 'integer'
-                    parameter.schema.format = 'int64'
+                    parameter.schema = getTypeLong()
                 } else {
-                    parameter.schema.type = 'string'
+                    parameter.schema = [type: 'string']
                     if (constraint.inList) {
                         parameter.schema.enum = constraint.inList
                     }
@@ -207,6 +228,10 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 return parameter
             }
         }
+        if (requestBody) {
+            methodDescription.requestBody = requestBody
+        }
+        methodDescription.responses = responses
         return methodDescription
     }
 
@@ -292,5 +317,43 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
             combinations << optionalParameters.take(index + 1).collectEntries { [(it.propertyName): null] }
         }
         combinations
+    }
+
+    private Map getObjectSchema(String tag) {
+        def object = [type: 'object']
+        def schemas = [
+                acceptanceTest: [
+                        properties: [
+                                id         : getTypeLong(),
+                                uid        : getTypeInt(),
+                                name       : getTypeString(),
+                                description: getTypeString(1000),
+                                state      : [type: 'enum', enum: AcceptanceTest.AcceptanceTestState.values()*.id],
+                                parentStory: [type: 'object', properties: [id: getTypeLong()]],
+                                rank       : getTypeRank(),
+                        ],
+                        required  : ['name', 'parentStory']
+                ]
+        ]
+        if (schemas.containsKey(tag)) {
+            object.putAll(schemas[tag])
+        }
+        return object
+    }
+
+    private Map getTypeLong() {
+        return [type: 'integer', format: 'int64']
+    }
+
+    private Map getTypeInt() {
+        return [type: 'integer', format: 'int32']
+    }
+
+    private Map getTypeString(Integer maxLength = 255) {
+        return [type: 'string', maxLength: "$maxLength"]
+    }
+
+    private Map getTypeRank() {
+        return getTypeInt().put('minimum', 1)
     }
 }
