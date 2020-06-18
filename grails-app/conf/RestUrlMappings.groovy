@@ -26,6 +26,8 @@ import org.icescrum.core.domain.WorkspaceType
 
 class RestUrlMappings {
 
+    // Be careful, there is always a hidden mapping GET -> index even if not specified
+
     static mappings = {
 
         "/ws/openapi.json" {
@@ -33,12 +35,12 @@ class RestUrlMappings {
             action = [GET: 'openAPI']
         }
         "/ws/version" {
-            action = [GET: 'version']
             controller = 'scrumOS'
+            action = [GET: 'version']
         }
         "/ws/textile" {
-            action = [POST: 'textileParser']
             controller = 'scrumOS'
+            action = [POST: 'textileParser']
         }
         // User
         "/ws/user" { // Admin
@@ -68,7 +70,7 @@ class RestUrlMappings {
         }
         "/ws/user/current" {
             controller = 'user'
-            action = 'current'
+            action = [GET: 'current']
         }
         // Team (if user is admin all teams ELSE teams where user is owner
         "/ws/team" {
@@ -96,18 +98,18 @@ class RestUrlMappings {
             action = [GET: 'index', POST: 'save']
         }
         "/ws/createSample" {
-            action = [POST: 'createSample']
             controller = 'project'
+            action = [POST: 'createSample']
         }
         // (token must be admin if $id != currentUser.id // id can be string or int
         "/ws/project/user/$id?" {
             controller = 'project'
-            action = 'listByUser'
+            action = [GET: 'listByUser']
         }
         // (token must be admin is $id != currentUser.id
         "/ws/project/user/$id/$role" {
             controller = 'project'
-            action = 'listByUserAndRole'
+            action = [GET: 'listByUserAndRole']
             constraints {
                 id(matches: /\d*/)
                 role(inList: ['scrumMaster', 'productOwner', 'stakeHolder', 'teamMember'])
@@ -122,7 +124,7 @@ class RestUrlMappings {
         }
         "/ws/project/$project/export/$format?" {
             controller = 'project'
-            action = 'export'
+            action = [GET: 'export']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 format(inList: ['zip', 'xml'])
@@ -161,7 +163,7 @@ class RestUrlMappings {
         // Activities
         "/ws/project/$project/activity/$type/$fluxiableId" {
             controller = 'activity'
-            action = [GET: "index"]
+            action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task', 'feature'])
@@ -170,7 +172,7 @@ class RestUrlMappings {
         }
         "/ws/project/$project/activities" {
             controller = 'project'
-            action = [GET: "activities"]
+            action = [GET: 'activities']
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
@@ -248,12 +250,12 @@ class RestUrlMappings {
                 id(matches: /\d*/)
                 action(inList: ['accept', 'returnToSandbox', 'turnIntoFeature', 'turnIntoTask', 'copy', 'plan', 'unPlan', 'shiftToNextSprint', 'done', 'unDone'])
             }
-            method = 'POST'
+            oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
         }
         // Story filter by backlog / actor / sprint / feature
         "/ws/project/$project/story/$type/$typeId" {
             controller = 'story'
-            action = 'index'
+            action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['backlog', 'actor', 'sprint', 'feature'])
@@ -261,16 +263,16 @@ class RestUrlMappings {
             }
         }
         "/ws/project/$project/story/backlog/$id/print/$format" {
-            controller = 'backlog'
+            controller = 'story'
+            action = [GET: 'printByBacklog']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                action(inList: ['printByBacklog'])
                 id(matches: /\d*/)
             }
         }
         "/ws/project/$project/story/backlog/$id/printPostits" {
             controller = 'story'
-            action = 'printPostitsByBacklog'
+            action = [GET: 'printPostitsByBacklog']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
@@ -278,7 +280,7 @@ class RestUrlMappings {
         }
         "/ws/project/$project/story/sprint/$id/printPostits" {
             controller = 'story'
-            action = 'printPostitsBySprint'
+            action = [GET: 'printPostitsBySprint']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
@@ -286,7 +288,7 @@ class RestUrlMappings {
         }
         "/ws/project/$project/task/sprint/$id/printPostits" {
             controller = 'task'
-            action = 'printPostitsBySprint'
+            action = [GET: 'printPostitsBySprint']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
@@ -308,7 +310,7 @@ class RestUrlMappings {
                 id(matches: /\d*/)
                 action(inList: ['activate', 'close', 'unPlan', 'reactivate'])
             }
-            method = 'POST'
+            oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
         }
         // Plan a release with a plannedVelocity
         "/ws/project/$project/release/$id/autoPlan/$plannedVelocity" {
@@ -338,7 +340,7 @@ class RestUrlMappings {
                 id(matches: /\d*/)
                 action(inList: ['activate', 'reactivate', 'close', 'unPlan', 'copyRecurrentTasks'])
             }
-            method = 'POST'
+            oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
         }
         // Plan a sprint with a plannedVelocity
         "/ws/project/$project/sprint/$id/autoPlan/$plannedVelocity" {
@@ -387,7 +389,7 @@ class RestUrlMappings {
                 id(matches: /\d*/)
                 action(inList: ['makeStory', 'take', 'unassign', 'copy'])
             }
-            method = 'POST'
+            oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
         }
         // Task filter by sprint / story
         "/ws/project/$project/task/$type/$id" {
@@ -424,11 +426,11 @@ class RestUrlMappings {
         // Hook
         "/ws/hook" {
             controller = 'hook'
-            action = [GET: "index", POST: "save"]
+            action = [GET: 'index', POST: 'save']
         }
         "/ws/hook/$id" {
             controller = 'hook'
-            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 id(matches: /\d+(,\d+)*/)
             }
