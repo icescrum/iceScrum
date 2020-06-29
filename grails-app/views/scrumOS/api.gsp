@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="UTF-8">
-        <title>iceScrum Service Swagger</title>
+        <title>iceScrum API Swagger</title>
         <asset:stylesheet src="vendors/swagger-ui/swagger-ui.css"/>
     </head>
     <body>

@@ -55,7 +55,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
             mappings.each { mapping ->
                 def customParameters = mapping.parameterValues.oapi
-                def controllerNames = controllerAttribute ? [controllerAttribute] : mapping.constraints.find { it.propertyName == 'controller' }.inList
+                def controllerNames = controllerAttribute ? [controllerAttribute != 'scrumOS' ? controllerAttribute : 'server'] : mapping.constraints.find { it.propertyName == 'controller' }.inList
                 def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['']
                 def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['']
                 def combinations = [controllerNames, actions, workspaceTypes].combinations()
@@ -328,7 +328,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 uid        : getTypeInt(),
                                 name       : getTypeString(),
                                 description: getTypeString(1000),
-                                state      : [type: 'enum', enum: AcceptanceTest.AcceptanceTestState.values()*.id],
+                                state      : getTypeIntEnum(AcceptanceTest.AcceptanceTestState.values()*.id),
                                 parentStory: [type: 'object', properties: [id: getTypeLong()]],
                                 rank       : getTypeRank(),
                         ],
@@ -349,11 +349,17 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         return [type: 'integer', format: 'int32']
     }
 
+    private Map getTypeIntEnum(List enumValues) {
+        return [type: 'integer', enum: enumValues]
+    }
+
     private Map getTypeString(Integer maxLength = 255) {
-        return [type: 'string', maxLength: "$maxLength"]
+        return [type: 'string', maxLength: maxLength]
     }
 
     private Map getTypeRank() {
-        return getTypeInt().put('minimum', 1)
+        def typeRank = getTypeInt()
+        typeRank.put('minimum', 1)
+        return typeRank
     }
 }
