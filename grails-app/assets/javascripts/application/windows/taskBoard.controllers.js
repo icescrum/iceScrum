@@ -238,7 +238,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     };
     $scope.countByFilter = function() {
         _.each($scope.sprintFilters, function(sprintFilter) {
-            sprintFilter.count = _.filter($scope.sprint.tasks, sprintFilter.filter).length;
+            sprintFilter.count = $scope.sprint ? _.filter($scope.sprint.tasks, sprintFilter.filter).length : 0;
         });
     };
     $scope.findPreviousOrNextStory = StoryService.findPreviousOrNextStory([
