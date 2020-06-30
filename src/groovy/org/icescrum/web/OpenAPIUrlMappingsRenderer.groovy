@@ -31,6 +31,9 @@ import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
 import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
 import org.icescrum.core.domain.AcceptanceTest
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Task
 import org.icescrum.core.support.ApplicationSupport
 
 class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
@@ -99,6 +102,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
             }
         }
         def uniqueTags = tags.unique().sort()
+        def components = getComponents()
         return [
                 openapi     : '3.0.2',
                 info        : [
@@ -116,11 +120,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 ],
                 paths       : paths,
                 components  : [
-                        schemas        : uniqueTags.collectEntries { tag ->
-                            [
-                                    (tag): getObjectSchema(tag)
-                            ]
-                        },
+                        schemas        : components,
                         responses      : [
                                 '200'       : [description: 'OK - Sucessful operation'],
                                 '201'       : [description: 'Created - Sucessful creation'],
@@ -162,20 +162,21 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         def description
         def responses = [:]
         def requestBody
+        def tagObject = components[tag] ? [$ref: "#/components/schemas/$tag"] : [type: 'object']
         if (actionName == 'save' && methodName == POST) {
             requestBody = [
-                    content : ['application/json': [schema: [type: 'object', properties: [(tag): [$ref: "#/components/schemas/$tag"]]]]],
+                    content : ['application/json': [schema: [type: 'object', properties: [(tag): tagObject]]]],
                     required: true
             ]
             responses['201'] = [
                     description: 'Created - Sucessful creation',
-                    content    : ['application/json': [schema: [$ref: "#/components/schemas/$tag"]]]
+                    content    : ['application/json': [schema: tagObject]]
             ]
             description = "Create a new $tag"
         } else if (actionName == 'update' && methodName == PUT) {
             responses['200'] = [
                     description: 'OK - Sucessful update',
-                    content    : ['application/json': [schema: [$ref: "#/components/schemas/$tag"]]]
+                    content    : ['application/json': [schema: tagObject]]
             ]
             description = "Update the $tag located at this URL"
         } else if (actionName == 'delete' && methodName == DELETE) {
@@ -184,13 +185,13 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         } else if (actionName == 'show' && methodName == GET) {
             responses['200'] = [
                     description: 'OK - Sucessful get',
-                    content    : ['application/json': [schema: [$ref: "#/components/schemas/$tag"]]]
+                    content    : ['application/json': [schema: tagObject]]
             ]
             description = "Get the $tag located at this URL"
         } else if (actionName == 'index' && methodName == GET) {
             responses['200'] = [
                     description: 'OK - Sucessful list',
-                    content    : ['application/json': [schema: [type: 'array', items: [$ref: "#/components/schemas/$tag"]]]]
+                    content    : ['application/json': [schema: [type: 'array', items: tagObject]]]
             ]
             description = "Get the list of $tag"
         } else {
@@ -319,26 +320,141 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         combinations
     }
 
-    private Map getObjectSchema(String tag) {
-        def object = [type: 'object']
-        def schemas = [
+    private Map getComponents() {
+        return [
                 acceptanceTest: [
+                        type      : 'object',
                         properties: [
-                                id         : getTypeLong(),
-                                uid        : getTypeInt(),
+                                id         : getTypeId(),
+                                uid        : getTypeUid(),
                                 name       : getTypeString(),
                                 description: getTypeString(1000),
-                                state      : getTypeIntEnum(AcceptanceTest.AcceptanceTestState.values()*.id),
-                                parentStory: [type: 'object', properties: [id: getTypeLong()]],
+                                state      : getTypeIntEnum(AcceptanceTest.AcceptanceTestState.values()*.id, AcceptanceTest.AcceptanceTestState.TOCHECK, '1: to check, 5: failed, 10: success'),
+                                parentStory: getTypeNestedObject(),
                                 rank       : getTypeRank(),
                         ],
                         required  : ['name', 'parentStory']
+                ],
+                actor         : [
+                        type      : 'object',
+                        properties: [
+                                id  : getTypeId(),
+                                uid : getTypeUid(),
+                                name: getTypeString(),
+                        ],
+                        required  : ['name']
+                ],
+                comment       : [
+                        type      : 'object',
+                        properties: [
+                                id         : getTypeId(),
+                                body       : [type: 'string'],
+                                commentable: [type: 'object', writeOnly: true, properties: [id: getTypeLong(), 'class': [type: 'string', enum: ['Story', 'Task', 'Feature']]]]
+                        ],
+                        required  : ['body', 'commentable']
+                ],
+                feature       : [
+                        type      : 'object',
+                        properties: [
+                                id         : getTypeId(),
+                                uid        : getTypeUid(),
+                                name       : getTypeString(),
+                                description: getTypeString(1000),
+                                notes      : getTypeString(3000),
+                                tags       : getTypeTags(),
+                                color      : getTypeColor('#0067e8'),
+                                state      : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.featureStates*.key, Feature.STATE_BUSY, '-1: draft (portfolio), 0: todo, 1: in progress, 2: done', true),
+                                type       : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.featureTypes*.key, Feature.TYPE_FUNCTIONAL, '0: functional, 1: enabler'),
+                                rank       : getTypeRank(),
+                                value      : [type: 'integer', minimum: 0, maximum: 99]
+                        ],
+                        required  : ['name']
+                ],
+                release       : [
+                        type      : 'object',
+                        properties: [
+                                startDate       : getTypeDate(),
+                                endDate         : getTypeDate(),
+                                name            : getTypeString(),
+                                vision          : [type: 'string'],
+                                firstSprintIndex: getTypeInt()
+                        ],
+                        required  : ['startDate', 'endDate', 'name']
+                ],
+                sprint        : [
+                        type      : 'object',
+                        properties: [
+                                startDate       : getTypeDate(),
+                                endDate         : getTypeDate(),
+                                parentRelease   : getTypeNestedObject(),
+                                goal            : [type: 'string'],
+                                retrospective   : [type: 'string'],
+                                doneDefinition  : [type: 'string'],
+                                deliveredVersion: getTypeString()
+                        ],
+                        required  : ['startDate', 'endDate', 'parentRelease']
+                ],
+                story         : [
+                        type      : 'object',
+                        properties: [
+                                id           : getTypeId(),
+                                uid          : getTypeUid(),
+                                name         : getTypeString(),
+                                description  : getTypeString(1000),
+                                notes        : getTypeString(3000),
+                                tags         : getTypeTags(),
+                                state        : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.storyStates*.key, Story.STATE_SUGGESTED, '1: suggested (sandbox), 2: accepted (backlog), 3: estimated (backlog), 4: planned (sprint), 5: in progress (sprint), 6: in review (sprint), 7: done (sprint), -1: frozen ("all" backlog)', true),
+                                type         : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.storyTypes*.key, Story.TYPE_USER_STORY, '0: user story, 2: defect, 3: technical story, 4: epic story'),
+                                rank         : getTypeRank(),
+                                feature      : getTypeNestedObject(),
+                                dependsOn    : getTypeNestedObject(),
+                                creator      : getTypeNestedObject(),
+                                parentSprint : getTypeNestedObject(),
+                                value        : [type: 'integer', minimum: 0, maximum: 99],
+                                effort       : [type: 'number'],
+                                affectVersion: [type: 'string'],
+                                origin       : [type: 'string'],
+                                testState    : getTypeIntEnum(Story.TestState.values()*.id, null, '0: no test, 1: to check, 5: failed, 10: success', true),
+
+                        ],
+                        required  : ['name']
+                ],
+                task          : [
+                        type      : 'object',
+                        properties: [
+                                id         : getTypeId(),
+                                uid        : getTypeUid(),
+                                name       : getTypeString(),
+                                description: getTypeString(1000),
+                                notes      : getTypeString(3000),
+                                tags       : getTypeTags(),
+                                color      : getTypeColor('#ffcc01'),
+                                state      : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.taskStates*.key, Task.STATE_WAIT, '0: todo, 1: in progress, 2: done', true),
+                                type       : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.taskTypes*.key, null, '10: recurrent, 11: urgent, null: has a parentStory'),
+                                rank       : getTypeRank(),
+                                parentStory: getTypeNestedObject(),
+                                responsible: getTypeNestedObject(),
+                                sprint     : getTypeNestedObject(true),
+                                blocked    : [type: 'boolean'],
+                                estimation : [type: 'number'],
+                                initial    : [type: 'number'],
+                                spent      : [type: 'number']
+                        ],
+                        required  : ['name']
                 ]
         ]
-        if (schemas.containsKey(tag)) {
-            object.putAll(schemas[tag])
-        }
-        return object
+    }
+
+    private Map getTypeId() {
+        def type = getTypeLong()
+        type.readOnly = true
+        return type
+    }
+
+    private Map getTypeUid() {
+        def type = getTypeInt()
+        type.readOnly = true
+        return type
     }
 
     private Map getTypeLong() {
@@ -349,8 +465,23 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         return [type: 'integer', format: 'int32']
     }
 
-    private Map getTypeIntEnum(List enumValues) {
-        return [type: 'integer', enum: enumValues]
+    private Map getTypeTags() {
+        return [type: 'array', items: [type: 'string']]
+    }
+
+    private Map getTypeIntEnum(List enumValues, defaultValue = null, String description = '', boolean readOnly = false) {
+        def type = [type: 'integer', enum: enumValues]
+        if (description) {
+            type.description = description
+        }
+        if (readOnly) {
+            type.readOnly = true
+        }
+        if (defaultValue != null
+        ) {
+            type.default = defaultValue
+        }
+        return type
     }
 
     private Map getTypeString(Integer maxLength = 255) {
@@ -358,8 +489,24 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     private Map getTypeRank() {
-        def typeRank = getTypeInt()
-        typeRank.put('minimum', 1)
-        return typeRank
+        def type = getTypeInt()
+        type.minimum = 1
+        return type
+    }
+
+    private Map getTypeColor(String defaultColor) {
+        return [type: 'string', description: 'Hex color starting with #', default: defaultColor]
+    }
+
+    private Map getTypeNestedObject(boolean readOnly = false) {
+        def type = [type: 'object', properties: [id: getTypeLong()]]
+        if (readOnly) {
+            type.readOnly = true
+        }
+        return type
+    }
+
+    private Map getTypeDate() {
+        return [type: 'string', format: 'date-time']
     }
 }
