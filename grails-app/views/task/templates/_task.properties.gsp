@@ -53,7 +53,6 @@
                                 colorpicker-position="left"
                                 colorpicker-with-input="true"
                                 ng-click="editForm(true); refreshMostUsedColors();"
-                                value="#bf3d3d"
                                 name="color"
                                 colors="mostUsedColors"
                                 ng-model="editableTask.color">${message(code: 'todo.is.ui.color')}</button>

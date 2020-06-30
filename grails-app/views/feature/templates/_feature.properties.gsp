@@ -52,7 +52,6 @@
                             colorpicker-position="left"
                             colorpicker-with-input="true"
                             ng-click="editForm(true); refreshAvailableColors();"
-                            value="#bf3d3d"
                             name="color"
                             colors="availableColors"
                             ng-model="editableFeature.color">${message(code: 'todo.is.ui.color')}</button>
