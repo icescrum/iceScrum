@@ -63,7 +63,7 @@ class ReleaseController implements ControllerErrorHandler {
         }
         def release = new Release()
         Release.withTransaction {
-            bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate', 'firstSprintIndex']])
+            bindData(release, releaseParams, [include: ['name', 'vision', 'startDate', 'endDate', 'firstSprintIndex']])
             releaseService.save(release, _project)
         }
         render(status: 201, contentType: 'application/json', text: release as JSON)
