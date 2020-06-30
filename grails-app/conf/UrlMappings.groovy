@@ -60,13 +60,6 @@ class UrlMappings {
             controller = 'scrumOS'
             action = 'textileParser'
         }
-        "/charts/$context" {
-            action = 'charts'
-            controller = 'scrumOS'
-            constraints {
-                context(matches: /[a-zA-Z]*/)
-            }
-        }
         // Permalinks
         "/$project-F$uid/$tab?" {
             controller = 'feature'
@@ -192,10 +185,6 @@ class UrlMappings {
                 id(matches: /\d*/)
             }
         }
-        "/user/$id/widget" {
-            controller = 'user'
-            action = [POST: "widget"]
-        }
         "/user/$id/menu" {
             controller = 'user'
             action = [POST: "menu"]
@@ -294,13 +283,6 @@ class UrlMappings {
         "/project/$project/leaveTeam" {
             controller = 'project'
             action = 'leaveTeam'
-            constraints {
-                project(matches: /\d*/)
-            }
-        }
-        "/project/$project/team" {
-            controller = 'project'
-            action = 'team'
             constraints {
                 project(matches: /\d*/)
             }
@@ -442,10 +424,6 @@ class UrlMappings {
         "/clientOauth/redirectUri" {
             controller = 'clientOauth'
             action = [GET: 'redirectUri']
-        }
-        "/clientOauth/refresh" {
-            controller = 'clientOauth'
-            action = [GET: 'refresh']
         }
         // Errors mapping
         "401"(controller: "errors", action: "error401")
