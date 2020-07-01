@@ -103,11 +103,12 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         }
         def uniqueTags = tags.unique().sort()
         def components = getComponents()
+        def g = Holders.grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
         return [
                 openapi     : '3.0.2',
                 info        : [
                         title      : 'iceScrum REST API',
-                        description: 'Access iceScrum programmatically',
+                        description: "This documentation lists the endpoints to access iceScrum programmatically through its REST HTTP API.\n\nThis documentation applies to iceScrum **${g.meta([name: 'app.version'])}**. If you use your own server (on-premise) then append */api* to its URL to read the corresponding documentation.",
                         version    : '1.0',
                         contact    : [
                                 email: 'support@kagilum.com'
@@ -199,7 +200,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
             description = ''
         }
         if (customConfig.requestBody) {
-            requestBody = [content : ['application/json': [schema: [type: 'object', properties: customConfig.requestBody]]]]
+            requestBody = [content: ['application/json': [schema: [type: 'object', properties: customConfig.requestBody]]]]
         }
         if (customConfig.description) {
             description = customConfig.description
