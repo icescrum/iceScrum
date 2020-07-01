@@ -41,7 +41,7 @@ class RestUrlMappings {
         }
         "/ws/textile" {
             controller = 'scrumOS'
-            action = [POST: 'textileParser']
+            action = [POST: 'textileParser', PUT: 'textileParser']
         }
         // User
         "/ws/user" { // Admin
@@ -317,7 +317,7 @@ class RestUrlMappings {
         // Plan a release with a plannedVelocity
         "/ws/project/$project/release/$id/autoPlan/$plannedVelocity" {
             controller = 'release'
-            action = [POST: 'autoPlan']
+            action = [POST: 'autoPlan', PUT: 'autoPlan']
             constraints {
                 id(matches: /\d*/)
                 project(matches: /[0-9A-Z]*/)
@@ -347,7 +347,7 @@ class RestUrlMappings {
         // Plan a sprint with a plannedVelocity
         "/ws/project/$project/sprint/$id/autoPlan/$plannedVelocity" {
             controller = 'sprint'
-            action = [POST: 'autoPlan']
+            action = [POST: 'autoPlan', PUT: 'autoPlan']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
