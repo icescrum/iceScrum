@@ -26,6 +26,7 @@ package org.icescrum.web
 
 import grails.util.Holders
 import groovy.json.JsonOutput
+import org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib
 import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
 import org.codehaus.groovy.grails.web.mapping.UrlMapping
@@ -103,12 +104,11 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         }
         def uniqueTags = tags.unique().sort()
         def components = getComponents()
-        def g = Holders.grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
         return [
                 openapi     : '3.0.2',
                 info        : [
                         title      : 'iceScrum REST API',
-                        description: "This documentation lists the endpoints to access iceScrum programmatically through its REST HTTP API.\n\nThis documentation applies to iceScrum **${g.meta([name: 'app.version'])}**. If you use your own server (on-premise) then append */api* to its URL to read the corresponding documentation.",
+                        description: "This documentation lists the endpoints to access iceScrum programmatically through its REST HTTP API.\n\nThis documentation applies to iceScrum **${getApplicationTagLib().meta([name: 'app.version'])}**. If you use your own server (on-premise) then append */api* to its URL to read the corresponding documentation.",
                         version    : '1.0',
                         contact    : [
                                 email: 'support@kagilum.com'
@@ -207,6 +207,17 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         }
         if (customConfig.responses) {
             responses.putAll(customConfig.responses)
+        }
+        if (customConfig.app) {
+            if (description) {
+                description += ' - '
+            }
+            description += 'Requires enabling '
+            if (customConfig.app.startsWith('is.ui')) {
+                description += 'the ' + getApplicationTagLib().message(code: customConfig.app) + ' App'
+            } else {
+                description += customConfig.app
+            }
         }
         responses.putAll([
                 '400': [$ref: '#/components/responses/400'],
@@ -512,5 +523,9 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
     private Map getTypeDate() {
         return [type: 'string', format: 'date-time']
+    }
+
+    private ApplicationTagLib getApplicationTagLib() {
+        Holders.grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
     }
 }
