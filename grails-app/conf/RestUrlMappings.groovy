@@ -250,9 +250,18 @@ class RestUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                action(inList: ['accept', 'returnToSandbox', 'turnIntoFeature', 'turnIntoTask', 'copy', 'plan', 'unPlan', 'shiftToNextSprint', 'done', 'unDone'])
+                action(inList: ['accept', 'returnToSandbox', 'turnIntoFeature', 'turnIntoTask', 'copy', 'unPlan', 'shiftToNextSprint', 'done', 'unDone'])
             }
             oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
+        }
+        "/ws/project/$project/story/$id/plan" {
+            controller = 'story'
+            action = [PUT: 'plan', POST: 'plan']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+            oapi = [requestBody: [story: [type: 'object', properties: [parentSprint: [type: 'object', properties: [id: [type: 'integer']]]]]]]
         }
         // Story filter by backlog / actor / sprint / feature
         "/ws/project/$project/story/$type/$typeId" {

@@ -91,7 +91,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 //                            if (!isControllerActionExist(controllerName, actionName)) {
 //                                throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
 //                            }
-                            return [(methodName): getMethodDescription(methodName, actionName, tag, constraints, fixedParameters, customConfig.queryParameters)]
+                            return [(methodName): getMethodDescription(methodName, actionName, tag, constraints, fixedParameters, customConfig)]
                         }
                         if (!paths.containsKey(urlPattern)) {
                             paths[urlPattern] = [:]
@@ -158,7 +158,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         ]
     }
 
-    private Map getMethodDescription(String methodName, String actionName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters, List queryParameters) {
+    private Map getMethodDescription(String methodName, String actionName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters, Map customConfig) {
         def description
         def responses = [:]
         def requestBody
@@ -178,16 +178,16 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                     description: 'OK - Sucessful update',
                     content    : ['application/json': [schema: tagObject]]
             ]
-            description = "Update the $tag located at this URL"
+            description = "Update the $tag"
         } else if (actionName == 'delete' && methodName == DELETE) {
             responses['204'] = [$ref: '#/components/responses/204-DELETE']
-            description = "Delete the $tag located at this URL"
+            description = "Delete the $tag"
         } else if (actionName == 'show' && methodName == GET) {
             responses['200'] = [
                     description: 'OK - Sucessful get',
                     content    : ['application/json': [schema: tagObject]]
             ]
-            description = "Get the $tag located at this URL"
+            description = "Get the $tag"
         } else if (actionName == 'index' && methodName == GET) {
             responses['200'] = [
                     description: 'OK - Sucessful list',
@@ -197,6 +197,15 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         } else {
             responses['200'] = [$ref: '#/components/responses/200']
             description = ''
+        }
+        if (customConfig.requestBody) {
+            requestBody = [content : ['application/json': [schema: [type: 'object', properties: customConfig.requestBody]]]]
+        }
+        if (customConfig.description) {
+            description = customConfig.description
+        }
+        if (customConfig.responses) {
+            responses.putAll(customConfig.responses)
         }
         responses.putAll([
                 '400': [$ref: '#/components/responses/400'],
@@ -209,7 +218,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 tags   : [tag],
                 summary: description
         ]
-        if (constraints || queryParameters) {
+        if (constraints || customConfig.queryParameters) {
             methodDescription.parameters = []
             if (constraints) {
                 methodDescription.parameters.addAll(constraints.collect { constraint ->
@@ -221,7 +230,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                             required   : true
                     ]
                     if (constraint.matches == '\\d*') {
-                        parameter.schema = getTypeLong()
+                        parameter.schema = [type: 'integer']
                     } else {
                         parameter.schema = [type: 'string']
                         if (constraint.inList) {
@@ -231,8 +240,8 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                     return parameter
                 })
             }
-            if (queryParameters) {
-                methodDescription.parameters.addAll(queryParameters.collect { queryParameter ->
+            if (customConfig.queryParameters) {
+                methodDescription.parameters.addAll(customConfig.queryParameters.collect { queryParameter ->
                     return queryParameter + [in: 'query']
                 })
             }
@@ -357,7 +366,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         properties: [
                                 id         : getTypeId(),
                                 body       : [type: 'string'],
-                                commentable: [type: 'object', writeOnly: true, properties: [id: getTypeLong(), 'class': [type: 'string', enum: ['Story', 'Task', 'Feature']]]]
+                                commentable: [type: 'object', writeOnly: true, properties: [id: [type: 'integer'], 'class': [type: 'string', enum: ['Story', 'Task', 'Feature']]]]
                         ],
                         required  : ['body', 'commentable']
                 ],
@@ -385,7 +394,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 endDate         : getTypeDate(),
                                 name            : getTypeString(),
                                 vision          : [type: 'string'],
-                                firstSprintIndex: getTypeInt()
+                                firstSprintIndex: [type: 'integer']
                         ],
                         required  : ['startDate', 'endDate', 'name']
                 ],
@@ -454,23 +463,11 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     private Map getTypeId() {
-        def type = getTypeLong()
-        type.readOnly = true
-        return type
+        return [type: 'integer', readOnly: true]
     }
 
     private Map getTypeUid() {
-        def type = getTypeInt()
-        type.readOnly = true
-        return type
-    }
-
-    private Map getTypeLong() {
-        return [type: 'integer', format: 'int64']
-    }
-
-    private Map getTypeInt() {
-        return [type: 'integer', format: 'int32']
+        return [type: 'integer', readOnly: true]
     }
 
     private Map getTypeTags() {
@@ -497,9 +494,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     private Map getTypeRank() {
-        def type = getTypeInt()
-        type.minimum = 1
-        return type
+        return [type: 'integer', minimum: 1]
     }
 
     private Map getTypeColor(String defaultColor) {
@@ -507,7 +502,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
     }
 
     private Map getTypeNestedObject(boolean readOnly = false) {
-        def type = [type: 'object', properties: [id: getTypeLong()]]
+        def type = [type: 'object', properties: [id: [type: 'integer']]]
         if (readOnly) {
             type.readOnly = true
         }
