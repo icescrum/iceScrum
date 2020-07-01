@@ -50,14 +50,14 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
 
     Map getOpenApi(List<UrlMapping> urlMappings) {
         def restUrlMappings = urlMappings.findAll {
-            def customParameters = it.parameterValues.oapi
-            it.urlData.tokens[0] == 'ws' && !customParameters?.hide
+            def customConfig = it.parameterValues.oapi
+            it.urlData.tokens[0] == 'ws' && !customConfig?.hide
         }
         def tags = []
         def paths = new TreeMap<String, Map>()
         restUrlMappings.groupBy { it.controllerName }.each { controllerAttribute, mappings ->
             mappings.each { mapping ->
-                def customParameters = mapping.parameterValues.oapi
+                def customConfig = mapping.parameterValues.oapi ?: [:]
                 def controllerNames = controllerAttribute ? [controllerAttribute != 'scrumOS' ? controllerAttribute : 'server'] : mapping.constraints.find { it.propertyName == 'controller' }.inList
                 def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['']
                 def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['']
@@ -71,7 +71,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         def fixedParameters = globalFixedParameters + optionalParametersCombination
                         String urlPattern = getUrlPattern(mapping, fixedParameters)
                         def constraints = mapping.constraints.findAll { !fixedParameters.containsKey(it.propertyName) }
-                        String tag = customParameters?.tag ?: controllerName
+                        String tag = customConfig.tag ?: controllerName
                         tags << tag
                         def methodNames
                         if (mapping.actionName) {
@@ -84,14 +84,14 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 methodNames.remove(POST)
                             }
                         } else {
-                            methodNames = [customParameters?.method ? customParameters?.method.toLowerCase() : GET]
+                            methodNames = [customConfig.method ? customConfig.method.toLowerCase() : GET]
                         }
                         Map methods = methodNames.collectEntries { methodName ->
                             def actionName = mapping.actionName ? mapping.actionName[methodName.toUpperCase()] : actionNameFromParameter
 //                            if (!isControllerActionExist(controllerName, actionName)) {
 //                                throwError(mapping, "Action not found in ${controllerName.capitalize()}Controller: $actionName")
 //                            }
-                            return [(methodName): getMethodDescription(methodName, actionName, tag, constraints, fixedParameters)]
+                            return [(methodName): getMethodDescription(methodName, actionName, tag, constraints, fixedParameters, customConfig.queryParameters)]
                         }
                         if (!paths.containsKey(urlPattern)) {
                             paths[urlPattern] = [:]
@@ -158,7 +158,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         ]
     }
 
-    private Map getMethodDescription(String methodName, String actionName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters) {
+    private Map getMethodDescription(String methodName, String actionName, String tag, List<ConstrainedProperty> constraints, Map fixedParameters, List queryParameters) {
         def description
         def responses = [:]
         def requestBody
@@ -209,24 +209,32 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 tags   : [tag],
                 summary: description
         ]
-        if (constraints) {
-            methodDescription.parameters = constraints.collect { constraint ->
-                def parameterName = getParameterName(constraint.propertyName, fixedParameters)
-                def parameter = [
-                        name       : parameterName,
-                        description: getParameterDescription(tag, parameterName),
-                        in         : 'path',
-                        required   : true
-                ]
-                if (constraint.matches == '\\d*') {
-                    parameter.schema = getTypeLong()
-                } else {
-                    parameter.schema = [type: 'string']
-                    if (constraint.inList) {
-                        parameter.schema.enum = constraint.inList
+        if (constraints || queryParameters) {
+            methodDescription.parameters = []
+            if (constraints) {
+                methodDescription.parameters.addAll(constraints.collect { constraint ->
+                    def parameterName = getParameterName(constraint.propertyName, fixedParameters)
+                    def parameter = [
+                            name       : parameterName,
+                            description: getParameterDescription(tag, parameterName),
+                            in         : 'path',
+                            required   : true
+                    ]
+                    if (constraint.matches == '\\d*') {
+                        parameter.schema = getTypeLong()
+                    } else {
+                        parameter.schema = [type: 'string']
+                        if (constraint.inList) {
+                            parameter.schema.enum = constraint.inList
+                        }
                     }
-                }
-                return parameter
+                    return parameter
+                })
+            }
+            if (queryParameters) {
+                methodDescription.parameters.addAll(queryParameters.collect { queryParameter ->
+                    return queryParameter + [in: 'query']
+                })
             }
         }
         if (requestBody) {

@@ -37,6 +37,7 @@ class RestUrlMappings {
         "/ws/version" {
             controller = 'scrumOS'
             action = [GET: 'version']
+            oapi = [queryParameters: [[name: 'verbose', description: 'Return detailed information alongside with the version', schema: [type: 'boolean', default: false]]]]
         }
         "/ws/textile" {
             controller = 'scrumOS'
@@ -67,6 +68,7 @@ class RestUrlMappings {
             constraints {
                 substitutedBy(matches: /\d*/)
             }
+            oapi = [queryParameters: [[name: 'deleteOwnedData', description: 'Whether the projects and teams created by this user should be deleted', schema: [type: 'boolean', default: false]]]]
         }
         "/ws/user/current" {
             controller = 'user'
