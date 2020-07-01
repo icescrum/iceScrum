@@ -321,7 +321,7 @@ class ScrumOSController implements ControllerErrorHandler {
         render(status: 200, template: "dialogs/list")
     }
 
-    @Secured(["hasRole('ROLE_ADMIN')"])
+    @Secured(['isAuthenticated()'])
     def swagger() {
         withCacheHeaders {
             delegate.lastModified {
@@ -334,7 +334,7 @@ class ScrumOSController implements ControllerErrorHandler {
         }
     }
 
-    @Secured(["hasRole('ROLE_ADMIN')"])
+    @Secured(['isAuthenticated()'])
     def openAPI() {
         withCacheHeaders {
             delegate.lastModified {

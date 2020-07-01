@@ -1,4 +1,4 @@
-<%@ page import="grails.util.Environment" %>
+<%@ page import="org.icescrum.core.support.ApplicationSupport;grails.util.Environment" %>
 <div>
     <g:set var="analytics" value="?utm_source=about&utm_medium=link&utm_campaign=icescrum"/>
     <div class="table-responsive">
@@ -15,6 +15,10 @@
                 <tr>
                     <td>${message(code: 'is.ui.documentation')}</td>
                     <td><a href="${version.documentation.toString() + analytics}" target="_blank">${version.documentation}</a></td>
+                </tr>
+                <tr>
+                    <td>${message(code: 'is.ui.documentation.api')}</td>
+                    <td><a href="${ApplicationSupport.serverURL() + '/api'}" target="_blank">${ApplicationSupport.serverURL() + '/api'}</a></td>
                 </tr>
                 <tr>
                     <td>${message(code: 'is.ui.documentation.getting.started')}</td>
