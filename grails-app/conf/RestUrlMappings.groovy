@@ -44,9 +44,10 @@ class RestUrlMappings {
             action = [POST: 'textileParser', PUT: 'textileParser']
         }
         // User
-        "/ws/user" { // Admin
+        "/ws/user" {
             controller = 'user'
             action = [GET: 'index', POST: 'save']
+            oapi = [documentation: 'Requires an administration account']
         }
         "/ws/user/$id" {
             controller = 'user'
@@ -68,7 +69,10 @@ class RestUrlMappings {
             constraints {
                 substitutedBy(matches: /\d*/)
             }
-            oapi = [queryParameters: [[name: 'deleteOwnedData', description: 'Whether the projects and teams created by this user should be deleted', schema: [type: 'boolean', default: false]]]]
+            oapi = [
+                    documentation: 'Requires an administration account',
+                    queryParameters: [[name: 'deleteOwnedData', description: 'Whether the projects and teams created by this user should be deleted', schema: [type: 'boolean', default: false]]]
+            ]
         }
         "/ws/user/current" {
             controller = 'user'
