@@ -183,7 +183,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
         } else if (actionName == 'delete' && methodName == DELETE) {
             responses['204'] = [$ref: '#/components/responses/204-DELETE']
             description = "Delete the $tag"
-        } else if (actionName == 'show' && methodName == GET) {
+        } else if (actionName in ['show', 'uid'] && methodName == GET) {
             responses['200'] = [
                     description: 'OK - Sucessful get',
                     content    : ['application/json': [schema: tagObject]]
