@@ -42,6 +42,7 @@ class RestUrlMappings {
         "/ws/textile" {
             controller = 'scrumOS'
             action = [POST: 'textileParser', PUT: 'textileParser']
+            oapi = [description: 'Convert a rich text textile string to HTML']
         }
         // User
         "/ws/user" {
@@ -98,10 +99,15 @@ class RestUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        // Project (token must be admin for index)
         "/ws/project" {
             controller = 'project'
-            action = [GET: 'index', POST: 'save']
+            action = [GET: 'index']
+            oapi = [description: 'Get the list of project - Requires an administrator account']
+        }
+        "/ws/project" {
+            controller = 'project'
+            action = [POST: 'save']
+            oapi = [hide: true]
         }
         "/ws/createSample" {
             controller = 'project'
@@ -429,6 +435,7 @@ class RestUrlMappings {
         "/ws/portfolio" {
             controller = 'portfolio'
             action = [GET: 'index', POST: 'save']
+            oapi = [hide: true]
         }
         "/ws/portfolio/$portfolio/$controller/$id?" {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
@@ -437,6 +444,7 @@ class RestUrlMappings {
                 controller(inList: ['hook', 'portfolio'])
                 id(matches: /\d*/)
             }
+            oapi = [hide: true]
         }
         // Hook
         "/ws/hook" {

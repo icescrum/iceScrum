@@ -59,6 +59,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                 def controllerNames = controllerAttribute ? [controllerAttribute != 'scrumOS' ? controllerAttribute : 'server'] : mapping.constraints.find { it.propertyName == 'controller' }.inList
                 def actions = mapping.constraints.find { it.propertyName == 'action' }?.inList ?: ['']
                 def workspaceTypes = mapping.constraints.find { it.propertyName == 'workspaceType' }?.inList ?: ['']
+                workspaceTypes.remove('portfolio') // TMP
                 def combinations = [controllerNames, actions, workspaceTypes].combinations()
                 combinations.each { combination ->
                     def controllerName = combination[0]
