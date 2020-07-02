@@ -371,6 +371,30 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         ],
                         required  : ['name']
                 ],
+                availability  : [
+                        type      : 'object',
+                        properties: [
+                                id                  : getTypeId(),
+                                sprint              : getTypeNestedObject(true),
+                                user                : getTypeNestedObject(true),
+                                days                : [type: 'array', items: [type: 'decimal', minimum: 0]],
+                                expectedAvailability: [type: 'decimal', readOnly: true]
+                        ],
+                        required  : ['days']
+                ],
+                build: [
+                        type: 'object',
+                        properties: [
+                                builtOn: [type: 'string', maxLength: 255, description: 'Name of the CI platform used to generate the build (e.g. Travis)'],
+                                jobName: getTypeString(),
+                                name: getTypeString(),
+                                number: [type: 'integer'],
+                                url: getTypeString(),
+                                date: getTypeDate(),
+                                status: getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.buildStatus*.key, null, '1: success, 5: failed, 10: error, 15: pending, 20: fixed, 25: broken, 30: still, 35: canceled'),
+                        ],
+                        required: ['builtOn', 'jobName', 'name', 'number', 'url', 'date', 'status']
+                ],
                 comment       : [
                         type      : 'object',
                         properties: [
@@ -379,6 +403,17 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 commentable: [type: 'object', writeOnly: true, properties: [id: [type: 'integer'], 'class': [type: 'string', enum: ['Story', 'Task', 'Feature']]]]
                         ],
                         required  : ['body', 'commentable']
+                ],
+                event: [
+                        type: 'object',
+                        properties: [
+                                id: getTypeId(),
+                                name: getTypeString(100),
+                                shape: getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.eventShapes*.key, null, 'circle: 0, cross: 1, diamond: 2, square: 3, triangleUp: 4, triangleDown: 5'),
+                                roadmap: getTypeNestedObject(),
+                                feature: getTypeNestedObject()
+                        ],
+                        required: ['name', 'roadmap', 'shape']
                 ],
                 feature       : [
                         type      : 'object',
