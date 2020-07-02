@@ -399,6 +399,36 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         ],
                         required  : ['name']
                 ],
+                hook: [
+                        type: 'object',
+                        properties: [
+                                url: getTypeString(1000),
+                                events: [type: 'array', items: [type: 'string', enum: ['acceptanceTest.create', 'acceptanceTest.delete', 'acceptanceTest.state', 'acceptanceTest.update', 'actor.create', 'actor.delete', 'actor.update', 'availability.create', 'availability.delete', 'availability.update', 'build.create', 'build.delete', 'build.update', 'commit.create', 'commit.delete', 'commit.update', 'event.create', 'event.delete', 'event.update', 'feature.addedComment', 'feature.create', 'feature.delete', 'feature.removedComment', 'feature.update', 'feature.updatedComment', 'meeting.create', 'meeting.delete', 'meeting.update', 'release.create', 'release.delete', 'release.state', 'release.update', 'roadmap.create', 'roadmap.delete', 'roadmap.update', 'sprint.create', 'sprint.delete', 'sprint.state', 'sprint.update', 'story.addedComment', 'story.create', 'story.delete', 'story.removedComment', 'story.state', 'story.update', 'story.updatedComment', 'task.addedComment', 'task.create', 'task.delete', 'task.removedComment', 'task.state', 'task.update', 'task.updatedComment', 'template.create', 'template.delete', 'template.update']]],
+                                enabled: [type: 'boolean', default: true],
+                                ignoreSsl: [type: 'boolean', default: false],
+                                secret: getTypeString()
+                        ],
+                        required: ['url', 'events']
+                ],
+                label         : [
+                        type      : 'object',
+                        properties: [
+                                name     : getTypeString(),
+                                labelList: getTypeNestedObject(),
+                                color    : getTypeColor('#ffffff'),
+                                rank     : getTypeRank()
+                        ],
+                        required  : ['name', 'labelList']
+                ],
+                labelList     : [
+                        type      : 'object',
+                        properties: [
+                                name         : getTypeString(),
+                                itemType     : [type: 'string', enum: ['story', 'task', 'feature']],
+                                allowMultiple: [type: 'boolean', default: false]
+                        ],
+                        required  : ['name', 'itemType']
+                ],
                 release       : [
                         type      : 'object',
                         properties: [
@@ -464,7 +494,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 parentStory: getTypeNestedObject(),
                                 responsible: getTypeNestedObject(),
                                 sprint     : getTypeNestedObject(true),
-                                blocked    : [type: 'boolean'],
+                                blocked    : [type: 'boolean', default: false],
                                 estimation : [type: 'number'],
                                 initial    : [type: 'number'],
                                 spent      : [type: 'number']
