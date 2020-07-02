@@ -31,10 +31,7 @@ import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.web.mapping.ResponseCodeUrlMapping
 import org.codehaus.groovy.grails.web.mapping.UrlMapping
 import org.codehaus.groovy.grails.web.mapping.reporting.UrlMappingsRenderer
-import org.icescrum.core.domain.AcceptanceTest
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.*
 import org.icescrum.core.support.ApplicationSupport
 
 class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
