@@ -47,7 +47,7 @@ class RestUrlMappings {
         "/ws/user" {
             controller = 'user'
             action = [GET: 'index', POST: 'save']
-            oapi = [documentation: 'Requires an administration account']
+            oapi = [description: 'Requires an administrator account']
         }
         "/ws/user/$id" {
             controller = 'user'
@@ -70,7 +70,7 @@ class RestUrlMappings {
                 substitutedBy(matches: /\d*/)
             }
             oapi = [
-                    documentation: 'Requires an administration account',
+                    description: 'Delete the user - Requires an administrator account',
                     queryParameters: [[name: 'deleteOwnedData', description: 'Whether the projects and teams created by this user should be deleted', schema: [type: 'boolean', default: false]]]
             ]
         }

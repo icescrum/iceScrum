@@ -399,16 +399,16 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         ],
                         required  : ['name']
                 ],
-                hook: [
-                        type: 'object',
+                hook          : [
+                        type      : 'object',
                         properties: [
-                                url: getTypeString(1000),
-                                events: [type: 'array', items: [type: 'string', enum: ['acceptanceTest.create', 'acceptanceTest.delete', 'acceptanceTest.state', 'acceptanceTest.update', 'actor.create', 'actor.delete', 'actor.update', 'availability.create', 'availability.delete', 'availability.update', 'build.create', 'build.delete', 'build.update', 'commit.create', 'commit.delete', 'commit.update', 'event.create', 'event.delete', 'event.update', 'feature.addedComment', 'feature.create', 'feature.delete', 'feature.removedComment', 'feature.update', 'feature.updatedComment', 'meeting.create', 'meeting.delete', 'meeting.update', 'release.create', 'release.delete', 'release.state', 'release.update', 'roadmap.create', 'roadmap.delete', 'roadmap.update', 'sprint.create', 'sprint.delete', 'sprint.state', 'sprint.update', 'story.addedComment', 'story.create', 'story.delete', 'story.removedComment', 'story.state', 'story.update', 'story.updatedComment', 'task.addedComment', 'task.create', 'task.delete', 'task.removedComment', 'task.state', 'task.update', 'task.updatedComment', 'template.create', 'template.delete', 'template.update']]],
-                                enabled: [type: 'boolean', default: true],
+                                url      : getTypeString(1000),
+                                events   : [type: 'array', items: [type: 'string', enum: ['acceptanceTest.create', 'acceptanceTest.delete', 'acceptanceTest.state', 'acceptanceTest.update', 'actor.create', 'actor.delete', 'actor.update', 'availability.create', 'availability.delete', 'availability.update', 'build.create', 'build.delete', 'build.update', 'commit.create', 'commit.delete', 'commit.update', 'event.create', 'event.delete', 'event.update', 'feature.addedComment', 'feature.create', 'feature.delete', 'feature.removedComment', 'feature.update', 'feature.updatedComment', 'meeting.create', 'meeting.delete', 'meeting.update', 'release.create', 'release.delete', 'release.state', 'release.update', 'roadmap.create', 'roadmap.delete', 'roadmap.update', 'sprint.create', 'sprint.delete', 'sprint.state', 'sprint.update', 'story.addedComment', 'story.create', 'story.delete', 'story.removedComment', 'story.state', 'story.update', 'story.updatedComment', 'task.addedComment', 'task.create', 'task.delete', 'task.removedComment', 'task.state', 'task.update', 'task.updatedComment', 'template.create', 'template.delete', 'template.update']]],
+                                enabled  : [type: 'boolean', default: true],
                                 ignoreSsl: [type: 'boolean', default: false],
-                                secret: getTypeString()
+                                secret   : getTypeString()
                         ],
-                        required: ['url', 'events']
+                        required  : ['url', 'events']
                 ],
                 label         : [
                         type      : 'object',
@@ -436,7 +436,8 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 endDate         : getTypeDate(),
                                 name            : getTypeString(),
                                 vision          : [type: 'string'],
-                                firstSprintIndex: [type: 'integer']
+                                firstSprintIndex: [type: 'integer'],
+                                state           : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.releaseStates*.key, Release.STATE_WAIT, '1: todo, 2: in progress, 3: done', true)
                         ],
                         required  : ['startDate', 'endDate', 'name']
                 ],
@@ -449,7 +450,8 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                                 goal            : [type: 'string'],
                                 retrospective   : [type: 'string'],
                                 doneDefinition  : [type: 'string'],
-                                deliveredVersion: getTypeString()
+                                deliveredVersion: getTypeString(),
+                                state           : getTypeIntEnum(Holders.grailsApplication.config.icescrum.resourceBundles.sprintStates*.key, Sprint.STATE_WAIT, '1: todo, 2: in progress, 3: done', true)
                         ],
                         required  : ['startDate', 'endDate', 'parentRelease']
                 ],
