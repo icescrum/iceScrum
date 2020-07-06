@@ -55,8 +55,10 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', '$injector
             attachment.type = attachmentable.class.toLowerCase();
             attachment.typeId = attachmentable.id;
             attachment.attachmentable = {id: attachmentable.id};
-            attachmentable.attachments.unshift(attachment);
-            attachmentable.attachments_count = attachmentable.attachments.length;
+            if (angular.isArray(attachmentable.attachments)) {
+                attachmentable.attachments.unshift(attachment);
+                attachmentable.attachments_count = attachmentable.attachments.length;
+            }
         }
     };
     this.update = function(attachment, attachmentable, workspaceId, workspaceType) {
