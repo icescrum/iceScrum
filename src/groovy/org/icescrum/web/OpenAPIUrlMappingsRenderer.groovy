@@ -367,7 +367,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         properties: [
                                 id  : getTypeId(),
                                 uid : getTypeUid(),
-                                name: getTypeString(),
+                                name: getTypeString(100),
                         ],
                         required  : ['name']
                 ],
@@ -420,7 +420,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         properties: [
                                 id         : getTypeId(),
                                 uid        : getTypeUid(),
-                                name       : getTypeString(),
+                                name       : getTypeString(100),
                                 description: getTypeString(1000),
                                 notes      : getTypeString(3000),
                                 tags       : getTypeTags(),
@@ -493,7 +493,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         properties: [
                                 id           : getTypeId(),
                                 uid          : getTypeUid(),
-                                name         : getTypeString(),
+                                name         : getTypeString(100),
                                 description  : getTypeString(1000),
                                 notes        : getTypeString(3000),
                                 tags         : getTypeTags(),
@@ -518,7 +518,7 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                         properties: [
                                 id         : getTypeId(),
                                 uid        : getTypeUid(),
-                                name       : getTypeString(),
+                                name       : getTypeString(100),
                                 description: getTypeString(1000),
                                 notes      : getTypeString(3000),
                                 tags       : getTypeTags(),
