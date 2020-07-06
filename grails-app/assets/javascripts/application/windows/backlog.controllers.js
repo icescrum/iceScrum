@@ -252,6 +252,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
                 $flow.files = files;
                 $scope.attachmentQuery($flow, savedObject);
             }, function() {
+                $flow.files = files;
                 $flow.cancel();
             });
         };

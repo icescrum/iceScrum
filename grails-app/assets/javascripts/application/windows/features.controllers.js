@@ -125,6 +125,7 @@ extensibleController('featuresCtrl', ['$scope', '$q', '$state', '$timeout', '$fi
                     $flow.files = files;
                     $scope.attachmentQuery($flow, savedObject);
                 }, function() {
+                    $flow.files = files;
                     $flow.cancel();
                 });
             });
