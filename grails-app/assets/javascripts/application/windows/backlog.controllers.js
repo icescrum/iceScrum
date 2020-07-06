@@ -225,6 +225,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
             $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', workspace: project, workspaceType: WorkspaceType.PROJECT});
             var fileName = files[0].name;
             story.name = fileName.substr(0, fileName.length > 100 ? 100 : fileName.length);
+            story.state = $state.includes('backlog.backlog', {elementId: 'backlog'}) && $scope.authorizedStory('createAccepted') ? StoryStatesByName.ACCEPTED : StoryStatesByName.SUGGESTED;
             return StoryService.save(story, project.id).then(function(savedObject) {
                 var onFileSuccess = function(flowFile) {
                     $flow.removeFile(flowFile);
@@ -268,6 +269,11 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         } else {
             createStoryWithFile(files, project, true);
         }
+    };
+    $scope.authorizedStoryCreateFromFile = function() {
+        return StoryService.authorizedStory('create') && _.find($scope.backlogContainers, function(backlogContainer) {
+            return BacklogService.isSandbox(backlogContainer.backlog) || BacklogService.isBacklog(backlogContainer.backlog);
+        });
     };
     // Init
     $scope.viewName = 'backlog';

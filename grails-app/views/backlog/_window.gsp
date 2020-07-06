@@ -26,17 +26,21 @@
          flow-init
          flow-drop
          flow-files-submitted="newFromFiles($flow, project)"
-         flow-drop-enabled="authorizedStory('create')"
+         flow-drop-enabled="authorizedStoryCreateFromFile()"
          flow-drag-enter="dropClass='card drop-enabled'"
          flow-drag-leave="dropClass='card'"
          ng-class="dropClass">
-        <div class="drop-split-zone-left d-flex align-items-center justify-content-center" flow-drag-hover>
+        <div ng-if="authorizedStoryCreateFromFile()"
+             class="drop-split-zone-left d-flex align-items-center justify-content-center"
+             flow-drag-hover>
             <div>
                 <asset:image src="application/upload-new-many-stories.svg" width="70" height="70"/>
                 <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.many', args: [message(code: 'is.story')])}</span>
             </div>
         </div>
-        <div class="drop-split-zone-right d-flex align-items-center justify-content-center" flow-drag-hover>
+        <div ng-if="authorizedStoryCreateFromFile()"
+             class="drop-split-zone-right d-flex align-items-center justify-content-center"
+             flow-drag-hover>
             <div>
                 <asset:image src="application/upload-new-one-story.svg" width="70" height="70"/>
                 <span class="drop-text">${message(code: 'todo.is.ui.drop.multiple.file.create.one', args: [message(code: 'is.story')])}</span>
