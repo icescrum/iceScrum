@@ -221,10 +221,10 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
     };
     $scope.newFromFiles = function($flow, project) {
         var createStoryWithFile = function(files, project, selectOnComplet) {
-            $flow.files = files;
             var story = new Story();
             $controller('attachmentCtrl', {$scope: $scope, attachmentable: story, clazz: 'story', workspace: project, workspaceType: WorkspaceType.PROJECT});
-            story.name = $flow.files[0].name.substr(0, $flow.files[0].name.length > 99 ? $flow.files[0].name.length : 99);
+            var fileName = files[0].name;
+            story.name = fileName.substr(0, fileName.length > 100 ? 100 : fileName.length);
             return StoryService.save(story, project.id).then(function(savedObject) {
                 var onFileSuccess = function(flowFile) {
                     $flow.removeFile(flowFile);
@@ -248,6 +248,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
                 $flow.on('fileError', onFileError);
                 $flow.on('fileSuccess', onFileSuccess);
                 $flow.on('complete', onComplete);
+                $flow.files = files;
                 $scope.attachmentQuery($flow, savedObject);
             }, function() {
                 $flow.cancel();
