@@ -179,13 +179,6 @@
             <div class="token-tab" ng-controller="UserTokenCtrl">
                 <p class="form-text">
                     ${message(code: 'is.ui.token.title.description')}
-                    <a target="_blank"
-                       ng-class="{small: !big}"
-                       class="link-documentation"
-                       href="{{:: serverUrl + '/api' }}">
-                        <span class="icon-help"></span>
-                        <span>${message(code: 'is.ui.documentation.api')}</span>
-                    </a>
                 </p>
                 <div class="row is-form-row">
                     <div class="form-half">
@@ -244,6 +237,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="text-center font-size-sm mt-4 mb-2">
+                    <a target="_blank"
+                       class="text-primary"
+                       href="{{:: serverUrl + '/api' }}">
+                        ${message(code: 'is.ui.documentation.api')}
+                    </a>
+                </div>
                 <entry:point id="user-dialog-token-tab-general-after-form"/>
             </div>
         </uib-tab>
