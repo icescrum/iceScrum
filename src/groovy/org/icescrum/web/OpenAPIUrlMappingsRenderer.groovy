@@ -77,10 +77,15 @@ class OpenAPIUrlMappingsRenderer implements UrlMappingsRenderer {
                             if (mapping.actionName instanceof String) {
                                 throwError(mapping, 'An HTTP method must be specified')
                             }
-                            def actionMap = (Map) mapping.actionName
-                            methodNames = actionMap.keySet().collect { it.toLowerCase() }
-                            if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
-                                methodNames.remove(POST)
+                            if (mapping.actionName instanceof Map) {
+                                def actionMap = (Map) mapping.actionName
+                                methodNames = actionMap.keySet().collect { it.toLowerCase() }
+                                if (actionMap.containsKey('POST') && actionMap.containsKey('PUT') && actionMap['POST'] == actionMap['PUT']) {
+                                    methodNames.remove(POST)
+                                }
+                            } else {
+                                throwError(mapping, 'Mapping is not a Map ' + mapping.actionName.toString())
+                                methodNames = [customConfig.method ? customConfig.method.toLowerCase() : GET]
                             }
                         } else {
                             methodNames = [customConfig.method ? customConfig.method.toLowerCase() : GET]
