@@ -321,7 +321,7 @@ class ScrumOSController implements ControllerErrorHandler {
         render(status: 200, template: "dialogs/list")
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured(['permitAll()'])
     def swagger() {
         withCacheHeaders {
             delegate.lastModified {
@@ -334,7 +334,7 @@ class ScrumOSController implements ControllerErrorHandler {
         }
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured(['permitAll()'])
     def openAPI() {
         withCacheHeaders {
             delegate.lastModified {
