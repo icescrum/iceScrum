@@ -225,11 +225,6 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
     });
     $scope.formHolder = {};
     $scope.resetReleaseForm();
-    hotkeys.bindTo($scope).add({
-        combo: 'esc',
-        allowIn: ['INPUT'],
-        callback: $scope.resetReleaseForm
-    });
 }]);
 
 controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'WorkspaceType', 'DateService', 'ReleaseService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsRelease', 'project', function($scope, $controller, ReleaseStatesByName, WorkspaceType, DateService, ReleaseService, TimeBoxNotesTemplateService, FormService, detailsRelease, project) {

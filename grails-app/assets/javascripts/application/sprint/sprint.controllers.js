@@ -375,11 +375,6 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
     }), 'orderNumber');
     $scope.sprint.parentRelease = detailsRelease;
     $scope.release = detailsRelease;
-    hotkeys.bindTo($scope).add({
-        combo: 'esc',
-        allowIn: ['INPUT'],
-        callback: $scope.resetSprintForm
-    });
 }]);
 
 controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'WorkspaceType', 'DateService', 'SprintService', 'ReleaseService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsSprint', 'detailsRelease', 'project', function($scope, $controller, SprintStatesByName, WorkspaceType, DateService, SprintService, ReleaseService, TimeBoxNotesTemplateService, FormService, detailsSprint, detailsRelease, project) {

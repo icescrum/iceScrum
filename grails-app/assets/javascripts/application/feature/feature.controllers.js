@@ -175,11 +175,6 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     $scope.formHolder = {};
     $scope.availableColors = availableColors;
     $scope.resetFeatureForm();
-    hotkeys.bindTo($scope).add({
-        combo: 'esc',
-        allowIn: ['INPUT'],
-        callback: $scope.resetFeatureForm
-    });
 }]);
 
 extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'FeatureStatesByName', 'project', function($scope, $controller, featureListId, FeatureService, FeatureStatesByName, project) {

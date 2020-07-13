@@ -59,13 +59,6 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         $scope.formHolder.editing = $scope.formEditable() && value;
         if (value) {
             $scope.editableAcceptanceTest = angular.copy($scope.editableAcceptanceTest);
-            hotkeys.bindTo($scope).add({
-                combo: 'esc',
-                allowIn: ['INPUT', 'TEXTAREA', 'SELECT'],
-                callback: $scope.resetAcceptanceTestForm
-            });
-        } else {
-            hotkeys.del('esc');
         }
     };
     $scope.update = function(acceptanceTest, story) {

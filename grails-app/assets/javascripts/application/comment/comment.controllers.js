@@ -51,13 +51,6 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', 'W
         $scope.formHolder.editing = $scope.formEditable() && value;
         if (value) {
             $scope.editableComment = angular.copy($scope.comment);
-            hotkeys.bindTo($scope).add({
-                combo: 'esc',
-                allowIn: ['TEXTAREA'],
-                callback: $scope.resetCommentForm
-            });
-        } else {
-            hotkeys.del('esc');
         }
     };
     $scope.editCommentBody = function() {

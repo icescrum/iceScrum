@@ -859,11 +859,6 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
     $scope.newStoryStates = [StoryStatesByName.SUGGESTED, StoryStatesByName.ACCEPTED];
     $scope.features = project.features;
     FeatureService.list(project);
-    hotkeys.bindTo($scope).add({
-        combo: 'esc',
-        allowIn: ['INPUT'],
-        callback: $scope.resetStoryForm
-    });
 }]);
 
 controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', function($controller, $scope, $filter) {

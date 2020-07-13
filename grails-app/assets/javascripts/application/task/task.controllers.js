@@ -266,11 +266,6 @@ extensibleController('taskNewCtrl', ['$scope', '$state', '$stateParams', '$contr
         return {id: taskType, name: i18nFilter(taskType, 'TaskTypes')};
     });
     $scope.categories = _.concat(_.reverse(taskTypesCategories), sprint.stories);
-    hotkeys.bindTo($scope).add({
-        combo: 'esc',
-        allowIn: ['INPUT'],
-        callback: $scope.resetTaskForm
-    });
 }]);
 
 extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'WorkspaceType', 'TaskService', 'FormService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, WorkspaceType, TaskService, FormService, taskContext, detailsTask, project) {
