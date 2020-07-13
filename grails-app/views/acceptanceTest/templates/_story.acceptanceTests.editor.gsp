@@ -25,6 +25,7 @@
 <form ng-submit="save(editableAcceptanceTest, selected)"
       name="formHolder.acceptanceTestForm"
       ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
+      show-validation
       novalidate>
     <div class="row is-form-row">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
