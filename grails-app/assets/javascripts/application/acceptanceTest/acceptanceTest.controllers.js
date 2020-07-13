@@ -23,14 +23,14 @@
  */
 controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, AcceptanceTestStatesByName, hotkeys) {
     // Functions
-    $scope.resetAcceptanceTestForm = function() {
+    $scope.resetAcceptanceTestForm = function(noFocus) {
         $scope.editableAcceptanceTest = $scope.acceptanceTest ? $scope.acceptanceTest : {
             parentStory: $scope.story,
             state: AcceptanceTestStatesByName.TOCHECK
         };
         $scope.formHolder.editing = false;
         $scope.showAcceptanceTestDescriptionTextarea = false;
-        $scope.resetFormValidation($scope.formHolder.acceptanceTestForm);
+        $scope.resetFormValidation($scope.formHolder.acceptanceTestForm, noFocus);
     };
     $scope.formEditable = function() {
         return $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('update', $scope.story) : false;
@@ -66,7 +66,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             $scope.editForm(false);
             if ($scope.formHolder.acceptanceTestForm.$dirty) {
                 return AcceptanceTestService.update(acceptanceTest, story).then(function() {
-                    $scope.resetAcceptanceTestForm();
+                    $scope.resetAcceptanceTestForm(true);
                     $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
                 });
             }

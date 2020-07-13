@@ -76,7 +76,7 @@
             ${message(code: 'default.button.create.label')}
         </button>
         <button class="btn btn-secondary float-right"
-                ng-click="formHolder.formExpanded = false;"
+                ng-click="formHolder.formExpanded = false; resetStoryForm(true)"
                 type="button">
             ${message(code: 'is.button.cancel')}
         </button>

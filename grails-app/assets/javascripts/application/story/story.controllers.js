@@ -958,11 +958,11 @@ extensibleController('featureStoryCtrl', ['$scope', '$controller', '$timeout', '
     $controller('storyCtrl', {$scope: $scope});
     $controller('storyAtWhoCtrl', {$scope: $scope});
     // Functions
-    $scope.resetStoryForm = function() {
+    $scope.resetStoryForm = function(noFocus) {
         $scope.editableStory = {
             feature: {id: $scope.selected.id}
         };
-        $scope.resetFormValidation($scope.formHolder.storyForm);
+        $scope.resetFormValidation($scope.formHolder.storyForm, noFocus);
     };
     $scope.save = function(story) {
         StoryService.save(story, $scope.getProjectFromState().id).then(function() {

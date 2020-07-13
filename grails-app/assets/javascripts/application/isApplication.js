@@ -654,12 +654,12 @@ var isApplication = angular.module('isApplication', [
         $rootScope.isInEditingMode = function() {
             return $rootScope.inEditingMode;
         };
-        $rootScope.resetFormValidation = function(form) {
+        $rootScope.resetFormValidation = function(form, noFocus) {
             if (form) {
                 form.$setPristine();
                 form.$setUntouched();
                 var el = angular.element('[name="' + form.$name + '"] input[autofocus]');
-                if (el.size() > 0) {
+                if (el.size() > 0 && !noFocus) {
                     el[0].focus();
                 }
             }

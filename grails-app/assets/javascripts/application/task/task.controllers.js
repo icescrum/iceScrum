@@ -25,9 +25,9 @@
 
 extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
     // Functions
-    $scope.resetTaskForm = function() {
+    $scope.resetTaskForm = function(noFocus) {
         $scope.task = {};
-        $scope.resetFormValidation($scope.formHolder.taskForm);
+        $scope.resetFormValidation($scope.formHolder.taskForm, noFocus);
     };
     $scope.save = function(task, story) {
         task.parentStory = {id: story.id};

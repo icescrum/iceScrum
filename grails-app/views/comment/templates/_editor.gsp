@@ -61,7 +61,7 @@
             ${message(code: 'default.button.create.label')}
         </button>
         <button class="btn btn-secondary btn-sm float-right"
-                ng-click="formHolder.formExpanded = false;"
+                ng-click="formHolder.formExpanded = false; resetCommentForm()"
                 type="button">
             ${message(code: 'is.button.cancel')}
         </button>

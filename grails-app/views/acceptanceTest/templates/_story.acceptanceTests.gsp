@@ -97,7 +97,7 @@
                 <div class="btn-toolbar justify-content-end mb-3"
                      ng-if="formHolder.editing">
                     <button class="btn btn-secondary btn-sm"
-                            ng-click="resetAcceptanceTestForm()"
+                            ng-click="resetAcceptanceTestForm(true)"
                             type="button">
                         ${message(code: 'is.button.cancel')}
                     </button>
