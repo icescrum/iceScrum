@@ -26,7 +26,8 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.resetAcceptanceTestForm = function(noFocus) {
         $scope.editableAcceptanceTest = $scope.acceptanceTest ? $scope.acceptanceTest : {
             parentStory: $scope.story,
-            state: AcceptanceTestStatesByName.TOCHECK
+            state: AcceptanceTestStatesByName.TOCHECK,
+            name: '' // Set '' instead of null because if ng-model was invalid (e.g. too long) then the old value is kept instead of setting null
         };
         $scope.formHolder.editing = false;
         $scope.showAcceptanceTestDescriptionTextarea = false;

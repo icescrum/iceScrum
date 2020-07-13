@@ -960,6 +960,7 @@ extensibleController('featureStoryCtrl', ['$scope', '$controller', '$timeout', '
     // Functions
     $scope.resetStoryForm = function(noFocus) {
         $scope.editableStory = {
+            name: '', // Set '' instead of null because if ng-model was invalid (e.g. too long) then the old value is kept instead of setting null
             feature: {id: $scope.selected.id}
         };
         $scope.resetFormValidation($scope.formHolder.storyForm, noFocus);

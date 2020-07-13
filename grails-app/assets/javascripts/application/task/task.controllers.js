@@ -26,7 +26,7 @@
 extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
     // Functions
     $scope.resetTaskForm = function(noFocus) {
-        $scope.task = {};
+        $scope.task = {name: ''}; // Set '' instead of null because if ng-model was invalid (e.g. too long) then the old value is kept instead of setting null
         $scope.resetFormValidation($scope.formHolder.taskForm, noFocus);
     };
     $scope.save = function(task, story) {
