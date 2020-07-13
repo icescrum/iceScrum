@@ -172,7 +172,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     var inputName = $interpolate(input.attr('name'))(input.scope());
                     var inputModel = form[inputName];
                     scope.$watch(function() {
-                        return inputModel.$invalid && inputModel.$dirty && inputModel.$touched; //only if user has typed in
+                        // Return error only on dirty + blur unless there is a maxlength issue in which case we want to provide feedback as soon as possible
+                        return inputModel.$invalid && inputModel.$dirty && (inputModel.$touched || inputModel.$error && inputModel.$error.maxlength);
                     }, function(newIsInvalid, oldIsInvalid) {
                         if (newIsInvalid && !oldIsInvalid) {
                             var childScope = scope.$new();
