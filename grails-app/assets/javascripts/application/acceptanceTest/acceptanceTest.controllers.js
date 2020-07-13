@@ -91,9 +91,11 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         }
     ];
     $scope.blurAcceptanceTestDescription = function() {
-        $scope.showAcceptanceTestDescriptionTextarea = false;
-        if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim()) {
-            $scope.editableAcceptanceTest.description = '';
+        if (!$scope.formHolder.acceptanceTestForm.description.$invalid) {
+            $scope.showAcceptanceTestDescriptionTextarea = false;
+            if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim()) {
+                $scope.editableAcceptanceTest.description = '';
+            }
         }
     };
     $scope.editAcceptanceTestDescription = function() {
