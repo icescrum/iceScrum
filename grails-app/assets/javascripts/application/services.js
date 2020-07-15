@@ -530,7 +530,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
                 if (newSprintId) {
                     var cachedSprint = CacheService.get('sprint', newSprintId);
                     if (cachedSprint) {
-                        if (!_.find(cachedSprint.stories, {id: newStory.id})) {
+                        if (!_.find(cachedSprint.stories, {id: newStory.id}) && !newStory.messageId) {
                             if (!_.isArray(cachedSprint.stories)) {
                                 cachedSprint.stories = [];
                             }
@@ -561,7 +561,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
                 }
                 if (newFeatureId) {
                     var cachedFeature = CacheService.get('feature', newFeatureId);
-                    if (cachedFeature && !_.find(cachedFeature.stories, {id: newStory.id})) {
+                    if (cachedFeature && !_.find(cachedFeature.stories, {id: newStory.id}) && !newStory.messageId) {
                         if (!_.isArray(cachedFeature.stories)) {
                             cachedFeature.stories = [];
                         }
@@ -617,7 +617,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
                 }
                 if (newSprintId) {
                     var cachedSprint = CacheService.get('sprint', newSprintId);
-                    if (cachedSprint && !_.find(cachedSprint.tasks, {id: newTask.id})) {
+                    if (cachedSprint && !_.find(cachedSprint.tasks, {id: newTask.id}) && !newTask.messageId) {
                         if (!_.isArray(cachedSprint.tasks)) {
                             cachedSprint.tasks = [];
                         }
@@ -636,7 +636,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
                 }
                 if (newStoryId) {
                     var cachedStory = CacheService.get('story', newStoryId);
-                    if (cachedStory && !_.find(cachedStory.tasks, {id: newTask.id})) {
+                    if (cachedStory && !_.find(cachedStory.tasks, {id: newTask.id}) && !newTask.messageId) {
                         if (!_.isArray(cachedStory.tasks)) {
                             cachedStory.tasks = [];
                         }
@@ -676,7 +676,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
         sprint: function(oldSprint, newSprint) {
             if (!oldSprint && newSprint) {
                 var cachedRelease = CacheService.get('release', newSprint.parentRelease.id);
-                if (cachedRelease && !_.find(cachedRelease.sprints, {id: newSprint.id})) {
+                if (cachedRelease && !_.find(cachedRelease.sprints, {id: newSprint.id}) && !newSprint.messageId) {
                     if (!_.isArray(cachedRelease.sprints)) {
                         cachedRelease.sprints = [];
                     }
@@ -703,12 +703,16 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
             }
             if (!oldAcceptanceTest && newAcceptanceTest) {
                 var cachedStory = CacheService.get('story', newAcceptanceTest.parentStory.id);
-                if (cachedStory && !_.find(cachedStory.acceptanceTests, {id: newAcceptanceTest.id})) {
-                    if (!_.isArray(cachedStory.acceptanceTests)) {
-                        cachedStory.acceptanceTests = [];
+                if (cachedStory) {
+                    if (!_.find(cachedStory.acceptanceTests, {id: newAcceptanceTest.id}) && !newAcceptanceTest.messageId) {
+                        if (!_.isArray(cachedStory.acceptanceTests)) {
+                            cachedStory.acceptanceTests = [];
+                        }
+                        cachedStory.acceptanceTests.push(newAcceptanceTest);
                     }
-                    cachedStory.acceptanceTests.push(newAcceptanceTest);
-                    cachedStory.acceptanceTests.sort(sortByRank);
+                    if (cachedStory.acceptanceTests) {
+                        cachedStory.acceptanceTests.sort(sortByRank);
+                    }
                 }
             } else if (oldAcceptanceTest && !newAcceptanceTest) {
                 var cachedStory = CacheService.get('story', oldAcceptanceTest.parentStory.id);
@@ -720,7 +724,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
         comment: function(oldComment, newComment) {
             if (!oldComment && newComment) {
                 var cachedCommentable = CacheService.get(newComment.commentable.class.toLowerCase(), newComment.commentable.id);
-                if (cachedCommentable && !_.find(cachedCommentable.comments, {id: newComment.id})) {
+                if (cachedCommentable && !_.find(cachedCommentable.comments, {id: newComment.id}) && !newComment.messageId) {
                     if (!_.isArray(cachedCommentable.comments)) {
                         cachedCommentable.comments = [];
                     }
@@ -741,7 +745,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'wor
                 var workspacePath = cacheConfig.workspacePath + '.id';
                 if (!oldItem && newItem) {
                     var cachedProject = CacheService.get(workspaceType, _.get(newItem, workspacePath));
-                    if (cachedProject && !_.find(cachedProject[cacheConfig.arrayName], {id: newItem.id})) {
+                    if (cachedProject && !_.find(cachedProject[cacheConfig.arrayName], {id: newItem.id}) && !newItem.messageId) {
                         cachedProject[cacheConfig.arrayName].push(newItem);
                         if (cacheConfig.sort && cacheConfig.sort === 'rank') {
                             cachedProject[cacheConfig.arrayName].sort(sortByRank);
