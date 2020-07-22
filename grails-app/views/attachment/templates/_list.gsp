@@ -20,9 +20,9 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="attachment.list.html">
-<div ng-repeat="attachment in attachmentable.attachments" class="hover-container" ng-show="$index < 10 || pref.showMore['attachments']">
+<div ng-repeat="attachment in attachmentable.attachments" class="hover-container" ng-show="$index < 10 || showMoreAttachments.enable">
     <hr ng-class="{'mt-0':$first}">
-    <div class="attachment media d-flex align-content-stretch flex-wrap" ng-class="{'mb-3':$last || (attachmentable.attachments.length > 10 && !pref.showMore['attachments'])}">
+    <div class="attachment media d-flex align-content-stretch flex-wrap" ng-class="{'mb-3':$last || (attachmentable.attachments.length > 10 && !showMoreAttachments.enable)}">
         <div class="media-body flex-grow-1 attachment-type {{:: attachment.provider ? 'attachment-type-'+getAttachmentProviderName(attachment) : (attachment.ext | fileicon) }}">
             <div class="d-flex align-items-center justify-content-end flex-wrap">
                 <a ng-if="!isPreviewable(attachment)"
@@ -89,8 +89,8 @@
         </div>
     </div>
 </div>
-<div ng-if="attachmentable.attachments.length > 10 && !pref.showMore['attachments']" class="text-center">
-    <span ng-click="showMore('attachments')" class="toggle-more">${message(code: 'todo.is.ui.attachment.more')}</span>
+<div ng-if="attachmentable.attachments.length > 10 && !showMoreAttachments.enable" class="text-center mb-3">
+    <span ng-click="showMoreAttachments.enable = true" class="toggle-more font-size-sm">${message(code: 'todo.is.ui.attachment.more')}</span>
 </div>
 </script>
 

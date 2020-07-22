@@ -38,9 +38,6 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
         }
         return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
-    $scope.showMore = function(listName) {
-        $scope.pref.showMore[listName] = true;
-    };
     $scope.openFromId = function(activity) {
         if (activity.parentType == 'story') {
             StoryService.getURL(activity.parentRef, project.id).then(function(data) {
@@ -54,12 +51,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
             enable: false
         }
     };
-    $scope.pref = {
-        showMore: {
-            attachments: false,
-            activities: false
-        }
-    };
+    $scope.showMoreActivities = {enable: false};
     $scope.release = {};
     $scope.activities = [];
     $scope.userChart = {};

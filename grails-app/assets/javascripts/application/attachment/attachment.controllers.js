@@ -172,11 +172,11 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', '$injector', 'Att
         $flow.upload();
     };
     // Init
+    $scope.showMoreAttachments = {enable: false};
     $scope.injector = $injector;
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
     $scope.attachmentBaseUrl = $scope.serverUrl + '/' + workspaceType + '/' + workspace.id + '/attachment/';
-
     $scope.getFilteredProviders = function() {
         var filteredProviders = _.filter($scope.getAttachmentProviders(), ['enabled', true]);
         if (filteredProviders.length <= 3) {
@@ -184,7 +184,6 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', '$injector', 'Att
         }
         return filteredProviders;
     };
-
     $scope.$watch('project.simpleProjectApps', function() {
         _.each($scope.getAttachmentProviders(), function(provider) {
             provider.enabled = AppService.authorizedApp('use', provider.id, $scope.project);

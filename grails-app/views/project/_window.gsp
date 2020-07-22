@@ -319,7 +319,7 @@
                     </a>
                 </div>
                 <div class="card-body font-size-sm">
-                    <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore['activities']">
+                    <div ng-repeat="activity in activities" ng-show="$index < 5 || showMoreActivities.enable">
                         <div class="activity media">
                             <div class="{{ activity.poster | userColorRoles }} avatar mr-3">
                                 <img ng-src="{{activity.poster | userAvatar}}"
@@ -346,8 +346,8 @@
                         </div>
                         <hr ng-if="!$last">
                     </div>
-                    <div ng-if="activities.length > 5 && !pref.showMore['activities']" class="text-center">
-                        <span ng-click="showMore('activities')" class="toggle-more">${message(code: 'todo.is.ui.history.more')}</span>
+                    <div ng-if="activities.length > 5 && !showMoreActivities.enable" class="text-center">
+                        <span ng-click="showMoreActivities.enable = true" class="toggle-more">${message(code: 'todo.is.ui.history.more')}</span>
                     </div>
                     <div ng-if="activities != undefined && activities.length == 0">
                         <div class="text-center" style="padding:5px; font-size:14px;">
