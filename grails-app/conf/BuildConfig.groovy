@@ -103,7 +103,7 @@ grails.project.dependency.resolution = {
         compile 'org.icescrum:entry-points:1.4.2'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
-            compile 'org.icescrum:standalone:8.5.51.9'
+            compile 'org.icescrum:standalone:8.5.51.10'
         }
 //        if (Environment.current == Environment.DEVELOPMENT) {
 //            compile ":hibernate-metrics:0.1.1"
