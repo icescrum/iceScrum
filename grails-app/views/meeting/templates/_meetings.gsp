@@ -24,9 +24,11 @@
      ng-if="authorizedMeeting('view') && meeting && !meeting.endDate">
     <div class="d-flex align-items-center hover-container">
         <span class="meeting-provider meeting-provider-current float-left mr-2 mt-1 meeting-provider-{{:: meeting.provider }}" title="{{:: provider.name }}"></span>
+
         <div class="font-size-sm flex-grow-1">
             <div>
-                <a href="{{:: meeting.videoLink }}"
+                <a href="{{:: meeting.videoLink }}"
+                   ng-click="joinMeeting($event, meeting)"
                    title="{{ meeting.topic }}"
                    target="_blank"
                    class="link"
@@ -56,7 +58,8 @@
            target="_blank"
            rel="{{:: linkAttributeMeeting(meeting.provider, 'rel') }}"
            referrerpolicy="{{:: linkAttributeMeeting(meeting.provider, 'referrerpolicy') }}"
-           href="{{:: meeting.videoLink }}">${message(code: 'is.ui.collaboration.join')}</a>
+           href="{{:: meeting.videoLink }}"
+           ng-click="joinMeeting($event, meeting)">${message(code: 'is.ui.collaboration.join')}</a>
         <a class="meeting-icon meeting-stop-red ml-2 hover-display"
            target="_blank"
            ng-if="authorizedMeeting('update', meeting)"

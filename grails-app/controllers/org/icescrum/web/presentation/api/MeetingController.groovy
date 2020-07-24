@@ -112,7 +112,7 @@ class MeetingController implements ControllerErrorHandler, WorkspaceSecurity {
             meetingParams.endDate = DateUtils.parseDateISO8601(meetingParams.endDate)
         }
         Meeting.withTransaction {
-            bindData(meeting, meetingParams, [include: ['topic', 'endDate']])
+            bindData(meeting, meetingParams, [include: ['topic', 'endDate', 'providerEventId']])
             meetingService.update(meeting)
             render(status: 200, contentType: 'application/json', text: meeting as JSON)
         }

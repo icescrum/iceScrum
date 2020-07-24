@@ -26,6 +26,18 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     $scope.providersPromoteList = function() {
         return _.map($scope.getMeetingProviders(), 'id');
     };
+    $scope.joinMeeting = function($event, meeting) {
+        var provider = $scope.getMeetingProvider(meeting.provider);
+        if (provider.joinMeeting) {
+            $event.preventDefault();
+            return provider.joinMeeting(meeting, $scope).then(function(videoLink) {
+                var win = window.open(videoLink, '_blank');
+                win.focus();
+            });
+        } else {
+            return true;
+        }
+    };
     $scope.createMeeting = function(subject, provider) {
         if (provider.enabled) {
             $scope.creating = true;
@@ -154,11 +166,21 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
         return linkAttribute && linkAttribute[attribute] ? linkAttribute[attribute] : '';
     };
     $scope.copyLink = function(meeting) {
-        FormService.copyToClipboard(meeting.videoLink).then(function() {
-            $scope.notifySuccess('is.ui.colloboration.meeting.link.success');
-        }, function(text) {
-            $scope.notifyError(message('is.ui.colloboration.meeting.link.error', [text]));
-        });
+        var makeTheCopy = function(videoLink) {
+            FormService.copyToClipboard(videoLink).then(function() {
+                $scope.notifySuccess('is.ui.colloboration.meeting.link.success');
+            }, function(text) {
+                $scope.notifyError(message('is.ui.colloboration.meeting.link.error', [text]));
+            });
+        }
+        var provider = $scope.getMeetingProvider(meeting.provider);
+        if (provider.joinMeeting) {
+            return provider.joinMeeting(meeting, $scope).then(function(videoLink) {
+                makeTheCopy(videoLink);
+            });
+        } else {
+            makeTheCopy(meeting.videoLink);
+        }
     };
     $scope.hasMeetings = function() {
         return relevantMeetingsFilter($scope.meetings, $scope.subject).length;
