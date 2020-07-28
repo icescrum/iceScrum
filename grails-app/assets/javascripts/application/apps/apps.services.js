@@ -44,6 +44,9 @@ services.service("AppService", ['Session', 'FormService', 'WorkspaceType', funct
             });
         });
     };
+    this.isEnabledApp = function(appDefinition, project) {
+        return appDefinition.availableForServer && appDefinition.enabledForServer && (!appDefinition.isProject || self.authorizedApp('use', appDefinition.id, project));
+    };
     this.authorizedApp = function(action, appDefinitionOrId, project) {
         switch (action) {
             case 'show':

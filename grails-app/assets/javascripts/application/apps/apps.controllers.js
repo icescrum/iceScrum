@@ -69,7 +69,7 @@ extensibleController('appsCtrl', ['$scope', 'AppService', 'Session', '$window', 
         $scope.showProjectEditModal(appDefinition.id);
     };
     $scope.isEnabledApp = function(appDefinition) {
-        return appDefinition.availableForServer && appDefinition.enabledForServer && (!appDefinition.isProject || $scope.isEnabledForProject(appDefinition));
+        return AppService.isEnabledApp(appDefinition, $scope.project);
     };
     $scope.isEnabledForProject = function(appDefinition) {
         return AppService.authorizedApp('use', appDefinition.id, $scope.project);
