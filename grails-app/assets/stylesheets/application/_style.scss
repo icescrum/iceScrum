@@ -1407,8 +1407,16 @@ th {
             border-left: 1px solid $is-border-color-alt;
           }
 
-          .story-active {
+          .story-id {
             color: $is-text-color-alt;
+          }
+
+          .story-active {
+            .story-id {
+              color: #ffffff;
+            }
+
+            color: #ffffff;
             font-family: $is-font-family-bold;
             background-color: $is-blue;
           }

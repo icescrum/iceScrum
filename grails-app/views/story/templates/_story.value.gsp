@@ -49,7 +49,7 @@
                     <table class="table table-striped">
                         <tr ng-repeat="story in stories" title="{{ story.description | actorTag }}" ng-class="{ 'story-active' : story.id == editableStory.id }">
                             <td>
-                                <strong class="text-accent">{{ story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                                <strong class="story-id">{{ story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                                 <div class="text-right"><strong class="story-state">{{ story.state | i18n:'StoryStates' }}</strong></div>
                             </td>
                         </tr>
