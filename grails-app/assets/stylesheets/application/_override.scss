@@ -31,6 +31,11 @@
   src: url('./fonts/averta-bold.woff2') format('woff2')
 }
 
+@font-face {
+  font-family: 'averta-black';
+  src: url('./fonts/averta-bold.woff2') format('woff2')
+}
+
 html, body {
   font-family: $font-family-base;
 }
@@ -273,7 +278,7 @@ input::placeholder {
 ////////////////////
 
 .modal-content {
-  box-shadow: 0 2.625rem 3rem 0 rgba(8, 12, 29, 0.21);
+  box-shadow: 0 2.625rem 3rem 0 $is-shadow-color-4;
 }
 
 .modal-title {

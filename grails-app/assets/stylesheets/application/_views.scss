@@ -586,7 +586,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     border: solid 1px $is-outline-color;
 
     &:hover {
-      box-shadow: 0 20px 34px 0 rgba(8, 12, 29, 0.21);
+      box-shadow: 0 20px 34px 0 $is-shadow-color-4;
     }
 
     .app-enabled {

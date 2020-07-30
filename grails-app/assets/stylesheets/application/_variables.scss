@@ -39,6 +39,7 @@ $is-btn-secondary-end: $is-bg-color !default;
 $is-shadow-color-1: rgba(156, 164, 171, 0.5) !default;
 $is-shadow-color-2: rgba(156, 164, 171, 0.62) !default;
 $is-shadow-color-3: rgba(62, 57, 107, 0.07) !default;
+$is-shadow-color-4: rgba(8, 12, 29, 0.21) !default;
 $is-search-bg-color: #ffffff !default;
 $is-outline-color: #c8c8cc !default;
 $is-border-color: #d3d8de !default;
@@ -100,6 +101,7 @@ $widget-card-header-height: 42px;
 
 $is-font-family: averta-regular, Helvetica, Arial, sans-serif;
 $is-font-family-bold: averta-bold, Helvetica, Arial, sans-serif;
+$is-font-family-black: averta-black, Helvetica, Arial, sans-serif;
 
 $acceptance-test-states: tocheck, success, failed;
 
