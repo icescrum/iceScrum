@@ -1,4 +1,4 @@
-<cache:block>
+<cache:block cache="apiCache">
     <!DOCTYPE html>
         <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
