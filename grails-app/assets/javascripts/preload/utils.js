@@ -14,8 +14,13 @@ function setColorScheme(colorScheme, isInit) {
     var css = colorScheme === 'dark' ? isSettings.darkMode : isSettings.lightMode;
     if (isInit) {
         document.write(css); //no angular / jquery here
+        $(document).ready(function() {
+            $('body').addClass(savedColorScheme + '-scheme');
+        });
     } else {
         angular.element('#main-css').attr('href', css);
+        angular.element('body').removeClass('dark-scheme light-scheme');
+        angular.element('body').addClass(savedColorScheme + '-scheme');
     }
 }
 
