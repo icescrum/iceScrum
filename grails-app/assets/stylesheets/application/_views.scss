@@ -557,8 +557,8 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
     width: $app-active-size;
     height: $app-active-size;
     border-radius: $app-active-size/2;
-    box-shadow: 0 2px 6px 0 rgba(0, 103, 232, 0.36);
-    background-color: $is-primary-color;
+    box-shadow: 0 2px 11px 0 rgba(5, 76, 166, 0.15);
+    background-image: linear-gradient(254deg, #88f3e2, #50e3c2);
   }
 
   .app-nav-item {
