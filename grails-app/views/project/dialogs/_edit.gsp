@@ -79,6 +79,15 @@
                 </li>
                 <entry:point id="project-edit-left"/>
                 <li class="nav-item"
+                    ng-if="authorizedApp('show')">
+                    <a class="nav-link"
+                       href
+                       ng-class="{ active: isCurrentPanel('devops') }"
+                       ng-click="setCurrentPanel('devops')">
+                        DevOps
+                    </a>
+                </li>
+                <li class="nav-item"
                     ng-repeat="appWithSettings in appsWithSettings">
                     <a class="nav-link"
                        href
@@ -113,6 +122,10 @@
             <section ng-switch-when="administration"
                      title="${message(code: 'is.ui.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
+            </section>
+            <section ng-switch-when="devops"
+                     title="DevOps">
+                <div ng-include="'edit.devops.project.html'"></div>
             </section>
             <entry:point id="project-edit-right"/>
             <section ng-if="isCurrentPanel(appWithSettings.id)"

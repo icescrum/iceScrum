@@ -1110,6 +1110,158 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
+// DevOps
+////////////////////
+
+#devops-diagram {
+  .devops-activity {
+    &:not(.devops-activity-active) clipPath {
+      display: none;
+    }
+
+    .devops-number {
+      text {
+        font-family: $is-font-family-bold;
+        font-size: 8.4px;
+        fill: #0066E8;
+      }
+
+      &.devops-number-active {
+        text {
+          fill: #FFFFFF;
+        }
+
+        .devops-number-circle {
+          fill: #27D285;
+        }
+
+        .devops-number-stroke {
+          stroke: #27D285;
+        }
+      }
+    }
+
+    .devops-text {
+      font-family: $is-font-family-bold;
+      font-size: 11px;
+      fill: #FFFFFF;
+    }
+
+    &.devops-activity-active {
+      .devops-path {
+        fill: #FFFFFF;
+        stroke: #C8C8CC;
+        stroke-width: 2px; // Hack: the stroke cannot be inset so we double it and use a clip-path to cut the excess
+      }
+
+      .devops-text {
+        fill: #111111;
+      }
+
+      .devops-shadow {
+        display: none;
+      }
+
+      .devops-number:not(.devops-number-active) {
+        text {
+          fill: #FFFFFF;
+        }
+
+        .devops-number-circle {
+          fill: #111111;
+        }
+
+        .devops-number-stroke {
+          stroke: #111111;
+        }
+      }
+    }
+  }
+
+  .devops-border-text {
+    font-family: $is-font-family-black;
+    font-size: 10px;
+    fill: #FFFFFF;
+  }
+}
+
+body.dark-scheme #devops-diagram #devops-border-light {
+  display: none;
+}
+
+body.light-scheme #devops-diagram #devops-border-dark {
+  display: none;
+}
+
+.devops-details {
+  border: 1px solid $is-outline-color;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 34px 0 $is-shadow-color-4;
+  padding: 1rem $is-spacer-x;
+  font-size: $is_font-size-sm;
+
+  .devops-app {
+    width: 122px;
+    padding-top: 8px;
+    position: relative;
+
+    .devops-app-name {
+      font-size: 0.75rem;
+    }
+
+    $devops-app-margin-top: 6px;
+    $devops-app-enabled-border-size: 1px;
+    $devops-app-enabled-padding: 7px;
+
+    .devops-app-img {
+      background-color: $is-bg-color-alt;
+      width: 57px;
+      height: 57px;
+      margin: auto;
+      @extend .rounded-circle;
+
+      img {
+        width: 57px;
+        margin-top: $devops-app-margin-top;
+      }
+    }
+
+    &:hover .devops-app-img {
+      box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-1;
+    }
+
+    &.devops-app-enabled {
+      .devops-app-name {
+        font-family: $is-font-family-bold;
+      }
+
+      .devops-app-img {
+        background-clip: content-box;
+        border: 1px solid $green;
+        padding: 7px;
+
+        img {
+          margin-top: $devops-app-margin-top - $devops-app-enabled-border-size - $devops-app-enabled-padding;
+          margin-left: 0 - $devops-app-enabled-border-size - $devops-app-enabled-padding;
+        }
+      }
+    }
+
+    .devops-app-new {
+      padding: 2px 10px;
+      font-size: 0.625rem;
+      color: $is-primary-color;
+      background: $is-bg-color;
+      border-radius: 10px;
+      box-shadow: 0 1px 5px 1px rgba(104, 117, 131, 0.20);
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+
+////////////////////
 // Other
 ////////////////////
 

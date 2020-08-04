@@ -24,6 +24,7 @@
 <g:render template="/project/templates/form.members"/>
 <g:render template="/project/templates/form.practices"/>
 <g:render template="/project/templates/form.planning"/>
+<g:render template="/project/templates/edit.devops"/>
 <g:render template="/project/templates/edit.general"/>
 <g:render template="/project/templates/edit.members"/>
 <g:render template="/project/templates/edit.practices"/>
