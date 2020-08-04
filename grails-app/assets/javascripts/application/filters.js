@@ -676,4 +676,16 @@ filters
     return function(imageUrl) {
         return $rootScope.getColorScheme() === 'dark' ? imageUrl.dark : imageUrl.light;
     }
-}]);
+}]).filter('limitTextColor', function() {
+    return function(actual, limit) {
+        var color;
+        if (limit == null || actual < limit) {
+            color = 'success';
+        } else if (actual === limit) {
+            color = 'warning';
+        } else {
+            color = 'danger';
+        }
+        return 'text-' + color;
+    };
+});
