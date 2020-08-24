@@ -140,7 +140,7 @@
                             <i class="icon icon-edit"></i>
                         </a>
                     </div>
-                    <div ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
+                    <div ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition').replaceAll("'", "\\\\'")}</p>'"></div>
                 </div>
             </div>
             <div class="card hover-container">
@@ -157,7 +157,7 @@
                             <i class="icon icon-edit"></i>
                         </a>
                     </div>
-                    <div ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
+                    <div ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective').replaceAll("'", "\\\\'")}</p>'"></div>
                 </div>
             </div>
             <div class="card attachments"
