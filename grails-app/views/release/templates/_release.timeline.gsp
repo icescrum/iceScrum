@@ -33,7 +33,7 @@
            ng-style="{width: (sprint.duration / release.duration * 100) + '%'}">
             {{ sprint.id ? sprint.index : '' }}
         </a>
-        <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
+        <div class="m-auto" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
     </div>
 </div>
 </script>
