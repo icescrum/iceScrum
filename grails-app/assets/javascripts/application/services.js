@@ -452,7 +452,7 @@ services.service('CacheService', ['$injector', function($injector) {
         });
         cache.splice(0, cache.length);
     };
-    this.emptyCaches = function(excludes) {
+    this.emptyCachesExcept = function(excludes) {
         _.each(_.keys(caches), function(cacheName) {
             if (!_.includes(excludes, cacheName)) {
                 self.emptyCache(cacheName);
@@ -1004,7 +1004,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
     this.contexts = [];
     this.loadContexts = function() {
         var Session = $injector.get('Session');
-        if (Session.workspaceType == WorkspaceType.PROJECT) {
+        if (Session.workspaceType === WorkspaceType.PROJECT) {
             var project = Session.workspace;
             return $q.all([TagService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
                 var tags = data[0];
@@ -1029,6 +1029,14 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
                     self.contexts = contexts;
                     return contexts;
                 });
+            });
+        } else if (Session.workspaceType === WorkspaceType.PORTFOLIO) {
+            return TagService.getTags().then(function(tags) {
+                var contexts = _.map(tags, function(tag) {
+                    return {type: 'tag', id: tag, term: tag, color: 'purple'};
+                });
+                self.contexts = contexts;
+                return contexts;
             });
         } else {
             return $q.when([])

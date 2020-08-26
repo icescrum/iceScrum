@@ -673,7 +673,7 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
                 $scope.application.context = urlContext;
                 $scope.setContextTermAndColorIfNeeded();
                 $scope.application.search = null;
-                CacheService.emptyCaches('project');
+                CacheService.emptyCachesExcept(['project', 'portfolio']);
                 $state.reload();
             }
         }

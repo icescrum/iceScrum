@@ -213,7 +213,7 @@
     <div class="flex-grow-1 order-4 order-lg-3 d-none d-lg-block"></div>
     <div class="navbar-right order-2 order-lg-4 flex-grow-1 flex-lg-grow-0 justify-content-end align-self-stretch"
          ng-style="application.context | contextStyle">
-        <g:if test="${project}">
+        <g:if test="${workspace}">
             <form class="form-inline" role="search">
                 <div ng-class="application.context ? 'input-group' : ''">
                     <span class="input-group-prepend" ng-if="application.context">

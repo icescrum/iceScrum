@@ -934,7 +934,7 @@ var isApplication = angular.module('isApplication', [
             if (isSettings.announcement && isSettings.announcement.code && !$localStorage['hideAnnouncement-' + isSettings.announcement.code]) {
                 $rootScope.application.announcement = isSettings.announcement;
             }
-            if ($rootScope.workspaceType === WorkspaceType.PROJECT) {
+            if ($rootScope.workspaceType) {
                 $controller('contextCtrl', {$scope: $rootScope});
             }
             PushService.initPush(isSettings.workspace ? isSettings.workspace.id : null, $rootScope.workspaceType);
