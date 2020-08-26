@@ -49,7 +49,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', 'W
     $scope.editForm = function(value) {
         $scope.formHolder.editing = $scope.formEditable() && value;
         if (value) {
-            $scope.editableComment = angular.copy($scope.comment);
+            $scope.editableComment = angular.copy($scope.editableComment);
         }
     };
     $scope.editCommentBody = function() {
