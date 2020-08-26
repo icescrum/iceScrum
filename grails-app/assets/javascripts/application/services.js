@@ -899,6 +899,16 @@ services.service("DateService", [function() {
 
 services.service("OptionsCacheService", ['$rootScope', 'CacheService', function($rootScope, CacheService) {
     var options = {
+        feature: {
+            isAllowed: function(item) {
+                if ($rootScope.application.context && $rootScope.application.context.type == 'tag') {
+                    return _.some(item.tags, function(tag) {
+                        return $rootScope.application.context.term.toLowerCase() === tag.toLowerCase();
+                    });
+                }
+                return true;
+            }
+        },
         story: {
             isAllowed: function(item) {
                 if ($rootScope.application.context) {
