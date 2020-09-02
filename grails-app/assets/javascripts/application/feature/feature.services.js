@@ -66,6 +66,11 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             return project.features;
         });
     };
+    this.listWithoutCache = function(project) {
+        return Feature.query({projectId: project.id}).$promise.then(function(features) {
+            return features;
+        });
+    };
     this.save = function(feature, projectId) {
         feature.class = 'feature';
         return Feature.save({projectId: projectId}, feature, crudMethods[IceScrumEventType.CREATE]).$promise;

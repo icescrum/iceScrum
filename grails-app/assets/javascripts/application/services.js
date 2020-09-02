@@ -903,7 +903,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
             isAllowed: function(item) {
                 if ($rootScope.application.context && $rootScope.application.context.type == 'tag') {
                     return _.some(item.tags, function(tag) {
-                        return $rootScope.application.context.term.toLowerCase() === tag.toLowerCase();
+                        return $rootScope.application.context.id.toLowerCase() === tag.toLowerCase();
                     });
                 }
                 return true;
@@ -919,7 +919,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                         return _.includes(ids, parseInt($rootScope.application.context.id));
                     } else if ($rootScope.application.context.type == 'tag') {
                         return _.some(item.tags, function(tag) {
-                            return $rootScope.application.context.term.toLowerCase() == tag.toLowerCase();
+                            return $rootScope.application.context.id.toLowerCase() == tag.toLowerCase();
                         });
                     } else {
                         return false;
@@ -1006,7 +1006,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
         var Session = $injector.get('Session');
         if (Session.workspaceType === WorkspaceType.PROJECT) {
             var project = Session.workspace;
-            return $q.all([TagService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
+            return $q.all([TagService.getTags(), FeatureService.listWithoutCache(project), ActorService.list(project.id)]).then(function(data) {
                 var tags = data[0];
                 var features = data[1];
                 var actors = data[2];
