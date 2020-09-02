@@ -153,7 +153,7 @@
         <div class="card-body scrollable-selectable-container features"
              selectable="selectableOptions"
              ng-class="{'has-selected': hasSelected()}">
-            <div ng-if="features.length == 0"
+            <div ng-if="features.length == 0 && !application.context"
                  class="empty-view">
                 <p class="form-text">${message(code: 'is.ui.feature.help')}<p>
                 <a class="btn btn-primary"
@@ -162,11 +162,15 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div ng-if="application.search && features.length != 0 && (features | search).length == 0"
+            <div ng-if="application.search && features.length != 0 && (features | search).length == 0 || features.length == 0 && application.context"
                  class="empty-view">
-                <p class="form-text">${message(code: 'is.ui.feature.search.empty')} <strong>{{ application.search }}</strong></p>
+                <p class="form-text">
+                    ${message(code: 'is.ui.feature.search.empty')}
+                    <strong>{{ application.search }}</strong>
+                    <strong ng-if="application.context"><i class="fa fa-tag" ng-class="application.context.type | contextIcon"></i> {{ application.context.term }}</strong>
+                </p>
                 <button class="btn btn-link"
-                        ng-click="application.search = null">
+                        ng-click="clearContextAndSearch()">
                     ${message(code: 'todo.is.ui.search.clear')}
                 </button>
                 <a class="btn btn-primary"

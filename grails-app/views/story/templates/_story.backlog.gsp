@@ -30,14 +30,18 @@
      class="sticky-note-container sticky-note-story">
     <div ng-include="'story.html'"></div>
 </div>
-<div ng-if="backlog.storiesLoaded && application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0" class="empty-view">
-    <p class="form-text">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ application.search }}</strong></p>
+<div ng-if="backlog.storiesLoaded && (application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0 || backlog.stories.length == 0 && application.context)" class="empty-view">
+    <p class="form-text">
+        ${message(code: 'todo.is.ui.backlog.search.empty')}
+        <strong>{{ application.search }}</strong>
+        <strong ng-if="application.context"><i class="fa fa-tag" ng-class="application.context.type | contextIcon"></i> {{ application.context.term }}</strong>
+    </p>
     <button class="btn btn-secondary"
-            ng-click="application.search = null">
+            ng-click="clearContextAndSearch()">
         ${message(code: 'todo.is.ui.search.clear')}
     </button>
 </div>
-<div ng-if="backlog.storiesLoaded && backlog.stories.length == 0" class="empty-view">
+<div ng-if="backlog.storiesLoaded && backlog.stories.length == 0 && !application.context" class="empty-view">
     <div ng-include="emptyBacklogTemplate"></div>
 </div>
 <div class="loading-dot dot-elastic align-middle align-self-center" ng-if="!backlog.storiesLoaded"></div>
