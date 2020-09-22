@@ -72,6 +72,9 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
         });
     };
     $scope.selectTeam = function($item, $model) {
+        if ($model.name === null) { // Happens when no selection
+            return;
+        }
         $scope.team = $model;
         $scope.team.selected = true;
         //Add current user to the team
