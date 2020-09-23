@@ -465,6 +465,7 @@ services.service('CacheService', ['$injector', function($injector) {
         var newItem;
         if (cachedItem) {
             _.assign(cachedItem, itemFromServer); // Not recursive
+            delete(cachedItem.messageId); // As we already have the full object in memory, the item is not partial and should be handled fully
             newItem = cachedItem;
         } else {
             newItem = itemFromServer;
