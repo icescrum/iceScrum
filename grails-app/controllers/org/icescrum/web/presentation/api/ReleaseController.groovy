@@ -24,6 +24,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.apache.commons.lang.time.FastDateFormat
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -43,6 +44,20 @@ class ReleaseController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         def releases = _project.releases
         render(status: 200, contentType: 'application/json', text: releases as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProject()'])
+    def debugDates(long project) {
+        Project _project = Project.withProject(project)
+        String text = ''
+        def formater = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("GMT"), Locale.US)
+        text += "Release report - Timezone " + TimeZone.getDefault().getID() + '<br/>'
+        _project.releases.each { release ->
+            text += '------ ' + release.name + '<br/>'
+            text += 'startDate\t' + release.startDate.class + '\t' + release.startDate + '\t' + release.startDate.timezoneOffset + '\t' + formater.format(release.startDate) + '<br/>'
+            text += 'endDate\t' + release.endDate.class + '\t' + release.endDate + '\t' + release.endDate.timezoneOffset + '\t' + formater.format(release.endDate) + '<br/>'
+        }
+        render(status: 200, text: text)
     }
 
     @Secured('inProject()')

@@ -25,6 +25,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.apache.commons.lang.time.FastDateFormat
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -48,6 +49,21 @@ class SprintController implements ControllerErrorHandler {
             sprints = _project.sprints
         }
         render(status: 200, contentType: 'application/json', text: sprints as JSON)
+    }
+
+
+    @Secured(['stakeHolder() or inProject()'])
+    def debugDates(long project) {
+        Project _project = Project.withProject(project)
+        String text = ''
+        def formater = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("GMT"), Locale.US)
+        text += "Sprint Report - Timezone " + TimeZone.getDefault().getID() + '<br/>'
+        _project.sprints.each { Sprint sprint ->
+            text += '------ ' + sprint.fullName + '<br/>'
+            text += 'startDate\t' + sprint.startDate.class + '\t' + sprint.startDate + '\t' + sprint.startDate.timezoneOffset + '\t' + formater.format(sprint.startDate) + '<br/>'
+            text += 'endDate\t' + sprint.endDate.class + '\t' + sprint.endDate + '\t' + sprint.endDate.timezoneOffset + '\t' + formater.format(sprint.endDate) + '<br/>'
+        }
+        render(status: 200, text: text)
     }
 
     @Secured('inProject()')
