@@ -84,6 +84,9 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
     this.mergePortfolios = function(portfolios) {
         _.each(portfolios, crudMethods[IceScrumEventType.CREATE]);
     };
+    this.openChart = function(portfolio, chart) {
+        return FormService.httpGet('portfolio/' + portfolio.id + '/' + chart, null, true);
+    };
     this.authorizedPortfolio = function(action) {
         switch (action) {
             case 'edit':

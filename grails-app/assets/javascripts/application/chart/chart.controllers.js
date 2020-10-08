@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('chartCtrl', ['$rootScope', '$scope', '$element', '$filter', '$uibModal', '$timeout', 'WindowService', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($rootScope, $scope, $element, $filter, $uibModal, $timeout, WindowService, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
+extensibleController('chartCtrl', ['$rootScope', '$scope', '$element', '$filter', '$uibModal', '$timeout', 'WindowService', 'Session', 'PortfolioService', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($rootScope, $scope, $element, $filter, $uibModal, $timeout, WindowService, Session, PortfolioService, ProjectService, SprintService, ReleaseService, BacklogService) {
     $scope.defaultOptions = {
         chart: {
             height: 350,
@@ -44,6 +44,9 @@ extensibleController('chartCtrl', ['$rootScope', '$scope', '$element', '$filter'
             var chartType = chartNameParts[0];
             var chartUnit = chartNameParts.length > 1 ? chartNameParts[1] : 'story';
             return BacklogService.openChart(backlog, backlog.project, chartType, chartUnit);
+        },
+        portfolio: function(chartName, portfolio) {
+            return PortfolioService.openChart(portfolio, chartName);
         }
     };
     var computeDomain = function(index) {
@@ -202,6 +205,21 @@ extensibleController('chartCtrl', ['$rootScope', '$scope', '$element', '$filter'
                 caption: {
                     enable: true
                 }
+            }
+        },
+        portfolio: {
+            default: {
+                chart: {
+                    type: 'lineChart',
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        tickFormat: function(entry) {
+                            return $scope.labelsX[entry];
+                        }
+                    }
+                },
+                computeYDomain: computeDomain(0)
             }
         }
     };
