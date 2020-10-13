@@ -130,34 +130,6 @@
                 </div>
             </div>
         </div>
-        <div class="form-group" ng-if="sprint.state > sprintStatesByName.IN_PROGRESS">
-            <label for="retrospective" class="d-flex align-items-center justify-content-between">
-                <div>${message(code: 'is.sprint.retrospective')}</div>
-                <div class="small">
-                    <a href="https://www.retromat.org/?utm_source=icescrum&utm_medium=link&utm_campaign=Retromat"
-                       target="_blank">
-                        <i class="fa fa-question-circle"></i> ${message(code: 'is.ui.sprint.retrospective.link')}
-                    </a>
-                </div>
-            </label>
-            <textarea at
-                      is-markitup
-                      class="form-control"
-                      name="retrospective"
-                      ng-model="editableSprint.retrospective"
-                      is-model-html="editableSprint.retrospective_html"
-                      ng-show="showRetrospectiveTextarea"
-                      ng-blur="showRetrospectiveTextarea = false"
-                      placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-            <div class="markitup-preview form-control"
-                 ng-disabled="!formEditable()"
-                 ng-show="!showRetrospectiveTextarea"
-                 ng-focus="editForm(true); showRetrospectiveTextarea = formEditable()"
-                 ng-class="{'placeholder': !editableSprint.retrospective_html}"
-                 tabindex="0"
-                 bind-html-scope="markitupCheckboxOptions('retrospective')"
-                 bind-html-compile="editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective').replaceAll("'", "\\\\'")}</p>'"></div>
-        </div>
         <div class="form-group">
             <label for="goal">${message(code: 'is.sprint.goal')}</label>
             <textarea at
@@ -188,6 +160,34 @@
                  tabindex="0"
                  bind-html-scope="markitupCheckboxOptions('doneDefinition')"
                  bind-html-compile="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition').replaceAll("'", "\\\\'")}</p>'"></div>
+        </div>
+        <div class="form-group" ng-if="sprint.state > sprintStatesByName.TODO">
+            <label for="retrospective" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.sprint.retrospective')}</div>
+                <div class="small">
+                    <a href="https://www.retromat.org/?utm_source=icescrum&utm_medium=link&utm_campaign=Retromat"
+                       target="_blank">
+                        <i class="fa fa-question-circle"></i> ${message(code: 'is.ui.sprint.retrospective.link')}
+                    </a>
+                </div>
+            </label>
+            <textarea at
+                      is-markitup
+                      class="form-control"
+                      name="retrospective"
+                      ng-model="editableSprint.retrospective"
+                      is-model-html="editableSprint.retrospective_html"
+                      ng-show="showRetrospectiveTextarea"
+                      ng-blur="showRetrospectiveTextarea = false"
+                      placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
+            <div class="markitup-preview form-control"
+                 ng-disabled="!formEditable()"
+                 ng-show="!showRetrospectiveTextarea"
+                 ng-focus="editForm(true); showRetrospectiveTextarea = formEditable()"
+                 ng-class="{'placeholder': !editableSprint.retrospective_html}"
+                 tabindex="0"
+                 bind-html-scope="markitupCheckboxOptions('retrospective')"
+                 bind-html-compile="editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective').replaceAll("'", "\\\\'")}</p>'"></div>
         </div>
         <div class="form-group">
             <label for="deliveredVersion">${message(code: 'is.sprint.deliveredVersion')}</label>
