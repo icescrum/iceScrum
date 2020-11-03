@@ -1209,12 +1209,16 @@
                      */
                     bindDrag = function() {
                         if (hasTouch) {
-                            if (isIOS) {
-                                element.bind('touchstart', longTouchStart);
-                                element.bind('touchend', longTouchCancel);
-                                element.bind('touchmove', longTouchCancel);
+                            if (isLongTouch) {
+                                if (isIOS) {
+                                    element.bind('touchstart', longTouchStart);
+                                    element.bind('touchend', longTouchCancel);
+                                    element.bind('touchmove', longTouchCancel);
+                                } else {
+                                    element.bind('contextmenu', dragListen);
+                                }
                             } else {
-                                element.bind('contextmenu', dragListen);
+                                element.bind('touchstart', dragListen);
                             }
                         }
                         element.bind('mousedown', dragListen);
