@@ -171,6 +171,10 @@
                     <td>${message(code: 'config.icescrum.serverURL')}</td>
                     <td>${serverUrl.encodeAsHTML()}</td>
                 </tr>
+                <tr>
+                    <td>Mobile</td>
+                    <td>${grailsApplication.mainContext.getBean('userAgentIdentService').isMobile()}</td>
+                </tr>
             </tbody>
         </table>
     </div>
