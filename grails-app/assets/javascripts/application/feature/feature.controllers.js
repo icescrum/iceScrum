@@ -136,6 +136,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     // Init
     $scope.isAllReleases = false;
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
+    $scope.project = project;
     $scope.previousFeature = FormService.previous(features, $scope.feature);
     $scope.nextFeature = FormService.next(features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;

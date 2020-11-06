@@ -1,4 +1,4 @@
-<div ng-if="::workspaceType == workspaceTypes.PROJECT" class="d-flex justify-content-end">
+<div ng-if="project" class="d-flex justify-content-end">
     <a href
        ng-repeat="provider in getFilteredProviders()"
        ng-click="selectedProvider(provider)"

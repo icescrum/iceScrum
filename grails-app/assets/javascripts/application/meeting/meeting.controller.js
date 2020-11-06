@@ -172,7 +172,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
             }, function(text) {
                 $scope.notifyError(message('is.ui.colloboration.meeting.link.error', [text]));
             });
-        }
+        };
         var provider = $scope.getMeetingProvider(meeting.provider);
         if (provider.joinMeeting) {
             return provider.joinMeeting(meeting, $scope).then(function(videoLink) {
@@ -188,7 +188,7 @@ extensibleController('meetingCtrl', ['$scope', '$injector', '$uibModal', 'AppSer
     $scope.authorizedMeeting = MeetingService.authorizedMeeting;
     // Init
     $scope.injector = $injector;
-    MeetingService.list(Session.getWorkspace()).then(function(meetings) {
+    MeetingService.list($scope.project).then(function(meetings) {
         $scope.meetings = meetings
     });
     $scope.getFilteredProviders = function() {
