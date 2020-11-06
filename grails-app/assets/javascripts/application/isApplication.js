@@ -831,22 +831,30 @@ var isApplication = angular.module('isApplication', [
             });
         };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
-            var scope = $rootScope.$new();
-            if (appDefinitionId && (typeof (appDefinitionId) === 'string' || appDefinitionId instanceof String)) {
-                if (isTerm) {
-                    scope.defaultSearchTerm = appDefinitionId;
-                } else {
-                    scope.defaultAppDefinitionId = appDefinitionId;
+            if (Session.workspaceType === WorkspaceType.PROJECT) {
+                var scope = $rootScope.$new();
+                if (appDefinitionId && (typeof (appDefinitionId) === 'string' || appDefinitionId instanceof String)) {
+                    if (isTerm) {
+                        scope.defaultSearchTerm = appDefinitionId;
+                    } else {
+                        scope.defaultAppDefinitionId = appDefinitionId;
+                    }
+                    scope.closeModalOnEnableApp = true;
                 }
-                scope.closeModalOnEnableApp = true;
+                $uibModal.open({
+                    keyboard: false,
+                    templateUrl: 'apps.modal.html',
+                    controller: 'appsCtrl',
+                    size: 'lg',
+                    scope: scope
+                });
+            } else {
+                $uibModal.open({
+                    keyboard: false,
+                    templateUrl: 'apps.unavailable.modal.html',
+                    size: 'sm'
+                });
             }
-            $uibModal.open({
-                keyboard: false,
-                templateUrl: 'apps.modal.html',
-                controller: 'appsCtrl',
-                size: 'lg',
-                scope: scope
-            });
         };
         $rootScope.copyToClipboard = function(text) {
             FormService.copyToClipboard(text).then(function() {

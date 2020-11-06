@@ -82,6 +82,15 @@
     </is:modal>
     </script>
 
+    <script type="text/ng-template" id="apps.unavailable.modal.html">
+    <is:modal title="Not available">
+        <div class="form-text alert bg-warning mb-3">
+            <p>This features require enabling project Apps, please <b>open the project</b> itself and manage the Apps from there.</p>
+            We are working on making that available from the outside, stay tuned!
+        </div>
+    </is:modal>
+    </script>
+
     <script type="text/ng-template" id="select.or.create.team.html">
     <a>
         <span ng-show="match.model.name && !match.model.id">${message(code: 'todo.is.ui.create.team')}</span> <strong>{{ match.model.name }}</strong>
