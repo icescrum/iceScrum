@@ -75,7 +75,7 @@ grails.project.dependency.resolution = {
         grailsHome()
         mavenCentral()
         // To help grails to compile and find jar depencies form icescrum-core, otherwise it's limited to one / day
-        mavenRepo("http://repo.spring.io/libs-release") {
+        mavenRepo("https://repo.spring.io/libs-release") {
             updatePolicy "interval:1"
         }
         mavenRepo("https://repo.icescrum.org/artifactory/plugins-release/") {
