@@ -41,6 +41,8 @@ def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
 //               '-Dicescrum.noDummyze=true',
 //               '-Dicescrum.largeDummyze=true',
                '-Dicescrum.clean=true',
+//               '-Djavax.net.debug=sslverbose:keymanager:trustmanager', // Debug SSL
+//               '-Djava.security.debug=access:stack', // Debug SSL
                '-Dfile.encoding=UTF-8',
                '-Duser.timezone=UTC']
 
