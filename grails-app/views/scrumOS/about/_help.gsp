@@ -153,15 +153,24 @@
                             <td>CATALINA_OPTS</td>
                             <td>${System.getenv('CATALINA_OPTS')}</td>
                         </tr>
-                        <tr>
-                            <td>CATALINA_HOME</td>
-                            <td>${System.getenv('CATALINA_HOME')}</td>
-                        </tr>
-                        <tr>
-                            <td>CATALINA_BASE</td>
-                            <td>${System.getenv('CATALINA_BASE')}</td>
-                        </tr>
+
                     </g:if>
+                    <tr>
+                        <td>CATALINA_HOME</td>
+                        <td>${System.getenv('CATALINA_HOME')}</td>
+                    </tr>
+                    <tr>
+                        <td>CATALINA_BASE</td>
+                        <td>${System.getenv('CATALINA_BASE')}</td>
+                    </tr>
+                    <tr>
+                        <td>catalina.home</td>
+                        <td>${System.getProperty('catalina.home')}</td>
+                    </tr>
+                    <tr>
+                        <td>catalina.base</td>
+                        <td>${System.getProperty('catalina.base')}</td>
+                    </tr>
                 </g:if>
                 <tr ng-if="application.transport">
                     <td>${message(code: 'is.ui.server.connections.transport')}</td>
