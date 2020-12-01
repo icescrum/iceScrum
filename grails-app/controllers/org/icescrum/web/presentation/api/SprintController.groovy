@@ -25,7 +25,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.apache.commons.lang.time.FastDateFormat
+import org.hibernate.Session
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -36,6 +36,7 @@ import org.icescrum.core.utils.DateUtils
 class SprintController implements ControllerErrorHandler {
 
     def sprintService
+    def sessionFactory
     def storyService
 
     @Secured(['stakeHolder() or inProject()'])
@@ -56,12 +57,14 @@ class SprintController implements ControllerErrorHandler {
     def debugDates(long project) {
         Project _project = Project.withProject(project)
         String text = ''
-        def formater = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("GMT"), Locale.US)
         text += "Sprint Report - Timezone " + TimeZone.getDefault().getID() + '<br/>'
+        Session session = sessionFactory.currentSession
+        text += session.createSQLQuery('SELECT @@global.time_zone, @@session.time_zone, @@system_time_zone, TIMEDIFF(NOW(), UTC_TIMESTAMP);').list().inspect() + '<br/>'
         _project.sprints.each { Sprint sprint ->
             text += '------ ' + sprint.fullName + '<br/>'
-            text += 'startDate\t' + sprint.startDate.class + '\t' + sprint.startDate + '\t' + sprint.startDate.timezoneOffset + '\t' + formater.format(sprint.startDate) + '<br/>'
-            text += 'endDate\t' + sprint.endDate.class + '\t' + sprint.endDate + '\t' + sprint.endDate.timezoneOffset + '\t' + formater.format(sprint.endDate) + '<br/>'
+            text += 'startDate\t' + '\t' + sprint.startDate + '\t' + sprint.startDate.timezoneOffset + '<br/>'
+            text += 'endDate\t' + '\t' + sprint.endDate + '\t' + sprint.endDate.timezoneOffset + '<br/>'
+            text += session.createSQLQuery('SELECT start_date, end_date FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).list().inspect() + '<br/>'
         }
         render(status: 200, text: text)
     }
