@@ -67,6 +67,7 @@ class SprintController implements ControllerErrorHandler {
             text += 'HQL ' + Sprint.executeQuery("SELECT startDate, endDate FROM Sprint WHERE id = :id", [id: sprint.id]) + '<br/>'
             def returnedSprint =  session.createSQLQuery('SELECT * FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).addEntity(Sprint.class).list()
             text += 'ENTITY ' + returnedSprint.startDate + ' ' + returnedSprint.endDate + '<br/>'
+            text += 'VARIABLES ' + session.createSQLQuery('SHOW VARIABLES').list() + '<br/>'
         }
         render(status: 200, text: text)
     }
