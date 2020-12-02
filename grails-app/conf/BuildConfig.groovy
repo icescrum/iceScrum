@@ -91,7 +91,7 @@ grails.project.dependency.resolution = {
         build("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
         runtime("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
         compile("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
-        runtime 'mysql:mysql-connector-java:5.1.40'
+        runtime 'mysql:mysql-connector-java:5.1.49'
         compile 'commons-fileupload:commons-fileupload:1.3.3' //fix CVE-2016-1000031
     }
     plugins {
