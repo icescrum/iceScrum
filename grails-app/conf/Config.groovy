@@ -506,6 +506,8 @@ log4j = {
     warn 'org.mortbay.log'
     warn 'grails.plugin.cache'
 
+    debug 'org.apache.tomcat'
+
     if (config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
     }
