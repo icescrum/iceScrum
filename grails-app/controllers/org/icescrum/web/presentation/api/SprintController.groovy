@@ -62,9 +62,11 @@ class SprintController implements ControllerErrorHandler {
         text += session.createSQLQuery('SELECT @@global.time_zone, @@session.time_zone, @@system_time_zone, TIMEDIFF(NOW(), UTC_TIMESTAMP);').list().inspect() + '<br/>'
         _project.sprints.each { Sprint sprint ->
             text += '------ ' + sprint.fullName + '<br/>'
-            text += 'startDate\t' + '\t' + sprint.startDate + '\t' + sprint.startDate.timezoneOffset + '<br/>'
-            text += 'endDate\t' + '\t' + sprint.endDate + '\t' + sprint.endDate.timezoneOffset + '<br/>'
-            text += session.createSQLQuery('SELECT start_date, end_date FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).list().inspect() + '<br/>'
+            text += 'GORM \t' + '\t' + sprint.startDate + '\t' + sprint.startDate.timezoneOffset + '\t' + sprint.endDate + '\t' + sprint.endDate.timezoneOffset + '<br/>'
+            text += 'RAW ' + session.createSQLQuery('SELECT start_date, end_date FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).list().inspect() + '<br/>'
+            text += 'HQL ' + Sprint.executeQuery("SELECT startDate, endDate FROM Sprint WHERE id = :id", [id: sprint.id]) + '<br/>'
+            def returnedSprint =  session.createSQLQuery('SELECT * FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).addEntity(Sprint.class).list()
+            text += 'ENTITY ' + returnedSprint.startDate + ' ' + returnedSprint.endDate + '<br/>'
         }
         render(status: 200, text: text)
     }
