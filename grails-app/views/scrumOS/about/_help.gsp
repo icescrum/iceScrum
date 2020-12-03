@@ -153,7 +153,6 @@
                             <td>CATALINA_OPTS</td>
                             <td>${System.getenv('CATALINA_OPTS')}</td>
                         </tr>
-
                     </g:if>
                     <tr>
                         <td>CATALINA_HOME</td>
