@@ -144,16 +144,14 @@
                         </span>
                         </td>
                     </tr>
-                    <g:if test="${System.getenv('JAVA_OPTS')}">
-                        <tr>
-                            <td>JAVA_OPTS</td>
-                            <td>${System.getenv('JAVA_OPTS')}</td>
-                        </tr>
-                        <tr>
-                            <td>CATALINA_OPTS</td>
-                            <td>${System.getenv('CATALINA_OPTS')}</td>
-                        </tr>
-                    </g:if>
+                    <tr>
+                        <td>JAVA_OPTS</td>
+                        <td>${System.getenv('JAVA_OPTS')}</td>
+                    </tr>
+                    <tr>
+                        <td>CATALINA_OPTS</td>
+                        <td>${System.getenv('CATALINA_OPTS')}</td>
+                    </tr>
                     <tr>
                         <td>CATALINA_HOME</td>
                         <td>${System.getenv('CATALINA_HOME')}</td>
