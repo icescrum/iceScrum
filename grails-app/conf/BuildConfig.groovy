@@ -76,7 +76,7 @@ grails.project.dependency.resolution = {
         grailsCentral()
         grailsHome()
         mavenCentral()
-        jcenter() // For http-builder 7.2 (unavailable in maven central)` <- For some reasons, inline icescrum-core requires icescrum to have some of its repositories
+        mavenRepo "https://jcenter.bintray.com" // For http-builder 7.2 (unavailable in maven central)` <- For some reasons, inline icescrum-core requires icescrum to have some of its repositories
         mavenRepo "https://repo.eclipse.org/content/repositories/mylyn/" // For wikitext <- For some reasons, inline icescrum-core requires icescrum to have some of its repositories
         mavenRepo("https://repo.icescrum.org/artifactory/plugins-release/") {
             updatePolicy "interval:1"
