@@ -76,6 +76,7 @@ grails.project.dependency.resolution = {
         grailsCentral()
         grailsHome()
         mavenCentral()
+        mavenRepo "https://jcenter.bintray.com" // For http-builder 7.2 (unavailable in maven central)
         mavenRepo("https://repo.icescrum.org/artifactory/plugins-release/") {
             updatePolicy "interval:1"
         }
