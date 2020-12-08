@@ -311,6 +311,14 @@ class UserController implements ControllerErrorHandler {
 
     @Secured("permitAllWeb() || hasAnyScopeOauth2('user', 'user:read')")
     def current() {
+        request.marshaller = [
+                user   : [
+                        include: ['preferences']
+                ],
+                userpreferences: [
+                        exclude: ['iceScrumRating', 'lastIceScrumRating', 'needsEmailValidation']
+                ]
+        ]
         def user = [user : springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles: securityService.getRolesRequest(true)]
         render(status: 200, contentType: 'application/json', text: user as JSON)
