@@ -733,11 +733,11 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
         });
     };
     $scope.copyMultiple = function() {
-        $rootScope.uiWorking('todo.is.ui.story.multiple.being.copied', true);
+        $scope.uiWorking('todo.is.ui.story.multiple.being.copied', true);
         StoryService.copyMultiple(storyListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.copied');
         }).finally(function() {
-            $rootScope.uiReady(true);
+            $scope.uiReady(true);
         });
     };
     $scope.updateMultiple = function(updatedFields) {
