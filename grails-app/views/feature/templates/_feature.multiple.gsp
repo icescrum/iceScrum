@@ -100,10 +100,16 @@
                             ${message(code: 'is.ui.feature.state.done')}
                         </button>
                     </div>
+                    <button type="button"
+                            ng-if="authorizedFeatures('copy', features)"
+                            class="btn btn-secondary btn-sm"
+                            ng-click="copyMultiple()">
+                        ${message(code: 'is.ui.copy')}
+                    </button>
                     <div ng-if="authorizedFeatures('markInProgress', features)"
                          class="btn-group">
                         <button type="button"
-                                class="btn btn-primary btn-sm"
+                                class="btn btn-secondary btn-sm"
                                 ng-click="inProgressMultiple()">
                             ${message(code: 'is.ui.feature.state.inProgress')}
                         </button>

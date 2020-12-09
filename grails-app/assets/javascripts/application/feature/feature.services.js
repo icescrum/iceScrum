@@ -86,6 +86,9 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         editableFeature.state = state;
         return self.update(editableFeature, true);
     };
+    this.copy = function(feature) {
+        return Feature.update({projectId: feature.backlog.id, id: feature.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
+    };
     this.getMultiple = function(ids, projectId) {
         ids = _.map(ids, function(id) {
             return parseInt(id);
@@ -128,12 +131,18 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             _.each(features, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
+    this.copyMultiple = function(ids, projectId) {
+        return Feature.updateArray({projectId: projectId, id: ids, action: 'copy'}, {}, function(features) {
+            _.each(features, crudMethods[IceScrumEventType.CREATE]);
+        }).$promise;
+    };
     this.authorizedFeature = function(action, feature, project) {
         switch (action) {
             case 'create':
             case 'upload':
             case 'update':
             case 'delete':
+            case 'copy':
                 return Session.po();
             case 'markDone':
                 return Session.po() && feature && feature.state === FeatureStatesByName.IN_PROGRESS;

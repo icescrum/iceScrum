@@ -323,7 +323,16 @@ class RestUrlMappings {
                 action(inList: ['print'])
             }
         }
-        // release nested actions
+        "/ws/project/$project/feature/$id/$action" {
+            controller = 'feature'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+                action(inList: ['copy'])
+            }
+            oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
+        }
+        // Release nested actions
         "/ws/project/$project/release/$id/$action" {
             controller = 'release'
             constraints {

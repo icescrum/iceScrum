@@ -224,6 +224,14 @@ class FeatureController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: colors as JSON)
     }
 
+    @Secured('productOwner() and !archivedProject()')
+    def copy() {
+        def features = Feature.withFeatures(params)
+        def copiedFeatures = featureService.copy(features, features.first().backlog)
+        def returnData = copiedFeatures.size() > 1 ? copiedFeatures : copiedFeatures.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
     protected def indexCacheKey() {
         if (request.getAttribute("_cachedKeyRequest")) {
             return request.getAttribute("_cachedKeyRequest")

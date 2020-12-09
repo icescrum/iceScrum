@@ -32,6 +32,11 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', '$windo
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
+    $scope.copy = function(feature) {
+        FeatureService.copy(feature).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.copied');
+        });
+    };
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
@@ -60,6 +65,11 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', '$windo
                     $scope.notifySuccess('todo.is.ui.feature.updated');
                 });
             }
+        },
+        {
+            name: 'is.ui.copy',
+            visible: function(feature) { return $scope.authorizedFeature('copy', feature) },
+            action: function(feature) { $scope.copy(feature); }
         },
         {
             name: 'todo.is.ui.permalink.copy',
@@ -187,6 +197,11 @@ extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureLi
     $scope.sumStories = function(features) {
         return _.sumBy(features, function(feature) {
             return feature.stories_ids.length;
+        });
+    };
+    $scope.copyMultiple = function() {
+        FeatureService.copyMultiple(featureListId, project.id).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.multiple.copied');
         });
     };
     $scope.deleteMultiple = function() {
