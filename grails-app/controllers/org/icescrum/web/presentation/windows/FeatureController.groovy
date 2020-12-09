@@ -227,7 +227,7 @@ class FeatureController implements ControllerErrorHandler {
     @Secured('productOwner() and !archivedProject()')
     def copy() {
         def features = Feature.withFeatures(params)
-        def copiedFeatures = featureService.copy(features, features.first().backlog)
+        def copiedFeatures = featureService.copy(features)
         def returnData = copiedFeatures.size() > 1 ? copiedFeatures : copiedFeatures.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
