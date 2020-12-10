@@ -311,7 +311,7 @@ class UserController implements ControllerErrorHandler {
 
     @Secured("permitAllWeb() || hasAnyScopeOauth2('user', 'user:read')")
     def current() {
-        request.marshaller = [
+        request.restMarshaller = [
                 user   : [
                         include: ['preferences']
                 ],
