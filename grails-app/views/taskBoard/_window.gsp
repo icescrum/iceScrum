@@ -118,8 +118,6 @@
             </div>
         </div>
         <div class="card-body scrollable-selectable-container"
-             data-scroll-to-visible-computed-offset-top="sticky-note-task"
-             data-scroll-to-visible-offset=".kanban-header"
              id="tasks-board"
              ng-controller="taskCtrl">
             <div class="window-alert bg-warning"

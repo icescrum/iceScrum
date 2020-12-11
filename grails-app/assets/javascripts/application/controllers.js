@@ -172,9 +172,42 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
         }
     });
     // Init loading
+    var scrollToSelectedVisible = null;
+    var selectableScroll = function() {
+        $timeout.cancel(scrollToSelectedVisible);
+        scrollToSelectedVisible = $timeout(function() {
+            var $element = angular.element('.is-selected');
+            if ($element && $element[0]) {
+                var element = $element[0];
+                var $scrollableContainer = $element.parents('.scrollable-selectable-container');
+                var scrollableContainer = $scrollableContainer[0];
+                var elementOffset = 0;
+                var $currentElement = $element;
+                while ($currentElement[0] !== scrollableContainer) {
+                    elementOffset += $currentElement[0].offsetTop;
+                    $currentElement = $currentElement.parent();
+                }
+                var currentScrollTop = scrollableContainer.scrollTop;
+                var isAbove = elementOffset < currentScrollTop;
+                var isBelow = (elementOffset + element.offsetHeight) > (currentScrollTop + scrollableContainer.offsetHeight);
+                if (isAbove || isBelow) {
+                    var targetScrollTop;
+                    if (isAbove || element.offsetHeight > scrollableContainer.offsetHeight) { // is above or does not fit => show the top with a margin
+                        targetScrollTop = elementOffset - 15; // arbitrary nice margin above
+                    } else {
+                        targetScrollTop = elementOffset - scrollableContainer.offsetHeight / 2 + element.offsetHeight / 2 + 15; // is below and fits => show at the middle
+                    }
+                    var deltaScrollTop = Math.abs(currentScrollTop - targetScrollTop);
+                    $scrollableContainer.animate({scrollTop: targetScrollTop}, deltaScrollTop < 200 ? 0 : 200);
+                }
+            }
+        }, 50)
+    };
+    $scope.$on('selectableRefresh', function() { // Manual event for some cases (e.g. backlog)
+        selectableScroll();
+    });
     var w = angular.element($window);
     var resizeTimeout = null;
-    var scrollToSelectedVisible = null;
     $scope.$on('$viewContentLoaded', function(event) {
         if (!event.defaultPrevented) {
             if ($scope.application.loadingPercent < 90) {
@@ -187,13 +220,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
                 w.triggerHandler('resize');
             }, 50);
         }
-        $timeout.cancel(scrollToSelectedVisible);
-        scrollToSelectedVisible = $timeout(function() {
-            var $element = angular.element('.is-selected');
-            if ($element && $element[0]) {
-                $element.parents('.scrollable-selectable-container').scrollToVisible($element[0]);
-            }
-        }, 150);
+        selectableScroll();
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {

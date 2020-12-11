@@ -83,7 +83,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', '$q', 'window', '$
         }
         backlogContainer.sortable = StoryService.authorizedStory('rank') && ((BacklogService.isBacklog(backlog) && !$scope.hasContextOrSearch()) || BacklogService.isSandbox(backlog) || BacklogService.isSortableFromState(backlog));
         $timeout(function() { // Timeout to wait for story rendering
-            $scope.$emit('selectable-refresh');
+            $scope.$emit('selectableRefresh');
         }, 0);
     };
     var getValueEffortRateForSorting = function(story) {
