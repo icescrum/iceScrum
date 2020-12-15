@@ -206,7 +206,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <input type="submit" ng-disabled="importProjectForm.$invalid" class="btn btn-primary" value="${message(code: 'todo.is.ui.import.changes.submit')}">
+                <input type="submit" ng-disabled="importProjectForm.$invalid || application.submitting" class="btn btn-primary" value="${message(code: 'todo.is.ui.import.changes.submit')}">
             </div>
         </form>
         <div ng-show="project.name">
