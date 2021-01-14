@@ -28,6 +28,7 @@ import eu.bitwalker.useragentutils.Browser
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.Metadata
+import org.hibernate.Session
 import org.icescrum.atmosphere.IceScrumAtmosphereEventListener
 import org.icescrum.atmosphere.IceScrumBroadcaster
 import org.icescrum.core.domain.Portfolio
@@ -43,6 +44,8 @@ import org.icescrum.web.OpenAPIUrlMappingsRenderer
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
+import java.sql.Time
+
 class ScrumOSController implements ControllerErrorHandler {
 
     def userService
@@ -57,6 +60,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def atmosphereMeteor
     def userAgentIdentService
     def grailsUrlMappingsHolder
+    def sessionFactory
 
     def index() {
         User user = (User) springSecurityService.currentUser
@@ -397,5 +401,12 @@ class ScrumOSController implements ControllerErrorHandler {
         }
         def returnData = paginate ? [projects: projects, portfolios: portfolios, count: workspaces.size()] : [projects: projects, portfolios: portfolios]
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
+    @Secured(['permitAll()'])
+    def debugDates() {
+        Session session = sessionFactory.currentSession
+        Time timediff =  session.createSQLQuery('SELECT TIMEDIFF(NOW(), UTC_TIMESTAMP)').list()[0]
+        render(status: 200, text: "Date Debug Report - STATUS : " + (timediff.toString() == '00:00:00' ? 'ERROR' : 'OK'))
     }
 }
