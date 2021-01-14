@@ -25,7 +25,6 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.hibernate.Session
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -33,12 +32,9 @@ import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.utils.DateUtils
 
-import java.sql.Time
-
 class SprintController implements ControllerErrorHandler {
 
     def sprintService
-    def sessionFactory
     def storyService
 
     @Secured(['stakeHolder() or inProject()'])
@@ -52,29 +48,6 @@ class SprintController implements ControllerErrorHandler {
             sprints = _project.sprints
         }
         render(status: 200, contentType: 'application/json', text: sprints as JSON)
-    }
-
-
-    @Secured(['stakeHolder() or inProject()'])
-    def debugDates(long project) {
-        Project _project = Project.withProject(project)
-        Session session = sessionFactory.currentSession
-        Time timediff =  session.createSQLQuery('SELECT TIMEDIFF(NOW(), UTC_TIMESTAMP)').list()[0]
-        String text = ''
-        text += "---- Sprint Debug Report - STATUS : " + (timediff.toString() == '00:00:00' ? 'ERROR' : 'OK') + '<br/>'
-        text += 'JAVA SERVER TIMEZONE => ' + TimeZone.getDefault().getID() + '<br/>'
-        text += 'SELECT @@global.time_zone, @@session.time_zone, @@system_time_zone => ' + session.createSQLQuery('SELECT @@global.time_zone, @@session.time_zone, @@system_time_zone;').list().inspect() + '<br/>'
-        text += 'SELECT TIMEDIFF(NOW(), UTC_TIMESTAMP) => ' + timediff.inspect() + '+' + timediff.timezoneOffset + '<br/><br/>'
-        text += 'SHOW VARIABLES => ' + session.createSQLQuery('SHOW VARIABLES').list() + '<br/><br/>'
-        _project.sprints.each { Sprint sprint ->
-            text += '------ SPRINT DATES ' + sprint.fullName + '<br/>'
-            text += 'GRAILS ORM => ' + ' ' + sprint.startDate + ' ' + sprint.startDate.timezoneOffset + '' + sprint.endDate + ' ' + sprint.endDate.timezoneOffset + '<br/>'
-            def returnedSprint =  session.createSQLQuery('SELECT * FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).addEntity(Sprint.class).list()
-            text += 'ENTITY MAPPING => ' + returnedSprint.startDate + ' ' + returnedSprint.endDate + '<br/>'
-            text += 'RAW SQL => ' + session.createSQLQuery('SELECT start_date, end_date FROM is_timebox WHERE id LIKE ?').setLong(0, sprint.id).list().inspect() + '<br/>'
-            text += 'HQL => ' + Sprint.executeQuery("SELECT startDate, endDate FROM Sprint WHERE id = :id", [id: sprint.id]) + '<br/>'
-        }
-        render(status: 200, text: text)
     }
 
     @Secured('inProject()')
