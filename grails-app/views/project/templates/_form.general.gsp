@@ -86,7 +86,7 @@
              ng-click="toggleDescription(true)"
              ng-focus="toggleDescription(true)"
              ng-class="{'placeholder': !project.description_html}"
-             ng-bind-html="project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.description.placeholder')}</p>'"></div>
+             ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.description.placeholder') + '</p>'"></div>
     </div>
 </div>
 </script>
