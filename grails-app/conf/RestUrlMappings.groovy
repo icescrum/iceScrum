@@ -362,7 +362,14 @@ class RestUrlMappings {
                 templateId(matches: /\d+/)
             }
         }
-        // Sprint nested actions
+        // Sprint actions
+        "/ws/project/$project/sprint/currentOrNextOrLast" {
+            controller = 'sprint'
+            action = [GET: 'currentOrNextOrLast']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
         "/ws/project/$project/sprint/$id/$action" {
             controller = 'sprint'
             constraints {
