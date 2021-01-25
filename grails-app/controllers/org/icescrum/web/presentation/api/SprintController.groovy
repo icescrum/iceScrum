@@ -109,7 +109,7 @@ class SprintController implements ControllerErrorHandler {
     @Secured(['stakeHolder() or inProject()'])
     def currentOrNextOrLast(long project) {
         Sprint sprint = Sprint.findCurrentOrNextOrLast(project)
-        render(status: 200, contentType: 'application/json', text: sprint.id)
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
