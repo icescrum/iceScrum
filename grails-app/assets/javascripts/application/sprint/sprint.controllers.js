@@ -228,7 +228,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
         {
             name: 'todo.is.ui.details',
             visible: function(sprint, viewType) { return viewType !== 'details'; },
-            action: function(sprint) { $window.location.hash = $scope.openSprintUrl(sprint); } // Inherited
+            url: function(sprint) { return $scope.openSprintUrl(sprint); } // Inherited
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.delete',

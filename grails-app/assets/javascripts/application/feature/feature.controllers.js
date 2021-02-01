@@ -41,7 +41,7 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', '$windo
         {
             name: 'todo.is.ui.details',
             visible: function(feature, viewType) { return viewType !== 'details'; },
-            action: function(feature) { $window.location.hash = $scope.openFeatureUrl(feature); }
+            url: function(feature) { return $scope.openFeatureUrl(feature); }
         },
         {
             name: 'todo.is.ui.context.set',

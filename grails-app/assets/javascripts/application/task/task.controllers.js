@@ -126,7 +126,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
                 return viewType === 'list' ? 100 : defaultPriority;
             },
             visible: function(task, viewType) { return viewType !== 'details'; },
-            action: function(task) { $window.location.hash = $scope.openTaskUrl(task.id); } // Inherited
+            url: function(task) { return $scope.isModal ? task.permalink : $scope.openTaskUrl(task.id); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.take',

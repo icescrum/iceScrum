@@ -95,7 +95,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
                 return viewType === 'list' ? 100 : defaultPriority;
             },
             visible: function(story, viewType) { return viewType !== 'details'; },
-            action: function(story) { $window.location.hash = $scope.openStoryUrl(story.id); } // Inherited
+            url: function(story) { return $scope.isModal ? story.permalink : $scope.openStoryUrl(story.id); }
         },
         {
             name: function() { return $scope.i18nMarkAs(StoryStatesByName.ACCEPTED); },
