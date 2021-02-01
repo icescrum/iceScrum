@@ -118,7 +118,7 @@ class ErrorsController implements ControllerErrorHandler {
                             params.each { String k, v ->
                                 if (v instanceof Map) {
                                     keysToRemove << k
-                                } else if (k?.toLowerCase().contains('password')) {
+                                } else if (k?.toLowerCase().contains('password') || k?.toLowerCase().contains('icescrum-token')) {
                                     keysToObfuscate << k
                                 }
                             }
