@@ -148,7 +148,7 @@
                                  ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT)}"
                                  ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-init="taskType = taskTypesByName.URGENT"
-                                 as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"
+                                 as-sortable="taskSortableOptions | merge: sortableScrollOptions('#tasks-board')"
                                  is-disabled="!isSortableTaskBoard(sprint)">
                                 <div is-watch="task"
                                      ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
@@ -203,7 +203,7 @@
                                  ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                                  ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                                  ng-init="taskType = taskTypesByName.RECURRENT"
-                                 as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"
+                                 as-sortable="taskSortableOptions | merge: sortableScrollOptions('#tasks-board')"
                                  is-disabled="!isSortableTaskBoard(sprint)">
                                 <div is-watch="task"
                                      ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
@@ -254,7 +254,7 @@
                             <div class="sticky-notes grid-group"
                                  ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                                  ng-model="tasksByStoryByState[story.id][taskState]"
-                                 as-sortable="taskSortableOptions | merge: sortableScrollOptions('.kanban-row')"
+                                 as-sortable="taskSortableOptions | merge: sortableScrollOptions('#tasks-board')"
                                  is-disabled="!isSortableTaskBoard(sprint) || !isSortableStory(story)">
                                 <div is-watch="task"
                                      ng-repeat="task in tasksByStoryByState[story.id][taskState]"
