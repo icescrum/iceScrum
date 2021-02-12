@@ -86,7 +86,7 @@ class RestUrlMappings {
         }
         "/ws/team/$id" {
             controller = 'team'
-            action = [GET: 'show']
+            action = [GET: 'show', DELETE: 'delete']
             constraints {
                 id(matches: /\d*/)
             }
