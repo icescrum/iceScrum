@@ -462,6 +462,32 @@ class RestUrlMappings {
             }
             oapi = [hide: true]
         }
+        "/ws/portfolio/$portfolio/feature" {
+            controller = 'portfolioFeature'
+            action = [GET: 'index', POST: 'save']
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+            oapi = [hide: true]
+        }
+        "/ws/portfolio/$portfolio/feature/$id" {
+            controller = 'portfolioFeature'
+            action = [GET: 'show', PUT: 'update', DELETE: 'delete', POST: 'update']
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+            oapi = [hide: true]
+        }
+        "/ws/portfolio/$portfolio/feature/$id/$action" {
+            controller = 'portfolioFeature'
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+                action(inList: ['sendToProject', 'copy'])
+            }
+            oapi = [hide: true]
+        }
         // Hook
         "/ws/hook" {
             controller = 'hook'
