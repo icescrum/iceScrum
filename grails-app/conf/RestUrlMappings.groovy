@@ -475,7 +475,7 @@ class RestUrlMappings {
             action = [GET: 'show', PUT: 'update', DELETE: 'delete', POST: 'update']
             constraints {
                 portfolio(matches: /[0-9A-Z]*/)
-                id(matches: /\d+(,\d+)*/)
+                id(matches: /\d*/)
             }
             oapi = [hide: true]
         }
@@ -483,8 +483,18 @@ class RestUrlMappings {
             controller = 'portfolioFeature'
             constraints {
                 portfolio(matches: /[0-9A-Z]*/)
-                id(matches: /\d+(,\d+)*/)
-                action(inList: ['sendToProject', 'copy'])
+                id(matches: /\d*/)
+                action(inList: ['copy'])
+            }
+            oapi = [hide: true]
+        }
+        "/ws/portfolio/$portfolio/feature/$id/sendToProject/$targetProjectId" {
+            controller = 'portfolioFeature'
+            action = [PUT: 'sendToProject']
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+                targetProjectId(matches: /\d*/)
             }
             oapi = [hide: true]
         }
