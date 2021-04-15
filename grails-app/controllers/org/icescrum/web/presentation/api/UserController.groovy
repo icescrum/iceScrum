@@ -343,10 +343,12 @@ class UserController implements ControllerErrorHandler {
                         User.withTransaction {
                             userService.resetPassword(user)
                         }
-                    } catch (MailException e) {
-                        error = message(code: 'is.mail.error', exception: e)
                     } catch (Exception e) {
                         error = message(code: 'is.mail.error', exception: e)
+                        e.printStackTrace()
+                        if (log.debugEnabled) {
+                            log.debug(e.message)
+                        }
                     }
                 }
                 if (error) {
