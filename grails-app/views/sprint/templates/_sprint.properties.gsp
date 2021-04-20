@@ -162,15 +162,7 @@
                  bind-html-compile="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition').replaceAll("'", "\\\\'")}</p>'"></div>
         </div>
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.TODO">
-            <label for="retrospective" class="d-flex align-items-center justify-content-between">
-                <div>${message(code: 'is.sprint.retrospective')}</div>
-                <div class="small">
-                    <a href="https://www.retromat.org/?utm_source=icescrum&utm_medium=link&utm_campaign=Retromat"
-                       target="_blank">
-                        <i class="fa fa-question-circle"></i> ${message(code: 'is.ui.sprint.retrospective.link')}
-                    </a>
-                </div>
-            </label>
+            <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
             <textarea at
                       is-markitup
                       class="form-control"
