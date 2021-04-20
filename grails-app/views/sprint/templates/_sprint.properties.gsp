@@ -162,7 +162,10 @@
                  bind-html-compile="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition').replaceAll("'", "\\\\'")}</p>'"></div>
         </div>
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.TODO">
-            <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
+            <label for="retrospective" class="d-flex align-items-center justify-content-between">
+                <div>${message(code: 'is.sprint.retrospective')}</div>
+                <entry:point id="story-properties-retrospective-label-after"/>
+            </label>
             <textarea at
                       is-markitup
                       class="form-control"

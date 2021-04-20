@@ -148,6 +148,7 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
+                    <entry:point id="project-dashboard-retrospective-after-title"/>
                 </div>
                 <div class="card-body rich-content">
                     <div class="float-right">
