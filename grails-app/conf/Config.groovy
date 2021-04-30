@@ -33,6 +33,7 @@ import org.apache.log4j.PatternLayout
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.core.domain.*
 import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.security.rest.TokenExtractor
 import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider
@@ -92,7 +93,8 @@ icescrum {
 
     cors {
         enable = true
-        url.pattern = ['/ws/*', '/assets/*']
+        urlPatterns = ['/ws/*', '/assets/*']
+        allowedHeaders = [TokenExtractor.TOKEN_HEADER]
     }
 
     check {
