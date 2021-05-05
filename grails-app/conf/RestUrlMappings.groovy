@@ -79,6 +79,13 @@ class RestUrlMappings {
             controller = 'user'
             action = [GET: 'current']
         }
+        "/ws/user/roles/project/$project" {
+            controller = 'user'
+            action = [GET: 'roles']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
         // Team (if user is admin all teams ELSE teams where user is owner
         "/ws/team" {
             controller = 'team'

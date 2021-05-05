@@ -207,6 +207,13 @@ class UrlMappings {
             controller = 'user'
             action = [GET: "current"]
         }
+        "/user/roles/project/$project" {
+            controller = 'user'
+            action = [GET: 'roles']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
         "/user/available/$property" {
             controller = 'user'
             action = [POST: "available"]

@@ -37,7 +37,6 @@ import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.error.BusinessException
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
-import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
 
 class UserController implements ControllerErrorHandler {
@@ -322,6 +321,11 @@ class UserController implements ControllerErrorHandler {
         def user = [user : springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles: securityService.getRolesRequest(true)]
         render(status: 200, contentType: 'application/json', text: user as JSON)
+    }
+
+    @Secured("isAuthenticatedWeb() || hasAnyScopeOauth2('user', 'user:read')")
+    def roles(long project) { // project is used for roles
+        render(status: 200, contentType: 'application/json', text: securityService.getRolesRequest(true) as JSON)
     }
 
     def retrieve(String username) {
