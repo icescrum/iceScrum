@@ -164,7 +164,18 @@
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.TODO">
             <label for="retrospective" class="d-flex align-items-center justify-content-between">
                 <div>${message(code: 'is.sprint.retrospective')}</div>
-                <entry:point id="story-properties-retrospective-label-after"/>
+                <div class="d-flex justify-content-end">
+                    <a href
+                       ng-repeat="provider in getRetrospectiveProviders()"
+                       ng-click="showAppsModal(provider.id)"
+                       class="retrospective-provider-container">
+                        <span class="retrospective-provider retrospective-provider-{{ ::provider.id }}" title="{{ ::provider.name }}"></span>
+                    </a>
+                    <a ng-if="::getRetrospectiveProviders() && getRetrospectiveProviders().length != 0"
+                       class="btn btn-secondary btn-sm plus-app"
+                       ng-click="showAppsModal(message('is.ui.apps.tag.retrospective'), true)"
+                       href></a>
+                </div>
             </label>
             <textarea at
                       is-markitup

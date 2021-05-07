@@ -1089,4 +1089,7 @@ var isApplication = angular.module('isApplication', [
         $rootScope.getAttachmentProvider = function(providerId) {
             return _.find($rootScope.getAttachmentProviders(), ['id', providerId]);
         };
+        $rootScope.getRetrospectiveProviders = function() {
+            return isSettings.retrospective.providers;
+        };
     }]);

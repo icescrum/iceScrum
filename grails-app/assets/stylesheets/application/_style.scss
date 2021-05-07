@@ -1596,25 +1596,17 @@ th {
   }
 }
 
-.attachment-provider-container, .meeting-provider-container {
+.attachment-provider-container, .meeting-provider-container, .retrospective-provider-container {
   background: no-repeat center;
   display: inline-block;
   vertical-align: middle;
   height: 2rem;
 }
 
-.attachment-provider, .meeting-provider {
+.attachment-provider, .meeting-provider, .retrospective-provider {
   display: inline-block;
   background: no-repeat center;
   height: 100%;
-}
-
-.attachment-provider {
-  background-size: 24px auto;
-  width: 24px;
-}
-
-.meeting-provider {
   background-size: 24px auto;
   width: 24px;
 }

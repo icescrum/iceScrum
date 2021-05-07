@@ -814,6 +814,24 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 }
 
 ////////////////////
+// Retrospective
+////////////////////
+
+.retrospective-provider-container {
+  &:not(:first-of-type) {
+    margin-left: 0.5rem;
+  }
+
+  &.disabled .retrospective-provider {
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1.0;
+    }
+  }
+}
+
+////////////////////
 // Meetings
 ////////////////////
 

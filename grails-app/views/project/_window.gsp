@@ -148,7 +148,18 @@
                     <span class="card-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
-                    <entry:point id="project-dashboard-retrospective-after-title"/>
+                    <div class="float-right d-flex justify-content-end">
+                        <a href
+                           ng-repeat="provider in getRetrospectiveProviders()"
+                           ng-click="showAppsModal(provider.id)"
+                           class="retrospective-provider-container">
+                            <span class="retrospective-provider retrospective-provider-{{ ::provider.id }}" title="{{ ::provider.name }}"></span>
+                        </a>
+                        <a ng-if="::getRetrospectiveProviders() && getRetrospectiveProviders().length != 0"
+                           class="btn btn-secondary btn-sm plus-app"
+                           ng-click="showAppsModal(message('is.ui.apps.tag.retrospective'), true)"
+                           href></a>
+                    </div>
                 </div>
                 <div class="card-body rich-content">
                     <div class="float-right">
