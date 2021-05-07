@@ -694,7 +694,8 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   }
 
   .oauth-avatar {
-    height: 44px;
+    @extend .rounded-circle;
+    height: 40px;
   }
 }
 

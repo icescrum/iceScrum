@@ -24,24 +24,24 @@
                     <g:if test='${flash.message}'>
                         <div class='login_message'>${flash.message}</div>
                     </g:if>
-                    <div class="d-flex justify-content-center mt-3 mb-3">
+                    <div class="d-flex justify-content-center mt-2 mb-2">
                         <div class="m-2">
                             <img src="${client.additionalInformation.clientIcon ? (client.additionalInformation.clientIcon.startsWith('http') ? client.additionalInformation.clientIcon : assetPath(src: client.additionalInformation.clientIcon)) : ''}"
-                                 height="60px" width="60px"/>
+                                 height="55px" width="55px"/>
                         </div>
                         <div class="m-2">
-                            <img alt="iceScrum" src="${assetPath(src: 'application/logo.png')}" height="60px" width="60px">
+                            <img alt="iceScrum" src="${assetPath(src: 'application/logo.png')}" height="55px" width="55px">
                         </div>
                     </div>
                     <h2 class="text-center">${message(code: 'is.ui.oauth.authorize', args: [client.additionalInformation.clientName])}</h2>
-                    <div class="d-flex pt-3 pbs-3 justify-content-start">
-                        <img src="${ApplicationSupport.serverURL() + "/user/$user.id/avatar"}" class="oauth-avatar mr-2"/>
+                    <div class="d-flex pt-3 justify-content-start align-items-center">
+                        <img src="${ApplicationSupport.serverURL() + "/user/$user.id/avatar"}" class="oauth-avatar mr-3"/>
                         <div>
-                            ${message(code: 'is.ui.oauth.by', args: [client.additionalInformation.clientName, client.additionalInformation.clientOwnerUrl, client.additionalInformation.clientOwner])}<br/>
+                            ${message(code: 'is.ui.oauth.by', args: [client.additionalInformation.clientName, client.additionalInformation.clientOwnerUrl, client.additionalInformation.clientOwner])}
                             ${message(code: 'is.ui.oauth.want.access', args: [user.username])}
                         </div>
                     </div>
-                    <ul class="list-group list-group-flush mt-4 mb-4">
+                    <ul class="list-group list-group-flush mt-2 mb-3">
                         <g:each var="typeOfScope" in="${requestedScopesByType}">
                             <li class="list-group-item">
                                 ${message(code: 'is.ui.oauth.scope.type.' + typeOfScope.key)}<br/>
@@ -58,13 +58,11 @@
                             </li>
                         </g:each>
                     </ul>
-                    <div class="pb-4 pt-2"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
-                    <div class="pb-4 pt-2">
-                        <small><a href onclick="return logout('${ApplicationSupport.serverURL()}' + '/oauth/authorize/?' + encodeURIComponent('${request.queryString}'));">
+                    <div class="pb-3"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <a href class="mr-3 small" onclick="return logout('${ApplicationSupport.serverURL()}' + '/oauth/authorize/?' + encodeURIComponent('${request.queryString}'));">
                             ${message(code: 'is.change.account')}
-                        </a></small>
-                    </div>
-                    <div class="d-flex justify-content-end">
+                        </a>
                         <div class="mr-2">
                             <form method='POST' id='denialForm'>
                                 <input name='user_oauth_approval' type='hidden' value='false'/>
