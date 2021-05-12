@@ -1088,7 +1088,7 @@ extensibleController('userRatingCtrl', ['$scope', '$timeout', 'FormService', 'Us
         if ($scope.online && Session.user.preferences) {
             var nextRating;
             if (Session.user.preferences.lastIceScrumRating) {
-                var delayBetweenRatings = Session.user.preferences.iceScrumRating === -1 ? 15 : 90;
+                var delayBetweenRatings = Session.user.preferences.iceScrumRating === -1 ? 45 : 180;
                 nextRating = moment(Session.user.preferences.lastIceScrumRating).add(delayBetweenRatings, 'days');
             } else {
                 nextRating = moment(Session.user.dateCreated).add(15, 'days')
