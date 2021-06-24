@@ -386,6 +386,13 @@ class RestUrlMappings {
             }
             oapi = [method: 'PUT'] // Documentation only, impossible to restrict method when action(inList: ...) (method = 'PUT' is useless)
         }
+        "/ws/project/$project/sprint/$id/$action" {
+            controller = 'sprint'
+            constraints {
+                action(inList: ['burndownRemaining', 'burnupTasks', 'burndownPoints', 'burnupPoints', 'burnupStories'])
+            }
+            oapi = [hide: true]
+        }
         // Plan a sprint with a plannedVelocity
         "/ws/project/$project/sprint/$id/autoPlan/$plannedVelocity" {
             controller = 'sprint'
@@ -444,6 +451,14 @@ class RestUrlMappings {
                 type(inList: ['sprint', 'story'])
                 id(matches: /\d*/)
             }
+        }
+        "/ws/project/$project/task/daily" {
+            controller = 'task'
+            action = [GET: "daily"]
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+            oapi = [hide: true]
         }
         // Filter acceptanceTests by story
         "/ws/project/$project/acceptanceTest/story/$parentStory" {
