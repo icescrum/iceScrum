@@ -268,9 +268,7 @@ class UrlMappings {
             action = 'listByUserAndRole'
             constraints {
                 id(matches: /\d*/)
-                constraints {
-                    role(inList: ['scrumMaster', 'productOwner', 'stakeHolder', 'teamMember'])
-                }
+                role(inList: ['productOwner', 'stakeHolder', 'inProject'])
             }
         }
         "/project/portfolio/$portfolio" {

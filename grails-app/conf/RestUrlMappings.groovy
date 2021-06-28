@@ -131,7 +131,7 @@ class RestUrlMappings {
             action = [GET: 'listByUserAndRole']
             constraints {
                 id(matches: /\d*/)
-                role(inList: ['scrumMaster', 'productOwner', 'stakeHolder', 'teamMember'])
+                role(inList: ['productOwner', 'stakeHolder', 'inProject'])
             }
         }
         "/ws/project/$project" {

@@ -42,6 +42,7 @@ import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.DateUtils
+import org.springframework.security.acls.domain.BasePermission
 
 @Secured('stakeHolder() or inProject()')
 class ProjectController implements ControllerErrorHandler {
@@ -496,15 +497,7 @@ class ProjectController implements ControllerErrorHandler {
         }
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def projects = projectService.getAllActiveProjectsByUser(user, searchTerm)
-        if (paginate && !count) {
-            count = 10
-        }
-        def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
-        def light = params.light != null ? params.remove('light') : false
-        if (light && light != "false") {
-            lightProjectMarshaller(light)
-        }
-        def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
+        def returnData = getProjectListReturnData(projects, paginate, page, count)
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
@@ -551,18 +544,24 @@ class ProjectController implements ControllerErrorHandler {
         if (!id) {
             id = springSecurityService.currentUser.id
         }
-        def light = params.light != null ? params.remove('light') : false
+        // There is no easy way to get Scrum Master and Team Member permissions at the moment as the roles are check against project ACLs, not team
         def permissions = [
                 'productOwner': SecurityService.productOwnerPermissions,
-                'scrumMaster' : SecurityService.scrumMasterPermissions,
-                'teamMember'  : SecurityService.teamMemberPermissions,
+                'inProject': SecurityService.productOwnerPermissions,
                 'stakeHolder' : SecurityService.stakeHolderPermissions
         ]
-        def projects = listByRole(id, term, paginate, page, count, light, permissions[role], owner)
-        if (create && !projects.any { it.name == term } && !Project.countByName(term)) {
-            projects.add(0, [name: params.term, pkey: ''])
+        def members = false
+        if (role == 'inProject') {
+            owner = true
+            members = true
         }
-        render(status: 200, contentType: 'application/json', text: projects as JSON)
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def projects = Project.findAllByRole(User.get(id), permissions[role] as List<BasePermission>, [cache: true], members, false, owner, searchTerm).toList()
+        def returnData = getProjectListReturnData(projects, paginate, page, count)
+        if (create && !returnData.any { it.name == term } && !Project.countByName(term)) {
+            returnData.add(0, [name: params.term, pkey: ''])
+        }
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['stakeHolder() or inProject()', 'RUN_AS_PERMISSIONS_MANAGER'])
@@ -632,13 +631,12 @@ class ProjectController implements ControllerErrorHandler {
         }
     }
 
-    private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, def light, def role, Boolean owner = false) {
-        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, owner, searchTerm).toList()
+    private getProjectListReturnData(projects, Boolean paginate, Integer page, Integer count) {
         if (paginate && !count) {
             count = 10
         }
         def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
+        def light = params.light != null ? params.remove('light') : false
         if (light && light != "false") {
             lightProjectMarshaller(light)
         }
