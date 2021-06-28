@@ -100,6 +100,15 @@
             ${message(code: 'is.project.preferences.sprint.displayRecurrentTasks')}
         </label>
     </div>
+    <div class="form-half">
+        <label for="displaySprintGoal">
+            <input type="checkbox"
+                   name="project.preferences.displaySprintGoal"
+                   id="displaySprintGoal"
+                   ng-model="project.preferences.displaySprintGoal">
+            ${message(code: 'is.project.preferences.sprint.displaySprintGoal')}
+        </label>
+    </div>
 </div>
 <div class="row">
     <div class="form-group" ng-class="project.preferences.displayUrgentTasks ? 'col-sm-6' : 'col-sm-12'">

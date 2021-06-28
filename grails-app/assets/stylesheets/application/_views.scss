@@ -395,7 +395,7 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
   justify-content: space-around;
   font-family: $is-font-family-bold;
   color: $is-text-color-alt;
-  padding: ($is-spacer-x - 0.25rem) $is-spacer-x 0.5rem $is-spacer-x;
+  padding: ($is-spacer-x - 0.5rem) $is-spacer-x 0.5rem $is-spacer-x;
 }
 
 .kanban-swimlane {
@@ -490,6 +490,13 @@ $is-kanban-spacer-y: $is-kanban-spacer-x;
 .kanban-sticky {
   top: 10px;
   position: sticky !important;
+}
+
+.sprint-goal-header {
+  padding: 5px 0 0;
+  font-size: $is-font-size-sm;
+  text-align: center;
+  z-index: 2;
 }
 
 ////////////////////

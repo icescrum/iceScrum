@@ -120,6 +120,13 @@
         <div class="card-body scrollable-selectable-container"
              id="tasks-board"
              ng-controller="taskCtrl">
+            <div class="sprint-goal-header"
+                 ng-if="sprint.goal && project.preferences.displaySprintGoal">
+                <a title="${message(code: 'is.sprint.goal')}"
+                   href="{{ openSprintUrl(sprint) }}">
+                    <span class="strong">{{ sprint.goal }}</span>
+                </a>
+            </div>
             <div class="window-alert bg-warning"
                  ng-if="currentSprintFilter.id != 'allTasks'">
                 ${message(code: 'todo.is.ui.filter.current')}

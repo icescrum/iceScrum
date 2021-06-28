@@ -63,8 +63,7 @@ icescrum {
         envelopeFrom = null
     }
 
-    sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default // TODO may not work on Tomcat 8.5, see maxInactiveInterval in https://tomcat.apache.org/migration-85.html
-
+    sessionTimeoutSeconds = 60 * 30 // 30 minutes default
     try {
         String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
         if (extConfFile) {
@@ -234,7 +233,7 @@ icescrum {
             usertoken           : [:],
             userpreferences     : [include: ['emailsSettings'],
                                    exclude: ['user', 'menu', 'emailsSettingsData', 'widgets']],
-            projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'autoDoneFeature', 'autoInReviewStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+            projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'autoDoneFeature', 'autoInReviewStory', 'displaySprintGoal', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                              'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
             attachment          : [include: ['filename']],
             acceptancetest      : [include: ['parentProject'],
