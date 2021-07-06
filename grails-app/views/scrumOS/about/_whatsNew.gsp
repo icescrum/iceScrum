@@ -28,7 +28,7 @@
         <asset:image src="/whatsNew/scanner.png" style="width: 220px; border-radius: 16px;" class="img-shadow m-3"/>
         <asset:image src="/whatsNew/indicators.png" style="width: 220px; border-radius: 16px;" class="img-shadow m-3"/>
     </div>
-    <h4 class="mt-3 mb-3 text-center">Browse your tasks an update them as you progress.</br>Automatically synchronize your physical task board with iceScrum.<br/>Monitor your agile indicators.</h4>
+    <h4 class="mt-3 mb-3 text-center">Browse your tasks and update them as you progress.</br>Automatically synchronize your physical task board with iceScrum.<br/>Monitor your agile indicators.</h4>
     <div>
         <a class="ml-5 mr-5" href="https://apps.apple.com/us/app/icescrum-companion/id1485631104" target="_blank" rel="noopener noreferrer">
             <asset:image src="/whatsNew/ios-app-store.png" height="60"/>
