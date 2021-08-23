@@ -158,7 +158,7 @@
                        ng-model="editableTask.initial"/>
             </div>
         </div>
-        <div ng-if="task.sprint" class="form-group">
+        <div ng-if="task.sprint.id" class="form-group">
             <label for="backlog">${message(code: 'is.sprint')}</label>
             <input class="form-control" disabled="disabled" type="text" value="{{ task.sprint.parentRelease.name + ' - ' + (task.sprint | sprintName) }}"/>
         </div>
