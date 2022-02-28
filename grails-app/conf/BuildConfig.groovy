@@ -96,10 +96,11 @@ grails.project.dependency.resolution = {
         //not needed by icescrum
         runtime 'mysql:mysql-connector-java:5.1.49'
         compile 'commons-fileupload:commons-fileupload:1.3.3' //fix CVE-2016-1000031
-        compile 'org.apache.logging.log4j:log4j-api:2.17.2'
-        compile 'org.apache.logging.log4j:log4j-core:2.17.2'
-        compile 'org.apache.logging.log4j:log4j-1.2-api:2.17.2'
-        compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'
+        def log4jVersion = "2.17.2"
+        compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-1.2-api:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
     }
     plugins {
         compile ':cache-headers:1.1.7'
