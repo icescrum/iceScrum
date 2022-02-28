@@ -54,7 +54,7 @@ grails.project.fork = [
 
 if (Environment.current != Environment.PRODUCTION) {
     println "use inline plugin in env: ${Environment.current}"
-    grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
+    grails.plugin.location.'icescrum-core' = '../icescrum-core'
     //grails.plugin.location.'kagilum-licenseable' = '../plugins/kagilum-licenseable'
 }
 
@@ -68,7 +68,7 @@ grails.war.resources = { stagingDir ->
 
 grails.project.dependency.resolution = {
     inherits("global") {
-        excludes "xml-apis", "maven-publisher", "itext"
+        excludes "xml-apis", "maven-publisher", "itext", 'grails-plugin-log4j', 'log4j'
     }
     log "warn"
     repositories {
@@ -91,6 +91,10 @@ grails.project.dependency.resolution = {
         compile("com.lowagie:itext:2.1.7") { excludes "bouncycastle:bcprov-jdk14:138", "org.bouncycastle:bcprov-jdk14:1.38" } //not needed by icescrum
         runtime 'mysql:mysql-connector-java:5.1.49'
         compile 'commons-fileupload:commons-fileupload:1.3.3' //fix CVE-2016-1000031
+        compile 'org.apache.logging.log4j:log4j-api:2.17.2'
+        compile 'org.apache.logging.log4j:log4j-core:2.17.2'
+        compile 'org.apache.logging.log4j:log4j-1.2-api:2.17.2'
+        compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'
     }
     plugins {
         compile ':cache-headers:1.1.7'
@@ -121,13 +125,13 @@ if (iceScrumPluginsDir) {
 
         if (dir.exists()) {
             File descriptor = dir.listFiles(new FilenameFilter() {
-                public boolean accept(File file, String s) {
-                    return s.endsWith("GrailsPlugin.groovy");
+                boolean accept(File file, String s) {
+                    return s.endsWith("GrailsPlugin.groovy")
                 }
-            })[0] ?: null;
+            })[0] ?: null
 
             if (descriptor) {
-                String name = GrailsNameUtils.getPluginName(descriptor.getName());
+                String name = GrailsNameUtils.getPluginName(descriptor.getName())
                 println "found plugin : ${name}"
                 grails.plugin.location."${name}" = "${it}"
             }

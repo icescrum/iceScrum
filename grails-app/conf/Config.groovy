@@ -26,10 +26,6 @@
 import grails.plugin.springsecurity.SecurityFilterPosition
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.userdetails.GrailsUser
-import grails.util.Holders
-import grails.util.Metadata
-import org.apache.log4j.DailyRollingFileAppender
-import org.apache.log4j.PatternLayout
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.core.domain.*
 import org.icescrum.core.domain.security.Authority
@@ -482,7 +478,7 @@ grails.cache.config = {
     }
 }
 
-log4j = {
+/*log4j = {
     def config = Holders.config
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
@@ -591,7 +587,7 @@ log4j = {
 
     off 'org.codehaus.groovy.grails.web.converters.JSONParsingParameterCreationListener'
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
-}
+}*/
 
 /* Security */
 grails {
