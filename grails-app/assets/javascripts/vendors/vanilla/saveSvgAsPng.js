@@ -102,6 +102,7 @@
                 }
             }
         }
+        css += '.nvd3 text, .nvd3.nv-noData { fill: #111 !important; }'; // Hack to override dark mode
         return css;
     }
 
