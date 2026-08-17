@@ -37,8 +37,8 @@
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <asset:javascript src="preload-header.js"/>
         <script type="text/javascript">
-            isSettings.darkMode = '${asset.stylesheet(href:"application-dark.css", id:"main-css", bundle:"true")}';
-            isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")}';
+            isSettings.darkMode = '${asset.stylesheet(href:"application-dark.css", id:"main-css", bundle:"true")?.encodeAsJsString()}';
+            isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")?.encodeAsJsString()}';
             darkOrLightMode('light');
         </script>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>

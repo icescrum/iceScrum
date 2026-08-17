@@ -34,7 +34,7 @@
                     <div class="rect_2"></div>
                     <div class="rect_3"></div>
                 </div>
-                <div class="register" ng-controller="registerCtrl" ng-init="token = '${token ?: ''}';redirectTo='${params.redirectTo ?: ''}'">
+                <div class="register" ng-controller="registerCtrl" ng-init="token = '${(token ?: '').encodeAsJsString()}';redirectTo='${(params.redirectTo ?: '').encodeAsJsString()}'">
                     <div class="text-center">
                         <a href="https://www.icescrum.com" target="_blank">
                             <img id="logo" alt="iceScrum" src="${assetPath(src: 'application/logo.png')}">
@@ -65,7 +65,7 @@
                                        ng-model="user.username"
                                        ng-remote-validate="/user/available/username"
                                        ng-remote-validate-code="user.username.unique"
-                                       value="${user ? user.username : ''}"
+                                       value="${(user ? user.username : '').encodeAsHTML()}"
                                        autofocus/>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                        type="text"
                                        class="form-control"
                                        autocomplete="off"
-                                       value="${user ? user.firstName : ''}"
+                                       value="${(user ? user.firstName : '').encodeAsHTML()}"
                                        name="user.firstName"
                                        ng-model="user.firstName"/>
                             </div>
@@ -86,7 +86,7 @@
                                        type="text"
                                        class="form-control"
                                        autocomplete="off"
-                                       value="${user ? user.lastName : ''}"
+                                       value="${(user ? user.lastName : '').encodeAsHTML()}"
                                        name="user.lastName"
                                        ng-model="user.lastName"/>
                             </div>
@@ -99,7 +99,7 @@
                                        name="user.email"
                                        class="form-control"
                                        autocomplete="off"
-                                       value="${user ? user.email : ''}"
+                                       value="${(user ? user.email : '').encodeAsHTML()}"
                                        ng-model="user.email"
                                        ng-remote-validate-code="user.email.unique"
                                        ng-remote-validate="/user/available/email"/>
@@ -142,7 +142,7 @@
                                 <label for="preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
                                 <input name="preferences.activity"
                                        type="text"
-                                       value="${user ? user.preferences.activity : ''}"
+                                       value="${(user ? user.preferences.activity : '').encodeAsHTML()}"
                                        class="form-control"
                                        ng-model="user.preferences.activity">
                             </div>

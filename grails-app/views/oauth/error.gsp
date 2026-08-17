@@ -6,6 +6,6 @@
     <body>
         <h1>OAuth2 Error</h1>
 
-        <div id="error">${error.summary}</div>
+        <div id="error">${error?.summary?.encodeAsHTML()}</div>
     </body>
 </html>

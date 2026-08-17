@@ -45,7 +45,7 @@
                           method="post" autocomplete='off'>
                         <g:if test="${error}">
                             <div class="alert bg-danger form-text mb-4 text-center" role="alert">
-                                ${error}
+                                ${error?.encodeAsHTML()}
                             </div>
                         </g:if>
                         <g:else>

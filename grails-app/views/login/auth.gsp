@@ -62,7 +62,7 @@
                                        name="j_username"
                                        required="required"
                                        id="username"
-                                       value="${params.username ?: ''}">
+                                       value="${(params.username ?: '').encodeAsHTML()}">
                             </div>
                         </div>
                         <div class="row">
@@ -97,7 +97,7 @@
                         <g:if test="${redirectTo}">
                             <input type="hidden"
                                    name="redirectTo"
-                                   value="${redirectTo.replaceAll('_HASH_', '#')}">
+                                   value="${redirectTo.replaceAll('_HASH_', '#').encodeAsHTML()}">
                         </g:if>
                         <div class="text-center login-footer">
                             <div class="login-cta-text">${message(code: 'is.login.register.cta')}</div>

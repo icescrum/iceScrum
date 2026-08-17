@@ -359,7 +359,7 @@ class UserController implements ControllerErrorHandler {
                     render(status: 200, view: 'retrieve', model: [error: error])
                     return
                 } else {
-                    redirect(url: createLink(absolute: true, controller: 'login', action: 'auth') + '?retrieve=1&username=' + username)
+                    redirect(url: createLink(absolute: true, controller: 'login', action: 'auth') + '?retrieve=1&username=' + URLEncoder.encode(username, 'UTF-8'))
                     return
                 }
             } else {

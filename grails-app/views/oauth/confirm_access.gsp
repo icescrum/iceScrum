@@ -7,7 +7,7 @@
     <g:if test="${lastException && !(lastException instanceof UnapprovedClientAuthenticationException)}">
         <div class="error">
             <h2>Woops!</h2>
-            <p>${message(code: 'is.ui.oauth.access.not.granted')} (${lastException?.message})</p>
+            <p>${message(code: 'is.ui.oauth.access.not.granted')} (${lastException?.message?.encodeAsHTML()})</p>
         </div>
     </g:if>
     <g:else>
@@ -22,11 +22,11 @@
                         <img id="logo-name" src="${assetPath(src: 'application/icescrum.png')}" alt="iceScrum">
                     </a>
                     <g:if test='${flash.message}'>
-                        <div class='login_message'>${flash.message}</div>
+                        <div class='login_message'>${flash.message?.encodeAsHTML()}</div>
                     </g:if>
                     <div class="d-flex justify-content-center mt-2 mb-2">
                         <div class="m-2">
-                            <img src="${client.additionalInformation.clientIcon ? (client.additionalInformation.clientIcon.startsWith('http') ? client.additionalInformation.clientIcon : assetPath(src: client.additionalInformation.clientIcon)) : ''}"
+                            <img src="${(client.additionalInformation.clientIcon ? (client.additionalInformation.clientIcon.startsWith('http') ? client.additionalInformation.clientIcon : assetPath(src: client.additionalInformation.clientIcon)) : '').encodeAsHTML()}"
                                  height="55px" width="55px"/>
                         </div>
                         <div class="m-2">
@@ -60,7 +60,7 @@
                     </ul>
                     <div class="pb-3"><small>${message(code: 'is.ui.oauth.legal')}</small></div>
                     <div class="d-flex justify-content-end align-items-center">
-                        <a href class="mr-3 small" onclick="return logout('${ApplicationSupport.serverURL()}' + '/oauth/authorize/?' + encodeURIComponent('${request.queryString}'));">
+                        <a href class="mr-3 small" onclick="return logout('${ApplicationSupport.serverURL().encodeAsJsString()}' + '/oauth/authorize/?' + encodeURIComponent('${(request.queryString ?: '').encodeAsJsString()}'));">
                             ${message(code: 'is.change.account')}
                         </a>
                         <div class="mr-2">
