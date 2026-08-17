@@ -40,6 +40,7 @@ import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WindowDefinition
 import org.icescrum.core.utils.ServicesUtils
 import org.icescrum.web.OpenAPIUrlMappingsRenderer
+import org.icescrum.web.SafeXml
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
@@ -95,13 +96,14 @@ class ScrumOSController implements ControllerErrorHandler {
         render(status: 200, view: 'index', model: model)
     }
 
+    @Secured(['isAuthenticated()'])
     def about() {
         def aboutFile = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about.xml")
         render(status: 200, template: "about/index", model: [server        : servletContext.getServerInfo(),
                                                              versionNumber : g.meta([name: 'app.version']),
                                                              maxMemory     : ApplicationSupport.getJavaMaxMemory(),
                                                              serverUrl     : ApplicationSupport.serverURL(),
-                                                             about         : new XmlSlurper().parse(aboutFile),
+                                                             about         : SafeXml.slurper().parse(aboutFile),
                                                              configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : ''])
     }
 
@@ -117,7 +119,11 @@ class ScrumOSController implements ControllerErrorHandler {
                                                                     liveConnections   : broadcaster.liveConnections] as JSON)
     }
 
+    // Renders caller-supplied markup as HTML on the application origin, so it must not be reachable
+    // without a session even though the rich text editor is the only intended caller.
+    @Secured(['isAuthenticated()'])
     def textileParser(String data) {
+        response.setHeader('X-Content-Type-Options', 'nosniff')
         render(text: ServicesUtils.textileToHtml(data))
     }
 
@@ -185,6 +191,7 @@ class ScrumOSController implements ControllerErrorHandler {
         }
     }
 
+    @Secured(['isAuthenticated()'])
     def saveImage(String image, String title) {
         if (!image) {
             render(status: 404)
@@ -195,11 +202,18 @@ class ScrumOSController implements ControllerErrorHandler {
         image = image.substring(image.indexOf("base64,") + "base64,".length(), image.length())
         response.contentType = 'image/png'
         if (!params.view) {
-            ['Content-disposition': "attachment;filename=\"${title + '.png'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
+            ['Content-disposition': "attachment;filename=\"${downloadFileName(title)}.png\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
                 response.setHeader(k, v)
             }
         }
         response.outputStream << new BASE64Decoder().decodeBuffer(image)
+    }
+
+    // The title is echoed into a response header, where a quote or a line break would let the caller
+    // add header content or change the name the browser saves the file under.
+    private static String downloadFileName(String title) {
+        String sanitized = title?.replaceAll(/[^\w \-.]/, '')?.trim()
+        return sanitized ?: 'chart'
     }
 
     def version(boolean verbose, boolean refresh) {

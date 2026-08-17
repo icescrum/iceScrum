@@ -29,6 +29,8 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Widget
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.web.OutboundUrl
+import org.icescrum.web.SafeXml
 
 import java.util.concurrent.TimeUnit
 
@@ -72,8 +74,8 @@ class FeedController implements ControllerErrorHandler {
 
     private static getFeedContent(String url) {
         try {
-            String feedText = ((URL) url.toURL()).getText(connectTimeout: TimeUnit.SECONDS.toMillis(3), readTimeout: TimeUnit.SECONDS.toMillis(10), 'UTF-8')
-            def channel = new XmlSlurper().parseText(feedText).channel
+            String feedText = OutboundUrl.validate(url).getText(connectTimeout: TimeUnit.SECONDS.toMillis(3), readTimeout: TimeUnit.SECONDS.toMillis(10), 'UTF-8')
+            def channel = SafeXml.slurper().parseText(feedText).channel
             def contentFeed = [title: channel.title.text()]
             contentFeed.items = channel.item.collect { xmlItem ->
                 return [feed       : channel.title.text(),

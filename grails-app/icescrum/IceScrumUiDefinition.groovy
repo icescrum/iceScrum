@@ -1,5 +1,7 @@
 import org.icescrum.core.domain.WorkspaceType
 import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.web.OutboundUrl
+import org.icescrum.web.SafeXml
 
 /*
 * Copyright (c) 2015 Kagilum SAS
@@ -165,7 +167,7 @@ widgets = {
         onUpdate { widget, settings ->
             settings.feeds?.findAll { !it.title }?.each {
                 try {
-                    it.title = new XmlSlurper().parse(it.url).channel.title.text()
+                    it.title = SafeXml.slurper().parse(OutboundUrl.validate(it.url).toString()).channel.title.text()
                 } catch (Exception e) {}
             }
             settings.feeds = settings.feeds?.findAll { it.title }.unique { it.url }

@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.security.WorkspaceSecurity
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.web.OutboundUrl
 import org.springframework.security.access.annotation.Secured
 
 @Secured('permitAll')
@@ -75,6 +76,7 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         render(status: 204)
     }
 
+    @grails.plugin.springsecurity.annotation.Secured('isAuthenticated()')
     def token(String providerId) {
         def posted = request.JSON
         def result = getToken(providerId, posted.code, posted.baseTokenUrl ?: null, posted.clientId ?: null, posted.clientSecret ?: null, false)
@@ -95,30 +97,38 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
             key == providerId
         }?.value
         if (!clientOauthData) {
-            return false
+            return [status: 404, content: "Error, unknown OAuth provider ${providerId}"]
         }
         def oauthTokenAuth = clientOauthData.oauthTokenAuth ?: 'params'
         def method = clientOauthData.method ?: 'POST'
         def grant_type = refresh ? 'refresh_token' : 'authorization_code'
         def redirect_uri = ApplicationSupport.serverURL() + "/clientOauth/redirectUri"
-        def queryString = (refresh ? 'refresh_token' : 'code') + "=${code}&grant_type=${grant_type}"
+        def queryString = (refresh ? 'refresh_token' : 'code') + "=${encodeParam(code)}&grant_type=${grant_type}"
         if ((clientSecret || clientOauthData.clientSecret) && oauthTokenAuth != "basic") {
-            queryString += "&client_secret=${clientSecret ?: clientOauthData.clientSecret}"
+            queryString += "&client_secret=${encodeParam(clientSecret ?: clientOauthData.clientSecret)}"
         }
         if ((clientId || clientOauthData.clientId) && oauthTokenAuth != "basic") {
-            queryString += "&client_id=${clientId ?: clientOauthData.clientId}"
+            queryString += "&client_id=${encodeParam(clientId ?: clientOauthData.clientId)}"
         }
         if (!refresh) {
-            queryString += "&redirect_uri=${redirect_uri}"
+            queryString += "&redirect_uri=${encodeParam(redirect_uri)}"
         }
         if (clientOauthData.tokenOptionalQueryString) {
             queryString += clientOauthData.tokenOptionalQueryString
         }
+        // baseTokenUrl lets a workspace point at a self-hosted provider, but it reaches us from the
+        // request body while the credentials sent to it may come from the server configuration, so the
+        // resulting endpoint has to be validated before anything is sent to it.
         def url = "${baseTokenUrl ?: ''}${clientOauthData.tokenUrl}"
-        if (clientOauthData.forceQueryParams || method == 'GET') {
-            url += "?" + queryString
+        def baseUrl
+        try {
+            baseUrl = OutboundUrl.validate(url, clientOauthData.allowedTokenUrlHosts ?: null)
+        } catch (IllegalArgumentException e) {
+            return [status: 400, content: e.message]
         }
-        def baseUrl = new URL(url)
+        if (clientOauthData.forceQueryParams || method == 'GET') {
+            baseUrl = new URL(baseUrl.toString() + "?" + queryString)
+        }
         def connection = baseUrl.openConnection()
         connection.with {
             doOutput = true
@@ -142,5 +152,9 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
                 return [status: responseCode, content: JSON.parse(inputStream.text)]
             }
         }
+    }
+
+    private static String encodeParam(Object value) {
+        return URLEncoder.encode(value?.toString() ?: '', 'UTF-8')
     }
 }
