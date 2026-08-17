@@ -42,7 +42,7 @@
         <script type="text/javascript">
             isSettings.darkMode = '${asset.stylesheet(href:"application-dark.css", id:"main-css", bundle:"true")?.encodeAsJsString()}';
             isSettings.lightMode = '${asset.stylesheet(href:"application.css", id:"main-css", bundle:"true")?.encodeAsJsString()}';
-            darkOrLightMode(${colorScheme ? "'${colorScheme.encodeAsJsString()}'" : null });
+            darkOrLightMode(${colorScheme ? "'" + colorScheme.encodeAsJsString() + "'" : null });
         </script>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <entry:point id="icescrum-header" model="[workspace: workspace, user: user]"/>

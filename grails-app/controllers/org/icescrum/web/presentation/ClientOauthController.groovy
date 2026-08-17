@@ -76,8 +76,13 @@ class ClientOauthController implements ControllerErrorHandler, WorkspaceSecurity
         render(status: 204)
     }
 
-    @grails.plugin.springsecurity.annotation.Secured('isAuthenticated()')
     def token(String providerId) {
+        // Unlike its siblings this action carries no workspace, so a session is the only thing to check.
+        // It still needs one: the exchange sends the configured client credentials to the provider.
+        if (!springSecurityService.isLoggedIn()) {
+            render(status: 401)
+            return
+        }
         def posted = request.JSON
         def result = getToken(providerId, posted.code, posted.baseTokenUrl ?: null, posted.clientId ?: null, posted.clientSecret ?: null, false)
         if (result.status == 200) {

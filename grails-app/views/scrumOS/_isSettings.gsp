@@ -87,7 +87,7 @@
         },
         clientsOauth: {
     <g:each in="${grailsApplication.config.icescrum.clientsOauth}" var="clientOauth">
-    ${clientOauth.key?.encodeAsJsString()}: ${(clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON).encodeAsJsonScript()},
+    '${clientOauth.key?.encodeAsJsString()}': ${(clientOauth.value.findAll{ it.key != 'clientSecret' } as JSON).encodeAsJsonScript()},
     </g:each>
     },
     <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]" join=","/>

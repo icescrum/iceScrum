@@ -41,6 +41,8 @@ import org.springframework.security.acls.domain.BasePermission
 
 class UserController implements ControllerErrorHandler {
 
+    private static final List<String> ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
+
     def userService
     def securityService
     def grailsApplication
@@ -456,8 +458,6 @@ class UserController implements ControllerErrorHandler {
         userService.acceptInvitations(invitations, springSecurityService.currentUser)
         render(status: 200)
     }
-
-    private static final List<String> ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
 
     private String imageExtension(String originalFilename) {
         String extension = FilenameUtils.getExtension(originalFilename)?.toLowerCase()
