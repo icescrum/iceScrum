@@ -173,7 +173,7 @@ class UserController implements ControllerErrorHandler {
                     props.scale = false
                 } else if (params.user.avatar) {
                     def uploadedAvatar = request.getFile('user.avatar')
-                    props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
+                    props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${imageExtension(uploadedAvatar.originalFilename)}")
                     props.scale = true
                     uploadedAvatar.transferTo(props.avatar)
                 }
@@ -285,7 +285,13 @@ class UserController implements ControllerErrorHandler {
             "$user.firstName $user.lastName".toLowerCase().contains(termLower)
         }
         if (pkey) {
-            users = Project.findByPkey(pkey).getAllUsers().findAll(userFilter).take(9)
+            Project project = Project.findByPkey(pkey)
+            def auth = springSecurityService.authentication
+            if (!project || !(request.admin || securityService.inProject(project.id, auth) || securityService.stakeHolder(project.id, auth, false))) {
+                render(status: 403)
+                return
+            }
+            users = project.getAllUsers().findAll(userFilter).take(9)
         } else if (grailsApplication.config.icescrum.user.search.enable || request.admin) {
             users = User.findUsersLike(term ?: '', false, showDisabled, [max: 9])
         } else if (term) {
@@ -451,7 +457,22 @@ class UserController implements ControllerErrorHandler {
         render(status: 200)
     }
 
+    private static final List<String> ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
+
+    private String imageExtension(String originalFilename) {
+        String extension = FilenameUtils.getExtension(originalFilename)?.toLowerCase()
+        if (!(extension in ALLOWED_IMAGE_EXTENSIONS)) {
+            throw new BusinessException(code: "Error, an avatar must be one of the following image types: ${ALLOWED_IMAGE_EXTENSIONS.join(', ')}")
+        }
+        return extension
+    }
+
     private File getAssetAvatarFile(String avatarFileName) {
+        // Bundled asset names only: the value reaches this method from a request parameter, and
+        // getResource() resolves it relative to a directory it must not be able to escape from.
+        if (!(avatarFileName ==~ /[\w-]+\.(?i:png|jpg|jpeg|gif)/)) {
+            throw new BusinessException(code: 'Error, unknown avatar')
+        }
         def avatarPath
         if (grailsApplication.warDeployed) {
             def avatar = g.assetPath(src: 'avatars/' + avatarFileName) as String

@@ -46,15 +46,13 @@ class WidgetController implements ControllerErrorHandler {
     def index(Long portfolio, Long project) {
         def widgets
         if (portfolio) {
-            def auth = springSecurityService.authentication
-            if (!securityService.businessOwner(portfolio, auth) && !securityService.portfolioStakeHolder(portfolio, auth)) {
+            if (!canReadPortfolio(portfolio)) {
                 render(status: 403)
                 return
             }
             widgets = Portfolio.withPortfolio(portfolio).widgets
         } else if (project) {
-            def auth = springSecurityService.authentication
-            if (!securityService.inProject(project, auth) && !securityService.stakeHolder(project, auth, false)) {
+            if (!canReadProject(project)) {
                 render(status: 403)
                 return
             }
@@ -79,14 +77,10 @@ class WidgetController implements ControllerErrorHandler {
         }
         Widget widget = Widget.get(id)
         if (widget) {
-            if (widget.parentType == WidgetParentType.PORTFOLIO && (
-                    widget.portfolio.id != portfolio ||
-                    (!securityService.businessOwner(portfolio, springSecurityService.authentication) && !securityService.portfolioStakeHolder(portfolio, springSecurityService.authentication)))) {
+            if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !canReadPortfolio(portfolio))) {
                 render(status: 403)
                 return
-            } else if (widget.parentType == WidgetParentType.PROJECT && (
-                    widget.project.id != project ||
-                    (!securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)))) {
+            } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || !canReadProject(project))) {
                 render(status: 403)
                 return
             } else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
@@ -112,9 +106,17 @@ class WidgetController implements ControllerErrorHandler {
         def parentType
         def parent
         if (portfolio) {
+            if (!canManagePortfolioWidgets(portfolio)) {
+                render(status: 403)
+                return
+            }
             parentType = WidgetParentType.PORTFOLIO
             parent = Portfolio.withPortfolio(portfolio)
         } else if (project) {
+            if (!canManageProjectWidgets(project)) {
+                render(status: 403)
+                return
+            }
             parentType = WidgetParentType.PROJECT
             parent = Project.withProject(project)
         } else {
@@ -133,10 +135,10 @@ class WidgetController implements ControllerErrorHandler {
             return
         }
         Widget widget = Widget.withWidget(id)
-        if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !securityService.businessOwner(portfolio, springSecurityService.authentication))) {
+        if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !canManagePortfolioWidgets(portfolio))) {
             render(status: 403)
             return
-        } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || (!securityService.productOwner(project, springSecurityService.authentication) && !securityService.scrumMaster(project, springSecurityService.authentication)))) {
+        } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || !canManageProjectWidgets(project))) {
             render(status: 403)
             return
         } else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
@@ -161,10 +163,10 @@ class WidgetController implements ControllerErrorHandler {
     @Secured('isAuthenticated()')
     def delete(long id, Long portfolio, Long project) {
         Widget widget = Widget.withWidget(id)
-        if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !securityService.businessOwner(portfolio, springSecurityService.authentication))) {
+        if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !canManagePortfolioWidgets(portfolio))) {
             render(status: 403)
             return
-        } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || (!securityService.productOwner(portfolio, springSecurityService.authentication) && !securityService.scrumMaster(portfolio, springSecurityService.authentication)))) {
+        } else if (widget.parentType == WidgetParentType.PROJECT && (widget.project.id != project || !canManageProjectWidgets(project))) {
             render(status: 403)
             return
         } else if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
@@ -177,6 +179,14 @@ class WidgetController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def definitions(Long portfolio, Long project) {
+        if (portfolio && !canReadPortfolio(portfolio)) {
+            render(status: 403)
+            return
+        }
+        if (project && !canReadProject(project)) {
+            render(status: 403)
+            return
+        }
         def existingWidgets = portfolio ? Portfolio.withPortfolio(portfolio).widgets : (project ? Project.withProject(project).widgets : springSecurityService.currentUser.preferences.widgets)
         def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults { id, WidgetDefinition widgetDefinition ->
             ApplicationSupport.isAllowed(widgetDefinition, params) ? [
@@ -187,5 +197,24 @@ class WidgetController implements ControllerErrorHandler {
             ] : null
         }
         render(status: 200, contentType: 'application/json', text: widgetDefinitions as JSON)
+    }
+
+    private boolean canReadProject(Long project) {
+        def auth = springSecurityService.authentication
+        return securityService.inProject(project, auth) || securityService.stakeHolder(project, auth, false)
+    }
+
+    private boolean canReadPortfolio(Long portfolio) {
+        def auth = springSecurityService.authentication
+        return securityService.businessOwner(portfolio, auth) || securityService.portfolioStakeHolder(portfolio, auth)
+    }
+
+    private boolean canManageProjectWidgets(Long project) {
+        def auth = springSecurityService.authentication
+        return securityService.productOwner(project, auth) || securityService.scrumMaster(project, auth)
+    }
+
+    private boolean canManagePortfolioWidgets(Long portfolio) {
+        return securityService.businessOwner(portfolio, springSecurityService.authentication)
     }
 }
