@@ -349,9 +349,11 @@ icescrum {
     }
     security {
         authorizedTokenHeaders = ['X-Gitlab-Token', 'X-Auth-Token']
-        // Applied to every controller response by IceScrumFilters. Remove an entry to drop the header:
-        // X-Frame-Options has to go for a deployment that is embedded in a third party frame, and a
-        // Content-Security-Policy or Strict-Transport-Security entry can be added here.
+        // Applied to every controller response by IceScrumFilters. The external configuration is deep
+        // merged into this map, so an entry is disabled by overriding it with an empty value rather than
+        // by leaving it out: a deployment embedded in a third party frame needs
+        // icescrum.security.responseHeaders.'X-Frame-Options' = ''. Extra headers such as
+        // Content-Security-Policy or Strict-Transport-Security can be added the same way.
         responseHeaders = [
                 'X-Content-Type-Options': 'nosniff',
                 'X-Frame-Options'       : 'SAMEORIGIN',
