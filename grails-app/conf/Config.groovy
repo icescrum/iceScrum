@@ -33,6 +33,7 @@ import org.icescrum.core.security.rest.TokenExtractor
 import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider
+import org.icescrum.web.SecretKeys
 
 import javax.naming.InitialContext
 
@@ -355,6 +356,10 @@ icescrum {
 println "| Server Timezone: ${icescrum.timezone.default}"
 println "| Java version: ${System.getProperty('java.version')}"
 
+// Resolved here, at the top level of the script, because a nested ConfigSlurper closure cannot read
+// values defined in a sibling block. Consumed further down by the Spring Security configuration.
+def iceScrumBaseDir = icescrum.baseDir
+
 if (System.getProperty('https.proxyPort') || System.getProperty('http.proxyPort')) {
     println "| HTTP Client will use a Forward Proxy:"
     if (System.getProperty('https.proxyPort')) {
@@ -593,6 +598,9 @@ grails.cache.config = {
 grails {
     plugin {
         springsecurity {
+            // Legacy scheme, kept only because every stored hash uses it. A single unsalted-by-default
+            // SHA-256 round is far too cheap for password storage: migrating to bcrypt requires re-hashing
+            // each password on the next successful login, which has to be done in icescrum-core.
             password.algorithm = 'SHA-256'
             password.hash.iterations = 1
 
@@ -631,11 +639,16 @@ grails {
 
             rememberMe {
                 cookieName = 'iceScrum'
-                key = 'VincNicoJuShazam$'
+                // Signs the remember-me cookie. Persisted per installation so that a leaked or public value
+                // cannot be used to forge cookies. Override it in the external configuration to share the
+                // same secret between the nodes of a cluster.
+                key = SecretKeys.persistent(iceScrumBaseDir, '.remember-me-key')
             }
 
             useRunAs = true
-            runAs.key = 'VincNicoJuShazam!'
+            // Validates RunAsUserToken instances, which grant ROLE_RUN_AS_PERMISSIONS_MANAGER (ACL changes).
+            // These tokens never leave the JVM, so a fresh value on every boot is both safe and sufficient.
+            runAs.key = SecretKeys.generate()
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
 
             useSecurityEventListener = true
