@@ -41,6 +41,11 @@ class IceScrumFilters {
 
         all(controller: '*', action: '*') {
             before = {
+                grailsApplication.config.icescrum.security.responseHeaders?.each { headerName, value ->
+                    if (value && !response.containsHeader(headerName.toString())) {
+                        response.setHeader(headerName.toString(), value.toString())
+                    }
+                }
                 pushService.bufferPushForThisThread()
                 if (userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')) {
                     response.setHeader('Expires', '-1')

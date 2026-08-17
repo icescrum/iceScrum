@@ -349,6 +349,14 @@ icescrum {
     }
     security {
         authorizedTokenHeaders = ['X-Gitlab-Token', 'X-Auth-Token']
+        // Applied to every controller response by IceScrumFilters. Remove an entry to drop the header:
+        // X-Frame-Options has to go for a deployment that is embedded in a third party frame, and a
+        // Content-Security-Policy or Strict-Transport-Security entry can be added here.
+        responseHeaders = [
+                'X-Content-Type-Options': 'nosniff',
+                'X-Frame-Options'       : 'SAMEORIGIN',
+                'Referrer-Policy'       : 'strict-origin-when-cross-origin'
+        ]
     }
     clientsOauth {} // Needs to be set for plugins
 }
