@@ -58,9 +58,11 @@ class SecretKeys {
                 }
             }
             file.parentFile?.mkdirs()
+            // Restrict before writing, so the secret is never on disk under the default umask
+            file.createNewFile()
+            restrictToOwner(file)
             String generated = generate()
             file.setText(generated, 'UTF-8')
-            restrictToOwner(file)
             println "| Generated a new secret in ${file.canonicalPath} (keep it private, share it between nodes of a cluster)"
             return generated
         } catch (Exception e) {
@@ -70,7 +72,8 @@ class SecretKeys {
 
     private static String generateWithWarning(String reason) {
         println "| WARNING: using a randomly generated secret for this JVM because ${reason}."
-        println "| WARNING: remember-me cookies will be invalidated on every restart until a secret can be persisted."
+        println "| WARNING: remember-me cookies will be invalidated on every restart. Set"
+        println "| WARNING: grails.plugin.springsecurity.rememberMe.key in the iceScrum configuration file to avoid this."
         return generate()
     }
 
