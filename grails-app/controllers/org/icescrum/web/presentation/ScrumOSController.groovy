@@ -123,7 +123,6 @@ class ScrumOSController implements ControllerErrorHandler {
     // without a session even though the rich text editor is the only intended caller.
     @Secured(['isAuthenticated()'])
     def textileParser(String data) {
-        response.setHeader('X-Content-Type-Options', 'nosniff')
         render(text: ServicesUtils.textileToHtml(data))
     }
 
